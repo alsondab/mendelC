@@ -156,7 +156,7 @@ const WebPageForm = ({
                     value={field.value}
                     onChange={(value) => form.setValue('content', value || '')}
                     height={500}
-                    preview='live'
+                    preview="live"
                   />
 
                   {/* <Textarea placeholder='Enter content' {...field} /> */}

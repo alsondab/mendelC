@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import MDEditor from '@uiw/react-md-editor'
+import ReactMarkdown from 'react-markdown'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -153,10 +154,11 @@ const WebPageForm = ({
                 <FormLabel>Content</FormLabel>
                 <FormControl>
                   <MDEditor
-                    value={field.value}
-                    onChange={(value) => form.setValue('content', value || '')}
-                    height={500}
-                    preview='live'
+                    // value={markdown}
+                    {...field}
+                    style={{ height: '500px' }}
+                    renderHTML={(text) => <ReactMarkdown>{text}</ReactMarkdown>}
+                    onChange={({ text }) => form.setValue('content', text)}
                   />
 
                   {/* <Textarea placeholder='Enter content' {...field} /> */}
