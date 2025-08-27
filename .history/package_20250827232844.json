@@ -6,7 +6,7 @@
     "email": "email dev",
     "seed": "npx tsx ./lib/db/seed.ts",
     "dev": "next dev --turbopack",
-    "build": "npm install --legacy-peer-deps && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
