@@ -6,7 +6,7 @@
     "email": "email dev",
     "seed": "npx tsx ./lib/db/seed.ts",
     "dev": "next dev --turbopack",
-    "build": "rm -rf node_modules package-lock.json && npm install --legacy-peer-deps && next build",
+    "build": "if exist node_modules rmdir /s /q node_modules && if exist package-lock.json del package-lock.json && npm install --legacy-peer-deps && next build",
     "start": "next start",
     "lint": "next lint"
   },
