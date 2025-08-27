@@ -46,7 +46,8 @@ export default async function AppLayout({
 
   const { locale } = await params
   // Ensure that the incoming `locale` is valid
-  if (!routing.locales.includes(locale)) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  if (!routing.locales.includes(locale as any)) {
     notFound()
   }
   const messages = await getMessages()

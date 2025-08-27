@@ -59,6 +59,7 @@ function Calendar({
         day_hidden: 'invisible',
         ...classNames,
       }}
+
       {...props}
     />
   )
