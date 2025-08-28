@@ -1,0 +1,213 @@
+import {
+  Body,
+  Column,
+  Container,
+  Head,
+  Heading,
+  Html,
+  Img,
+  Link,
+  Preview,
+  Row,
+  Section,
+  Tailwind,
+  Text,
+} from '@react-email/components'
+
+import { formatCurrency } from '@/lib/utils'
+import { IOrder } from '@/lib/db/models/order.model'
+import { getSetting } from '@/lib/actions/setting.actions'
+
+type OrderInformationProps = {
+  order: IOrder
+}
+
+PurchaseReceiptEmail.PreviewProps = {
+  order: {
+    _id: '123',
+    isPaid: true,
+    paidAt: new Date(),
+    totalPrice: 100,
+    itemsPrice: 100,
+    taxPrice: 0,
+    shippingPrice: 0,
+    user: {
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+    },
+    shippingAddress: {
+      fullName: 'John Doe',
+      street: '123 Main St',
+      city: 'New York',
+      postalCode: '12345',
+      country: 'USA',
+      phone: '123-456-7890',
+      province: 'New York',
+    },
+    items: [
+      {
+        clientId: '123',
+        name: 'Product 1',
+        image: 'https://via.placeholder.com/150',
+        price: 100,
+        quantity: 1,
+        product: '123',
+        slug: 'product-1',
+        category: 'Category 1',
+        countInStock: 10,
+      },
+    ],
+    paymentMethod: 'PayPal',
+    expectedDeliveryDate: new Date(),
+    isDelivered: true,
+  } as IOrder,
+} satisfies OrderInformationProps
+const dateFormatter = new Intl.DateTimeFormat('en', { dateStyle: 'medium' })
+
+export default async function PurchaseReceiptEmail({
+  order,
+}: OrderInformationProps) {
+  const { site } = await getSetting()
+
+  // ✅ DÉTECTER SI C'EST UNE COMMANDE COD QUI N'EST PAS ENCORE PAYÉE
+  const isCashOnDeliveryUnpaid = order.paymentMethod === 'Cash On Delivery' && !order.isPaid
+  const isCashOnDeliveryPaid = order.paymentMethod === 'Cash On Delivery' && order.isPaid
+
+  return (
+    <Html>
+      <Preview>
+        {isCashOnDeliveryUnpaid
+          ? `Order Confirmed - ${site.name}`
+          : `Purchase Receipt - ${site.name}`}
+      </Preview>
+      <Tailwind>
+        <Head />
+        <Body className='font-sans bg-white'>
+          <Container className='max-w-xl'>
+            <Heading className='text-2xl font-bold text-center mb-6'>
+              {isCashOnDeliveryUnpaid ? '🎉 Order Confirmed!' : '✅ Payment Confirmed!'}
+            </Heading>
+
+            {/* Informations de paiement */}
+            {isCashOnDeliveryUnpaid && (
+              <Section className='bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6'>
+                <Text className='text-orange-800 font-semibold text-center m-0 mb-2'>
+                  💳 Cash On Delivery
+                </Text>
+                <Text className='text-orange-700 text-center text-sm m-0'>
+                  Please have the exact amount ready when your order arrives.
+                  You&apos;ll receive a receipt upon delivery.
+                </Text>
+              </Section>
+            )}
+
+            {isCashOnDeliveryPaid && (
+              <Section className='bg-green-50 border border-green-200 rounded-lg p-4 mb-6'>
+                <Text className='text-green-800 font-semibold text-center m-0 mb-2'>
+                  ✅ Payment Received
+                </Text>
+                <Text className='text-green-700 text-center text-sm m-0'>
+                  Thank you! Your payment has been received and your order is being processed.
+                </Text>
+              </Section>
+            )}
+
+            {/* Salutation personnalisée */}
+            {isCashOnDeliveryUnpaid && (
+              <Section className='text-center mb-6'>
+                <Text className='text-lg text-gray-800 m-0 mb-2'>
+                  Hi {(order.user as { name: string }).name}! 👋
+                </Text>
+                <Text className='text-gray-600 m-0'>
+                  We&apos;re excited to confirm your order and get it ready for delivery.
+                </Text>
+              </Section>
+            )}
+
+            {isCashOnDeliveryPaid && (
+              <Section className='text-center mb-6'>
+                <Text className='text-lg text-gray-800 m-0 mb-2'>
+                  Hi {(order.user as { name: string }).name}! 👋
+                </Text>
+                <Text className='text-gray-600 m-0'>
+                  Great news! Your payment has been confirmed and your order is being prepared.
+                </Text>
+              </Section>
+            )}
+
+            <Heading>Purchase Receipt</Heading>
+            <Section>
+              <Row>
+                <Column>
+                  <Text className='mb-0 text-gray-500 whitespace-nowrap text-nowrap mr-4'>
+                    Order ID
+                  </Text>
+                  <Text className='mt-0 mr-4'>{order._id.toString()}</Text>
+                </Column>
+                <Column>
+                  <Text className='mb-0 text-gray-500 whitespace-nowrap text-nowrap mr-4'>
+                    Purchased On
+                  </Text>
+                  <Text className='mt-0 mr-4'>
+                    {dateFormatter.format(order.createdAt)}
+                  </Text>
+                </Column>
+                <Column>
+                  <Text className='mb-0 text-gray-500 whitespace-nowrap text-nowrap mr-4'>
+                    Price Paid
+                  </Text>
+                  <Text className='mt-0 mr-4'>
+                    {formatCurrency(order.totalPrice)}
+                  </Text>
+                </Column>
+              </Row>
+            </Section>
+            <Section className='border border-solid border-gray-500 rounded-lg p-4 md:p-6 my-4'>
+              {order.items.map((item) => (
+                <Row key={item.product} className='mt-8'>
+                  <Column className='w-20'>
+                    <Link href={`${site.url}/product/${item.slug}`}>
+                      <Img
+                        width='80'
+                        alt={item.name}
+                        className='rounded'
+                        src={
+                          item.image.startsWith('/')
+                            ? `${site.url}${item.image}`
+                            : item.image
+                        }
+                      />
+                    </Link>
+                  </Column>
+                  <Column className='align-top'>
+                    <Link href={`${site.url}/product/${item.slug}`}>
+                      <Text className='mx-2 my-0'>
+                        {item.name} x {item.quantity}
+                      </Text>
+                    </Link>
+                  </Column>
+                  <Column align='right' className='align-top'>
+                    <Text className='m-0 '>{formatCurrency(item.price)}</Text>
+                  </Column>
+                </Row>
+              ))}
+              {[
+                { name: 'Items', price: order.itemsPrice },
+                { name: 'Tax', price: order.taxPrice },
+                { name: 'Shipping', price: order.shippingPrice },
+                { name: 'Total', price: order.totalPrice },
+              ].map(({ name, price }) => (
+                <Row key={name} className='py-1'>
+                  <Column align='right'>{name}:</Column>
+                  <Column align='right' width={70} className='align-top'>
+                    <Text className='m-0'>{formatCurrency(price)}</Text>
+                  </Column>
+                </Row>
+              ))}
+            </Section>
+          </Container>
+        </Body>
+      </Tailwind>
+    </Html>
+  )
+}
