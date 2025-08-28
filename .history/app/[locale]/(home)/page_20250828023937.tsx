@@ -10,7 +10,7 @@ import {
   getAllCategories,
 } from '@/lib/actions/product.actions'
 import { getSetting } from '@/lib/actions/setting.actions'
-import { getCategoryImagePath } from '@/app/images-reference'
+import { getCategoryImagePath } from '@/lib/images-reference'
 import { getTranslations } from 'next-intl/server'
 
 export default async function HomePage() {
