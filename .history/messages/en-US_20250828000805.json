@@ -105,8 +105,7 @@
     "Loading": "Loading...",
     "Rating": "Rating",
     "No reviews yet": "No reviews yet",
-    "Submitting": "Submitting...",
-    "Only X left in stock - order soon": "Only {count} left in stock - order soon"
+    "Submitting": "Submitting..."
   },
   "Cart": {
     "Shopping Cart": "Shopping Cart",

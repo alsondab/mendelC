@@ -186,6 +186,11 @@
     "Try again": "Try again",
     "Back To Home": "Back To Home"
   },
+  "Error": {
+    "Error": "Error",
+    "Try again": "Try again",
+    "Back To Home": "Back To Home"
+  },
   "Admin": {
     "Deleted User": "Deleted User",
     "Overview": "Overview",

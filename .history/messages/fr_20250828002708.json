@@ -181,11 +181,6 @@
   "Loading": {
     "Loading": "Chargement..."
   },
-  "Error": {
-    "Error": "Erreur",
-    "Try again": "Réessayer",
-    "Back To Home": "Retour à l'accueil"
-  },
   "Admin": {
     "Deleted User": "Utilisateur supprimé",
     "Overview": "Aperçu",

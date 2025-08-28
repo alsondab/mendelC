@@ -1,5 +1,4 @@
 import { auth } from '@/auth'
-import { notFound } from 'next/navigation'
 import AddToCart from '@/components/shared/product/add-to-cart'
 import { Card, CardContent } from '@/components/ui/card'
 import {
@@ -53,13 +52,13 @@ export default async function ProductDetails(props: {
 
   try {
     product = await getProductBySlug(slug)
-
+    
     relatedProducts = await getRelatedProductsByCategory({
       category: product.category,
       productId: product._id,
       page: Number(page || '1'),
     })
-  } catch {
+  } catch (error) {
     // If product not found, return not found page
     notFound()
   }
@@ -114,7 +113,7 @@ export default async function ProductDetails(props: {
                 {product.description}
               </p>
             </div>
-
+            
             {product.specifications && product.specifications.length > 0 && (
               <>
                 <Separator className='my-2' />
@@ -124,10 +123,7 @@ export default async function ProductDetails(props: {
                   </p>
                   <ul className='list-disc list-inside space-y-1'>
                     {product.specifications.map((spec, index) => (
-                      <li
-                        key={index}
-                        className='p-medium-16 lg:p-regular-18 text-grey-700'
-                      >
+                      <li key={index} className='p-medium-16 lg:p-regular-18 text-grey-700'>
                         {spec}
                       </li>
                     ))}
@@ -135,7 +131,7 @@ export default async function ProductDetails(props: {
                 </div>
               </>
             )}
-
+            
             {product.compatibility && product.compatibility.length > 0 && (
               <>
                 <Separator className='my-2' />
@@ -145,10 +141,7 @@ export default async function ProductDetails(props: {
                   </p>
                   <ul className='list-disc list-inside space-y-1'>
                     {product.compatibility.map((comp, index) => (
-                      <li
-                        key={index}
-                        className='p-medium-16 lg:p-regular-18 text-grey-700'
-                      >
+                      <li key={index} className='p-medium-16 lg:p-regular-18 text-grey-700'>
                         {comp}
                       </li>
                     ))}

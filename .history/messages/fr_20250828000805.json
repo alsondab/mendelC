@@ -105,8 +105,7 @@
     "Loading": "Chargement...",
     "Rating": "Évaluation",
     "No reviews yet": "Pas encore d'avis",
-    "Submitting": "Envoi en cours...",
-    "Only X left in stock - order soon": "Il ne reste que {count} en stock - commandez bientôt"
+    "Submitting": "Envoi en cours..."
   },
   "Cart": {
     "Shopping Cart": "Panier d'achat",
@@ -180,11 +179,6 @@
   },
   "Loading": {
     "Loading": "Chargement..."
-  },
-  "Error": {
-    "Error": "Erreur",
-    "Try again": "Réessayer",
-    "Back To Home": "Retour à l'accueil"
   },
   "Admin": {
     "Deleted User": "Utilisateur supprimé",
