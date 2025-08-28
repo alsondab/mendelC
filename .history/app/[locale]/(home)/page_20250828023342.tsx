@@ -10,7 +10,7 @@ import {
   getAllCategories,
 } from '@/lib/actions/product.actions'
 import { getSetting } from '@/lib/actions/setting.actions'
-import { getCategoryImagePath } from '@/app/images-reference'
+import { getCategoryImageUrl } from '@/lib/category-images'
 import { getTranslations } from 'next-intl/server'
 
 export default async function HomePage() {
@@ -38,7 +38,7 @@ export default async function HomePage() {
       },
       items: categories.map((category) => ({
         name: category,
-        image: getCategoryImagePath(category),
+        image: getCategoryImageUrl(category),
         href: `/search?category=${category}`,
       })),
     },
