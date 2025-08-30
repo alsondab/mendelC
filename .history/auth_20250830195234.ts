@@ -17,6 +17,41 @@ declare module 'next-auth' {
   }
 }
 
+// Adapter personnalisé qui étend MongoDBAdapter
+const customAdapter = {
+  ...MongoDBAdapter(client),
+  createUser: async (data: any) => {
+    await connectToDatabase()
+    
+    // Créer l'utilisateur avec votre schéma personnalisé
+    const user = await User.create({
+      email: data.email,
+      name: data.name,
+      role: 'User',
+      emailVerified: true,
+      image: data.image,
+    })
+    
+    return user
+  },
+  updateUser: async (data: any) => {
+    await connectToDatabase()
+    
+    // Mettre à jour l'utilisateur
+    const user = await User.findByIdAndUpdate(
+      data.id,
+      {
+        name: data.name,
+        image: data.image,
+        emailVerified: true,
+      },
+      { new: true }
+    )
+    
+    return user
+  },
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   pages: {
@@ -28,7 +63,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60,
   },
-  adapter: MongoDBAdapter(client),
+  adapter: customAdapter,
   providers: [
     Google({
       allowDangerousEmailAccountLinking: true,
@@ -65,40 +100,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    signIn: async ({ user, account }) => {
-      if (account?.provider === 'google') {
-        await connectToDatabase()
-
-        // Vérifier si l'utilisateur existe déjà
-        const existingUser = await User.findOne({ email: user.email })
-
-        if (!existingUser) {
-          // Créer un nouvel utilisateur avec votre schéma personnalisé
-          // Cela garantit que tous les champs du schéma sont respectés
-          const newUser = await User.create({
-            email: user.email,
-            name: user.name,
-            role: 'User',
-            emailVerified: true,
-            image: user.image,
-          })
-
-          // Mettre à jour l'ID de l'utilisateur pour NextAuth
-          user.id = newUser._id.toString()
-        } else {
-          // Mettre à jour l'utilisateur existant
-          await User.findByIdAndUpdate(existingUser._id, {
-            name: user.name,
-            image: user.image,
-            emailVerified: true,
-          })
-
-          // Mettre à jour l'ID de l'utilisateur pour NextAuth
-          user.id = existingUser._id.toString()
-        }
-      }
-      return true
-    },
     jwt: async ({ token, user, trigger, session }) => {
       if (user) {
         if (!user.name) {

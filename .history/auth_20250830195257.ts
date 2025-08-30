@@ -68,10 +68,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: async ({ user, account }) => {
       if (account?.provider === 'google') {
         await connectToDatabase()
-
+        
         // Vérifier si l'utilisateur existe déjà
         const existingUser = await User.findOne({ email: user.email })
-
+        
         if (!existingUser) {
           // Créer un nouvel utilisateur avec votre schéma personnalisé
           // Cela garantit que tous les champs du schéma sont respectés
@@ -82,7 +82,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             emailVerified: true,
             image: user.image,
           })
-
+          
           // Mettre à jour l'ID de l'utilisateur pour NextAuth
           user.id = newUser._id.toString()
         } else {
@@ -92,7 +92,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             image: user.image,
             emailVerified: true,
           })
-
+          
           // Mettre à jour l'ID de l'utilisateur pour NextAuth
           user.id = existingUser._id.toString()
         }

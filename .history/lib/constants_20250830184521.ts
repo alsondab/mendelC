@@ -11,5 +11,5 @@ export const DEFAULT_PAYMENT_METHOD =
 export const SERVER_URL =
   process.env.NEXT_PUBLIC_SERVER_URL ||
   (process.env.NODE_ENV === 'production'
-    ? 'https://mendel-c.vercel.app/'
+    ? 'https://mendel-c.vercel.app/fr'
     : 'http://localhost:3000')

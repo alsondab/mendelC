@@ -65,51 +65,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    signIn: async ({ user, account }) => {
-      if (account?.provider === 'google') {
-        await connectToDatabase()
-
-        // Vérifier si l'utilisateur existe déjà
-        const existingUser = await User.findOne({ email: user.email })
-
-        if (!existingUser) {
-          // Créer un nouvel utilisateur avec votre schéma personnalisé
-          // Cela garantit que tous les champs du schéma sont respectés
-          const newUser = await User.create({
-            email: user.email,
-            name: user.name,
-            role: 'User',
-            emailVerified: true,
-            image: user.image,
-          })
-
-          // Mettre à jour l'ID de l'utilisateur pour NextAuth
-          user.id = newUser._id.toString()
-        } else {
-          // Mettre à jour l'utilisateur existant
-          await User.findByIdAndUpdate(existingUser._id, {
-            name: user.name,
-            image: user.image,
-            emailVerified: true,
-          })
-
-          // Mettre à jour l'ID de l'utilisateur pour NextAuth
-          user.id = existingUser._id.toString()
-        }
-      }
-      return true
-    },
     jwt: async ({ token, user, trigger, session }) => {
       if (user) {
         if (!user.name) {
           await connectToDatabase()
           await User.findByIdAndUpdate(user.id, {
             name: user.name || user.email!.split('@')[0],
-            role: 'User',
+            role: 'user',
           })
         }
         token.name = user.name || user.email!.split('@')[0]
-        token.role = (user as { role: string }).role || 'User'
+        token.role = (user as { role: string }).role
       }
 
       if (session?.user?.name && trigger === 'update') {

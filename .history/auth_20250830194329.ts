@@ -28,7 +28,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60,
   },
-  adapter: MongoDBAdapter(client),
+  // Désactiver l'adaptateur pour gérer manuellement les utilisateurs
+  // adapter: MongoDBAdapter(client),
   providers: [
     Google({
       allowDangerousEmailAccountLinking: true,
@@ -68,31 +69,37 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: async ({ user, account }) => {
       if (account?.provider === 'google') {
         await connectToDatabase()
-
+        
         // Vérifier si l'utilisateur existe déjà
         const existingUser = await User.findOne({ email: user.email })
-
+        
         if (!existingUser) {
-          // Créer un nouvel utilisateur avec votre schéma personnalisé
-          // Cela garantit que tous les champs du schéma sont respectés
-          const newUser = await User.create({
+          // Créer un nouvel utilisateur avec tous les champs requis
+          const newUser = new User({
             email: user.email,
             name: user.name,
             role: 'User',
             emailVerified: true,
             image: user.image,
           })
-
+          
+          // Forcer la sauvegarde pour déclencher les timestamps
+          await newUser.save()
+          
           // Mettre à jour l'ID de l'utilisateur pour NextAuth
           user.id = newUser._id.toString()
         } else {
-          // Mettre à jour l'utilisateur existant
-          await User.findByIdAndUpdate(existingUser._id, {
-            name: user.name,
-            image: user.image,
-            emailVerified: true,
-          })
-
+          // Mettre à jour l'utilisateur existant si nécessaire
+          await User.findByIdAndUpdate(
+            existingUser._id,
+            {
+              name: user.name,
+              image: user.image,
+              emailVerified: true,
+            },
+            { new: true, runValidators: true }
+          )
+          
           // Mettre à jour l'ID de l'utilisateur pour NextAuth
           user.id = existingUser._id.toString()
         }
@@ -110,6 +117,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
         token.name = user.name || user.email!.split('@')[0]
         token.role = (user as { role: string }).role || 'User'
+        token.sub = user.id // S'assurer que l'ID est correct
       }
 
       if (session?.user?.name && trigger === 'update') {
