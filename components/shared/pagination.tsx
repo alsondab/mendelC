@@ -13,22 +13,32 @@ type PaginationProps = {
   page: number | string
   totalPages: number
   urlParamName?: string
+  onPageChange?: (page: number) => void
 }
 
-const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
+const Pagination = ({
+  page,
+  totalPages,
+  urlParamName,
+  onPageChange,
+}: PaginationProps) => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
   const onClick = (btnType: string) => {
     const pageValue = btnType === 'next' ? Number(page) + 1 : Number(page) - 1
 
-    const newUrl = formUrlQuery({
-      params: searchParams.toString(),
-      key: urlParamName || 'page',
-      value: pageValue.toString(),
-    })
+    if (onPageChange) {
+      onPageChange(pageValue)
+    } else {
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: urlParamName || 'page',
+        value: pageValue.toString(),
+      })
 
-    router.push(newUrl, { scroll: true })
+      router.push(newUrl, { scroll: true })
+    }
   }
 
   const t = useTranslations()

@@ -4,19 +4,13 @@ import React, { useEffect } from 'react'
 import ProductSlider from './product/product-slider'
 import { useTranslations } from 'next-intl'
 import { Separator } from '../ui/separator'
-import { cn } from '@/lib/utils'
 
-export default function BrowsingHistoryList({
-  className,
-}: {
-  className?: string
-}) {
+export default function BrowsingHistoryList() {
   const { products } = useBrowsingHistory()
   const t = useTranslations('Home')
   return (
     products.length !== 0 && (
-      <div className='bg-background'>
-        <Separator className={cn('mb-4', className)} />
+      <div className='bg-background pb-0'>
         <ProductList
           title={t("Related to items that you've viewed")}
           type='related'

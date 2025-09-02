@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
@@ -79,8 +80,8 @@ export function AdminNav({
             className={cn(
               'flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors',
               pathname.includes(item.href)
-                ? 'bg-white/10 text-white'
-                : 'text-white/70 hover:text-white hover:bg-white/5'
+                ? 'bg-primary/10 text-primary'
+                : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
             )}
           >
             <IconComponent className='h-4 w-4' />
@@ -101,8 +102,8 @@ export function AdminMobileMenu() {
     <div className='md:hidden'>
       <Sheet>
         <SheetTrigger className='flex items-center space-x-1 px-2 py-2 rounded-lg hover:bg-white/10 transition-colors text-sm font-medium border border-white/20'>
-          <Grid3X3 className='h-4 w-4 text-white' />
-          <span className='text-white text-xs'>Menu</span>
+          <Grid3X3 className='h-4 w-4' />
+          <span className='text-xs'>Menu</span>
         </SheetTrigger>
         <SheetContent side='bottom' className='h-[80vh] rounded-t-xl'>
           <SheetHeader className='space-y-4'>
@@ -120,21 +121,22 @@ export function AdminMobileMenu() {
               {links.map((item) => {
                 const IconComponent = item.icon
                 return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={cn(
-                      'flex flex-col items-center space-y-2 p-4 rounded-lg border transition-all duration-200',
-                      pathname.includes(item.href)
-                        ? 'bg-primary text-primary-foreground border-primary shadow-md'
-                        : 'bg-muted/50 hover:bg-muted border-border hover:shadow-sm'
-                    )}
-                  >
-                    <IconComponent className='h-6 w-6' />
-                    <span className='text-sm font-medium text-center'>
-                      {t(item.title)}
-                    </span>
-                  </Link>
+                  <SheetClose asChild key={item.href}>
+                    <Link
+                      href={item.href}
+                      className={cn(
+                        'flex flex-col items-center space-y-2 p-4 rounded-lg border transition-all duration-200',
+                        pathname.includes(item.href)
+                          ? 'bg-primary text-primary-foreground border-primary shadow-md'
+                          : 'bg-muted/50 hover:bg-muted border-border hover:shadow-sm'
+                      )}
+                    >
+                      <IconComponent className='h-6 w-6' />
+                      <span className='text-sm font-medium text-center'>
+                        {t(item.title)}
+                      </span>
+                    </Link>
+                  </SheetClose>
                 )
               })}
             </div>

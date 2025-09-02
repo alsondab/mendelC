@@ -20,6 +20,7 @@ import { IProduct } from '@/lib/db/models/product.model'
 
 import React, { useEffect, useState, useTransition } from 'react'
 import { Input } from '@/components/ui/input'
+import { Skeleton } from '@/components/ui/skeleton'
 import { formatDateTime, formatId } from '@/lib/utils'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
@@ -76,6 +77,92 @@ const ProductList = () => {
       setData(data)
     })
   }, [])
+
+  if (!data) {
+    return (
+      <div className='p-2 sm:p-4'>
+        <div className='space-y-3 sm:space-y-4'>
+          {/* Header Section */}
+          <div className='flex flex-col sm:flex-row justify-between gap-3 sm:gap-4'>
+            <div className='flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4'>
+              <Skeleton className='h-8 w-32' />
+              <div className='flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto'>
+                <Skeleton className='h-10 w-64' />
+                <Skeleton className='h-5 w-48' />
+              </div>
+            </div>
+            <Skeleton className='h-10 w-32' />
+          </div>
+
+          {/* Table Section */}
+          <div className='overflow-x-auto'>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className='text-xs sm:text-sm'>ID</TableHead>
+                  <TableHead className='text-xs sm:text-sm'>Nom</TableHead>
+                  <TableHead className='text-right text-xs sm:text-sm'>
+                    Prix
+                  </TableHead>
+                  <TableHead className='hidden sm:table-cell text-xs sm:text-sm'>
+                    Catégorie
+                  </TableHead>
+                  <TableHead className='hidden md:table-cell text-xs sm:text-sm'>
+                    Stock
+                  </TableHead>
+                  <TableHead className='hidden lg:table-cell text-xs sm:text-sm'>
+                    Note
+                  </TableHead>
+                  <TableHead className='hidden md:table-cell text-xs sm:text-sm'>
+                    Statut
+                  </TableHead>
+                  <TableHead className='hidden lg:table-cell text-xs sm:text-sm'>
+                    Dernière MAJ
+                  </TableHead>
+                  <TableHead className='w-[120px] sm:w-[140px] text-xs sm:text-sm'>
+                    Actions
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {[...Array(5)].map((_, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      <Skeleton className='h-4 w-20' />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className='h-4 w-32' />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className='h-4 w-16' />
+                    </TableCell>
+                    <TableCell className='hidden sm:table-cell'>
+                      <Skeleton className='h-4 w-24' />
+                    </TableCell>
+                    <TableCell className='hidden md:table-cell'>
+                      <Skeleton className='h-4 w-16' />
+                    </TableCell>
+                    <TableCell className='hidden lg:table-cell'>
+                      <Skeleton className='h-4 w-12' />
+                    </TableCell>
+                    <TableCell className='hidden md:table-cell'>
+                      <Skeleton className='h-4 w-20' />
+                    </TableCell>
+                    <TableCell className='hidden lg:table-cell'>
+                      <Skeleton className='h-4 w-24' />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className='h-8 w-20' />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className='p-2 sm:p-4'>

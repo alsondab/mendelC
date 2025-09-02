@@ -97,8 +97,21 @@ export default function AddToCart({
         type='button'
         onClick={async () => {
           try {
-            const itemId = await addItem(item, quantity)
-            router.push(`/cart/${itemId}`)
+            await addItem(item, quantity)
+            toast({
+              description: t('Product.Added to Cart'),
+              action: (
+                <Button
+                  variant='outline'
+                  size='sm'
+                  onClick={() => {
+                    router.push('/cart')
+                  }}
+                >
+                  {t('Product.Go to Cart')}
+                </Button>
+              ),
+            })
           } catch (error: any) {
             // ✅ Gestion élégante de la rupture de stock
             if (error.message === 'Not enough items in stock') {

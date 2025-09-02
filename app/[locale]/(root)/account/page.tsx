@@ -84,7 +84,9 @@ export default function AccountPage() {
         </Card>
       </div>
 
-      <BrowsingHistoryList className='mt-8 xs:mt-12' />
+      <div className='mt-8 xs:mt-12'>
+        <BrowsingHistoryList />
+      </div>
     </div>
   )
 }

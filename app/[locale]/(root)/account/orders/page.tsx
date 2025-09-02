@@ -175,7 +175,9 @@ export default async function OrdersPage(props: {
         )}
       </div>
 
-      <BrowsingHistoryList className='mt-8 xs:mt-12' />
+      <div className='mt-8 xs:mt-12'>
+        <BrowsingHistoryList />
+      </div>
     </div>
   )
 }
