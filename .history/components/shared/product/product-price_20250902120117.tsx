@@ -77,15 +77,15 @@ const ProductPrice = ({
     </div>
   ) : (
     <div className=''>
-      <div className='flex justify-center gap-2 xs:gap-3'>
-        <div className='text-lg xs:text-xl sm:text-2xl lg:text-3xl text-orange-700'>-{discountPercent}%</div>
-        <div className={cn('text-lg xs:text-xl sm:text-2xl lg:text-3xl', className)}>
+      <div className='flex justify-center gap-3'>
+        <div className='text-3xl text-orange-700'>-{discountPercent}%</div>
+        <div className={cn('text-3xl', className)}>
           <span className='text-xs align-super'>{currency.symbol}</span>
           {intValue}
           <span className='text-xs align-super'>{floatValue}</span>
         </div>
       </div>
-      <div className='text-muted-foreground text-xs py-1 xs:py-2'>
+      <div className='text-muted-foreground text-xs py-2'>
         {t('Product.List price')}:{' '}
         <span className='line-through'>{formatPrice(convertedListPrice)}</span>
       </div>

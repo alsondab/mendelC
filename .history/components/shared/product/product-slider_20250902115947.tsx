@@ -46,14 +46,14 @@ export default function ProductSlider({
         }}
         className='w-full'
       >
-        <CarouselContent className='-ml-1 xs:-ml-2 md:-ml-4'>
+        <CarouselContent className='-ml-2 md:-ml-4'>
           {products.map((product, index) => (
             <CarouselItem
               key={product.slug}
               className={
                 hideDetails
-                  ? 'pl-1 xs:pl-2 md:pl-4 basis-2/3 xs:basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/6'
-                  : 'pl-1 xs:pl-2 md:pl-4 basis-2/3 xs:basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5'
+                  ? 'pl-2 md:pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/6'
+                  : 'pl-2 md:pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5'
               }
               style={{
                 animationDelay: `${index * 0.1}s`,

@@ -76,7 +76,7 @@ const ProductCard = ({
         {product.name}
       </Link>
       <div className='flex gap-1 xs:gap-2 justify-center items-center'>
-        <Rating rating={product.avgRating} size='xs' />
+        <Rating rating={product.avgRating} />
         <span className='text-xs'>({formatNumber(product.numReviews)})</span>
       </div>
 
@@ -121,15 +121,15 @@ const ProductCard = ({
     </div>
   ) : (
     <Card className='flex flex-col group hover:shadow-lg transition-shadow duration-200'>
-      <CardHeader className='p-2 xs:p-3 sm:p-4'>
+      <CardHeader className='p-4'>
         <ProductImage />
       </CardHeader>
       {!hideDetails && (
         <>
-          <CardContent className='p-2 xs:p-3 sm:p-4 flex-1 text-center space-y-2 xs:space-y-3'>
+          <CardContent className='p-4 flex-1 text-center space-y-3'>
             <ProductDetails />
           </CardContent>
-          <CardFooter className='p-2 xs:p-3 sm:p-4 pt-0'>
+          <CardFooter className='p-4 pt-0'>
             {!hideAddToCart && <AddButton />}
           </CardFooter>
         </>

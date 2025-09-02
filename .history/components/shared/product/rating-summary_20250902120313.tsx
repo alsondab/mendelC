@@ -75,10 +75,10 @@ export default function RatingSummary({
     <div className='flex items-center gap-1'>
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant='ghost' className='px-2 [&_svg]:size-4 xs:[&_svg]:size-5 sm:[&_svg]:size-6 text-sm xs:text-base'>
+          <Button variant='ghost' className='px-2 [&_svg]:size-6 text-base'>
             <span>{avgRating.toFixed(1)}</span>
-            <Rating rating={avgRating} size='sm' />
-            <ChevronDownIcon className='w-4 h-4 xs:w-5 xs:h-5 text-muted-foreground' />
+            <Rating rating={avgRating} />
+            <ChevronDownIcon className='w-5 h-5 text-muted-foreground' />
           </Button>
         </PopoverTrigger>
         <PopoverContent className='w-auto p-4' align='end'>

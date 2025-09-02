@@ -76,7 +76,7 @@ const ProductCard = ({
         {product.name}
       </Link>
       <div className='flex gap-1 xs:gap-2 justify-center items-center'>
-        <Rating rating={product.avgRating} size='xs' />
+        <Rating rating={product.avgRating} />
         <span className='text-xs'>({formatNumber(product.numReviews)})</span>
       </div>
 

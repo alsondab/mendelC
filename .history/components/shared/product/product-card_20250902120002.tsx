@@ -44,17 +44,17 @@ const ProductCard = ({
             alt={product.name}
           />
         ) : product.images[0] ? (
-          <div className='relative h-40 xs:h-48 sm:h-52'>
+          <div className='relative h-52'>
             <Image
               src={product.images[0]}
               alt={product.name}
               fill
-              sizes='(max-width: 480px) 60vw, (max-width: 768px) 40vw, 20vw'
+              sizes='80vw'
               className='object-contain'
             />
           </div>
         ) : (
-          <div className='relative h-40 xs:h-48 sm:h-52 bg-muted flex items-center justify-center'>
+          <div className='relative h-52 bg-muted flex items-center justify-center'>
             <span className='text-muted-foreground text-sm'>Aucune image</span>
           </div>
         )}
@@ -62,11 +62,11 @@ const ProductCard = ({
     </Link>
   )
   const ProductDetails = () => (
-    <div className='flex-1 space-y-1 xs:space-y-2'>
-      <p className='font-bold text-xs xs:text-sm'>{product.brand}</p>
+    <div className='flex-1 space-y-2'>
+      <p className='font-bold'>{product.brand}</p>
       <Link
         href={`/product/${product.slug}`}
-        className='overflow-hidden text-ellipsis text-xs xs:text-sm'
+        className='overflow-hidden text-ellipsis'
         style={{
           display: '-webkit-box',
           WebkitLineClamp: 2,
@@ -75,9 +75,9 @@ const ProductCard = ({
       >
         {product.name}
       </Link>
-      <div className='flex gap-1 xs:gap-2 justify-center items-center'>
-        <Rating rating={product.avgRating} size='xs' />
-        <span className='text-xs'>({formatNumber(product.numReviews)})</span>
+      <div className='flex gap-2 justify-center'>
+        <Rating rating={product.avgRating} />
+        <span>({formatNumber(product.numReviews)})</span>
       </div>
 
       <ProductPrice
@@ -112,7 +112,7 @@ const ProductCard = ({
       <ProductImage />
       {!hideDetails && (
         <>
-          <div className='p-2 xs:p-3 sm:p-4 flex-1 text-center space-y-2 xs:space-y-3'>
+          <div className='p-4 flex-1 text-center space-y-3'>
             <ProductDetails />
           </div>
           {!hideAddToCart && <AddButton />}
@@ -121,15 +121,15 @@ const ProductCard = ({
     </div>
   ) : (
     <Card className='flex flex-col group hover:shadow-lg transition-shadow duration-200'>
-      <CardHeader className='p-2 xs:p-3 sm:p-4'>
+      <CardHeader className='p-4'>
         <ProductImage />
       </CardHeader>
       {!hideDetails && (
         <>
-          <CardContent className='p-2 xs:p-3 sm:p-4 flex-1 text-center space-y-2 xs:space-y-3'>
+          <CardContent className='p-4 flex-1 text-center space-y-3'>
             <ProductDetails />
           </CardContent>
-          <CardFooter className='p-2 xs:p-3 sm:p-4 pt-0'>
+          <CardFooter className='p-4 pt-0'>
             {!hideAddToCart && <AddButton />}
           </CardFooter>
         </>
