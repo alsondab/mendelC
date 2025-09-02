@@ -264,20 +264,20 @@ export default async function SearchPage(props: {
         </div>
       </div>
       {/* Main Content */}
-      <div className='grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6'>
+      <div className='grid grid-cols-1 lg:grid-cols-4 gap-6'>
         {/* Filters Sidebar */}
         <div className='lg:col-span-1'>
           <div className='bg-card rounded-xl border shadow-sm'>
             <CollapsibleOnMobile title={t('Search.Filters')}>
-              <div className='p-3 sm:p-4 space-y-4 sm:space-y-6'>
+              <div className='p-4 space-y-6'>
                 {/* Department Filter */}
                 <div>
-                  <h3 className='font-semibold text-base sm:text-lg mb-2 sm:mb-3 text-foreground'>
+                  <h3 className='font-semibold text-lg mb-3 text-foreground'>
                     {t('Search.Department')}
                   </h3>
-                  <div className='space-y-1 sm:space-y-2'>
+                  <div className='space-y-2'>
                     <Link
-                      className={`block px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-colors ${
+                      className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                         'all' === category || '' === category
                           ? 'bg-primary text-primary-foreground font-medium'
                           : 'hover:bg-muted text-muted-foreground hover:text-foreground'
@@ -293,7 +293,7 @@ export default async function SearchPage(props: {
                     {categories.map((cat) => (
                       <div key={cat._id}>
                         <Link
-                          className={`block px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-colors ${
+                          className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                             cat.name === category
                               ? 'bg-primary text-primary-foreground font-medium'
                               : 'hover:bg-muted text-muted-foreground hover:text-foreground'
@@ -308,11 +308,11 @@ export default async function SearchPage(props: {
                         </Link>
                         {/* Subcategories */}
                         {cat.subCategories && cat.subCategories.length > 0 && (
-                          <div className='ml-3 sm:ml-4 space-y-0.5 sm:space-y-1'>
+                          <div className='ml-4 space-y-1'>
                             {cat.subCategories.map((subCat) => (
                               <Link
                                 key={subCat._id}
-                                className={`block px-2 sm:px-3 py-1 rounded-lg text-xs transition-colors ${
+                                className={`block px-3 py-1 rounded-lg text-xs transition-colors ${
                                   subCat.name === subCategory &&
                                   cat.name === category
                                     ? 'bg-primary/80 text-primary-foreground font-medium'
@@ -336,12 +336,12 @@ export default async function SearchPage(props: {
 
                 {/* Price Filter */}
                 <div>
-                  <h3 className='font-semibold text-base sm:text-lg mb-2 sm:mb-3 text-foreground'>
+                  <h3 className='font-semibold text-lg mb-3 text-foreground'>
                     {t('Search.Price')}
                   </h3>
-                  <div className='space-y-1 sm:space-y-2'>
+                  <div className='space-y-2'>
                     <Link
-                      className={`block px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-colors ${
+                      className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                         'all' === price
                           ? 'bg-primary text-primary-foreground font-medium'
                           : 'hover:bg-muted text-muted-foreground hover:text-foreground'
@@ -354,7 +354,7 @@ export default async function SearchPage(props: {
                       <Link
                         key={p.value}
                         href={getFilterUrl({ price: p.value, params })}
-                        className={`block px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-colors ${
+                        className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                           p.value === price
                             ? 'bg-primary text-primary-foreground font-medium'
                             : 'hover:bg-muted text-muted-foreground hover:text-foreground'
@@ -368,13 +368,13 @@ export default async function SearchPage(props: {
 
                 {/* Customer Review Filter */}
                 <div>
-                  <h3 className='font-semibold text-base sm:text-lg mb-2 sm:mb-3 text-foreground'>
+                  <h3 className='font-semibold text-lg mb-3 text-foreground'>
                     {t('Search.Customer Review')}
                   </h3>
-                  <div className='space-y-1 sm:space-y-2'>
+                  <div className='space-y-2'>
                     <Link
                       href={getFilterUrl({ rating: 'all', params })}
-                      className={`block px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-colors ${
+                      className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                         'all' === rating
                           ? 'bg-primary text-primary-foreground font-medium'
                           : 'hover:bg-muted text-muted-foreground hover:text-foreground'
@@ -384,13 +384,13 @@ export default async function SearchPage(props: {
                     </Link>
                     <Link
                       href={getFilterUrl({ rating: '4', params })}
-                      className={`block px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-colors ${
+                      className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                         '4' === rating
                           ? 'bg-primary text-primary-foreground font-medium'
                           : 'hover:bg-muted text-muted-foreground hover:text-foreground'
                       }`}
                     >
-                      <div className='flex items-center gap-1 sm:gap-2'>
+                      <div className='flex items-center gap-2'>
                         <Rating size='sm' rating={4} />
                         <span>{t('Search.& Up')}</span>
                       </div>
@@ -400,12 +400,12 @@ export default async function SearchPage(props: {
 
                 {/* Tag Filter */}
                 <div>
-                  <h3 className='font-semibold text-base sm:text-lg mb-2 sm:mb-3 text-foreground'>
+                  <h3 className='font-semibold text-lg mb-3 text-foreground'>
                     {t('Search.Tag')}
                   </h3>
-                  <div className='space-y-1 sm:space-y-2'>
+                  <div className='space-y-2'>
                     <Link
-                      className={`block px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-colors ${
+                      className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                         'all' === tag || '' === tag
                           ? 'bg-primary text-primary-foreground font-medium'
                           : 'hover:bg-muted text-muted-foreground hover:text-foreground'
@@ -417,7 +417,7 @@ export default async function SearchPage(props: {
                     {tags.map((t: string) => (
                       <Link
                         key={t}
-                        className={`block px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-colors ${
+                        className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                           toSlug(t) === tag
                             ? 'bg-primary text-primary-foreground font-medium'
                             : 'hover:bg-muted text-muted-foreground hover:text-foreground'
@@ -435,12 +435,12 @@ export default async function SearchPage(props: {
         </div>
 
         {/* Results Section */}
-        <div className='lg:col-span-3 space-y-4 sm:space-y-6'>
-          {/* Results Header - Hidden on mobile (info already shown in header) */}
-          <div className='hidden sm:block bg-card rounded-xl border shadow-sm p-4 lg:p-6'>
-            <div className='flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4'>
+        <div className='lg:col-span-3 space-y-6'>
+          {/* Results Header */}
+          <div className='bg-card rounded-xl border shadow-sm p-4 sm:p-6'>
+            <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4'>
               <div>
-                <h2 className='text-xl lg:text-2xl font-bold text-foreground mb-2'>
+                <h2 className='text-xl sm:text-2xl font-bold text-foreground mb-2'>
                   {t('Search.Results')}
                 </h2>
                 <p className='text-sm text-muted-foreground'>
@@ -453,18 +453,18 @@ export default async function SearchPage(props: {
             </div>
           </div>
 
-          {/* Products Grid - Mobile First */}
+          {/* Products Grid */}
           {data.products.length === 0 ? (
-            <div className='bg-card rounded-xl border shadow-sm p-6 sm:p-8 text-center'>
-              <div className='text-muted-foreground text-base sm:text-lg mb-2'>
+            <div className='bg-card rounded-xl border shadow-sm p-8 text-center'>
+              <div className='text-muted-foreground text-lg mb-2'>
                 {t('Search.No product found')}
               </div>
-              <p className='text-xs sm:text-sm text-muted-foreground'>
+              <p className='text-sm text-muted-foreground'>
                 Essayez de modifier vos critères de recherche
               </p>
             </div>
           ) : (
-            <div className='grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6'>
               {data.products.map((product: IProduct) => (
                 <ProductCard key={product._id} product={product} />
               ))}
@@ -473,7 +473,7 @@ export default async function SearchPage(props: {
 
           {/* Pagination */}
           {data.totalPages > 1 && (
-            <div className='flex justify-center pt-4 sm:pt-6'>
+            <div className='flex justify-center pt-6'>
               <Pagination page={page} totalPages={data.totalPages} />
             </div>
           )}

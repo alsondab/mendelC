@@ -7,16 +7,19 @@ export default {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     authorized({ request, auth }: any) {
       const { pathname } = request.nextUrl
-
+      
       // Admin paths require admin role
       if (pathname.startsWith('/admin')) {
         return auth?.user?.role === 'Admin'
       }
-
+      
       // Other protected paths just require authentication
-      const protectedPaths = [/\/checkout(\/.*)?/, /\/account(\/.*)?/]
+      const protectedPaths = [
+        /\/checkout(\/.*)?/,
+        /\/account(\/.*)?/,
+      ]
       if (protectedPaths.some((p) => p.test(pathname))) return !!auth
-
+      
       return true
     },
   },

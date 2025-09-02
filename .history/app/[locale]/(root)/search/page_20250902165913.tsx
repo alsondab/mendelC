@@ -293,7 +293,7 @@ export default async function SearchPage(props: {
                     {categories.map((cat) => (
                       <div key={cat._id}>
                         <Link
-                          className={`block px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-colors ${
+                          className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                             cat.name === category
                               ? 'bg-primary text-primary-foreground font-medium'
                               : 'hover:bg-muted text-muted-foreground hover:text-foreground'
@@ -308,11 +308,11 @@ export default async function SearchPage(props: {
                         </Link>
                         {/* Subcategories */}
                         {cat.subCategories && cat.subCategories.length > 0 && (
-                          <div className='ml-3 sm:ml-4 space-y-0.5 sm:space-y-1'>
+                          <div className='ml-4 space-y-1'>
                             {cat.subCategories.map((subCat) => (
                               <Link
                                 key={subCat._id}
-                                className={`block px-2 sm:px-3 py-1 rounded-lg text-xs transition-colors ${
+                                className={`block px-3 py-1 rounded-lg text-xs transition-colors ${
                                   subCat.name === subCategory &&
                                   cat.name === category
                                     ? 'bg-primary/80 text-primary-foreground font-medium'
@@ -336,12 +336,12 @@ export default async function SearchPage(props: {
 
                 {/* Price Filter */}
                 <div>
-                  <h3 className='font-semibold text-base sm:text-lg mb-2 sm:mb-3 text-foreground'>
+                  <h3 className='font-semibold text-lg mb-3 text-foreground'>
                     {t('Search.Price')}
                   </h3>
-                  <div className='space-y-1 sm:space-y-2'>
+                  <div className='space-y-2'>
                     <Link
-                      className={`block px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-colors ${
+                      className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                         'all' === price
                           ? 'bg-primary text-primary-foreground font-medium'
                           : 'hover:bg-muted text-muted-foreground hover:text-foreground'
@@ -354,7 +354,7 @@ export default async function SearchPage(props: {
                       <Link
                         key={p.value}
                         href={getFilterUrl({ price: p.value, params })}
-                        className={`block px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-colors ${
+                        className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                           p.value === price
                             ? 'bg-primary text-primary-foreground font-medium'
                             : 'hover:bg-muted text-muted-foreground hover:text-foreground'
@@ -368,13 +368,13 @@ export default async function SearchPage(props: {
 
                 {/* Customer Review Filter */}
                 <div>
-                  <h3 className='font-semibold text-base sm:text-lg mb-2 sm:mb-3 text-foreground'>
+                  <h3 className='font-semibold text-lg mb-3 text-foreground'>
                     {t('Search.Customer Review')}
                   </h3>
-                  <div className='space-y-1 sm:space-y-2'>
+                  <div className='space-y-2'>
                     <Link
                       href={getFilterUrl({ rating: 'all', params })}
-                      className={`block px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-colors ${
+                      className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                         'all' === rating
                           ? 'bg-primary text-primary-foreground font-medium'
                           : 'hover:bg-muted text-muted-foreground hover:text-foreground'
@@ -384,13 +384,13 @@ export default async function SearchPage(props: {
                     </Link>
                     <Link
                       href={getFilterUrl({ rating: '4', params })}
-                      className={`block px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-colors ${
+                      className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                         '4' === rating
                           ? 'bg-primary text-primary-foreground font-medium'
                           : 'hover:bg-muted text-muted-foreground hover:text-foreground'
                       }`}
                     >
-                      <div className='flex items-center gap-1 sm:gap-2'>
+                      <div className='flex items-center gap-2'>
                         <Rating size='sm' rating={4} />
                         <span>{t('Search.& Up')}</span>
                       </div>
@@ -400,12 +400,12 @@ export default async function SearchPage(props: {
 
                 {/* Tag Filter */}
                 <div>
-                  <h3 className='font-semibold text-base sm:text-lg mb-2 sm:mb-3 text-foreground'>
+                  <h3 className='font-semibold text-lg mb-3 text-foreground'>
                     {t('Search.Tag')}
                   </h3>
-                  <div className='space-y-1 sm:space-y-2'>
+                  <div className='space-y-2'>
                     <Link
-                      className={`block px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-colors ${
+                      className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                         'all' === tag || '' === tag
                           ? 'bg-primary text-primary-foreground font-medium'
                           : 'hover:bg-muted text-muted-foreground hover:text-foreground'
@@ -417,7 +417,7 @@ export default async function SearchPage(props: {
                     {tags.map((t: string) => (
                       <Link
                         key={t}
-                        className={`block px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-colors ${
+                        className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                           toSlug(t) === tag
                             ? 'bg-primary text-primary-foreground font-medium'
                             : 'hover:bg-muted text-muted-foreground hover:text-foreground'

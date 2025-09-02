@@ -13,16 +13,15 @@ export async function createCategory(data: ICategoryInput) {
   try {
     const category = CategoryInputSchema.parse(data)
     await connectToDatabase()
-
+    
     // Nettoyer les données pour MongoDB
     const cleanData = {
       ...category,
-      parentCategory:
-        category.parentCategory && category.parentCategory.trim() !== ''
-          ? category.parentCategory
-          : undefined,
+      parentCategory: category.parentCategory && category.parentCategory.trim() !== '' 
+        ? category.parentCategory 
+        : undefined
     }
-
+    
     await Category.create(cleanData)
     revalidatePath('/admin/categories')
     return {
@@ -41,17 +40,7 @@ export async function updateCategory(
   try {
     const category = CategoryUpdateSchema.parse(data)
     await connectToDatabase()
-
-    // Nettoyer les données pour MongoDB
-    const cleanData = {
-      ...category,
-      parentCategory:
-        category.parentCategory && category.parentCategory.trim() !== ''
-          ? category.parentCategory
-          : undefined,
-    }
-
-    await Category.findByIdAndUpdate(category._id, cleanData)
+    await Category.findByIdAndUpdate(category._id, category)
     revalidatePath('/admin/categories')
     return {
       success: true,

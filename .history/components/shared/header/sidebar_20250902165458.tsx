@@ -101,10 +101,6 @@ export default async function Sidebar({
                   {t('Header.Shop By Department')}
                 </h2>
               </div>
-              <p className='text-xs text-muted-foreground mt-1 px-1'>
-                Cliquez sur le nom pour naviguer • Cliquez sur ▼ pour voir les
-                sous-catégories
-              </p>
             </div>
 
             <CategoryAccordion categories={categories} />

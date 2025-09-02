@@ -13,7 +13,7 @@ export default async function AdminLayout({
 }) {
   const { site } = await getSetting()
   return (
-    <AdminGuard>
+    <>
       <div className='flex flex-col'>
         <div className='bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border/40 shadow-sm'>
           <div className='flex h-16 items-center px-2'>
@@ -34,6 +34,6 @@ export default async function AdminLayout({
         </div>
         <div className='flex-1 p-4'>{children}</div>
       </div>
-    </AdminGuard>
+    </>
   )
 }

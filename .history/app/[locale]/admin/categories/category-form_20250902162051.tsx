@@ -128,21 +128,14 @@ export function CategoryForm({ categoryId }: CategoryFormProps) {
   const onSubmit = async (data: CategoryFormData) => {
     setIsLoading(true)
     try {
-      // Nettoyer les données : convertir les chaînes vides en undefined
-      const cleanData = {
-        ...data,
-        parentCategory:
-          data.parentCategory === '' ? undefined : data.parentCategory,
-      }
-
       let result
       if (isEditMode && categoryId) {
         result = await updateCategory({
           _id: categoryId,
-          ...cleanData,
+          ...data,
         })
       } else {
-        result = await createCategory(cleanData)
+        result = await createCategory(data)
       }
 
       if (result.success) {
@@ -317,10 +310,7 @@ export function CategoryForm({ categoryId }: CategoryFormProps) {
                 <Label htmlFor='parentCategory'>Catégorie parent</Label>
                 <Select
                   onValueChange={(value) =>
-                    setValue(
-                      'parentCategory',
-                      value === 'none' ? undefined : value
-                    )
+                    setValue('parentCategory', value === 'none' ? undefined : value)
                   }
                   defaultValue={watch('parentCategory') || 'none'}
                 >

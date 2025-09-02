@@ -102,8 +102,7 @@ export default async function Sidebar({
                 </h2>
               </div>
               <p className='text-xs text-muted-foreground mt-1 px-1'>
-                Cliquez sur le nom pour naviguer • Cliquez sur ▼ pour voir les
-                sous-catégories
+                Cliquez sur le nom pour naviguer • Cliquez sur ▼ pour voir les sous-catégories
               </p>
             </div>
 

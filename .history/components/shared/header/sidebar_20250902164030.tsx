@@ -1,7 +1,12 @@
+'use client'
+
 import * as React from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import {
   X,
+  ChevronRight,
+  ChevronDown,
   UserCircle,
   ShoppingBag,
   Grid3X3,
@@ -21,20 +26,30 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
-import { auth } from '@/auth'
-import { getLocale, getTranslations } from 'next-intl/server'
-import { getDirection } from '@/i18n-config'
+import { useSession } from 'next-auth/react'
+import { useTranslations } from 'next-intl'
 import { ICategory } from '@/types'
-import CategoryAccordion from './category-accordion'
 
-export default async function Sidebar({
+export default function Sidebar({
   categories,
 }: {
   categories: (ICategory & { subCategories: ICategory[] })[]
 }) {
-  const session = await auth()
-  const locale = await getLocale()
-  const t = await getTranslations()
+  const { data: session } = useSession()
+  const t = useTranslations()
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set())
+
+  const toggleCategory = (categoryId: string) => {
+    setExpandedCategories(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(categoryId)) {
+        newSet.delete(categoryId)
+      } else {
+        newSet.add(categoryId)
+      }
+      return newSet
+    })
+  }
 
   return (
     <Drawer direction={getDirection(locale) === 'rtl' ? 'right' : 'left'}>
@@ -101,13 +116,49 @@ export default async function Sidebar({
                   {t('Header.Shop By Department')}
                 </h2>
               </div>
-              <p className='text-xs text-muted-foreground mt-1 px-1'>
-                Cliquez sur le nom pour naviguer • Cliquez sur ▼ pour voir les
-                sous-catégories
-              </p>
             </div>
 
-            <CategoryAccordion categories={categories} />
+            <nav className='flex flex-col'>
+              {categories.map((category) => (
+                <div
+                  key={category._id}
+                  className='border-b border-border/20 last:border-b-0'
+                >
+                  {/* Main Category */}
+                  <DrawerClose asChild>
+                    <Link
+                      href={`/search?category=${category.name}`}
+                      className='flex items-center justify-between px-3 py-2 hover:bg-muted/50 transition-colors'
+                    >
+                      <span className='text-sm text-foreground font-medium'>
+                        {category.name}
+                      </span>
+                      <ChevronRight className='h-3 w-3 text-muted-foreground' />
+                    </Link>
+                  </DrawerClose>
+
+                  {/* Subcategories */}
+                  {category.subCategories &&
+                    category.subCategories.length > 0 && (
+                      <div className='ml-4 border-l border-border/20'>
+                        {category.subCategories.map((subCategory) => (
+                          <DrawerClose asChild key={subCategory._id}>
+                            <Link
+                              href={`/search?category=${category.name}&subCategory=${subCategory.name}`}
+                              className='flex items-center justify-between px-3 py-2 hover:bg-muted/30 transition-colors text-xs text-muted-foreground hover:text-foreground'
+                            >
+                              <span className='text-xs text-muted-foreground hover:text-foreground'>
+                                {subCategory.name}
+                              </span>
+                              <ChevronRight className='h-2 w-2 text-muted-foreground' />
+                            </Link>
+                          </DrawerClose>
+                        ))}
+                      </div>
+                    )}
+                </div>
+              ))}
+            </nav>
           </div>
 
           {/* Help & Settings Section */}

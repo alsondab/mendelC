@@ -400,12 +400,12 @@ export default async function SearchPage(props: {
 
                 {/* Tag Filter */}
                 <div>
-                  <h3 className='font-semibold text-base sm:text-lg mb-2 sm:mb-3 text-foreground'>
+                  <h3 className='font-semibold text-lg mb-3 text-foreground'>
                     {t('Search.Tag')}
                   </h3>
-                  <div className='space-y-1 sm:space-y-2'>
+                  <div className='space-y-2'>
                     <Link
-                      className={`block px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-colors ${
+                      className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                         'all' === tag || '' === tag
                           ? 'bg-primary text-primary-foreground font-medium'
                           : 'hover:bg-muted text-muted-foreground hover:text-foreground'
@@ -417,7 +417,7 @@ export default async function SearchPage(props: {
                     {tags.map((t: string) => (
                       <Link
                         key={t}
-                        className={`block px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-colors ${
+                        className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                           toSlug(t) === tag
                             ? 'bg-primary text-primary-foreground font-medium'
                             : 'hover:bg-muted text-muted-foreground hover:text-foreground'
