@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import React from 'react'
-import { ChevronLeft, Package, MapPin, CreditCard } from 'lucide-react'
+import { ChevronLeft, Package, Calendar, MapPin, CreditCard } from 'lucide-react'
 
 import { auth } from '@/auth'
 import { getOrderById } from '@/lib/actions/order.actions'
@@ -8,6 +8,7 @@ import OrderDetailsForm from '@/components/shared/order/order-details-form'
 import Link from 'next/link'
 import { formatId, formatDateTime } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 
 export async function generateMetadata(props: {
   params: Promise<{ id: string }>
@@ -37,16 +38,16 @@ export default async function OrderDetailsPage(props: {
     <div className='p-1 xs:p-2 sm:p-4 lg:p-6 max-w-7xl mx-auto'>
       {/* Breadcrumb Navigation */}
       <nav className='flex items-center gap-2 text-sm text-muted-foreground mb-4 xs:mb-6'>
-        <Link
-          href='/account'
+        <Link 
+          href='/account' 
           className='hover:text-foreground transition-colors flex items-center gap-1'
         >
           <ChevronLeft className='h-4 w-4' />
           Mon compte
         </Link>
         <span>›</span>
-        <Link
-          href='/account/orders'
+        <Link 
+          href='/account/orders' 
           className='hover:text-foreground transition-colors'
         >
           Mes commandes
@@ -73,16 +74,16 @@ export default async function OrderDetailsPage(props: {
               </p>
             </div>
           </div>
-
+          
           <div className='flex flex-wrap gap-2'>
-            <Badge
+            <Badge 
               variant={order.isPaid ? 'default' : 'destructive'}
               className='flex items-center gap-1'
             >
               <CreditCard className='h-3 w-3' />
               {order.isPaid ? 'Payée' : 'Non payée'}
             </Badge>
-            <Badge
+            <Badge 
               variant={order.isDelivered ? 'default' : 'secondary'}
               className='flex items-center gap-1'
             >

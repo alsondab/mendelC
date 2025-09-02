@@ -45,9 +45,9 @@ const Menu = ({ forAdmin = false, headerMenus = [] }: MenuProps) => {
       {/* Mobile Menu */}
       <div className='md:hidden'>
         <Sheet>
-          <SheetTrigger className='flex items-center space-x-1 px-3 py-2 rounded-lg hover:bg-muted/80 transition-colors text-sm font-medium border border-border/50'>
-            <Settings className='h-4 w-4 text-white' />
-            <span className='text-white'>{t('Header.Settings')}</span>
+          <SheetTrigger className='flex items-center space-x-1 px-3 py-2 rounded-lg hover:bg-muted/80 transition-colors text-sm font-medium border border-border/50 text-foreground'>
+            <Settings className='h-4 w-4 text-current' />
+            <span>{t('Header.Settings')}</span>
           </SheetTrigger>
           <SheetContent side='bottom' className='h-[80vh] rounded-t-xl'>
             <SheetHeader className='space-y-4'>

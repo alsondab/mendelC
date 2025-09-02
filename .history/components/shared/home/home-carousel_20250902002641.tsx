@@ -51,7 +51,7 @@ export function HomeCarousel({ items }: { items: ICarousel[] }) {
                   >
                     {t(`${item.title}`)}
                   </h2>
-                  <Button
+                  <Button 
                     size='sm'
                     className='text-xs xs:text-sm sm:text-base hidden xs:inline-flex'
                   >
@@ -63,8 +63,8 @@ export function HomeCarousel({ items }: { items: ICarousel[] }) {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious className='left-0 md:left-12' />
+      <CarouselNext className='right-0 md:right-12' />
     </Carousel>
   )
 }

@@ -1,6 +1,11 @@
 import { notFound } from 'next/navigation'
 import React from 'react'
-import { ChevronLeft, Package, MapPin, CreditCard } from 'lucide-react'
+import {
+  ChevronLeft,
+  Package,
+  MapPin,
+  CreditCard,
+} from 'lucide-react'
 
 import { auth } from '@/auth'
 import { getOrderById } from '@/lib/actions/order.actions'

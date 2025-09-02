@@ -1,16 +1,5 @@
 'use client'
-import {
-  BadgeDollarSign,
-  Barcode,
-  CreditCard,
-  Users,
-  TrendingUp,
-  BarChart3,
-  PieChart,
-  ShoppingCart,
-  Calendar,
-  ArrowRight,
-} from 'lucide-react'
+import { BadgeDollarSign, Barcode, CreditCard, Users, TrendingUp, BarChart3, PieChart, ShoppingCart, Calendar, ArrowRight } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 import Link from 'next/link'
@@ -134,8 +123,8 @@ export default function OverviewReport() {
               <div className='text-lg sm:text-2xl font-bold text-green-900'>
                 <ProductPrice price={data.totalSales} plain />
               </div>
-              <Link
-                className='text-xs text-green-700 hover:text-green-800 flex items-center gap-1 transition-colors'
+              <Link 
+                className='text-xs text-green-700 hover:text-green-800 flex items-center gap-1 transition-colors' 
                 href='/admin/orders'
               >
                 {t('View revenue')}
@@ -157,8 +146,8 @@ export default function OverviewReport() {
               <div className='text-lg sm:text-2xl font-bold text-blue-900'>
                 {formatNumber(data.ordersCount)}
               </div>
-              <Link
-                className='text-xs text-blue-700 hover:text-blue-800 flex items-center gap-1 transition-colors'
+              <Link 
+                className='text-xs text-blue-700 hover:text-blue-800 flex items-center gap-1 transition-colors' 
                 href='/admin/orders'
               >
                 {t('View orders')}
@@ -180,8 +169,8 @@ export default function OverviewReport() {
               <div className='text-lg sm:text-2xl font-bold text-purple-900'>
                 {data.usersCount}
               </div>
-              <Link
-                className='text-xs text-purple-700 hover:text-purple-800 flex items-center gap-1 transition-colors'
+              <Link 
+                className='text-xs text-purple-700 hover:text-purple-800 flex items-center gap-1 transition-colors' 
                 href='/admin/users'
               >
                 {t('View customers')}
@@ -203,8 +192,8 @@ export default function OverviewReport() {
               <div className='text-lg sm:text-2xl font-bold text-orange-900'>
                 {data.productsCount}
               </div>
-              <Link
-                className='text-xs text-orange-700 hover:text-orange-800 flex items-center gap-1 transition-colors'
+              <Link 
+                className='text-xs text-orange-700 hover:text-orange-800 flex items-center gap-1 transition-colors' 
                 href='/admin/products'
               >
                 {t('View products')}
@@ -311,10 +300,7 @@ export default function OverviewReport() {
                   </TableHeader>
                   <TableBody>
                     {data.latestOrders.map((order: IOrderList) => (
-                      <TableRow
-                        key={order._id}
-                        className='border-b last:border-b-0 hover:bg-muted/30 transition-colors'
-                      >
+                      <TableRow key={order._id} className='border-b last:border-b-0 hover:bg-muted/30 transition-colors'>
                         <TableCell className='text-xs sm:text-sm py-3'>
                           <div className='flex items-center gap-2'>
                             <div className='w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center'>
@@ -328,9 +314,7 @@ export default function OverviewReport() {
                         <TableCell className='text-xs sm:text-sm py-3'>
                           <div className='flex items-center gap-2'>
                             <Calendar className='h-3 w-3 text-muted-foreground' />
-                            <span>
-                              {formatDateTime(order.createdAt).dateOnly}
-                            </span>
+                            <span>{formatDateTime(order.createdAt).dateOnly}</span>
                           </div>
                         </TableCell>
                         <TableCell className='text-xs sm:text-sm py-3'>
@@ -339,7 +323,7 @@ export default function OverviewReport() {
                           </div>
                         </TableCell>
                         <TableCell className='text-xs sm:text-sm py-3'>
-                          <Link
+                          <Link 
                             href={`/admin/orders/${order._id}`}
                             className='inline-flex items-center gap-1 px-2 py-1 rounded-md bg-primary/10 text-primary hover:bg-primary/20 transition-colors'
                           >

@@ -2,15 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import {
-  MapPin,
-  CreditCard,
-  Package,
-  Truck,
-  Calendar,
-  CheckCircle,
-  XCircle,
-} from 'lucide-react'
+import { MapPin, CreditCard, Package, Truck, Calendar, CheckCircle, XCircle } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -88,10 +80,7 @@ export default function OrderDetailsForm({
               ) : (
                 <>
                   <Truck className='h-4 w-4 text-orange-500' />
-                  <Badge
-                    variant='secondary'
-                    className='bg-orange-100 text-orange-800 border-orange-200'
-                  >
+                  <Badge variant='secondary' className='bg-orange-100 text-orange-800 border-orange-200'>
                     En cours de livraison
                   </Badge>
                 </>
@@ -100,10 +89,7 @@ export default function OrderDetailsForm({
             {!isDelivered && expectedDeliveryDate && (
               <div className='flex items-center gap-2 text-sm text-muted-foreground'>
                 <Calendar className='h-4 w-4' />
-                <span>
-                  Livraison prévue le{' '}
-                  {formatDateTime(expectedDeliveryDate).dateTime}
-                </span>
+                <span>Livraison prévue le {formatDateTime(expectedDeliveryDate).dateTime}</span>
               </div>
             )}
           </CardContent>
@@ -119,9 +105,7 @@ export default function OrderDetailsForm({
           </CardHeader>
           <CardContent className='space-y-3'>
             <div className='bg-muted/30 rounded-lg p-3 xs:p-4'>
-              <p className='font-medium text-sm xs:text-base'>
-                {paymentMethod}
-              </p>
+              <p className='font-medium text-sm xs:text-base'>{paymentMethod}</p>
             </div>
 
             <div className='flex items-center gap-2'>
@@ -135,7 +119,9 @@ export default function OrderDetailsForm({
               ) : (
                 <>
                   <XCircle className='h-4 w-4 text-red-500' />
-                  <Badge variant='destructive'>Non payée</Badge>
+                  <Badge variant='destructive'>
+                    Non payée
+                  </Badge>
                 </>
               )}
             </div>
@@ -155,23 +141,14 @@ export default function OrderDetailsForm({
               <Table>
                 <TableHeader>
                   <TableRow className='border-b'>
-                    <TableHead className='text-xs sm:text-sm font-medium'>
-                      Article
-                    </TableHead>
-                    <TableHead className='text-xs sm:text-sm font-medium text-center'>
-                      Qté
-                    </TableHead>
-                    <TableHead className='text-xs sm:text-sm font-medium text-right'>
-                      Prix
-                    </TableHead>
+                    <TableHead className='text-xs sm:text-sm font-medium'>Article</TableHead>
+                    <TableHead className='text-xs sm:text-sm font-medium text-center'>Qté</TableHead>
+                    <TableHead className='text-xs sm:text-sm font-medium text-right'>Prix</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {items.map((item) => (
-                    <TableRow
-                      key={item.slug}
-                      className='border-b last:border-b-0'
-                    >
+                    <TableRow key={item.slug} className='border-b last:border-b-0'>
                       <TableCell className='py-3'>
                         <Link
                           href={`/product/${item.slug}`}
@@ -212,9 +189,7 @@ export default function OrderDetailsForm({
       <div className='lg:col-span-1'>
         <Card className='bg-card rounded-xl border shadow-sm overflow-hidden sticky top-4'>
           <CardHeader className='pb-3'>
-            <CardTitle className='text-lg font-semibold'>
-              Résumé de la commande
-            </CardTitle>
+            <CardTitle className='text-lg font-semibold'>Résumé de la commande</CardTitle>
           </CardHeader>
           <CardContent className='space-y-4'>
             <div className='space-y-3'>

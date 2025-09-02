@@ -235,9 +235,9 @@ const CarouselNext = React.forwardRef<
       variant={variant}
       size={size}
       className={cn(
-        'absolute h-8 w-8 xs:h-10 xs:w-10 rounded-full bg-background/90 backdrop-blur-sm border border-border/50 hover:border-primary/50 shadow-lg hover:shadow-xl transition-all duration-200 z-10',
+        'absolute h-10 w-10 rounded-full bg-background/80 backdrop-blur-sm border-2 border-border/50 hover:border-primary/50 shadow-lg hover:shadow-xl transition-all duration-200',
         orientation === 'horizontal'
-          ? 'bottom-2 xs:bottom-4 right-2 xs:right-4'
+          ? '-right-12 top-1/2 -translate-y-1/2'
           : '-bottom-12 left-1/2 -translate-x-1/2 rotate-90',
         className
       )}
@@ -245,7 +245,7 @@ const CarouselNext = React.forwardRef<
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight className='h-4 w-4 xs:h-5 xs:w-5' />
+      <ArrowRight className='h-5 w-5' />
       <span className='sr-only'>Next slide</span>
     </Button>
   )

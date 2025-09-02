@@ -1,16 +1,5 @@
 'use client'
-import {
-  BadgeDollarSign,
-  Barcode,
-  CreditCard,
-  Users,
-  TrendingUp,
-  BarChart3,
-  PieChart,
-  ShoppingCart,
-  Calendar,
-  ArrowRight,
-} from 'lucide-react'
+import { BadgeDollarSign, Barcode, CreditCard, Users, TrendingUp, BarChart3, PieChart, ShoppingCart, Calendar, ArrowRight } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 import Link from 'next/link'
@@ -134,8 +123,8 @@ export default function OverviewReport() {
               <div className='text-lg sm:text-2xl font-bold text-green-900'>
                 <ProductPrice price={data.totalSales} plain />
               </div>
-              <Link
-                className='text-xs text-green-700 hover:text-green-800 flex items-center gap-1 transition-colors'
+              <Link 
+                className='text-xs text-green-700 hover:text-green-800 flex items-center gap-1 transition-colors' 
                 href='/admin/orders'
               >
                 {t('View revenue')}
@@ -157,8 +146,8 @@ export default function OverviewReport() {
               <div className='text-lg sm:text-2xl font-bold text-blue-900'>
                 {formatNumber(data.ordersCount)}
               </div>
-              <Link
-                className='text-xs text-blue-700 hover:text-blue-800 flex items-center gap-1 transition-colors'
+              <Link 
+                className='text-xs text-blue-700 hover:text-blue-800 flex items-center gap-1 transition-colors' 
                 href='/admin/orders'
               >
                 {t('View orders')}
@@ -180,8 +169,8 @@ export default function OverviewReport() {
               <div className='text-lg sm:text-2xl font-bold text-purple-900'>
                 {data.usersCount}
               </div>
-              <Link
-                className='text-xs text-purple-700 hover:text-purple-800 flex items-center gap-1 transition-colors'
+              <Link 
+                className='text-xs text-purple-700 hover:text-purple-800 flex items-center gap-1 transition-colors' 
                 href='/admin/users'
               >
                 {t('View customers')}
@@ -203,8 +192,8 @@ export default function OverviewReport() {
               <div className='text-lg sm:text-2xl font-bold text-orange-900'>
                 {data.productsCount}
               </div>
-              <Link
-                className='text-xs text-orange-700 hover:text-orange-800 flex items-center gap-1 transition-colors'
+              <Link 
+                className='text-xs text-orange-700 hover:text-orange-800 flex items-center gap-1 transition-colors' 
                 href='/admin/products'
               >
                 {t('View products')}
@@ -213,31 +202,26 @@ export default function OverviewReport() {
             </CardContent>
           </Card>
         </div>
-        {/* Sales Overview Chart */}
-        <Card className='bg-card rounded-xl border shadow-sm overflow-hidden'>
-          <CardHeader className='bg-gradient-to-r from-primary/5 to-primary/10 border-b'>
-            <CardTitle className='flex items-center gap-2 text-lg font-semibold'>
-              <TrendingUp className='h-5 w-5 text-primary' />
-              {t('Sales Overview')}
-            </CardTitle>
-            <CardDescription className='text-sm text-muted-foreground'>
-              Évolution des ventes sur la période sélectionnée
-            </CardDescription>
-          </CardHeader>
-          <CardContent className='p-3 sm:p-6'>
-            <SalesAreaChart data={data.salesChartData} />
-          </CardContent>
-        </Card>
+        <div>
+          <Card>
+            <CardHeader className='pb-3'>
+              <CardTitle className='text-base sm:text-lg'>
+                {t('Sales Overview')}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className='p-3 sm:p-6'>
+              <SalesAreaChart data={data.salesChartData} />
+            </CardContent>
+          </Card>
+        </div>
 
-        {/* Revenue and Performance Section */}
-        <div className='grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2'>
-          <Card className='bg-card rounded-xl border shadow-sm overflow-hidden'>
-            <CardHeader className='bg-gradient-to-r from-green-50 to-green-100/50 border-b'>
-              <CardTitle className='flex items-center gap-2 text-base sm:text-lg font-semibold text-green-800'>
-                <Calendar className='h-5 w-5 text-green-600' />
+        <div className='grid gap-3 sm:gap-4 grid-cols-1 lg:grid-cols-2'>
+          <Card>
+            <CardHeader className='pb-3'>
+              <CardTitle className='text-sm sm:text-base'>
                 Revenus mensuels
               </CardTitle>
-              <CardDescription className='text-xs sm:text-sm text-green-700'>
+              <CardDescription className='text-xs sm:text-sm'>
                 {t('Estimated')} · {t('Last 6 months')}
               </CardDescription>
             </CardHeader>
@@ -245,14 +229,12 @@ export default function OverviewReport() {
               <TableChart data={data.monthlySales} labelType='month' />
             </CardContent>
           </Card>
-
-          <Card className='bg-card rounded-xl border shadow-sm overflow-hidden'>
-            <CardHeader className='bg-gradient-to-r from-blue-50 to-blue-100/50 border-b'>
-              <CardTitle className='flex items-center gap-2 text-base sm:text-lg font-semibold text-blue-800'>
-                <BarChart3 className='h-5 w-5 text-blue-600' />
+          <Card>
+            <CardHeader className='pb-3'>
+              <CardTitle className='text-sm sm:text-base'>
                 {t('Product Performance')}
               </CardTitle>
-              <CardDescription className='text-xs sm:text-sm text-blue-700'>
+              <CardDescription className='text-xs sm:text-sm'>
                 {formatDateTime(date!.from!).dateOnly} to{' '}
                 {formatDateTime(date!.to!).dateOnly}
               </CardDescription>
@@ -263,88 +245,59 @@ export default function OverviewReport() {
           </Card>
         </div>
 
-        {/* Categories and Recent Sales Section */}
-        <div className='grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2'>
-          <Card className='bg-card rounded-xl border shadow-sm overflow-hidden'>
-            <CardHeader className='bg-gradient-to-r from-purple-50 to-purple-100/50 border-b'>
-              <CardTitle className='flex items-center gap-2 text-base sm:text-lg font-semibold text-purple-800'>
-                <PieChart className='h-5 w-5 text-purple-600' />
+        <div className='grid gap-3 sm:gap-4 grid-cols-1 lg:grid-cols-2'>
+          <Card>
+            <CardHeader className='pb-3'>
+              <CardTitle className='text-sm sm:text-base'>
                 {t('Best-Selling Categories')}
               </CardTitle>
-              <CardDescription className='text-xs sm:text-sm text-purple-700'>
-                Répartition des ventes par catégorie
-              </CardDescription>
             </CardHeader>
             <CardContent className='p-3 sm:p-6'>
               <SalesCategoryPieChart data={data.topSalesCategories} />
             </CardContent>
           </Card>
-
-          <Card className='bg-card rounded-xl border shadow-sm overflow-hidden'>
-            <CardHeader className='bg-gradient-to-r from-orange-50 to-orange-100/50 border-b'>
-              <CardTitle className='flex items-center gap-2 text-base sm:text-lg font-semibold text-orange-800'>
-                <ShoppingCart className='h-5 w-5 text-orange-600' />
+          <Card>
+            <CardHeader className='pb-3'>
+              <CardTitle className='text-sm sm:text-base'>
                 {t('Recent Sales')}
               </CardTitle>
-              <CardDescription className='text-xs sm:text-sm text-orange-700'>
-                Dernières commandes traitées
-              </CardDescription>
             </CardHeader>
-            <CardContent className='p-0'>
+            <CardContent className='p-3 sm:p-6'>
               <div className='overflow-x-auto'>
                 <Table>
                   <TableHeader>
-                    <TableRow className='border-b bg-muted/30'>
-                      <TableHead className='text-xs sm:text-sm font-medium'>
+                    <TableRow>
+                      <TableHead className='text-xs sm:text-sm'>
                         {t('Buyer')}
                       </TableHead>
-                      <TableHead className='text-xs sm:text-sm font-medium'>
+                      <TableHead className='text-xs sm:text-sm'>
                         {t('Date')}
                       </TableHead>
-                      <TableHead className='text-xs sm:text-sm font-medium'>
+                      <TableHead className='text-xs sm:text-sm'>
                         {t('Total')}
                       </TableHead>
-                      <TableHead className='text-xs sm:text-sm font-medium'>
+                      <TableHead className='text-xs sm:text-sm'>
                         {t('Actions')}
                       </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {data.latestOrders.map((order: IOrderList) => (
-                      <TableRow
-                        key={order._id}
-                        className='border-b last:border-b-0 hover:bg-muted/30 transition-colors'
-                      >
-                        <TableCell className='text-xs sm:text-sm py-3'>
-                          <div className='flex items-center gap-2'>
-                            <div className='w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center'>
-                              <Users className='h-3 w-3 text-primary' />
-                            </div>
-                            <span className='font-medium'>
-                              {order.user ? order.user.name : t('Deleted User')}
-                            </span>
-                          </div>
+                      <TableRow key={order._id}>
+                        <TableCell className='text-xs sm:text-sm'>
+                          {order.user ? order.user.name : t('Deleted User')}
                         </TableCell>
-                        <TableCell className='text-xs sm:text-sm py-3'>
-                          <div className='flex items-center gap-2'>
-                            <Calendar className='h-3 w-3 text-muted-foreground' />
-                            <span>
-                              {formatDateTime(order.createdAt).dateOnly}
-                            </span>
-                          </div>
+
+                        <TableCell className='text-xs sm:text-sm'>
+                          {formatDateTime(order.createdAt).dateOnly}
                         </TableCell>
-                        <TableCell className='text-xs sm:text-sm py-3'>
-                          <div className='font-medium'>
-                            <ProductPrice price={order.totalPrice} plain />
-                          </div>
+                        <TableCell className='text-xs sm:text-sm'>
+                          <ProductPrice price={order.totalPrice} plain />
                         </TableCell>
-                        <TableCell className='text-xs sm:text-sm py-3'>
-                          <Link
-                            href={`/admin/orders/${order._id}`}
-                            className='inline-flex items-center gap-1 px-2 py-1 rounded-md bg-primary/10 text-primary hover:bg-primary/20 transition-colors'
-                          >
-                            {t('Details')}
-                            <ArrowRight className='h-3 w-3' />
+
+                        <TableCell className='text-xs sm:text-sm'>
+                          <Link href={`/admin/orders/${order._id}`}>
+                            <span className='px-1 sm:px-2'>{t('Details')}</span>
                           </Link>
                         </TableCell>
                       </TableRow>
