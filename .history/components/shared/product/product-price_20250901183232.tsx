@@ -1,0 +1,104 @@
+'use client'
+import useSettingStore from '@/hooks/use-setting-store'
+import { cn, round2 } from '@/lib/utils'
+import { useFormatter, useTranslations } from 'next-intl'
+
+const ProductPrice = ({
+  price,
+  className,
+  listPrice = 0,
+  isDeal = false,
+  forListing = true,
+  plain = false,
+}: {
+  price: number
+  isDeal?: boolean
+  listPrice?: number
+  className?: string
+  forListing?: boolean
+  plain?: boolean
+}) => {
+  const { getCurrency } = useSettingStore()
+  const currency = getCurrency()
+  const t = useTranslations()
+  const convertedPrice = round2(currency.convertRate * price)
+  const convertedListPrice = round2(currency.convertRate * listPrice)
+
+  const format = useFormatter()
+  const discountPercent = Math.round(
+    100 - (convertedPrice / convertedListPrice) * 100
+  )
+
+  // Formatage spécial pour le Franc CFA
+  const formatPrice = (price: number) => {
+    if (currency.code === 'XOF') {
+      return `${Math.round(price).toLocaleString('fr-FR')} ${currency.symbol}`
+    }
+    return format.number(price, {
+      style: 'currency',
+      currency: currency.code,
+      currencyDisplay: 'narrowSymbol',
+    })
+  }
+
+  const stringValue = convertedPrice.toString()
+  const [intValue, floatValue] = stringValue.includes('.')
+    ? stringValue.split('.')
+    : [stringValue, '']
+
+  return plain ? (
+    formatPrice(convertedPrice)
+  ) : convertedListPrice == 0 ? (
+    <div className={cn('text-3xl', className)}>
+      <span className='text-xs align-super'>{currency.symbol}</span>
+      {intValue}
+      <span className='text-xs align-super'>{floatValue}</span>
+    </div>
+  ) : isDeal ? (
+    <div className='space-y-3'>
+      <div className='flex justify-center items-center gap-3'>
+        <div className='relative'>
+          <span className='bg-gradient-to-r from-red-500 to-red-600 rounded-xl px-3 py-1.5 text-white text-sm font-bold shadow-lg animate-pulse'>
+            {discountPercent}% {t('Product.Off')}
+          </span>
+          <div className='absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-bounce'></div>
+        </div>
+        <span className='text-red-600 text-xs font-semibold bg-red-50 px-2 py-1 rounded-lg'>
+          {t('Product.Limited time deal')}
+        </span>
+      </div>
+      <div
+        className={`flex ${forListing && 'justify-center'} items-center gap-3`}
+      >
+        <div className={cn('text-3xl font-bold text-green-600', className)}>
+          <span className='text-xs align-super'>{currency.symbol}</span>
+          {intValue}
+          <span className='text-xs align-super'>{floatValue}</span>
+        </div>
+        <div className='text-muted-foreground text-xs py-2 bg-muted/30 px-2 rounded-lg'>
+          {t('Product.Was')}:{' '}
+          <span className='line-through font-medium'>
+            {formatPrice(convertedListPrice)}
+          </span>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div className=''>
+      <div className='flex justify-center gap-3'>
+        <div className='text-3xl text-orange-700'>-{discountPercent}%</div>
+        <div className={cn('text-3xl', className)}>
+          <span className='text-xs align-super'>{currency.symbol}</span>
+          {intValue}
+          <span className='text-xs align-super'>{floatValue}</span>
+        </div>
+      </div>
+      <div className='text-muted-foreground text-xs py-2'>
+        {t('Product.List price')}:{' '}
+        <span className='line-through'>{formatPrice(convertedListPrice)}</span>
+      </div>
+    </div>
+  )
+}
+
+export default ProductPrice
