@@ -7,7 +7,6 @@ import useIsMounted from '@/hooks/use-is-mounted'
 import { cn } from '@/lib/utils'
 import useCartStore from '@/hooks/use-cart-store'
 
-
 export default function FloatingCartButton() {
   const isMounted = useIsMounted()
   const pathname = usePathname()
@@ -15,7 +14,6 @@ export default function FloatingCartButton() {
     cart: { items },
   } = useCartStore()
   const cartItemsCount = items.reduce((a, c) => a + c.quantity, 0)
-
 
   // Ne pas afficher le panier flottant dans la page admin
   if (pathname.includes('/admin')) {

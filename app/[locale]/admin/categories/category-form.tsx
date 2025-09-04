@@ -259,9 +259,9 @@ export function CategoryForm({ categoryId }: CategoryFormProps) {
                     <Label>Aperçu de l&apos;image</Label>
                     <div className='relative w-full h-48 rounded-lg overflow-hidden border'>
                       {(uploadedImage || watch('image')) &&
-                      (uploadedImage || watch('image')).trim() !== '' ? (
+                      (uploadedImage || watch('image') || '').trim() !== '' ? (
                         <Image
-                          src={uploadedImage || watch('image')}
+                          src={uploadedImage || watch('image') || ''}
                           alt='Aperçu de la catégorie'
                           fill
                           className='object-cover'
