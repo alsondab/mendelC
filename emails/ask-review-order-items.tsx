@@ -63,7 +63,7 @@ AskReviewOrderItemsEmail.PreviewProps = {
     isDelivered: true,
   } as IOrder,
 } satisfies OrderInformationProps
-const dateFormatter = new Intl.DateTimeFormat('en', { dateStyle: 'medium' })
+const dateFormatter = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium' })
 
 export default async function AskReviewOrderItemsEmail({
   order,
@@ -71,23 +71,23 @@ export default async function AskReviewOrderItemsEmail({
   const { site } = await getSetting()
   return (
     <Html>
-      <Preview>Review Order Items</Preview>
+      <Preview>Évaluez Vos Articles de Commande</Preview>
       <Tailwind>
         <Head />
         <Body className='font-sans bg-white'>
           <Container className='max-w-xl'>
-            <Heading>Review Order Items</Heading>
+            <Heading>Évaluez Vos Articles de Commande</Heading>
             <Section>
               <Row>
                 <Column>
                   <Text className='mb-0 text-gray-500 whitespace-nowrap text-nowrap mr-4'>
-                    Order ID
+                    ID de Commande
                   </Text>
                   <Text className='mt-0 mr-4'>{order._id.toString()}</Text>
                 </Column>
                 <Column>
                   <Text className='mb-0 text-gray-500 whitespace-nowrap text-nowrap mr-4'>
-                    Purchased On
+                    Acheté Le
                   </Text>
                   <Text className='mt-0 mr-4'>
                     {dateFormatter.format(order.createdAt)}
@@ -95,7 +95,7 @@ export default async function AskReviewOrderItemsEmail({
                 </Column>
                 <Column>
                   <Text className='mb-0 text-gray-500 whitespace-nowrap text-nowrap mr-4'>
-                    Price Paid
+                    Prix Payé
                   </Text>
                   <Text className='mt-0 mr-4'>
                     {formatCurrency(order.totalPrice)}
@@ -132,15 +132,15 @@ export default async function AskReviewOrderItemsEmail({
                       href={`${site.url}/product/${item.slug}#reviews`}
                       className='text-center bg-blue-500 hover:bg-blue-700 text-white   py-2 px-4 rounded'
                     >
-                      Review this product
+                      Évaluer ce produit
                     </Button>
                   </Column>
                 </Row>
               ))}
               {[
-                { name: 'Items', price: order.itemsPrice },
-                { name: 'Tax', price: order.taxPrice },
-                { name: 'Shipping', price: order.shippingPrice },
+                { name: 'Articles', price: order.itemsPrice },
+                { name: 'Taxe', price: order.taxPrice },
+                { name: 'Livraison', price: order.shippingPrice },
                 { name: 'Total', price: order.totalPrice },
               ].map(({ name, price }) => (
                 <Row key={name} className='py-1'>

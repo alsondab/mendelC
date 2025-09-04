@@ -46,7 +46,9 @@ export function HomeCarousel({ items }: { items: ICarousel[] }) {
                   />
                 ) : (
                   <div className='w-full h-full bg-muted flex items-center justify-center'>
-                    <span className='text-muted-foreground'>Aucune image</span>
+                    <span className='text-muted-foreground'>
+                      {t('No image')}
+                    </span>
                   </div>
                 )}
                 <div className='absolute w-2/3 xs:w-1/2 sm:w-2/5 md:w-1/3 left-2 xs:left-4 sm:left-8 md:left-16 lg:left-32 top-1/2 transform -translate-y-1/2'>

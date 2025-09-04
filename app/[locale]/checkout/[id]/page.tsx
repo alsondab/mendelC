@@ -5,7 +5,7 @@ import { getOrderById } from '@/lib/actions/order.actions'
 import PaymentForm from './payment-form'
 
 export const metadata = {
-  title: 'Payment',
+  title: 'Paiement',
 }
 
 const CheckoutPaymentPage = async (props: {

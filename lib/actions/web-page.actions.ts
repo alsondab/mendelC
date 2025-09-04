@@ -18,7 +18,7 @@ export async function createWebPage(data: z.infer<typeof WebPageInputSchema>) {
     revalidatePath('/admin/web-pages')
     return {
       success: true,
-      message: 'WebPage created successfully',
+      message: 'Page web créée avec succès',
     }
   } catch (error) {
     return { success: false, message: formatError(error) }
@@ -34,7 +34,7 @@ export async function updateWebPage(data: z.infer<typeof WebPageUpdateSchema>) {
     revalidatePath('/admin/web-pages')
     return {
       success: true,
-      message: 'WebPage updated successfully',
+      message: 'Page web mise à jour avec succès',
     }
   } catch (error) {
     return { success: false, message: formatError(error) }
@@ -49,7 +49,7 @@ export async function deleteWebPage(id: string) {
     revalidatePath('/admin/web-pages')
     return {
       success: true,
-      message: 'WebPage deleted successfully',
+      message: 'Page web supprimée avec succès',
     }
   } catch (error) {
     return { success: false, message: formatError(error) }

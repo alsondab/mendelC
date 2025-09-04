@@ -6,7 +6,7 @@ export const COLORS = ['Gold', 'Green', 'Red']
 export const THEMES = ['Light', 'Dark', 'System']
 
 export const DEFAULT_PAYMENT_METHOD =
-  process.env.DEFAULT_PAYMENT_METHOD || 'Cash On Delivery'
+  process.env.DEFAULT_PAYMENT_METHOD || 'CashOnDelivery'
 
 export const SERVER_URL =
   process.env.NEXT_PUBLIC_SERVER_URL ||

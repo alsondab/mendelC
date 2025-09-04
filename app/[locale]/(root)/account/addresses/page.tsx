@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Home, MapPin, Plus, Edit, Trash2 } from 'lucide-react'
 
-const PAGE_TITLE = 'Addresses'
+const PAGE_TITLE = 'Adresses'
 export const metadata: Metadata = {
   title: PAGE_TITLE,
 }

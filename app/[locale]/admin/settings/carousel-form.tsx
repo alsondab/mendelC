@@ -33,7 +33,7 @@ export default function CarouselForm({
   return (
     <Card id={id}>
       <CardHeader>
-        <CardTitle>Carousels</CardTitle>
+        <CardTitle>Carrousels</CardTitle>
       </CardHeader>
       <CardContent className='space-y-4'>
         <div className='space-y-4'>
@@ -44,9 +44,9 @@ export default function CarouselForm({
                 name={`carousels.${index}.title`}
                 render={({ field }) => (
                   <FormItem>
-                    {index == 0 && <FormLabel>Title</FormLabel>}
+                    {index == 0 && <FormLabel>Titre</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='Title' />
+                      <Input {...field} placeholder='Titre' />
                     </FormControl>
                     <FormMessage>
                       {errors.carousels?.[index]?.title?.message}
@@ -59,7 +59,7 @@ export default function CarouselForm({
                 name={`carousels.${index}.url`}
                 render={({ field }) => (
                   <FormItem>
-                    {index == 0 && <FormLabel>Url</FormLabel>}
+                    {index == 0 && <FormLabel>URL</FormLabel>}
                     <FormControl>
                       <Input {...field} placeholder='Url' />
                     </FormControl>
@@ -74,7 +74,7 @@ export default function CarouselForm({
                 name={`carousels.${index}.buttonCaption`}
                 render={({ field }) => (
                   <FormItem>
-                    {index == 0 && <FormLabel>Caption</FormLabel>}
+                    {index == 0 && <FormLabel>Légende</FormLabel>}
                     <FormControl>
                       <Input {...field} placeholder='buttonCaption' />
                     </FormControl>
@@ -149,7 +149,7 @@ export default function CarouselForm({
               append({ url: '', title: '', image: '', buttonCaption: '' })
             }
           >
-            Add Carousel
+            Ajouter un carrousel
           </Button>
         </div>
       </CardContent>

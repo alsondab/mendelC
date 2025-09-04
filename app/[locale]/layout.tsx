@@ -1,3 +1,4 @@
+import React from 'react'
 import { Geist, Geist_Mono } from 'next/font/google'
 import '../globals.css'
 import ClientProviders from '@/components/shared/client-providers'
@@ -48,7 +49,9 @@ export default async function AppLayout({
 }) {
   const setting = await getSetting()
   const currencyCookie = (await cookies()).get('currency')
-  const currency = currencyCookie ? currencyCookie.value : 'USD'
+  const currency = currencyCookie
+    ? currencyCookie.value
+    : setting.defaultCurrency
 
   const { locale } = await params
   // Ensure that the incoming `locale` is valid

@@ -32,7 +32,7 @@ export default function CommonForm({
   return (
     <Card id={id}>
       <CardHeader>
-        <CardTitle>Common Settings</CardTitle>
+        <CardTitle>Paramètres généraux</CardTitle>
       </CardHeader>
       <CardContent className='space-y-4'>
         <div className='flex flex-col gap-5 md:flex-row'>
@@ -41,9 +41,9 @@ export default function CommonForm({
             name='common.pageSize'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel>Page Size</FormLabel>
+                <FormLabel>Taille de page</FormLabel>
                 <FormControl>
-                  <Input placeholder='Enter Page Size' {...field} />
+                  <Input placeholder='Entrez la taille de page' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -54,7 +54,7 @@ export default function CommonForm({
             name='common.freeShippingMinPrice'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel>Free Shipping Minimum Price</FormLabel>
+                <FormLabel>Prix minimum pour livraison gratuite</FormLabel>
                 <FormControl>
                   <Input
                     placeholder='Enter Free Shipping Minimum Price'
@@ -72,7 +72,7 @@ export default function CommonForm({
             name='common.defaultColor'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel>Default Color</FormLabel>
+                <FormLabel>Couleur par défaut</FormLabel>
                 <FormControl>
                   <Select
                     value={field.value || ''}
@@ -99,7 +99,7 @@ export default function CommonForm({
             name='common.defaultTheme'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel>Default Theme</FormLabel>
+                <FormLabel>Thème par défaut</FormLabel>
                 <FormControl>
                   <Select
                     value={field.value || ''}
@@ -134,7 +134,7 @@ export default function CommonForm({
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
-                <FormLabel>Maintenance Mode?</FormLabel>
+                <FormLabel>Mode maintenance ?</FormLabel>
                 <FormMessage />
               </FormItem>
             )}

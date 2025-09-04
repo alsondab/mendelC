@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
 import { getSetting } from '@/lib/actions/setting.actions'
 
-const PAGE_TITLE = 'Change Your Name'
+const PAGE_TITLE = 'Modifier Votre Nom'
 export const metadata: Metadata = {
   title: PAGE_TITLE,
 }

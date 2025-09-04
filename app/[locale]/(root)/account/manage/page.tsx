@@ -8,7 +8,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 
-const PAGE_TITLE = 'Login & Security'
+const PAGE_TITLE = 'Connexion et Sécurité'
 export const metadata: Metadata = {
   title: PAGE_TITLE,
 }

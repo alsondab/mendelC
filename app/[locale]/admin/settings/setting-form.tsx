@@ -70,7 +70,7 @@ const SettingForm = ({ setting }: { setting: ISettingInput }) => {
             disabled={isSubmitting}
             className='w-full mb-24'
           >
-            {isSubmitting ? 'Submitting...' : `Save Setting`}
+            {isSubmitting ? 'Envoi en cours...' : `Enregistrer les paramètres`}
           </Button>
         </div>
       </form>

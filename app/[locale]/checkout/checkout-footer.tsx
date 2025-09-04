@@ -1,31 +1,32 @@
 import useSettingStore from '@/hooks/use-setting-store'
 import Link from 'next/link'
 import React from 'react'
+import { useTranslations } from 'next-intl'
 
 export default function CheckoutFooter() {
   const {
     setting: { site },
   } = useSettingStore()
+  const t = useTranslations('Checkout')
+
   return (
     <div className='border-t-2 space-y-2 my-4 py-4'>
       <p>
-        Need help? Check our <Link href='/page/help'>Help Center</Link> or{' '}
-        <Link href='/page/contact-us'>Contact Us</Link>{' '}
+        {t('NeedHelp')} {t('CheckOur')}{' '}
+        <Link href='/page/help'>{t('HelpCenter')}</Link> {t('or')}{' '}
+        <Link href='/page/contact-us'>{t('ContactUs')}</Link>{' '}
       </p>
       <p>
-        For an item ordered from {site.name}: When you click the &apos;Place
-        Your Order&apos; button, we will send you an e-mail acknowledging
-        receipt of your order. Your contract to purchase an item will not be
-        complete until we send you an e-mail notifying you that the item has
-        been shipped to you. By placing your order, you agree to {site.name}
-        &apos;s <Link href='/page/privacy-policy'>privacy notice</Link> and
-        <Link href='/page/conditions-of-use'> conditions of use</Link>.
+        {t('ForItemOrderedFrom')} {site.name}: {t('WhenYouClick')} &apos;
+        {t('PlaceYourOrder')}&apos; {t('ButtonEmailReceipt')}.{' '}
+        {t('ContractNotComplete')}. {t('ByPlacingOrder')} {site.name}&apos;s{' '}
+        <Link href='/page/privacy-policy'>{t('PrivacyNotice')}</Link> {t('and')}{' '}
+        <Link href='/page/conditions-of-use'>{t('ConditionsOfUse')}</Link>.
       </p>
       <p>
-        Within 30 days of delivery, you may return new, unopened merchandise in
-        its original condition. Exceptions and restrictions apply.{' '}
+        {t('ReturnPolicy')}. {t('ExceptionsApply')}.{' '}
         <Link href='/page/returns-policy'>
-          See {site.name}&apos;s Returns Policy.
+          {t('See')} {site.name}&apos;s {t('ReturnsPolicy')}.
         </Link>
       </p>
     </div>

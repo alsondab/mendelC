@@ -27,7 +27,7 @@ export async function registerUser(userSignUp: IUserSignUp) {
       ...user,
       password: await bcrypt.hash(user.password, 5),
     })
-    return { success: true, message: 'User created successfully' }
+    return { success: true, message: 'Utilisateur créé avec succès' }
   } catch (error) {
     return { success: false, error: formatError(error) }
   }
@@ -43,7 +43,7 @@ export async function deleteUser(id: string) {
     revalidatePath('/admin/users')
     return {
       success: true,
-      message: 'User deleted successfully',
+      message: 'Utilisateur supprimé avec succès',
     }
   } catch (error) {
     return { success: false, message: formatError(error) }
@@ -63,7 +63,7 @@ export async function updateUser(user: z.infer<typeof UserUpdateSchema>) {
     revalidatePath('/admin/users')
     return {
       success: true,
-      message: 'User updated successfully',
+      message: 'Utilisateur mis à jour avec succès',
       data: JSON.parse(JSON.stringify(updatedUser)),
     }
   } catch (error) {
@@ -80,7 +80,7 @@ export async function updateUserName(user: IUserName) {
     const updatedUser = await currentUser.save()
     return {
       success: true,
-      message: 'User updated successfully',
+      message: 'Utilisateur mis à jour avec succès',
       data: JSON.parse(JSON.stringify(updatedUser)),
     }
   } catch (error) {

@@ -5,7 +5,7 @@ import { ArrowLeft, Package, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export const metadata: Metadata = {
-  title: 'Create Product',
+  title: 'Créer un Produit',
 }
 
 const CreateProductPage = () => {

@@ -55,13 +55,13 @@ PurchaseReceiptEmail.PreviewProps = {
         countInStock: 10,
       },
     ],
-    paymentMethod: 'Cash On Delivery',
+    paymentMethod: 'CashOnDelivery',
     expectedDeliveryDate: new Date(),
     isDelivered: false,
   } as IOrder,
 } satisfies OrderInformationProps
 
-const dateFormatter = new Intl.DateTimeFormat('en', { dateStyle: 'medium' })
+const dateFormatter = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium' })
 
 export default async function PurchaseReceiptEmail({
   order,
@@ -70,16 +70,16 @@ export default async function PurchaseReceiptEmail({
 
   // ✅ DÉTECTER SI C'EST UNE COMMANDE COD QUI N'EST PAS ENCORE PAYÉE
   const isCashOnDeliveryUnpaid =
-    order.paymentMethod === 'Cash On Delivery' && !order.isPaid
+    order.paymentMethod === 'CashOnDelivery' && !order.isPaid
   const isCashOnDeliveryPaid =
-    order.paymentMethod === 'Cash On Delivery' && order.isPaid
+    order.paymentMethod === 'CashOnDelivery' && order.isPaid
 
   return (
     <Html>
       <Preview>
         {isCashOnDeliveryUnpaid
-          ? `Order Confirmed - ${site.name}`
-          : `Purchase Receipt - ${site.name}`}
+          ? `Commande Confirmée - ${site.name}`
+          : `Reçu de Paiement - ${site.name}`}
       </Preview>
       <Tailwind>
         <Head />
@@ -87,15 +87,15 @@ export default async function PurchaseReceiptEmail({
           <Container className='max-w-xl'>
             <Heading className='text-2xl font-bold text-center mb-6'>
               {isCashOnDeliveryUnpaid
-                ? '🎉 Order Confirmed!'
-                : '✅ Payment Confirmed!'}
+                ? '🎉 Commande Confirmée !'
+                : '✅ Paiement Confirmé !'}
             </Heading>
 
             {/* Informations de paiement */}
             {isCashOnDeliveryUnpaid && (
               <Section className='bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6'>
                 <Text className='text-orange-800 font-semibold text-center m-0 mb-2'>
-                  💳 Cash On Delivery
+                  💳 Paiement à la livraison
                 </Text>
                 <Text className='text-orange-700 text-center text-sm m-0'>
                   Please have the exact amount ready when your order arrives.
@@ -146,7 +146,7 @@ export default async function PurchaseReceiptEmail({
               <Row>
                 <Column>
                   <Text className='mb-0 text-gray-500 text-xs font-medium uppercase tracking-wide m-0 mb-1'>
-                    Order ID
+                    ID de Commande
                   </Text>
                   <Text className='mt-0 font-mono text-sm m-0'>
                     #{order._id.toString().slice(-8)}
@@ -154,7 +154,7 @@ export default async function PurchaseReceiptEmail({
                 </Column>
                 <Column>
                   <Text className='mb-0 text-gray-500 text-xs font-medium uppercase tracking-wide m-0 mb-1'>
-                    Order Date
+                    Date de Commande
                   </Text>
                   <Text className='mt-0 text-sm m-0'>
                     {dateFormatter.format(order.createdAt)}
@@ -162,9 +162,7 @@ export default async function PurchaseReceiptEmail({
                 </Column>
                 <Column>
                   <Text className='mb-0 text-gray-500 text-xs font-medium uppercase tracking-wide m-0 mb-1'>
-                    {isCashOnDeliveryUnpaid
-                      ? 'Expected Delivery'
-                      : 'Total Paid'}
+                    {isCashOnDeliveryUnpaid ? 'Livraison Prévue' : 'Total Payé'}
                   </Text>
                   <Text className='mt-0 text-sm m-0'>
                     {isCashOnDeliveryUnpaid
@@ -178,7 +176,7 @@ export default async function PurchaseReceiptEmail({
             {/* Produits commandés */}
             <Section className='border border-solid border-gray-300 rounded-lg p-4 md:p-6 my-4'>
               <Text className='font-bold text-lg mb-4 text-center'>
-                📦 Items Ordered
+                📦 Articles Commandés
               </Text>
               {order.items.map((item) => (
                 <Row key={item.product} className='mt-6 first:mt-0'>
@@ -197,7 +195,7 @@ export default async function PurchaseReceiptEmail({
                   <Column className='align-top'>
                     <Text className='mx-2 my-0 font-medium'>{item.name}</Text>
                     <Text className='mx-2 my-0 text-sm text-gray-600'>
-                      Quantity: {item.quantity}
+                      Quantité: {item.quantity}
                     </Text>
                   </Column>
                   <Column align='right' className='align-top'>
@@ -212,12 +210,12 @@ export default async function PurchaseReceiptEmail({
             {/* Résumé financier */}
             <Section className='bg-blue-50 border border-blue-200 rounded-lg p-4 md:p-6 my-4'>
               <Text className='font-bold text-lg mb-4 text-center text-blue-800'>
-                💰 Order Summary
+                💰 Résumé de Commande
               </Text>
               {[
-                { name: 'Items Subtotal', price: order.itemsPrice },
-                { name: 'Shipping & Handling', price: order.shippingPrice },
-                { name: 'Tax', price: order.taxPrice },
+                { name: 'Sous-total Articles', price: order.itemsPrice },
+                { name: 'Livraison & Manutention', price: order.shippingPrice },
+                { name: 'Taxe', price: order.taxPrice },
               ].map(({ name, price }) => (
                 <Row key={name} className='py-1'>
                   <Column>{name}:</Column>
@@ -228,7 +226,7 @@ export default async function PurchaseReceiptEmail({
               ))}
               <Row className='py-2 border-t border-blue-300 mt-2'>
                 <Column className='font-bold text-lg'>
-                  {isCashOnDeliveryUnpaid ? 'Total Amount Due' : 'Total Paid'}:
+                  {isCashOnDeliveryUnpaid ? 'Montant Total Dû' : 'Total Payé'}:
                 </Column>
                 <Column align='right' width={70} className='align-top'>
                   <Text className='m-0 font-bold text-lg text-blue-600'>
@@ -238,7 +236,7 @@ export default async function PurchaseReceiptEmail({
               </Row>
             </Section>
 
-            {/* Informations de livraison pour Cash On Delivery non payé */}
+            {/* Informations de livraison pour Paiement à la livraison non payé */}
             {isCashOnDeliveryUnpaid && (
               <Section className='bg-yellow-50 border border-yellow-200 rounded-lg p-4 md:p-6 my-4'>
                 <Text className='font-bold text-lg mb-4 text-center text-yellow-800'>
@@ -285,7 +283,7 @@ export default async function PurchaseReceiptEmail({
             {/* Actions et support */}
             <Section className='bg-gray-50 border border-gray-200 rounded-lg p-4 md:p-6 my-4 text-center'>
               <Text className='text-gray-600 m-0 mb-4'>
-                Need help or have questions about your order?
+                Besoin d'aide ou avez-vous des questions sur votre commande ?
               </Text>
               <Row className='justify-center'>
                 <Column className='text-center'>
@@ -294,7 +292,7 @@ export default async function PurchaseReceiptEmail({
                       href='https://mendel-c.vercel.app/fr/page/customer-service'
                       className='text-blue-600 hover:text-blue-800 underline font-medium'
                     >
-                      Contact Support
+                      Contacter le Support
                     </a>
                   </Text>
                 </Column>
@@ -304,7 +302,7 @@ export default async function PurchaseReceiptEmail({
             {/* Footer */}
             <Section className='text-center py-6'>
               <Text className='text-gray-500 text-sm m-0 mb-2'>
-                Thank you for choosing {site.name}!
+                Merci d'avoir choisi {site.name} !
               </Text>
               <Text className='text-gray-400 text-xs m-0'>
                 © {new Date().getFullYear()} {site.name}. All rights reserved.

@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import {
   MapPin,
@@ -35,6 +36,7 @@ export default function OrderDetailsForm({
   order: IOrder
   isAdmin: boolean
 }) {
+  const t = useTranslations('Checkout')
   const {
     shippingAddress,
     items,
@@ -120,7 +122,7 @@ export default function OrderDetailsForm({
           <CardContent className='space-y-3'>
             <div className='bg-muted/30 rounded-lg p-3 xs:p-4'>
               <p className='font-medium text-sm xs:text-base'>
-                {paymentMethod}
+                {t(paymentMethod)}
               </p>
             </div>
 
@@ -241,19 +243,29 @@ export default function OrderDetailsForm({
             {/* Admin Actions */}
             {isAdmin && (
               <div className='space-y-2 pt-4 border-t'>
-                {!isPaid && paymentMethod === 'Cash On Delivery' && (
-                  <ActionButton
-                    caption='Marquer comme payée'
-                    action={() => updateOrderToPaid(order._id)}
-                    className='w-full'
-                  />
-                )}
+                {!isPaid &&
+                  (paymentMethod === 'CashOnDelivery' ||
+                    paymentMethod === 'Cash On Delivery') && (
+                    <ActionButton
+                      caption='Marquer comme payée'
+                      action={() => updateOrderToPaid(order._id)}
+                      className='w-full'
+                    />
+                  )}
                 {isPaid && !isDelivered && (
                   <ActionButton
                     caption='Marquer comme livrée'
                     action={() => deliverOrder(order._id)}
                     className='w-full'
                   />
+                )}
+                {isPaid && isDelivered && (
+                  <div className='text-center text-sm text-muted-foreground py-2'>
+                    Commande livrée le{' '}
+                    {deliveredAt
+                      ? new Date(deliveredAt).toLocaleDateString('fr-FR')
+                      : 'N/A'}
+                  </div>
                 )}
               </div>
             )}

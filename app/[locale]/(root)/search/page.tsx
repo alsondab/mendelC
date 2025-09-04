@@ -23,15 +23,15 @@ const sortOrders = [
 
 const prices = [
   {
-    name: '$1 to $20',
+    name: '1 à 20 CFA',
     value: '1-20',
   },
   {
-    name: '$21 to $50',
+    name: '21 à 50 CFA',
     value: '21-50',
   },
   {
-    name: '$51 to $1000',
+    name: '51 à 1000 CFA',
     value: '51-1000',
   },
 ]
@@ -141,7 +141,7 @@ export default async function SearchPage(props: {
               params={params}
             />
           </div>
-          
+
           {/* Active Filters - Mobile */}
           {(q !== 'all' && q !== '') ||
           (category !== 'all' && category !== '') ||

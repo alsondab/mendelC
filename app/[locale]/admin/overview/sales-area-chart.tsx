@@ -55,7 +55,7 @@ const CustomXAxisTick: React.FC<any> = ({ x, y, payload }) => {
     'mai',
     'jun',
     'jul',
-    'aoû',
+    'août',
     'sep',
     'oct',
     'nov',
@@ -90,7 +90,10 @@ export default function SalesAreaChart({ data }: { data: any[] }) {
           tickLine={false}
           axisLine={false}
         />
-        <YAxis fontSize={12} tickFormatter={(value: number) => `$${value}`} />
+        <YAxis
+          fontSize={12}
+          tickFormatter={(value: number) => `${value} CFA`}
+        />
         <Tooltip content={<CustomTooltip />} />
         <Area
           type='monotone'

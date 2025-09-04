@@ -7,7 +7,7 @@ import OrderDetailsForm from '@/components/shared/order/order-details-form'
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Admin Order Details',
+  title: 'Détails de la Commande Admin',
 }
 
 const AdminOrderDetailsPage = async (props: {
@@ -27,7 +27,8 @@ const AdminOrderDetailsPage = async (props: {
   return (
     <main className='max-w-6xl mx-auto p-4'>
       <div className='flex mb-4'>
-        <Link href='/admin/orders'>Orders</Link> <span className='mx-1'>›</span>
+        <Link href='/admin/orders'>Commandes</Link>{' '}
+        <span className='mx-1'>›</span>
         <Link href={`/admin/orders/${order._id}`}>{order._id}</Link>
       </div>
       <OrderDetailsForm

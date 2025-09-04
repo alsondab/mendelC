@@ -27,27 +27,27 @@ import { useTranslations } from 'next-intl'
 
 const links = [
   {
-    title: 'Overview',
+    title: 'Aperçu',
     href: '/admin/overview',
     icon: BarChart3,
   },
   {
-    title: 'Products',
+    title: 'Produits',
     href: '/admin/products',
     icon: Package,
   },
   {
-    title: 'Categories',
+    title: 'Catégories',
     href: '/admin/categories',
     icon: FolderTree,
   },
   {
-    title: 'Orders',
+    title: 'Commandes',
     href: '/admin/orders',
     icon: ShoppingCart,
   },
   {
-    title: 'Users',
+    title: 'Utilisateurs',
     href: '/admin/users',
     icon: Users,
   },
@@ -57,7 +57,7 @@ const links = [
     icon: FileText,
   },
   {
-    title: 'Settings',
+    title: 'Paramètres',
     href: '/admin/settings',
     icon: Settings,
   },

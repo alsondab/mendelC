@@ -52,7 +52,7 @@ export default function CurrencyForm({
   return (
     <Card id={id}>
       <CardHeader>
-        <CardTitle>Currencies</CardTitle>
+        <CardTitle>Devises</CardTitle>
       </CardHeader>
       <CardContent className='space-y-4'>
         <div className='space-y-4'>
@@ -64,7 +64,7 @@ export default function CurrencyForm({
                 render={({ field }) => (
                   <FormItem>
                     {' '}
-                    {index == 0 && <FormLabel>Name</FormLabel>}
+                    {index == 0 && <FormLabel>Nom</FormLabel>}
                     <FormControl>
                       <Input {...field} placeholder='Name' />
                     </FormControl>
@@ -95,7 +95,7 @@ export default function CurrencyForm({
                 name={`availableCurrencies.${index}.symbol`}
                 render={({ field }) => (
                   <FormItem>
-                    {index == 0 && <FormLabel>Symbol</FormLabel>}
+                    {index == 0 && <FormLabel>Symbole</FormLabel>}
                     <FormControl>
                       <Input {...field} placeholder='Symbol' />
                     </FormControl>
@@ -111,7 +111,7 @@ export default function CurrencyForm({
                 name={`availableCurrencies.${index}.convertRate`}
                 render={({ field }) => (
                   <FormItem>
-                    {index == 0 && <FormLabel>Convert Rate</FormLabel>}
+                    {index == 0 && <FormLabel>Taux de conversion</FormLabel>}
                     <FormControl>
                       <Input {...field} placeholder='Convert Rate' />
                     </FormControl>
@@ -148,7 +148,7 @@ export default function CurrencyForm({
               append({ name: '', code: '', symbol: '', convertRate: 1 })
             }
           >
-            Add Currency
+            Ajouter une devise
           </Button>
         </div>
 
@@ -157,7 +157,7 @@ export default function CurrencyForm({
           name='defaultCurrency'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Default Currency</FormLabel>
+              <FormLabel>Devise par défaut</FormLabel>
               <FormControl>
                 <Select
                   value={field.value || ''}

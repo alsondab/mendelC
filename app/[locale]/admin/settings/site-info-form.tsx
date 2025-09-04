@@ -30,7 +30,7 @@ export default function SiteInfoForm({
   return (
     <Card id={id}>
       <CardHeader>
-        <CardTitle>Site Info</CardTitle>
+        <CardTitle>Informations du site</CardTitle>
       </CardHeader>
       <CardContent className='space-y-4'>
         <div className='flex flex-col gap-5 md:flex-row'>
@@ -39,9 +39,9 @@ export default function SiteInfoForm({
             name='site.name'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Nom</FormLabel>
                 <FormControl>
-                  <Input placeholder='Enter site name' {...field} />
+                  <Input placeholder='Entrez le nom du site' {...field} />
                 </FormControl>
 
                 <FormMessage />
@@ -54,7 +54,7 @@ export default function SiteInfoForm({
             name='site.url'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel>Url</FormLabel>
+                <FormLabel>URL</FormLabel>
                 <FormControl>
                   <Input placeholder='Enter url' {...field} />
                 </FormControl>
@@ -148,7 +148,7 @@ export default function SiteInfoForm({
             name='site.keywords'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel>Keywords</FormLabel>
+                <FormLabel>Mots-clés</FormLabel>
                 <FormControl>
                   <Input placeholder='Enter keywords' {...field} />
                 </FormControl>
@@ -164,7 +164,7 @@ export default function SiteInfoForm({
             name='site.phone'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel>Phone</FormLabel>
+                <FormLabel>Téléphone</FormLabel>
                 <FormControl>
                   <Input placeholder='Enter phone number' {...field} />
                 </FormControl>
@@ -194,7 +194,7 @@ export default function SiteInfoForm({
             name='site.address'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel>Address</FormLabel>
+                <FormLabel>Adresse</FormLabel>
                 <FormControl>
                   <Input placeholder='Enter address' {...field} />
                 </FormControl>

@@ -31,24 +31,51 @@ export const createOrder = async (clientSideCart: Cart) => {
     )
 
     // Send confirmation email for Cash On Delivery orders
-    if (clientSideCart.paymentMethod === 'Cash On Delivery') {
+    console.log(
+      '🔍 Méthode de paiement détectée:',
+      clientSideCart.paymentMethod
+    )
+    console.log(
+      '🔍 Condition CashOnDelivery:',
+      clientSideCart.paymentMethod === 'CashOnDelivery'
+    )
+    console.log(
+      '🔍 Condition Cash On Delivery:',
+      clientSideCart.paymentMethod === 'Cash On Delivery'
+    )
+    if (
+      clientSideCart.paymentMethod === 'Cash On Delivery' ||
+      clientSideCart.paymentMethod === 'CashOnDelivery'
+    ) {
       try {
         const populatedOrder = await Order.findById(createdOrder._id).populate<{
           user: { email: string; name: string }
         }>('user', 'name email')
 
         if (populatedOrder && populatedOrder.user.email) {
+          console.log(
+            "📧 Envoi de l'email de confirmation à:",
+            populatedOrder.user.email
+          )
           await sendOrderConfirmation({ order: populatedOrder })
+          console.log('✅ Email de confirmation envoyé avec succès')
+        } else {
+          console.log(
+            "❌ Impossible d'envoyer l'email: utilisateur ou email manquant"
+          )
         }
       } catch (emailError) {
-        console.error('Failed to send confirmation email:', emailError)
+        console.error(
+          "❌ Échec de l'envoi de l'email de confirmation:",
+          emailError
+        )
         // Don't fail the order creation if email fails
       }
     }
 
     return {
       success: true,
-      message: 'Order placed successfully',
+      message: 'Commande passée avec succès',
       data: { orderId: createdOrder._id.toString() },
     }
   } catch (error) {
@@ -88,16 +115,31 @@ export async function updateOrderToPaid(orderId: string) {
     const order = await Order.findById(orderId).populate<{
       user: { email: string; name: string }
     }>('user', 'name email')
-    if (!order) throw new Error('Order not found')
-    if (order.isPaid) throw new Error('Order is already paid')
+    if (!order) throw new Error('Commande non trouvée')
+    if (order.isPaid) throw new Error('La commande est déjà payée')
     order.isPaid = true
     order.paidAt = new Date()
     await order.save()
     if (!process.env.MONGODB_URI?.startsWith('mongodb://localhost'))
       await updateProductStock(order._id)
-    if (order.user.email) await sendPurchaseReceipt({ order })
+    if (order.user && order.user.email) {
+      try {
+        console.log(
+          "📧 Envoi de l'email de reçu de paiement à:",
+          order.user.email
+        )
+        await sendPurchaseReceipt({ order })
+        console.log('✅ Email de reçu de paiement envoyé avec succès')
+      } catch (emailError) {
+        console.error("❌ Échec de l'envoi de l'email de reçu:", emailError)
+      }
+    } else {
+      console.log(
+        "❌ Impossible d'envoyer l'email de reçu: utilisateur ou email manquant"
+      )
+    }
     revalidatePath(`/account/orders/${orderId}`)
-    return { success: true, message: 'Order paid successfully' }
+    return { success: true, message: 'Commande payée avec succès' }
   } catch (err) {
     return { success: false, message: formatError(err) }
   }
@@ -114,7 +156,7 @@ const updateProductStock = async (orderId: string) => {
       { isPaid: true, paidAt: new Date() },
       opts
     )
-    if (!order) throw new Error('Order not found')
+    if (!order) throw new Error('Commande non trouvée')
 
     for (const item of order.items) {
       const product = await Product.findById(item.product).session(session)
@@ -142,14 +184,14 @@ export async function deliverOrder(orderId: string) {
     const order = await Order.findById(orderId).populate<{
       user: { email: string; name: string }
     }>('user', 'name email')
-    if (!order) throw new Error('Order not found')
-    if (!order.isPaid) throw new Error('Order is not paid')
+    if (!order) throw new Error('Commande non trouvée')
+    if (!order.isPaid) throw new Error("La commande n'est pas payée")
     order.isDelivered = true
     order.deliveredAt = new Date()
     await order.save()
-    if (order.user.email) await sendAskReviewOrderItems({ order })
+    if (order.user && order.user.email) await sendAskReviewOrderItems({ order })
     revalidatePath(`/account/orders/${orderId}`)
-    return { success: true, message: 'Order delivered successfully' }
+    return { success: true, message: 'Commande livrée avec succès' }
   } catch (err) {
     return { success: false, message: formatError(err) }
   }
@@ -160,11 +202,11 @@ export async function deleteOrder(id: string) {
   try {
     await connectToDatabase()
     const res = await Order.findByIdAndDelete(id)
-    if (!res) throw new Error('Order not found')
+    if (!res) throw new Error('Commande non trouvée')
     revalidatePath('/admin/orders')
     return {
       success: true,
-      message: 'Order deleted successfully',
+      message: 'Commande supprimée avec succès',
     }
   } catch (error) {
     return { success: false, message: formatError(error) }

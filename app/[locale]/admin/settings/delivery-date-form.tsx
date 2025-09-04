@@ -52,7 +52,7 @@ export default function DeliveryDateForm({
   return (
     <Card id={id}>
       <CardHeader>
-        <CardTitle>Delivery Dates</CardTitle>
+        <CardTitle>Dates de livraison</CardTitle>
       </CardHeader>
       <CardContent className='space-y-4'>
         <div className='space-y-4'>
@@ -63,9 +63,9 @@ export default function DeliveryDateForm({
                 name={`availableDeliveryDates.${index}.name`}
                 render={({ field }) => (
                   <FormItem>
-                    {index == 0 && <FormLabel>Name</FormLabel>}
+                    {index == 0 && <FormLabel>Nom</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='Name' />
+                      <Input {...field} placeholder='Nom' />
                     </FormControl>
                     <FormMessage>
                       {errors.availableDeliveryDates?.[index]?.name?.message}
@@ -78,9 +78,9 @@ export default function DeliveryDateForm({
                 name={`availableDeliveryDates.${index}.daysToDeliver`}
                 render={({ field }) => (
                   <FormItem>
-                    {index == 0 && <FormLabel>Days</FormLabel>}
+                    {index == 0 && <FormLabel>Jours</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='daysToDeliver' />
+                      <Input {...field} placeholder='Jours à livrer' />
                     </FormControl>
                     <FormMessage>
                       {
@@ -96,9 +96,9 @@ export default function DeliveryDateForm({
                 name={`availableDeliveryDates.${index}.shippingPrice`}
                 render={({ field }) => (
                   <FormItem>
-                    {index == 0 && <FormLabel>Shipping Price</FormLabel>}
+                    {index == 0 && <FormLabel>Prix de livraison</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='shippingPrice' />
+                      <Input {...field} placeholder='Prix de livraison' />
                     </FormControl>
                     <FormMessage>
                       {
@@ -114,9 +114,12 @@ export default function DeliveryDateForm({
                 name={`availableDeliveryDates.${index}.freeShippingMinPrice`}
                 render={({ field }) => (
                   <FormItem>
-                    {index == 0 && <FormLabel>Free Shipping</FormLabel>}
+                    {index == 0 && <FormLabel>Livraison gratuite</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='freeShippingMinPrice' />
+                      <Input
+                        {...field}
+                        placeholder='Prix minimum livraison gratuite'
+                      />
                     </FormControl>
                     <FormMessage>
                       {
@@ -156,7 +159,7 @@ export default function DeliveryDateForm({
               })
             }
           >
-            Add DeliveryDate
+            Ajouter une date de livraison
           </Button>
         </div>
 
@@ -165,14 +168,14 @@ export default function DeliveryDateForm({
           name='defaultDeliveryDate'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Default DeliveryDate</FormLabel>
+              <FormLabel>Date de livraison par défaut</FormLabel>
               <FormControl>
                 <Select
                   value={field.value || ''}
                   onValueChange={(value) => field.onChange(value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder='Select a delivery date' />
+                    <SelectValue placeholder='Sélectionner une date de livraison' />
                   </SelectTrigger>
                   <SelectContent>
                     {availableDeliveryDates

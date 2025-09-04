@@ -28,7 +28,7 @@ export default async function SignUpPage(props: {
     <div className='w-full'>
       <Card>
         <CardHeader>
-          <CardTitle className='text-2xl'>Create account</CardTitle>
+          <CardTitle className='text-2xl'>Créer un compte</CardTitle>
         </CardHeader>
         <CardContent>
           <SignUpForm />

@@ -47,7 +47,7 @@ export async function createUpdateReview({
       revalidatePath(path)
       return {
         success: true,
-        message: 'Review updated successfully',
+        message: 'Avis mis à jour avec succès',
         // data: JSON.parse(JSON.stringify(existReview)),
       }
     } else {
@@ -56,7 +56,7 @@ export async function createUpdateReview({
       revalidatePath(path)
       return {
         success: true,
-        message: 'Review created successfully',
+        message: 'Avis créé avec succès',
         // data: JSON.parse(JSON.stringify(newReview)),
       }
     }

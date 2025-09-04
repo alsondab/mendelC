@@ -35,7 +35,7 @@ const users: IUserInput[] = [
       country: 'USA',
       phone: '123-456-7890',
     },
-    paymentMethod: 'Cash On Delivery',
+    paymentMethod: 'CashOnDelivery',
     emailVerified: false,
   },
   {
@@ -69,7 +69,7 @@ const users: IUserInput[] = [
       country: 'USA',
       phone: '123-456-7890',
     },
-    paymentMethod: 'Cash On Delivery',
+    paymentMethod: 'CashOnDelivery',
     emailVerified: false,
   },
   {
@@ -120,7 +120,7 @@ const users: IUserInput[] = [
       country: 'USA',
       phone: '123-456-7890',
     },
-    paymentMethod: 'Cash On Delivery',
+    paymentMethod: 'CashOnDelivery',
     emailVerified: false,
   },
   {
@@ -188,7 +188,7 @@ const users: IUserInput[] = [
       country: 'USA',
       phone: '123-456-7890',
     },
-    paymentMethod: 'Cash On Delivery',
+    paymentMethod: 'CashOnDelivery',
     emailVerified: false,
   },
   {
@@ -239,7 +239,7 @@ const users: IUserInput[] = [
       country: 'USA',
       phone: '123-456-7890',
     },
-    paymentMethod: 'Cash On Delivery',
+    paymentMethod: 'CashOnDelivery',
     emailVerified: false,
   },
   {
@@ -1209,9 +1209,9 @@ We also provide helpful resources such as order tracking, product guides, and FA
           convertRate: 655.957,
         },
       ],
-      defaultCurrency: 'USD',
-      availablePaymentMethods: [{ name: 'Cash On Delivery', commission: 0 }],
-      defaultPaymentMethod: 'Cash On Delivery',
+      defaultCurrency: 'XOF',
+      availablePaymentMethods: [{ name: 'CashOnDelivery', commission: 0 }],
+      defaultPaymentMethod: 'CashOnDelivery',
       availableDeliveryDates: [
         {
           name: 'Tomorrow',

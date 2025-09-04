@@ -38,6 +38,7 @@ import useIsMounted from '@/hooks/use-is-mounted'
 import Link from 'next/link'
 import useCartStore from '@/hooks/use-cart-store'
 import useSettingStore from '@/hooks/use-setting-store'
+import { useTranslations } from 'next-intl'
 import ProductPrice from '@/components/shared/product/product-price'
 
 const shippingAddressDefaultValues =
@@ -64,6 +65,7 @@ const shippingAddressDefaultValues =
 const CheckoutForm = () => {
   const { toast } = useToast()
   const router = useRouter()
+  const t = useTranslations('Checkout')
   const {
     setting: {
       site,
@@ -146,9 +148,9 @@ const CheckoutForm = () => {
       })
 
       // Show email confirmation toast for Cash On Delivery
-      if (paymentMethod === 'Cash On Delivery') {
+      if (paymentMethod === 'CashOnDelivery') {
         toast({
-          description: `Order confirmation email has been sent to your email address`,
+          description: t('OrderConfirmationEmail'),
           variant: 'default',
         })
       }
@@ -176,7 +178,7 @@ const CheckoutForm = () => {
               Livrer à cette adresse
             </Button>
             <p className='text-xs xs:text-sm text-center py-2 text-muted-foreground'>
-              Choisissez une adresse de livraison et une méthode de paiement
+              {t('ChooseAddressAndPayment')}
               pour calculer les frais de port, de manutention et les taxes.
             </p>
           </div>
@@ -187,13 +189,11 @@ const CheckoutForm = () => {
               className='rounded-full w-full text-sm xs:text-base'
               onClick={handleSelectPaymentMethod}
             >
-              Utiliser cette méthode de paiement
+              {t('UsePaymentMethod')}
             </Button>
 
             <p className='text-xs xs:text-sm text-center py-2 text-muted-foreground'>
-              Choisissez une méthode de paiement pour continuer. Vous aurez
-              encore la possibilité de réviser et modifier votre commande avant
-              qu&apos;elle soit finale.
+              {t('PaymentMethodContinue')}
             </p>
           </div>
         )}
@@ -203,7 +203,7 @@ const CheckoutForm = () => {
               onClick={handlePlaceOrder}
               className='rounded-full w-full text-sm xs:text-base'
             >
-              Passer la commande
+              {t('PlaceOrder')}
             </Button>
             <p className='text-xs xs:text-sm text-center py-2 text-muted-foreground'>
               En passant votre commande, vous acceptez la{' '}
@@ -340,7 +340,7 @@ const CheckoutForm = () => {
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel className='text-sm xs:text-base'>
-                                Nom complet
+                                {t('FullName')}
                               </FormLabel>
                               <FormControl>
                                 <Input
@@ -381,7 +381,7 @@ const CheckoutForm = () => {
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel className='text-sm xs:text-base'>
-                                  Ville
+                                  {t('City')}
                                 </FormLabel>
                                 <FormControl>
                                   <Input
@@ -400,7 +400,7 @@ const CheckoutForm = () => {
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel className='text-sm xs:text-base'>
-                                  Province
+                                  {t('Province')}
                                 </FormLabel>
                                 <FormControl>
                                   <Input
@@ -422,7 +422,7 @@ const CheckoutForm = () => {
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel className='text-sm xs:text-base'>
-                                  Code postal
+                                  {t('PostalCode')}
                                 </FormLabel>
                                 <FormControl>
                                   <Input
@@ -441,7 +441,7 @@ const CheckoutForm = () => {
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel className='text-sm xs:text-base'>
-                                  Téléphone
+                                  {t('Phone')}
                                 </FormLabel>
                                 <FormControl>
                                   <Input
@@ -462,7 +462,7 @@ const CheckoutForm = () => {
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel className='text-sm xs:text-base'>
-                                Pays
+                                {t('Country')}
                               </FormLabel>
                               <FormControl>
                                 <Input
@@ -501,7 +501,7 @@ const CheckoutForm = () => {
                       2
                     </div>
                     <span className='text-base xs:text-lg font-bold'>
-                      Méthode de paiement
+                      {t('PaymentMethod')}
                     </span>
                   </div>
                   <Button
@@ -517,7 +517,9 @@ const CheckoutForm = () => {
                   </Button>
                 </div>
                 <div className='mt-3 text-sm xs:text-base text-muted-foreground'>
-                  <p className='font-medium text-foreground'>{paymentMethod}</p>
+                  <p className='font-medium text-foreground'>
+                    {t(paymentMethod)}
+                  </p>
                 </div>
               </div>
             ) : isAddressSelected ? (
@@ -527,7 +529,7 @@ const CheckoutForm = () => {
                     2
                   </div>
                   <span className='text-base xs:text-lg font-bold text-primary'>
-                    Choisir une méthode de paiement
+                    {t('ChoosePaymentMethod')}
                   </span>
                 </div>
                 <Card className='shadow-sm'>
@@ -550,7 +552,7 @@ const CheckoutForm = () => {
                             className='font-medium text-sm xs:text-base cursor-pointer flex-1'
                             htmlFor={`payment-${pm.name}`}
                           >
-                            {pm.name}
+                            {t(pm.name)}
                           </Label>
                         </div>
                       ))}
@@ -561,7 +563,7 @@ const CheckoutForm = () => {
                       onClick={handleSelectPaymentMethod}
                       className='w-full rounded-full font-bold text-sm xs:text-base'
                     >
-                      Utiliser cette méthode de paiement
+                      {t('UsePaymentMethod')}
                     </Button>
                   </CardFooter>
                 </Card>
@@ -571,7 +573,7 @@ const CheckoutForm = () => {
                 <div className='w-6 h-6 bg-muted rounded-full flex items-center justify-center text-sm font-bold'>
                   2
                 </div>
-                <span>Choisir une méthode de paiement</span>
+                <span>{t('ChoosePaymentMethod')}</span>
               </div>
             )}
           </div>
@@ -581,7 +583,7 @@ const CheckoutForm = () => {
               <div className='grid  grid-cols-1 md:grid-cols-12  my-3 pb-3'>
                 <div className='flex text-lg font-bold  col-span-5'>
                   <span className='w-8'>3 </span>
-                  <span>Items and shipping</span>
+                  <span>{t('ItemsAndShipping')}</span>
                 </div>
                 <div className='col-span-5'>
                   <p>
@@ -619,7 +621,7 @@ const CheckoutForm = () => {
               <>
                 <div className='flex text-primary  text-lg font-bold my-2'>
                   <span className='w-8'>3 </span>
-                  <span>Review items and shipping</span>
+                  <span>{t('ReviewItemsAndShipping')}</span>
                 </div>
                 <Card className='md:ml-8'>
                   <CardContent className='p-4'>
@@ -696,7 +698,7 @@ const CheckoutForm = () => {
                       </div>
                       <div>
                         <div className=' font-bold'>
-                          <p className='mb-2'> Choose a shipping speed:</p>
+                          <p className='mb-2'>{t('ChooseShippingSpeed')}:</p>
 
                           <ul>
                             <RadioGroup
@@ -755,7 +757,7 @@ const CheckoutForm = () => {
             ) : (
               <div className='flex text-muted-foreground text-lg font-bold my-4 py-3'>
                 <span className='w-8'>3 </span>
-                <span>Items and shipping</span>
+                <span>{t('ItemsAndShipping')}</span>
               </div>
             )}
           </div>

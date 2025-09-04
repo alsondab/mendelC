@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import SettingsPage from './settings-page'
 
 export const metadata: Metadata = {
-  title: 'Setting',
+  title: 'Paramètres',
 }
 
 const SettingPage = async () => {

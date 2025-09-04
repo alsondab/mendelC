@@ -27,7 +27,7 @@ export async function createCategory(data: ICategoryInput) {
     revalidatePath('/admin/categories')
     return {
       success: true,
-      message: 'Category created successfully',
+      message: 'Catégorie créée avec succès',
     }
   } catch (error) {
     return { success: false, message: formatError(error) }
@@ -55,7 +55,7 @@ export async function updateCategory(
     revalidatePath('/admin/categories')
     return {
       success: true,
-      message: 'Category updated successfully',
+      message: 'Catégorie mise à jour avec succès',
     }
   } catch (error) {
     return { success: false, message: formatError(error) }
@@ -71,7 +71,7 @@ export async function deleteCategory(id: string) {
     revalidatePath('/admin/categories')
     return {
       success: true,
-      message: 'Category deleted successfully',
+      message: 'Catégorie supprimée avec succès',
     }
   } catch (error) {
     return { success: false, message: formatError(error) }

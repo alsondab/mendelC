@@ -52,7 +52,7 @@ export default function PaymentMethodForm({
   return (
     <Card id={id}>
       <CardHeader>
-        <CardTitle>Payment Methods</CardTitle>
+        <CardTitle>Méthodes de paiement</CardTitle>
       </CardHeader>
       <CardContent className='space-y-4'>
         <div className='space-y-4'>
@@ -63,9 +63,9 @@ export default function PaymentMethodForm({
                 name={`availablePaymentMethods.${index}.name`}
                 render={({ field }) => (
                   <FormItem>
-                    {index == 0 && <FormLabel>Name</FormLabel>}
+                    {index == 0 && <FormLabel>Nom</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='Name' />
+                      <Input {...field} placeholder='Nom' />
                     </FormControl>
                     <FormMessage>
                       {errors.availablePaymentMethods?.[index]?.name?.message}
@@ -113,7 +113,7 @@ export default function PaymentMethodForm({
             variant={'outline'}
             onClick={() => append({ name: '', commission: 0 })}
           >
-            Add PaymentMethod
+            Ajouter une méthode de paiement
           </Button>
         </div>
 
@@ -122,14 +122,14 @@ export default function PaymentMethodForm({
           name='defaultPaymentMethod'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Default PaymentMethod</FormLabel>
+              <FormLabel>Méthode de paiement par défaut</FormLabel>
               <FormControl>
                 <Select
                   value={field.value || ''}
                   onValueChange={(value) => field.onChange(value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder='Select a payment method' />
+                    <SelectValue placeholder='Sélectionner une méthode de paiement' />
                   </SelectTrigger>
                   <SelectContent>
                     {availablePaymentMethods

@@ -17,7 +17,7 @@ import { formatDateTime, formatId } from '@/lib/utils'
 import BrowsingHistoryList from '@/components/shared/browsing-history-list'
 import ProductPrice from '@/components/shared/product/product-price'
 
-const PAGE_TITLE = 'Your Orders'
+const PAGE_TITLE = 'Vos Commandes'
 export const metadata: Metadata = {
   title: PAGE_TITLE,
 }

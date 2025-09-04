@@ -52,7 +52,7 @@ export default function LanguageForm({
   return (
     <Card id={id}>
       <CardHeader>
-        <CardTitle>Languages</CardTitle>
+        <CardTitle>Langues</CardTitle>
       </CardHeader>
       <CardContent className='space-y-4'>
         <div className='space-y-4'>
@@ -63,9 +63,9 @@ export default function LanguageForm({
                 name={`availableLanguages.${index}.name`}
                 render={({ field }) => (
                   <FormItem>
-                    {index == 0 && <FormLabel>Name</FormLabel>}
+                    {index == 0 && <FormLabel>Nom</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='Name' />
+                      <Input {...field} placeholder='Nom' />
                     </FormControl>
                     <FormMessage>
                       {errors.availableLanguages?.[index]?.name?.message}
@@ -111,7 +111,7 @@ export default function LanguageForm({
             variant={'outline'}
             onClick={() => append({ name: '', code: '' })}
           >
-            Add Language
+            Ajouter une langue
           </Button>
         </div>
 
@@ -120,7 +120,7 @@ export default function LanguageForm({
           name='defaultLanguage'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Default Language</FormLabel>
+              <FormLabel>Langue par défaut</FormLabel>
               <FormControl>
                 <Select
                   value={field.value || ''}

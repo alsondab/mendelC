@@ -39,7 +39,7 @@ export const updateSetting = async (newSetting: ISettingInput) => {
     ) // Update the cache
     return {
       success: true,
-      message: 'Setting updated successfully',
+      message: 'Paramètres mis à jour avec succès',
     }
   } catch (error) {
     return { success: false, message: formatError(error) }
@@ -54,6 +54,6 @@ export const setCurrencyOnServer = async (newCurrency: string) => {
 
   return {
     success: true,
-    message: 'Currency updated successfully',
+    message: 'Devise mise à jour avec succès',
   }
 }

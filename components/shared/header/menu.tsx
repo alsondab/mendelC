@@ -12,7 +12,6 @@ import {
 } from 'lucide-react'
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
@@ -47,8 +46,8 @@ const Menu = ({ forAdmin = false, headerMenus = [] }: MenuProps) => {
       <div className='md:hidden'>
         <Sheet>
           <SheetTrigger className='flex items-center space-x-1 px-3 py-2 rounded-lg hover:bg-muted/80 transition-colors text-sm font-medium border border-border/50'>
-            <Settings className='h-4 w-4' />
-            <span>{t('Header.Settings')}</span>
+            <Settings className='h-4 w-4 text-foreground' />
+            <span className='text-foreground'>{t('Header.Settings')}</span>
           </SheetTrigger>
           <SheetContent side='bottom' className='h-[80vh] rounded-t-xl'>
             <SheetHeader className='space-y-4'>
@@ -98,19 +97,18 @@ const Menu = ({ forAdmin = false, headerMenus = [] }: MenuProps) => {
                     }
 
                     return (
-                      <SheetClose asChild key={menu.href}>
-                        <Link
-                          href={menu.href}
-                          className='flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-muted/50 transition-colors text-sm'
-                        >
-                          <div className='text-muted-foreground'>
-                            {getIcon(menu.name)}
-                          </div>
-                          <span className='text-foreground'>
-                            {t('Header.' + menu.name)}
-                          </span>
-                        </Link>
-                      </SheetClose>
+                      <Link
+                        key={menu.href}
+                        href={menu.href}
+                        className='flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-muted/50 transition-colors text-sm'
+                      >
+                        <div className='text-muted-foreground'>
+                          {getIcon(menu.name)}
+                        </div>
+                        <span className='text-foreground'>
+                          {t('Header.' + menu.name)}
+                        </span>
+                      </Link>
                     )
                   })}
                 </div>
