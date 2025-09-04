@@ -8,7 +8,6 @@ import {
   BookOpen,
   Info,
   ShoppingBag,
-  Users2,
   Megaphone,
   Truck,
   RotateCcw,
@@ -117,7 +116,7 @@ export default function Footer() {
                     href='/page/become-affiliate'
                     className='flex items-center justify-center sm:justify-start gap-2 text-gray-300 hover:text-white transition-colors text-sm xs:text-base group'
                   >
-                    <Users2 className='w-4 h-4 group-hover:text-green-400 transition-colors' />
+                    <Users className='w-4 h-4 group-hover:text-green-400 transition-colors' />
                     {t('Footer.Become an Affiliate')}
                   </Link>
                 </li>
@@ -212,8 +211,7 @@ export default function Footer() {
                       <SelectItem key={index} value={lang.code}>
                         <Link
                           className='w-full flex items-center gap-2'
-                          href={pathname}
-                          locale={lang.code}
+                          href={`/${lang.code}${pathname}`}
                         >
                           <span className='text-lg'>{lang.icon}</span>
                           <span className='text-sm'>{lang.name}</span>

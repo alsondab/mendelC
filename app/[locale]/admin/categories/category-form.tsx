@@ -258,13 +258,22 @@ export function CategoryForm({ categoryId }: CategoryFormProps) {
                   <div className='space-y-2'>
                     <Label>Aperçu de l&apos;image</Label>
                     <div className='relative w-full h-48 rounded-lg overflow-hidden border'>
-                      <Image
-                        src={uploadedImage || watch('image') || ''}
-                        alt='Aperçu de la catégorie'
-                        fill
-                        className='object-cover'
-                        sizes='(max-width: 768px) 100vw, 50vw'
-                      />
+                      {(uploadedImage || watch('image')) &&
+                      (uploadedImage || watch('image')).trim() !== '' ? (
+                        <Image
+                          src={uploadedImage || watch('image')}
+                          alt='Aperçu de la catégorie'
+                          fill
+                          className='object-cover'
+                          sizes='(max-width: 768px) 100vw, 50vw'
+                        />
+                      ) : (
+                        <div className='w-full h-full bg-muted flex items-center justify-center'>
+                          <span className='text-muted-foreground'>
+                            Aucune image
+                          </span>
+                        </div>
+                      )}
                       <Button
                         type='button'
                         variant='destructive'

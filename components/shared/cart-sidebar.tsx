@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select'
-import { TrashIcon } from 'lucide-react'
+import { Trash2 } from 'lucide-react'
 import useSettingStore from '@/hooks/use-setting-store'
 import ProductPrice from './product/product-price'
 import { useLocale, useTranslations } from 'next-intl'
@@ -71,13 +71,21 @@ export default function CartSidebar() {
                 <div className='my-3'>
                   <Link href={`/product/${item.slug}`}>
                     <div className='relative h-24'>
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        fill
-                        sizes='20vw'
-                        className='object-contain'
-                      />
+                      {item.image && item.image.trim() !== '' ? (
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          fill
+                          sizes='20vw'
+                          className='object-contain'
+                        />
+                      ) : (
+                        <div className='w-full h-full bg-muted flex items-center justify-center'>
+                          <span className='text-muted-foreground text-xs'>
+                            No image
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </Link>
                   <div className='text-sm text-center font-bold'>
@@ -110,7 +118,7 @@ export default function CartSidebar() {
                         removeItem(item)
                       }}
                     >
-                      <TrashIcon className='w-4 h-4' />
+                      <Trash2 className='w-4 h-4' />
                     </Button>
                   </div>
                 </div>

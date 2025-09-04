@@ -1,6 +1,6 @@
 'use client'
 
-import { ShoppingCartIcon } from 'lucide-react'
+import { ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import useIsMounted from '@/hooks/use-is-mounted'
@@ -35,7 +35,7 @@ export default function CartButton() {
       )}
     >
       <div className='relative'>
-        <ShoppingCartIcon className='h-5 w-5 text-foreground' />
+        <ShoppingCart className='h-5 w-5 text-foreground' />
 
         {/* Cart Badge */}
         {isMounted && cartItemsCount > 0 && (

@@ -24,15 +24,15 @@ const ProductCard = ({
 }) => {
   const ProductImage = () => (
     <Link href={`/product/${product.slug}`}>
-      <div className='relative h-40 xs:h-48 sm:h-52'>
+      <div className='relative h-32 xs:h-40 sm:h-48 lg:h-52'>
         {/* Badge de réduction en haut à gauche */}
         {product.listPrice > 0 && product.listPrice > product.price && (
-          <div className='absolute top-2 left-2 z-10'>
+          <div className='absolute top-1 left-1 sm:top-2 sm:left-2 z-10'>
             <div className='relative'>
-              <span className='bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg'>
+              <span className='bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full shadow-lg'>
                 -{Math.round(100 - (product.price / product.listPrice) * 100)}%
               </span>
-              <div className='absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full animate-pulse'></div>
+              <div className='absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-yellow-400 rounded-full animate-pulse'></div>
             </div>
           </div>
         )}
@@ -43,30 +43,32 @@ const ProductCard = ({
             hoverSrc={product.images[1]}
             alt={product.name}
           />
-        ) : product.images[0] ? (
-          <div className='relative h-40 xs:h-48 sm:h-52'>
+        ) : product.images[0] && product.images[0].trim() !== '' ? (
+          <div className='relative h-32 xs:h-40 sm:h-48 lg:h-52'>
             <Image
               src={product.images[0]}
               alt={product.name}
               fill
-              sizes='(max-width: 480px) 60vw, (max-width: 768px) 40vw, 20vw'
+              sizes='(max-width: 320px) 50vw, (max-width: 480px) 60vw, (max-width: 768px) 40vw, 20vw'
               className='object-contain'
             />
           </div>
         ) : (
-          <div className='relative h-40 xs:h-48 sm:h-52 bg-muted flex items-center justify-center'>
-            <span className='text-muted-foreground text-sm'>Aucune image</span>
+          <div className='relative h-32 xs:h-40 sm:h-48 lg:h-52 bg-muted flex items-center justify-center'>
+            <span className='text-muted-foreground text-xs sm:text-sm'>
+              Aucune image
+            </span>
           </div>
         )}
       </div>
     </Link>
   )
   const ProductDetails = () => (
-    <div className='flex-1 space-y-1 xs:space-y-2'>
-      <p className='font-bold text-xs xs:text-sm'>{product.brand}</p>
+    <div className='flex-1 space-y-1 sm:space-y-2'>
+      <p className='font-bold text-xs sm:text-sm truncate'>{product.brand}</p>
       <Link
         href={`/product/${product.slug}`}
-        className='overflow-hidden text-ellipsis text-xs xs:text-sm'
+        className='overflow-hidden text-ellipsis text-xs sm:text-sm line-clamp-2 block'
         style={{
           display: '-webkit-box',
           WebkitLineClamp: 2,
@@ -75,7 +77,7 @@ const ProductCard = ({
       >
         {product.name}
       </Link>
-      <div className='flex gap-1 xs:gap-2 justify-center items-center'>
+      <div className='flex gap-1 sm:gap-2 justify-center items-center'>
         <Rating rating={product.avgRating} size='xs' />
         <span className='text-xs'>({formatNumber(product.numReviews)})</span>
       </div>

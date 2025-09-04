@@ -97,10 +97,10 @@ export default async function ProductDetails(props: {
 
   const t = await getTranslations()
   return (
-    <div className='p-1 xs:p-2 sm:p-4 lg:p-6 max-w-7xl mx-auto'>
+    <div className='px-1 py-2 sm:p-4 lg:p-6 max-w-7xl mx-auto'>
       <AddToBrowsingHistory id={product._id} category={product.category} />
       <section className='mb-4 sm:mb-8'>
-        <div className='grid grid-cols-1 lg:grid-cols-12 gap-2 xs:gap-4 lg:gap-8'>
+        <div className='grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-6 lg:gap-8'>
           {/* Product Gallery */}
           <div className='lg:col-span-7'>
             <div className='lg:sticky lg:top-4'>
@@ -112,16 +112,16 @@ export default async function ProductDetails(props: {
           <div className='lg:col-span-5 space-y-3 sm:space-y-6'>
             {/* Product Header */}
             <div className='space-y-2 sm:space-y-4'>
-              <div className='flex flex-wrap items-center gap-1 xs:gap-2'>
-                <span className='px-2 xs:px-3 py-1 rounded-full bg-primary/10 text-primary text-xs xs:text-sm font-medium'>
+              <div className='flex flex-wrap items-center gap-1.5'>
+                <span className='px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium'>
                   {t('Product.Brand')} {product.brand}
                 </span>
-                <span className='px-2 xs:px-3 py-1 rounded-full bg-muted text-muted-foreground text-xs xs:text-sm'>
+                <span className='px-2 py-1 rounded-full bg-muted text-muted-foreground text-xs'>
                   {product.category}
                 </span>
               </div>
 
-              <h1 className='font-bold text-lg xs:text-xl sm:text-2xl lg:text-3xl leading-tight'>
+              <h1 className='font-bold text-lg sm:text-2xl lg:text-3xl leading-tight'>
                 {product.name}
               </h1>
 
@@ -150,7 +150,7 @@ export default async function ProductDetails(props: {
 
             {/* Cart Section */}
             <Card className='border-2 border-primary/20 shadow-lg'>
-              <CardContent className='p-3 xs:p-4 sm:p-6 space-y-3 sm:space-y-4'>
+              <CardContent className='p-3 sm:p-6 space-y-3 sm:space-y-4'>
                 <div className='text-center'>
                   <ProductPrice price={product.price} />
                 </div>
@@ -158,14 +158,14 @@ export default async function ProductDetails(props: {
                 {/* Stock Status */}
                 <div className='text-center'>
                   {product.countInStock > 0 && product.countInStock <= 3 && (
-                    <div className='inline-flex items-center gap-1 xs:gap-2 px-2 xs:px-3 py-1 xs:py-2 rounded-full bg-orange-100 text-orange-800 text-xs xs:text-sm font-semibold mb-2'>
-                      <div className='w-1.5 xs:w-2 h-1.5 xs:h-2 bg-orange-500 rounded-full animate-pulse'></div>
-                      <span className='hidden xs:inline'>
+                    <div className='inline-flex items-center gap-1.5 px-2 py-1.5 rounded-full bg-orange-100 text-orange-800 text-xs font-semibold mb-2'>
+                      <div className='w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse'></div>
+                      <span className='hidden sm:inline'>
                         {t('Product.Only X left in stock - order soon', {
                           count: product.countInStock,
                         })}
                       </span>
-                      <span className='xs:hidden'>
+                      <span className='sm:hidden'>
                         {t('Product.Only X left', {
                           count: product.countInStock,
                         })}
@@ -174,13 +174,13 @@ export default async function ProductDetails(props: {
                   )}
 
                   {product.countInStock !== 0 ? (
-                    <div className='inline-flex items-center gap-1 xs:gap-2 px-2 xs:px-3 py-1 xs:py-2 rounded-full bg-green-100 text-green-800 text-xs xs:text-sm font-semibold'>
-                      <div className='w-1.5 xs:w-2 h-1.5 xs:h-2 bg-green-500 rounded-full'></div>
+                    <div className='inline-flex items-center gap-1.5 px-2 py-1.5 rounded-full bg-green-100 text-green-800 text-xs font-semibold'>
+                      <div className='w-1.5 h-1.5 bg-green-500 rounded-full'></div>
                       {t('Product.In Stock')}
                     </div>
                   ) : (
-                    <div className='inline-flex items-center gap-1 xs:gap-2 px-2 xs:px-3 py-1 xs:py-2 rounded-full bg-red-100 text-red-800 text-xs xs:text-sm font-semibold'>
-                      <div className='w-1.5 xs:w-2 h-1.5 xs:h-2 bg-red-500 rounded-full'></div>
+                    <div className='inline-flex items-center gap-1.5 px-2 py-1.5 rounded-full bg-red-100 text-red-800 text-xs font-semibold'>
+                      <div className='w-1.5 h-1.5 bg-red-500 rounded-full'></div>
                       {t('Product.Out of Stock')}
                     </div>
                   )}
@@ -188,7 +188,7 @@ export default async function ProductDetails(props: {
 
                 {/* Add to Cart */}
                 {product.countInStock !== 0 && (
-                  <div className='pt-1 xs:pt-2'>
+                  <div className='pt-1'>
                     <AddToCart
                       item={{
                         clientId: generateId(),
@@ -211,28 +211,28 @@ export default async function ProductDetails(props: {
             {/* Product Details */}
             <div className='space-y-3 sm:space-y-6'>
               {/* Description */}
-              <div className='bg-muted/30 rounded-lg p-2 xs:p-3 sm:p-4'>
-                <h3 className='font-semibold text-base xs:text-lg mb-2 xs:mb-3 text-foreground'>
+              <div className='bg-muted/30 rounded-lg p-3 sm:p-4'>
+                <h3 className='font-semibold text-base sm:text-lg mb-2 sm:mb-3 text-foreground'>
                   {t('Product.Description')}
                 </h3>
-                <p className='text-muted-foreground leading-relaxed text-sm xs:text-base'>
+                <p className='text-muted-foreground leading-relaxed text-sm sm:text-base'>
                   {product.description}
                 </p>
               </div>
 
               {/* Specifications */}
               {product.specifications && product.specifications.length > 0 && (
-                <div className='bg-muted/30 rounded-lg p-2 xs:p-3 sm:p-4'>
-                  <h3 className='font-semibold text-base xs:text-lg mb-2 xs:mb-3 text-foreground'>
+                <div className='bg-muted/30 rounded-lg p-3 sm:p-4'>
+                  <h3 className='font-semibold text-base sm:text-lg mb-2 sm:mb-3 text-foreground'>
                     {t('Product.Specifications')}
                   </h3>
-                  <ul className='space-y-1 xs:space-y-2'>
+                  <ul className='space-y-1.5 sm:space-y-2'>
                     {product.specifications.map((spec, index) => (
                       <li
                         key={index}
-                        className='flex items-start gap-1 xs:gap-2 text-muted-foreground text-sm xs:text-base'
+                        className='flex items-start gap-1.5 sm:gap-2 text-muted-foreground text-sm sm:text-base'
                       >
-                        <div className='w-1 xs:w-1.5 h-1 xs:h-1.5 bg-primary rounded-full mt-1.5 xs:mt-2 flex-shrink-0'></div>
+                        <div className='w-1 h-1 sm:w-1.5 sm:h-1.5 bg-primary rounded-full mt-1.5 sm:mt-2 flex-shrink-0'></div>
                         <span>{spec}</span>
                       </li>
                     ))}
@@ -242,17 +242,17 @@ export default async function ProductDetails(props: {
 
               {/* Compatibility */}
               {product.compatibility && product.compatibility.length > 0 && (
-                <div className='bg-muted/30 rounded-lg p-2 xs:p-3 sm:p-4'>
-                  <h3 className='font-semibold text-base xs:text-lg mb-2 xs:mb-3 text-foreground'>
+                <div className='bg-muted/30 rounded-lg p-3 sm:p-4'>
+                  <h3 className='font-semibold text-base sm:text-lg mb-2 sm:mb-3 text-foreground'>
                     {t('Product.Compatibility')}
                   </h3>
-                  <ul className='space-y-1 xs:space-y-2'>
+                  <ul className='space-y-1.5 sm:space-y-2'>
                     {product.compatibility.map((comp, index) => (
                       <li
                         key={index}
-                        className='flex items-start gap-1 xs:gap-2 text-muted-foreground text-sm xs:text-base'
+                        className='flex items-start gap-1.5 sm:gap-2 text-muted-foreground text-sm sm:text-base'
                       >
-                        <div className='w-1 xs:w-1.5 h-1 xs:h-1.5 bg-primary rounded-full mt-1.5 xs:mt-2 flex-shrink-0'></div>
+                        <div className='w-1 h-1 sm:w-1.5 sm:h-1.5 bg-primary rounded-full mt-1.5 sm:mt-2 flex-shrink-0'></div>
                         <span>{comp}</span>
                       </li>
                     ))}
@@ -264,39 +264,39 @@ export default async function ProductDetails(props: {
         </div>
       </section>
       {/* Reviews Section */}
-      <section className='mt-6 xs:mt-8 sm:mt-12 mb-6 xs:mb-8 sm:mb-12'>
-        <div className='bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl p-3 xs:p-4 sm:p-6 mb-4 xs:mb-6'>
+      <section className='mt-6 sm:mt-12 mb-6 sm:mb-12'>
+        <div className='bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl p-3 sm:p-6 mb-4 sm:mb-6'>
           <h2
-            className='text-lg xs:text-xl sm:text-2xl font-bold mb-2 text-center'
+            className='text-lg sm:text-2xl font-bold mb-2 text-center'
             id='reviews'
           >
             {t('Product.Customer Reviews')}
           </h2>
-          <div className='w-12 xs:w-16 h-1 bg-primary rounded-full mx-auto'></div>
+          <div className='w-12 sm:w-16 h-1 bg-primary rounded-full mx-auto'></div>
         </div>
         <ReviewList product={product} userId={session?.user.id} />
       </section>
 
       {/* Related Products Section */}
       {relatedProducts.data.length > 0 && (
-        <section className='mt-6 xs:mt-8 sm:mt-12 mb-6 xs:mb-8 sm:mb-12'>
-          <div className='bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl p-3 xs:p-4 sm:p-6 mb-4 xs:mb-6'>
-            <h2 className='text-lg xs:text-xl sm:text-2xl font-bold mb-2 text-center'>
+        <section className='mt-6 sm:mt-12 mb-6 sm:mb-12'>
+          <div className='bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl p-3 sm:p-6 mb-4 sm:mb-6'>
+            <h2 className='text-lg sm:text-2xl font-bold mb-2 text-center'>
               {t('Product.Best Sellers in', { name: product.category })}
             </h2>
-            <div className='w-12 xs:w-16 h-1 bg-primary rounded-full mx-auto'></div>
+            <div className='w-12 sm:w-16 h-1 bg-primary rounded-full mx-auto'></div>
           </div>
           <ProductSlider products={relatedProducts.data} title='' />
         </section>
       )}
 
       {/* Browsing History Section */}
-      <section className='mt-6 xs:mt-8 sm:mt-12 mb-6 xs:mb-8 sm:mb-12'>
-        <div className='bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl p-3 xs:p-4 sm:p-6 mb-4 xs:mb-6'>
-          <h2 className='text-lg xs:text-xl sm:text-2xl font-bold mb-2 text-center'>
+      <section className='mt-6 sm:mt-12 mb-6 sm:mb-12'>
+        <div className='bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl p-3 sm:p-6 mb-4 sm:mb-6'>
+          <h2 className='text-lg sm:text-2xl font-bold mb-2 text-center'>
             Récemment consultés
           </h2>
-          <div className='w-12 xs:w-16 h-1 bg-primary rounded-full mx-auto'></div>
+          <div className='w-12 sm:w-16 h-1 bg-primary rounded-full mx-auto'></div>
         </div>
         <BrowsingHistoryList />
       </section>

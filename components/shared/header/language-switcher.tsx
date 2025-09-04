@@ -51,8 +51,7 @@ export default function LanguageSwitcher() {
             <DropdownMenuRadioItem key={c.name} value={c.code}>
               <Link
                 className='w-full flex items-center gap-1'
-                href={pathname}
-                locale={c.code}
+                href={`/${c.code}${pathname}`}
               >
                 <span className='text-lg'>{c.icon}</span> {c.name}
               </Link>

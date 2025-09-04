@@ -157,13 +157,13 @@ export default function OrderDetailsForm({
               <Table>
                 <TableHeader>
                   <TableRow className='border-b'>
-                    <TableHead className='text-xs sm:text-sm font-medium'>
+                    <TableHead className='text-xs sm:text-sm font-medium min-w-[200px]'>
                       Article
                     </TableHead>
-                    <TableHead className='text-xs sm:text-sm font-medium text-center'>
+                    <TableHead className='text-xs sm:text-sm font-medium text-center w-16'>
                       Qté
                     </TableHead>
-                    <TableHead className='text-xs sm:text-sm font-medium text-right'>
+                    <TableHead className='text-xs sm:text-sm font-medium text-right w-24'>
                       Prix
                     </TableHead>
                   </TableRow>
@@ -174,31 +174,39 @@ export default function OrderDetailsForm({
                       key={item.slug}
                       className='border-b last:border-b-0'
                     >
-                      <TableCell className='py-3'>
+                      <TableCell className='py-2 sm:py-3'>
                         <Link
                           href={`/product/${item.slug}`}
-                          className='flex items-center gap-2 xs:gap-3 hover:bg-muted/50 rounded-lg p-1 -m-1 transition-colors'
+                          className='flex items-center gap-2 sm:gap-3 hover:bg-muted/50 rounded-lg p-1 -m-1 transition-colors'
                         >
-                          <div className='relative w-12 h-12 xs:w-16 xs:h-16 flex-shrink-0'>
-                            <Image
-                              src={item.image}
-                              alt={item.name}
-                              fill
-                              sizes='(max-width: 640px) 48px, 64px'
-                              className='object-contain rounded-md'
-                            />
+                          <div className='relative w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 flex-shrink-0'>
+                            {item.image && item.image.trim() !== '' ? (
+                              <Image
+                                src={item.image}
+                                alt={item.name}
+                                fill
+                                sizes='(max-width: 640px) 40px, (max-width: 1024px) 48px, 64px'
+                                className='object-contain rounded-md'
+                              />
+                            ) : (
+                              <div className='w-full h-full bg-muted flex items-center justify-center rounded-md'>
+                                <span className='text-muted-foreground text-xs'>
+                                  No image
+                                </span>
+                              </div>
+                            )}
                           </div>
                           <div className='min-w-0 flex-1'>
-                            <p className='text-xs xs:text-sm font-medium line-clamp-2'>
+                            <p className='text-xs sm:text-sm font-medium line-clamp-2'>
                               {item.name}
                             </p>
                           </div>
                         </Link>
                       </TableCell>
-                      <TableCell className='text-center text-xs xs:text-sm font-medium'>
+                      <TableCell className='text-center text-xs sm:text-sm font-medium'>
                         {item.quantity}
                       </TableCell>
-                      <TableCell className='text-right text-xs xs:text-sm font-medium'>
+                      <TableCell className='text-right text-xs sm:text-sm font-medium'>
                         <ProductPrice price={item.price} plain />
                       </TableCell>
                     </TableRow>

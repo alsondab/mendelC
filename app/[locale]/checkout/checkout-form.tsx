@@ -648,15 +648,23 @@ const CheckoutForm = () => {
                             className='flex gap-4 py-2'
                           >
                             <div className='relative w-16 h-16'>
-                              <Image
-                                src={item.image}
-                                alt={item.name}
-                                fill
-                                sizes='20vw'
-                                style={{
-                                  objectFit: 'contain',
-                                }}
-                              />
+                              {item.image && item.image.trim() !== '' ? (
+                                <Image
+                                  src={item.image}
+                                  alt={item.name}
+                                  fill
+                                  sizes='20vw'
+                                  style={{
+                                    objectFit: 'contain',
+                                  }}
+                                />
+                              ) : (
+                                <div className='w-full h-full bg-muted flex items-center justify-center'>
+                                  <span className='text-muted-foreground text-xs'>
+                                    No image
+                                  </span>
+                                </div>
+                              )}
                             </div>
 
                             <div className='flex-1'>

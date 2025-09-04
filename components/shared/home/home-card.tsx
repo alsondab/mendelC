@@ -34,7 +34,7 @@ export function HomeCard({ cards }: { cards: CardItem[] }) {
                   className='flex flex-col group'
                 >
                   <div className='relative overflow-hidden rounded-lg xs:rounded-xl bg-muted/30 p-2 xs:p-3 sm:p-4 mb-2 xs:mb-3 group-hover:bg-muted/50 transition-colors'>
-                    {item.image ? (
+                    {item.image && item.image.trim() !== '' ? (
                       <Image
                         src={item.image}
                         alt={item.name}

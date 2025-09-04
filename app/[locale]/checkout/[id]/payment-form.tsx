@@ -87,17 +87,17 @@ export default function OrderDetailsForm({ order }: { order: IOrder }) {
   )
 
   return (
-    <main className='max-w-6xl mx-auto'>
-      <div className='grid md:grid-cols-4 gap-6'>
-        <div className='md:col-span-3'>
+    <main className='max-w-6xl mx-auto px-2 sm:px-4'>
+      <div className='grid lg:grid-cols-4 gap-4 sm:gap-6'>
+        <div className='lg:col-span-3'>
           {/* Shipping Address */}
           <div>
-            <div className='grid md:grid-cols-3 my-3 pb-3'>
-              <div className='text-lg font-bold'>
+            <div className='grid grid-cols-1 sm:grid-cols-3 my-3 pb-3 gap-2'>
+              <div className='text-base sm:text-lg font-bold'>
                 <span>{t('ShippingAddress')}</span>
               </div>
-              <div className='col-span-2'>
-                <p>
+              <div className='sm:col-span-2'>
+                <p className='text-sm sm:text-base'>
                   {shippingAddress.fullName} <br />
                   {shippingAddress.street} <br />
                   {`${shippingAddress.city}, ${shippingAddress.province}, ${shippingAddress.postalCode}, ${shippingAddress.country}`}
@@ -108,41 +108,41 @@ export default function OrderDetailsForm({ order }: { order: IOrder }) {
 
           {/* payment method */}
           <div className='border-y'>
-            <div className='grid md:grid-cols-3 my-3 pb-3'>
-              <div className='text-lg font-bold'>
+            <div className='grid grid-cols-1 sm:grid-cols-3 my-3 pb-3 gap-2'>
+              <div className='text-base sm:text-lg font-bold'>
                 <span>{t('PaymentMethod')}</span>
               </div>
-              <div className='col-span-2'>
-                <p>{t(paymentMethod)}</p>
+              <div className='sm:col-span-2'>
+                <p className='text-sm sm:text-base'>{t(paymentMethod)}</p>
               </div>
             </div>
           </div>
 
-          <div className='grid md:grid-cols-3 my-3 pb-3'>
-            <div className='flex text-lg font-bold'>
+          <div className='grid grid-cols-1 sm:grid-cols-3 my-3 pb-3 gap-2'>
+            <div className='flex text-base sm:text-lg font-bold'>
               <span>{t('ItemsAndShipping')}</span>
             </div>
-            <div className='col-span-2'>
-              <p>
+            <div className='sm:col-span-2'>
+              <p className='text-sm sm:text-base'>
                 {t('DeliveryDate')}:
                 {formatDateTime(expectedDeliveryDate).dateOnly}
               </p>
-              <ul>
+              <ul className='text-sm sm:text-base'>
                 {items.map((item) => (
-                  <li key={item.slug}>
+                  <li key={item.slug} className='truncate'>
                     {item.name} x {item.quantity} = {item.price}
                   </li>
                 ))}
               </ul>
             </div>
           </div>
-          <div className='block md:hidden'>
+          <div className='block lg:hidden'>
             <CheckoutSummary />
           </div>
 
           <CheckoutFooter />
         </div>
-        <div className='hidden md:block'>
+        <div className='hidden lg:block'>
           <CheckoutSummary />
         </div>
       </div>

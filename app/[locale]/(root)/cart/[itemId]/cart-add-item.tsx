@@ -31,16 +31,24 @@ export default function CartAddItem({ itemId }: { itemId: string }) {
         <Card className='w-full rounded-none'>
           <CardContent className='flex h-full items-center justify-center  gap-3 py-4'>
             <Link href={`/product/${item.slug}`}>
-              <Image
-                src={item.image}
-                alt={item.name}
-                width={80}
-                height={80}
-                style={{
-                  maxWidth: '100%',
-                  height: 'auto',
-                }}
-              />
+              {item.image && item.image.trim() !== '' ? (
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  width={80}
+                  height={80}
+                  style={{
+                    maxWidth: '100%',
+                    height: 'auto',
+                  }}
+                />
+              ) : (
+                <div className='w-20 h-20 bg-muted flex items-center justify-center rounded'>
+                  <span className='text-muted-foreground text-xs'>
+                    No image
+                  </span>
+                </div>
+              )}
             </Link>
             <div>
               <h3 className='text-xl font-bold flex gap-2 my-2'>
