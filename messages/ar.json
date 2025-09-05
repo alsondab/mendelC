@@ -39,7 +39,11 @@
     "Find exactly what you're looking for": "ابحث عن ما تبحث عنه بالضبط",
     "Search by category or type directly": "ابحث حسب الفئة أو اكتب مباشرة",
     "Subtotal": "المجموع الفرعي",
-    "Go to cart": "اذهب إلى السلة"
+    "Go to cart": "اذهب إلى السلة",
+    "Home": "الرئيسية",
+    "Search": "البحث",
+    "Wishlist": "قائمة الأمنيات",
+    "Account": "الحساب"
   },
   "Home": {
     "Categories to explore": "فئات للاستكشاف",

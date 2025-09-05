@@ -39,7 +39,11 @@
     "Find exactly what you're looking for": "Find exactly what you're looking for",
     "Search by category or type directly": "Search by category or type directly",
     "Subtotal": "Subtotal",
-    "Go to cart": "Go to cart"
+    "Go to cart": "Go to cart",
+    "Home": "Home",
+    "Search": "Search",
+    "Wishlist": "Wishlist",
+    "Account": "Account"
   },
   "Home": {
     "Categories to explore": "Categories to explore",

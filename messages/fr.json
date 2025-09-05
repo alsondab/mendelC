@@ -39,7 +39,13 @@
     "Find exactly what you're looking for": "Trouvez exactement ce que vous cherchez",
     "Search by category or type directly": "Recherchez par catégorie ou saisissez directement votre recherche",
     "Subtotal": "Sous-total",
-    "Go to cart": "Aller au panier"
+    "Go to cart": "Aller au panier",
+    "Home": "Accueil",
+    "Search": "Recherche",
+    "Wishlist": "Favoris",
+    "Account": "Compte",
+    "Settings": "Réglages",
+    "Navigation": "Navigation"
   },
   "Home": {
     "Categories to explore": "Catégories à explorer",

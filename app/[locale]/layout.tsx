@@ -10,6 +10,7 @@ import { notFound } from 'next/navigation'
 import { getSetting } from '@/lib/actions/setting.actions'
 import { cookies } from 'next/headers'
 import FloatingCartButton from '@/components/shared/header/floating-cart-button'
+import MobileBottomNav from '@/components/shared/mobile-bottom-nav'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -68,12 +69,13 @@ export default async function AppLayout({
       suppressHydrationWarning
     >
       <body
-        className={`min-h-screen ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`min-h-screen ${geistSans.variable} ${geistMono.variable} antialiased pb-16 md:pb-0`}
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ClientProviders setting={{ ...setting, currency }}>
             {children}
             <FloatingCartButton />
+            <MobileBottomNav />
           </ClientProviders>
         </NextIntlClientProvider>
       </body>

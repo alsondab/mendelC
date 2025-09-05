@@ -48,7 +48,7 @@ export default async function Header() {
                   </span>
                 </div>
               )}
-              <span className='font-bold text-lg sm:text-2xl lg:text-4xl text-foreground hidden xs:block truncate'>
+              <span className='font-bold text-sm xs:text-lg sm:text-2xl lg:text-4xl text-foreground truncate'>
                 {site.name}
               </span>
             </Link>
@@ -62,8 +62,6 @@ export default async function Header() {
           {/* Mobile Actions */}
           <div className='lg:hidden flex items-center space-x-1 sm:space-x-2 flex-shrink-0'>
             <Sidebar categories={categories} />
-            <Search categories={categories} siteName={site.name} />
-            <Menu headerMenus={data.headerMenus} />
           </div>
 
           {/* Desktop Actions */}
