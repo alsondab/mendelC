@@ -53,6 +53,8 @@ const orderSchema = new Schema<IOrder>(
     paidAt: { type: Date },
     isDelivered: { type: Boolean, required: true, default: false },
     deliveredAt: { type: Date },
+    isCancelled: { type: Boolean, required: true, default: false },
+    cancelledAt: { type: Date },
     createdAt: { type: Date, default: Date.now },
   },
   {

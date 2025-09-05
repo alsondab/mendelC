@@ -119,13 +119,39 @@ export default async function OrdersPage(props: {
                     </Link>
                   </TableCell>
                   <TableCell className='text-xs sm:text-sm text-muted-foreground'>
-                    {formatDateTime(order.createdAt!).dateTime}
+                    {order.isCancelled ? (
+                      <div className='flex flex-col'>
+                        <span className='text-red-600 font-medium'>
+                          Commande annulée
+                        </span>
+                        <span className='text-xs'>
+                          le {formatDateTime(order.cancelledAt!).dateTime}
+                        </span>
+                      </div>
+                    ) : (
+                      <div className='flex flex-col'>
+                        <span className='font-medium'>
+                          Commande {formatId(order._id)}
+                        </span>
+                        <span className='text-xs'>
+                          Passée le {formatDateTime(order.createdAt!).dateTime}
+                        </span>
+                      </div>
+                    )}
                   </TableCell>
                   <TableCell className='text-xs sm:text-sm font-medium'>
                     <ProductPrice price={order.totalPrice} plain />
                   </TableCell>
                   <TableCell className='hidden sm:table-cell text-xs sm:text-sm'>
-                    {order.isPaid && order.paidAt ? (
+                    {order.isCancelled ? (
+                      <div className='flex items-center gap-2'>
+                        <div className='w-2 h-2 bg-red-500 rounded-full'></div>
+                        <span className='text-red-600'>
+                          Annulée le{' '}
+                          {formatDateTime(order.cancelledAt!).dateTime}
+                        </span>
+                      </div>
+                    ) : order.isPaid && order.paidAt ? (
                       <div className='flex items-center gap-2'>
                         <div className='w-2 h-2 bg-green-500 rounded-full'></div>
                         <span className='text-green-600'>
@@ -140,7 +166,15 @@ export default async function OrdersPage(props: {
                     )}
                   </TableCell>
                   <TableCell className='hidden sm:table-cell text-xs sm:text-sm'>
-                    {order.isDelivered && order.deliveredAt ? (
+                    {order.isCancelled ? (
+                      <div className='flex items-center gap-2'>
+                        <div className='w-2 h-2 bg-red-500 rounded-full'></div>
+                        <span className='text-red-600'>
+                          Annulée le{' '}
+                          {formatDateTime(order.cancelledAt!).dateTime}
+                        </span>
+                      </div>
+                    ) : order.isDelivered && order.deliveredAt ? (
                       <div className='flex items-center gap-2'>
                         <div className='w-2 h-2 bg-green-500 rounded-full'></div>
                         <span className='text-green-600'>

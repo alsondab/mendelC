@@ -169,12 +169,17 @@ const OrdersList = () => {
                         {order.user ? order.user.name : 'Utilisateur supprimé'}
                       </span>
                       <div className='flex flex-wrap gap-1 mt-1'>
-                        {order.isPaid && (
+                        {order.isCancelled && (
+                          <span className='px-1.5 py-0.5 text-xs bg-red-100 text-red-800 rounded-full'>
+                            Annulée
+                          </span>
+                        )}
+                        {order.isPaid && !order.isCancelled && (
                           <span className='px-1.5 py-0.5 text-xs bg-green-100 text-green-800 rounded-full'>
                             Payé
                           </span>
                         )}
-                        {order.isDelivered && (
+                        {order.isDelivered && !order.isCancelled && (
                           <span className='px-1.5 py-0.5 text-xs bg-blue-100 text-blue-800 rounded-full'>
                             Livré
                           </span>
@@ -189,24 +194,36 @@ const OrdersList = () => {
                     <div className='flex items-center gap-2 text-xs sm:text-sm'>
                       <div
                         className={`w-2 h-2 rounded-full ${
-                          order.isPaid ? 'bg-green-500' : 'bg-red-500'
+                          order.isCancelled
+                            ? 'bg-red-500'
+                            : order.isPaid
+                              ? 'bg-green-500'
+                              : 'bg-red-500'
                         }`}
                       ></div>
-                      {order.isPaid && order.paidAt
-                        ? formatDateTime(order.paidAt).dateOnly
-                        : 'Non payé'}
+                      {order.isCancelled
+                        ? 'Annulée'
+                        : order.isPaid && order.paidAt
+                          ? formatDateTime(order.paidAt).dateOnly
+                          : 'Non payé'}
                     </div>
                   </TableCell>
                   <TableCell className='hidden md:table-cell'>
                     <div className='flex items-center gap-2 text-xs sm:text-sm'>
                       <div
                         className={`w-2 h-2 rounded-full ${
-                          order.isDelivered ? 'bg-green-500' : 'bg-yellow-500'
+                          order.isCancelled
+                            ? 'bg-red-500'
+                            : order.isDelivered
+                              ? 'bg-green-500'
+                              : 'bg-yellow-500'
                         }`}
                       ></div>
-                      {order.isDelivered && order.deliveredAt
-                        ? formatDateTime(order.deliveredAt).dateOnly
-                        : 'En cours'}
+                      {order.isCancelled
+                        ? 'Annulée'
+                        : order.isDelivered && order.deliveredAt
+                          ? formatDateTime(order.deliveredAt).dateOnly
+                          : 'En cours'}
                     </div>
                   </TableCell>
                   <TableCell>

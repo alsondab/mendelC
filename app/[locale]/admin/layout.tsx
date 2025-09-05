@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import Menu from '@/components/shared/header/menu'
 import { AdminNav, AdminMobileMenu } from './admin-nav'
 import { getSetting } from '@/lib/actions/setting.actions'
 import { AdminGuard } from '@/components/shared/admin/admin-guard'
@@ -28,7 +27,6 @@ export default async function AdminLayout({
             <AdminNav className='mx-6 hidden md:flex' />
             <div className='ml-auto flex items-center space-x-2'>
               <AdminMobileMenu />
-              <Menu forAdmin />
             </div>
           </div>
         </div>

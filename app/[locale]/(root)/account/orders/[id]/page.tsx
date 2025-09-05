@@ -66,29 +66,42 @@ export default async function OrderDetailsPage(props: {
             </div>
             <div>
               <h1 className='text-xl sm:text-2xl font-bold text-foreground'>
-                Commande {formatId(order._id)}
+                {order.isCancelled
+                  ? 'Commande annulée'
+                  : `Commande ${formatId(order._id)}`}
               </h1>
               <p className='text-sm text-muted-foreground'>
-                Passée le {formatDateTime(order.createdAt).dateTime}
+                {order.isCancelled
+                  ? `Annulée le ${formatDateTime(order.cancelledAt!).dateTime}`
+                  : `Passée le ${formatDateTime(order.createdAt).dateTime}`}
               </p>
             </div>
           </div>
 
           <div className='flex flex-wrap gap-2'>
-            <Badge
-              variant={order.isPaid ? 'default' : 'destructive'}
-              className='flex items-center gap-1'
-            >
-              <CreditCard className='h-3 w-3' />
-              {order.isPaid ? 'Payée' : 'Non payée'}
-            </Badge>
-            <Badge
-              variant={order.isDelivered ? 'default' : 'secondary'}
-              className='flex items-center gap-1'
-            >
-              <MapPin className='h-3 w-3' />
-              {order.isDelivered ? 'Livrée' : 'En cours'}
-            </Badge>
+            {order.isCancelled ? (
+              <Badge variant='destructive' className='flex items-center gap-1'>
+                <CreditCard className='h-3 w-3' />
+                Annulée le {formatDateTime(order.cancelledAt!).dateTime}
+              </Badge>
+            ) : (
+              <>
+                <Badge
+                  variant={order.isPaid ? 'default' : 'destructive'}
+                  className='flex items-center gap-1'
+                >
+                  <CreditCard className='h-3 w-3' />
+                  {order.isPaid ? 'Payée' : 'Non payée'}
+                </Badge>
+                <Badge
+                  variant={order.isDelivered ? 'default' : 'secondary'}
+                  className='flex items-center gap-1'
+                >
+                  <MapPin className='h-3 w-3' />
+                  {order.isDelivered ? 'Livrée' : 'En cours'}
+                </Badge>
+              </>
+            )}
           </div>
         </div>
       </div>

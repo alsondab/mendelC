@@ -11,6 +11,7 @@ import {
   sendAskReviewOrderItems,
   sendPurchaseReceipt,
   sendOrderConfirmation,
+  sendOrderCancellationNotification,
 } from '@/emails'
 import { DateRange } from 'react-day-picker'
 import Product from '../db/models/product.model'
@@ -192,6 +193,50 @@ export async function deliverOrder(orderId: string) {
     if (order.user && order.user.email) await sendAskReviewOrderItems({ order })
     revalidatePath(`/account/orders/${orderId}`)
     return { success: true, message: 'Commande livrée avec succès' }
+  } catch (err) {
+    return { success: false, message: formatError(err) }
+  }
+}
+
+export async function cancelOrder(orderId: string) {
+  try {
+    await connectToDatabase()
+    const order = await Order.findById(orderId).populate<{
+      user: { email: string; name: string }
+    }>('user', 'name email')
+    if (!order) throw new Error('Commande non trouvée')
+    if (order.isDelivered)
+      throw new Error("Impossible d'annuler une commande déjà livrée")
+    if (order.isPaid)
+      throw new Error("Impossible d'annuler une commande déjà payée")
+    if (order.isCancelled) throw new Error('Cette commande est déjà annulée')
+
+    // Envoyer un email de notification d'annulation
+    if (order.user && order.user.email) {
+      try {
+        console.log("📧 Envoi de l'email d'annulation à:", order.user.email)
+        await sendOrderCancellationNotification({ order })
+        console.log("✅ Email d'annulation envoyé avec succès")
+      } catch (emailError) {
+        console.error(
+          "❌ Échec de l'envoi de l'email d'annulation:",
+          emailError
+        )
+      }
+    }
+
+    // Marquer la commande comme annulée
+    order.isCancelled = true
+    order.cancelledAt = new Date()
+    await order.save()
+
+    revalidatePath(`/account/orders`)
+    revalidatePath(`/account/orders/${orderId}`)
+    revalidatePath(`/admin/orders`)
+    return {
+      success: true,
+      message: 'Commande annulée avec succès. Redirection...',
+    }
   } catch (err) {
     return { success: false, message: formatError(err) }
   }

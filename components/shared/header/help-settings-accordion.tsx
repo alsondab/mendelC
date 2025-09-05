@@ -10,6 +10,7 @@ import {
   HelpCircle,
   LogOut,
   LogIn,
+  Shield,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SignOut } from '@/lib/actions/user.actions'
@@ -63,6 +64,18 @@ export default function HelpSettingsAccordion({
                 <span className='text-sm'>{t('Header.Your account')}</span>
               </Link>
             </DrawerClose>
+
+            {session?.user?.role === 'Admin' && (
+              <DrawerClose asChild>
+                <Link
+                  href='/admin/overview'
+                  className='flex items-center space-x-2 px-3 py-2 hover:bg-muted/50 transition-colors border-b border-border/20 text-foreground'
+                >
+                  <Shield className='h-4 w-4 text-muted-foreground' />
+                  <span className='text-sm'>{t('Header.Admin')}</span>
+                </Link>
+              </DrawerClose>
+            )}
 
             <DrawerClose asChild>
               <Link

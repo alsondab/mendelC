@@ -89,13 +89,67 @@ export const OrderItemSchema = z.object({
   color: z.string().optional(),
 })
 export const ShippingAddressSchema = z.object({
-  fullName: z.string().min(1, 'Full name is required'),
-  street: z.string().min(1, 'Address is required'),
-  city: z.string().min(1, 'City is required'),
-  postalCode: z.string().min(1, 'Postal code is required'),
-  province: z.string().min(1, 'Province is required'),
-  phone: z.string().min(1, 'Phone number is required'),
-  country: z.string().min(1, 'Country is required'),
+  fullName: z
+    .string()
+    .min(2, 'Le nom complet doit contenir au moins 2 caractères')
+    .max(50, 'Le nom complet ne peut pas dépasser 50 caractères')
+    .regex(
+      /^[a-zA-ZÀ-ÿ\s'-]+$/,
+      'Le nom ne peut contenir que des lettres, espaces, apostrophes et tirets'
+    ),
+  street: z
+    .string()
+    .min(5, "L'adresse doit contenir au moins 5 caractères")
+    .max(100, "L'adresse ne peut pas dépasser 100 caractères")
+    .regex(
+      /^[a-zA-Z0-9À-ÿ\s\-#.,]+$/,
+      "L'adresse contient des caractères non autorisés"
+    ),
+  city: z
+    .string()
+    .min(2, 'La ville doit contenir au moins 2 caractères')
+    .max(50, 'La ville ne peut pas dépasser 50 caractères')
+    .regex(
+      /^[a-zA-ZÀ-ÿ\s'-]+$/,
+      'La ville ne peut contenir que des lettres, espaces, apostrophes et tirets'
+    ),
+  postalCode: z
+    .string()
+    .min(5, 'Le code postal doit contenir au moins 5 caractères')
+    .max(10, 'Le code postal ne peut pas dépasser 10 caractères')
+    .regex(
+      /^[A-Za-z0-9\s-]+$/,
+      'Le code postal contient des caractères non autorisés'
+    ),
+  province: z
+    .string()
+    .min(2, 'La province doit contenir au moins 2 caractères')
+    .max(50, 'La province ne peut pas dépasser 50 caractères')
+    .regex(
+      /^[a-zA-ZÀ-ÿ\s'-]+$/,
+      'La province ne peut contenir que des lettres, espaces, apostrophes et tirets'
+    ),
+  phone: z
+    .string()
+    .min(1, 'Le numéro de téléphone est requis')
+    .refine((val) => {
+      // Vérifier que le numéro commence par +225
+      if (!val.startsWith('+225')) {
+        return false
+      }
+      // Supprimer +225 et tous les caractères non numériques
+      const digitsOnly = val.replace(/[^\d]/g, '').replace(/^225/, '')
+      // Vérifier qu'il y a exactement 10 chiffres après +225
+      return digitsOnly.length === 10
+    }, 'Le numéro doit commencer par +225 et contenir exactement 10 chiffres (ex: +225 07 12 34 56 78)'),
+  country: z
+    .string()
+    .min(2, 'Le pays doit contenir au moins 2 caractères')
+    .max(50, 'Le pays ne peut pas dépasser 50 caractères')
+    .regex(
+      /^[a-zA-ZÀ-ÿ\s'-]+$/,
+      'Le pays ne peut contenir que des lettres, espaces, apostrophes et tirets'
+    ),
 })
 
 // Order
@@ -134,6 +188,8 @@ export const OrderInputSchema = z.object({
   deliveredAt: z.date().optional(),
   isPaid: z.boolean().default(false),
   paidAt: z.date().optional(),
+  isCancelled: z.boolean().default(false),
+  cancelledAt: z.date().optional(),
 })
 // Cart
 
@@ -154,10 +210,26 @@ export const CartSchema = z.object({
 // USER
 const UserName = z
   .string()
-  .min(2, { message: 'Username must be at least 2 characters' })
-  .max(50, { message: 'Username must be at most 30 characters' })
+  .min(2, 'Le nom doit contenir au moins 2 caractères')
+  .max(50, 'Le nom ne peut pas dépasser 50 caractères')
+  .regex(
+    /^[a-zA-ZÀ-ÿ\s'-]+$/,
+    'Le nom ne peut contenir que des lettres, espaces, apostrophes et tirets'
+  )
+  .refine((val) => val.trim().length >= 2, 'Le nom ne peut pas être vide')
 const Email = z.string().min(1, 'Email is required').email('Email is invalid')
-const Password = z.string().min(3, 'Password must be at least 3 characters')
+const Password = z
+  .string()
+  .min(8, 'Le mot de passe doit contenir au moins 8 caractères')
+  .max(128, 'Le mot de passe ne peut pas dépasser 128 caractères')
+  .regex(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+    'Le mot de passe doit contenir au moins une minuscule, une majuscule, un chiffre et un caractère spécial (@$!%*?&)'
+  )
+  .refine(
+    (val) => !val.includes(' '),
+    "Le mot de passe ne peut pas contenir d'espaces"
+  )
 const UserRole = z.string().min(1, 'role is required')
 
 export const UserUpdateSchema = z.object({
@@ -176,13 +248,67 @@ export const UserInputSchema = z.object({
   password: Password,
   paymentMethod: z.string().min(1, 'Payment method is required'),
   address: z.object({
-    fullName: z.string().min(1, 'Full name is required'),
-    street: z.string().min(1, 'Street is required'),
-    city: z.string().min(1, 'City is required'),
-    province: z.string().min(1, 'Province is required'),
-    postalCode: z.string().min(1, 'Postal code is required'),
-    country: z.string().min(1, 'Country is required'),
-    phone: z.string().min(1, 'Phone number is required'),
+    fullName: z
+      .string()
+      .min(2, 'Le nom complet doit contenir au moins 2 caractères')
+      .max(50, 'Le nom complet ne peut pas dépasser 50 caractères')
+      .regex(
+        /^[a-zA-ZÀ-ÿ\s'-]+$/,
+        'Le nom ne peut contenir que des lettres, espaces, apostrophes et tirets'
+      ),
+    street: z
+      .string()
+      .min(5, "L'adresse doit contenir au moins 5 caractères")
+      .max(100, "L'adresse ne peut pas dépasser 100 caractères")
+      .regex(
+        /^[a-zA-Z0-9À-ÿ\s\-#.,]+$/,
+        "L'adresse contient des caractères non autorisés"
+      ),
+    city: z
+      .string()
+      .min(2, 'La ville doit contenir au moins 2 caractères')
+      .max(50, 'La ville ne peut pas dépasser 50 caractères')
+      .regex(
+        /^[a-zA-ZÀ-ÿ\s'-]+$/,
+        'La ville ne peut contenir que des lettres, espaces, apostrophes et tirets'
+      ),
+    province: z
+      .string()
+      .min(2, 'La province doit contenir au moins 2 caractères')
+      .max(50, 'La province ne peut pas dépasser 50 caractères')
+      .regex(
+        /^[a-zA-ZÀ-ÿ\s'-]+$/,
+        'La province ne peut contenir que des lettres, espaces, apostrophes et tirets'
+      ),
+    postalCode: z
+      .string()
+      .min(5, 'Le code postal doit contenir au moins 5 caractères')
+      .max(10, 'Le code postal ne peut pas dépasser 10 caractères')
+      .regex(
+        /^[A-Za-z0-9\s-]+$/,
+        'Le code postal contient des caractères non autorisés'
+      ),
+    country: z
+      .string()
+      .min(2, 'Le pays doit contenir au moins 2 caractères')
+      .max(50, 'Le pays ne peut pas dépasser 50 caractères')
+      .regex(
+        /^[a-zA-ZÀ-ÿ\s'-]+$/,
+        'Le pays ne peut contenir que des lettres, espaces, apostrophes et tirets'
+      ),
+    phone: z
+      .string()
+      .min(1, 'Le numéro de téléphone est requis')
+      .refine((val) => {
+        // Vérifier que le numéro commence par +225
+        if (!val.startsWith('+225')) {
+          return false
+        }
+        // Supprimer +225 et tous les caractères non numériques
+        const digitsOnly = val.replace(/[^\d]/g, '').replace(/^225/, '')
+        // Vérifier qu'il y a exactement 10 chiffres après +225
+        return digitsOnly.length === 10
+      }, 'Le numéro doit commencer par +225 et contenir exactement 10 chiffres (ex: +225 07 12 34 56 78)'),
   }),
 })
 

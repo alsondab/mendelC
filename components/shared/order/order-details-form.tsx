@@ -27,7 +27,11 @@ import { IOrder } from '@/lib/db/models/order.model'
 import { formatDateTime } from '@/lib/utils'
 import ProductPrice from '../product/product-price'
 import ActionButton from '../action-button'
-import { deliverOrder, updateOrderToPaid } from '@/lib/actions/order.actions'
+import {
+  deliverOrder,
+  updateOrderToPaid,
+  cancelOrder,
+} from '@/lib/actions/order.actions'
 
 export default function OrderDetailsForm({
   order,
@@ -49,6 +53,8 @@ export default function OrderDetailsForm({
     paidAt,
     isDelivered,
     deliveredAt,
+    isCancelled,
+    cancelledAt,
     expectedDeliveryDate,
   } = order
 
@@ -80,7 +86,14 @@ export default function OrderDetailsForm({
             </div>
 
             <div className='flex items-center gap-2'>
-              {isDelivered ? (
+              {isCancelled ? (
+                <>
+                  <XCircle className='h-4 w-4 text-red-500' />
+                  <Badge variant='destructive'>
+                    Annulée le {formatDateTime(cancelledAt!).dateTime}
+                  </Badge>
+                </>
+              ) : isDelivered ? (
                 <>
                   <CheckCircle className='h-4 w-4 text-green-500' />
                   <Badge className='bg-green-100 text-green-800 border-green-200'>
@@ -99,7 +112,7 @@ export default function OrderDetailsForm({
                 </>
               )}
             </div>
-            {!isDelivered && expectedDeliveryDate && (
+            {!isCancelled && !isDelivered && expectedDeliveryDate && (
               <div className='flex items-center gap-2 text-sm text-muted-foreground'>
                 <Calendar className='h-4 w-4' />
                 <span>
@@ -127,7 +140,14 @@ export default function OrderDetailsForm({
             </div>
 
             <div className='flex items-center gap-2'>
-              {isPaid ? (
+              {isCancelled ? (
+                <>
+                  <XCircle className='h-4 w-4 text-red-500' />
+                  <Badge variant='destructive'>
+                    Annulée le {formatDateTime(cancelledAt!).dateTime}
+                  </Badge>
+                </>
+              ) : isPaid ? (
                 <>
                   <CheckCircle className='h-4 w-4 text-green-500' />
                   <Badge className='bg-green-100 text-green-800 border-green-200'>
@@ -248,8 +268,37 @@ export default function OrderDetailsForm({
               </div>
             </div>
 
+            {/* User Actions */}
+            {!isAdmin && !isCancelled && !isDelivered && (
+              <div className='space-y-2 pt-4 border-t'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-2'>
+                  <ActionButton
+                    caption='Annuler la commande'
+                    action={() => cancelOrder(order._id.toString())}
+                    className='w-full bg-destructive hover:bg-destructive/90 text-destructive-foreground'
+                    refreshOnSuccess={true}
+                  />
+                </div>
+                <p className='text-xs text-muted-foreground text-center'>
+                  Vous pouvez annuler votre commande tant qu&apos;elle n&apos;est pas
+                  payée ou livrée
+                </p>
+              </div>
+            )}
+
+            {/* Cancelled Status */}
+            {isCancelled && (
+              <div className='pt-4 border-t'>
+                <div className='text-center text-sm text-muted-foreground py-2'>
+                  <XCircle className='h-5 w-5 mx-auto mb-2 text-red-500' />
+                  Commande annulée le{' '}
+                  {cancelledAt ? formatDateTime(cancelledAt).dateTime : 'N/A'}
+                </div>
+              </div>
+            )}
+
             {/* Admin Actions */}
-            {isAdmin && (
+            {isAdmin && !isCancelled && (
               <div className='space-y-2 pt-4 border-t'>
                 {!isPaid &&
                   (paymentMethod === 'CashOnDelivery' ||
@@ -275,6 +324,17 @@ export default function OrderDetailsForm({
                       : 'N/A'}
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* Admin Cancelled Status */}
+            {isAdmin && isCancelled && (
+              <div className='pt-4 border-t'>
+                <div className='text-center text-sm text-muted-foreground py-2'>
+                  <XCircle className='h-5 w-5 mx-auto mb-2 text-red-500' />
+                  Commande annulée le{' '}
+                  {cancelledAt ? formatDateTime(cancelledAt).dateTime : 'N/A'}
+                </div>
               </div>
             )}
           </CardContent>

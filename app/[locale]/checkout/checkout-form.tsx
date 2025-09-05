@@ -44,22 +44,22 @@ import ProductPrice from '@/components/shared/product/product-price'
 const shippingAddressDefaultValues =
   process.env.NODE_ENV === 'development'
     ? {
-        fullName: 'Basir',
-        street: '1911, 65 Sherbrooke Est',
-        city: 'Montreal',
-        province: 'Quebec',
-        phone: '4181234567',
-        postalCode: 'H2X 1C4',
-        country: 'Canada',
+        fullName: 'Jean Kouassi',
+        street: '123 Avenue de la Paix',
+        city: 'Abidjan',
+        province: 'Abidjan',
+        phone: '+225 07 12 34 56 78',
+        postalCode: '00225',
+        country: "Côte d'Ivoire",
       }
     : {
         fullName: '',
         street: '',
         city: '',
         province: '',
-        phone: '',
+        phone: '+225 ',
         postalCode: '',
-        country: '',
+        country: "Côte d'Ivoire",
       }
 
 const CheckoutForm = () => {
@@ -166,111 +166,113 @@ const CheckoutForm = () => {
   const handleSelectShippingAddress = () => {
     shippingAddressForm.handleSubmit(onSubmitShippingAddress)()
   }
-  const CheckoutSummary = () => (
-    <Card className='sticky top-4 shadow-lg'>
-      <CardContent className='p-3 xs:p-4'>
-        {!isAddressSelected && (
-          <div className='border-b border-border/50 mb-3 xs:mb-4 pb-3 xs:pb-4'>
-            <Button
-              className='rounded-full w-full text-sm xs:text-base'
-              onClick={handleSelectShippingAddress}
-            >
-              Livrer à cette adresse
-            </Button>
-            <p className='text-xs xs:text-sm text-center py-2 text-muted-foreground'>
-              {t('ChooseAddressAndPayment')}
-              pour calculer les frais de port, de manutention et les taxes.
-            </p>
-          </div>
-        )}
-        {isAddressSelected && !isPaymentMethodSelected && (
-          <div className='mb-3 xs:mb-4'>
-            <Button
-              className='rounded-full w-full text-sm xs:text-base'
-              onClick={handleSelectPaymentMethod}
-            >
-              {t('UsePaymentMethod')}
-            </Button>
-
-            <p className='text-xs xs:text-sm text-center py-2 text-muted-foreground'>
-              {t('PaymentMethodContinue')}
-            </p>
-          </div>
-        )}
-        {isPaymentMethodSelected && isAddressSelected && (
-          <div>
-            <Button
-              onClick={handlePlaceOrder}
-              className='rounded-full w-full text-sm xs:text-base'
-            >
-              {t('PlaceOrder')}
-            </Button>
-            <p className='text-xs xs:text-sm text-center py-2 text-muted-foreground'>
-              En passant votre commande, vous acceptez la{' '}
-              <Link
-                href='/page/privacy-policy'
-                className='text-primary hover:underline'
+  const CheckoutSummary = () => {
+    return (
+      <Card className='sticky top-4 shadow-lg'>
+        <CardContent className='p-3 xs:p-4'>
+          {!isAddressSelected && (
+            <div className='border-b border-border/50 mb-3 xs:mb-4 pb-3 xs:pb-4'>
+              <Button
+                className='rounded-full w-full text-sm xs:text-base'
+                onClick={handleSelectShippingAddress}
               >
-                politique de confidentialité
-              </Link>{' '}
-              et les{' '}
-              <Link
-                href='/page/conditions-of-use'
-                className='text-primary hover:underline'
+                Livrer à cette adresse
+              </Button>
+              <p className='text-xs xs:text-sm text-center py-2 text-muted-foreground'>
+                {t('ChooseAddressAndPayment')}
+                pour calculer les frais de port, de manutention et les taxes.
+              </p>
+            </div>
+          )}
+          {isAddressSelected && !isPaymentMethodSelected && (
+            <div className='mb-3 xs:mb-4'>
+              <Button
+                className='rounded-full w-full text-sm xs:text-base'
+                onClick={handleSelectPaymentMethod}
               >
-                conditions d&apos;utilisation
-              </Link>{' '}
-              de {site.name}.
-            </p>
-          </div>
-        )}
+                {t('UsePaymentMethod')}
+              </Button>
 
-        <div className='mt-4 xs:mt-6'>
-          <div className='text-base xs:text-lg font-bold mb-3'>
-            Résumé de la commande
-          </div>
-          <div className='space-y-2 xs:space-y-3'>
-            <div className='flex justify-between text-sm xs:text-base'>
-              <span>Articles:</span>
-              <span>
-                <ProductPrice price={itemsPrice} plain />
-              </span>
+              <p className='text-xs xs:text-sm text-center py-2 text-muted-foreground'>
+                {t('PaymentMethodContinue')}
+              </p>
             </div>
-            <div className='flex justify-between text-sm xs:text-base'>
-              <span>Livraison:</span>
-              <span>
-                {shippingPrice === undefined ? (
-                  '--'
-                ) : shippingPrice === 0 ? (
-                  <span className='text-green-600 font-medium'>GRATUIT</span>
-                ) : (
-                  <ProductPrice price={shippingPrice} plain />
-                )}
-              </span>
+          )}
+          {isPaymentMethodSelected && isAddressSelected && (
+            <div>
+              <Button
+                onClick={handlePlaceOrder}
+                className='rounded-full w-full text-sm xs:text-base'
+              >
+                {t('PlaceOrder')}
+              </Button>
+              <p className='text-xs xs:text-sm text-center py-2 text-muted-foreground'>
+                En passant votre commande, vous acceptez la{' '}
+                <Link
+                  href='/page/privacy-policy'
+                  className='text-primary hover:underline'
+                >
+                  politique de confidentialité
+                </Link>{' '}
+                et les{' '}
+                <Link
+                  href='/page/conditions-of-use'
+                  className='text-primary hover:underline'
+                >
+                  conditions d&apos;utilisation
+                </Link>{' '}
+                de {site.name}.
+              </p>
             </div>
-            <div className='flex justify-between text-sm xs:text-base'>
-              <span>Taxes:</span>
-              <span>
-                {taxPrice === undefined ? (
-                  '--'
-                ) : (
-                  <ProductPrice price={taxPrice} plain />
-                )}
-              </span>
+          )}
+
+          <div className='mt-4 xs:mt-6'>
+            <div className='text-base xs:text-lg font-bold mb-3'>
+              Résumé de la commande
             </div>
-            <div className='border-t border-border/50 pt-3 xs:pt-4'>
-              <div className='flex justify-between font-bold text-base xs:text-lg'>
-                <span>Total de la commande:</span>
+            <div className='space-y-2 xs:space-y-3'>
+              <div className='flex justify-between text-sm xs:text-base'>
+                <span>Articles:</span>
                 <span>
-                  <ProductPrice price={totalPrice} plain />
+                  <ProductPrice price={itemsPrice} plain />
                 </span>
+              </div>
+              <div className='flex justify-between text-sm xs:text-base'>
+                <span>Livraison:</span>
+                <span>
+                  {shippingPrice === undefined ? (
+                    '--'
+                  ) : shippingPrice === 0 ? (
+                    <span className='text-green-600 font-medium'>GRATUIT</span>
+                  ) : (
+                    <ProductPrice price={shippingPrice} plain />
+                  )}
+                </span>
+              </div>
+              <div className='flex justify-between text-sm xs:text-base'>
+                <span>Taxes:</span>
+                <span>
+                  {taxPrice === undefined ? (
+                    '--'
+                  ) : (
+                    <ProductPrice price={taxPrice} plain />
+                  )}
+                </span>
+              </div>
+              <div className='border-t border-border/50 pt-3 xs:pt-4'>
+                <div className='flex justify-between font-bold text-base xs:text-lg'>
+                  <span>Total de la commande:</span>
+                  <span>
+                    <ProductPrice price={totalPrice} plain />
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </CardContent>
-    </Card>
-  )
+        </CardContent>
+      </Card>
+    )
+  }
 
   return (
     <main className='p-1 xs:p-2 sm:p-4 lg:p-6 max-w-7xl mx-auto'>
@@ -346,6 +348,7 @@ const CheckoutForm = () => {
                                 <Input
                                   placeholder='Saisir le nom complet'
                                   className='text-sm xs:text-base'
+                                  maxLength={50}
                                   {...field}
                                 />
                               </FormControl>
@@ -366,6 +369,7 @@ const CheckoutForm = () => {
                                 <Input
                                   placeholder="Saisir l'adresse"
                                   className='text-sm xs:text-base'
+                                  maxLength={100}
                                   {...field}
                                 />
                               </FormControl>
@@ -387,6 +391,7 @@ const CheckoutForm = () => {
                                   <Input
                                     placeholder='Saisir la ville'
                                     className='text-sm xs:text-base'
+                                    maxLength={50}
                                     {...field}
                                   />
                                 </FormControl>
@@ -406,6 +411,7 @@ const CheckoutForm = () => {
                                   <Input
                                     placeholder='Saisir la province'
                                     className='text-sm xs:text-base'
+                                    maxLength={50}
                                     {...field}
                                   />
                                 </FormControl>
@@ -428,6 +434,7 @@ const CheckoutForm = () => {
                                   <Input
                                     placeholder='Saisir le code postal'
                                     className='text-sm xs:text-base'
+                                    maxLength={10}
                                     {...field}
                                   />
                                 </FormControl>
@@ -444,11 +451,41 @@ const CheckoutForm = () => {
                                   {t('Phone')}
                                 </FormLabel>
                                 <FormControl>
-                                  <Input
-                                    placeholder='Saisir le numéro de téléphone'
-                                    className='text-sm xs:text-base'
-                                    {...field}
-                                  />
+                                  <div className='relative'>
+                                    <span className='absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground text-sm'>
+                                      +225
+                                    </span>
+                                    <Input
+                                      placeholder='07 12 34 56 78'
+                                      className='text-sm xs:text-base pl-12'
+                                      maxLength={17} // +225 + 10 chiffres + 3 espaces
+                                      type='tel'
+                                      {...field}
+                                      onChange={(e) => {
+                                        let value = e.target.value
+                                        // Supprimer +225 s'il est déjà présent
+                                        if (value.startsWith('+225')) {
+                                          value = value
+                                            .replace('+225', '')
+                                            .trim()
+                                        }
+                                        // Supprimer tous les caractères non numériques
+                                        value = value.replace(/[^\d]/g, '')
+                                        // Limiter à 10 chiffres
+                                        value = value.substring(0, 10)
+                                        // Formater avec des espaces
+                                        if (value.length > 0) {
+                                          const formatted = value.replace(
+                                            /(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/,
+                                            '$1 $2 $3 $4 $5'
+                                          )
+                                          field.onChange('+225 ' + formatted)
+                                        } else {
+                                          field.onChange('+225 ')
+                                        }
+                                      }}
+                                    />
+                                  </div>
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -459,16 +496,16 @@ const CheckoutForm = () => {
                         <FormField
                           control={shippingAddressForm.control}
                           name='country'
-                          render={({ field }) => (
+                          render={() => (
                             <FormItem>
                               <FormLabel className='text-sm xs:text-base'>
                                 {t('Country')}
                               </FormLabel>
                               <FormControl>
                                 <Input
-                                  placeholder='Saisir le pays'
-                                  className='text-sm xs:text-base'
-                                  {...field}
+                                  value="Côte d'Ivoire"
+                                  className='text-sm xs:text-base bg-muted cursor-not-allowed'
+                                  readOnly
                                 />
                               </FormControl>
                               <FormMessage />

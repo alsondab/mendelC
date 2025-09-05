@@ -89,9 +89,13 @@ export default function CredentialsSignInForm() {
             name='name'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Nom complet</FormLabel>
                 <FormControl>
-                  <Input placeholder='Enter name address' {...field} />
+                  <Input
+                    placeholder='Saisir votre nom complet'
+                    maxLength={50}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -105,7 +109,11 @@ export default function CredentialsSignInForm() {
               <FormItem className='w-full'>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder='Enter email address' {...field} />
+                  <Input
+                    placeholder='Saisir votre adresse email'
+                    type='email'
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -117,14 +125,20 @@ export default function CredentialsSignInForm() {
             name='password'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>Mot de passe</FormLabel>
                 <FormControl>
                   <Input
                     type='password'
-                    placeholder='Enter password'
+                    placeholder='Saisir votre mot de passe'
+                    maxLength={128}
                     {...field}
                   />
                 </FormControl>
+                <div className='text-xs text-muted-foreground mt-1'>
+                  Le mot de passe doit contenir au moins 8 caractères avec une
+                  minuscule, une majuscule, un chiffre et un caractère spécial
+                  (@$!%*?&)
+                </div>
                 <FormMessage />
               </FormItem>
             )}
@@ -134,11 +148,12 @@ export default function CredentialsSignInForm() {
             name='confirmPassword'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel>Confirm Password</FormLabel>
+                <FormLabel>Confirmer le mot de passe</FormLabel>
                 <FormControl>
                   <Input
                     type='password'
-                    placeholder='Confirm Password'
+                    placeholder='Confirmer votre mot de passe'
+                    maxLength={128}
                     {...field}
                   />
                 </FormControl>

@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { SignOut } from '@/lib/actions/user.actions'
 import { cn } from '@/lib/utils'
-import { ChevronDownIcon, User, Settings } from 'lucide-react'
+import { ChevronDownIcon, User, Settings, Shield } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 
@@ -70,7 +70,7 @@ export default async function UserButton() {
               {session.user.role === 'Admin' && (
                 <Link className='w-full' href='/admin/overview'>
                   <DropdownMenuItem className='flex items-center space-x-2'>
-                    <Settings className='h-4 w-4' />
+                    <Shield className='h-4 w-4' />
                     <span>{t('Header.Admin')}</span>
                   </DropdownMenuItem>
                 </Link>

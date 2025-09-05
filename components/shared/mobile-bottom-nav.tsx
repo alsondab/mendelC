@@ -12,6 +12,11 @@ export default function MobileBottomNav() {
   const pathname = usePathname()
   const { cart } = useCartStore()
 
+  // Ne pas afficher la navigation mobile dans les pages admin
+  if (pathname.includes('/admin')) {
+    return null
+  }
+
   const navItems = [
     {
       href: '/',

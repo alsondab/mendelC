@@ -192,6 +192,7 @@ const generateOrder = async (
     paymentMethod: data.users[i % users.length].paymentMethod,
     isPaid: true,
     isDelivered: true,
+    isCancelled: false,
     paidAt: calculatePastDate(i),
     deliveredAt: calculatePastDate(i),
     createdAt: calculatePastDate(i),
