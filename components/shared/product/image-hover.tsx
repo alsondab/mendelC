@@ -16,10 +16,12 @@ const ImageHover = ({
   let hoverTimeout: any
 
   // Vérifier que les sources ne sont pas vides
-  if (!src || !hoverSrc) {
+  if (!src || !hoverSrc || src.trim() === '' || hoverSrc.trim() === '') {
     return (
       <div className='relative h-40 xs:h-48 sm:h-52 bg-muted flex items-center justify-center'>
-        <span className='text-muted-foreground text-xs xs:text-sm'>Aucune image</span>
+        <span className='text-muted-foreground text-xs xs:text-sm'>
+          Aucune image
+        </span>
       </div>
     )
   }

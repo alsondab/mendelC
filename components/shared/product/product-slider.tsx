@@ -22,19 +22,13 @@ export default function ProductSlider({
 }) {
   return (
     <div className='w-full bg-background'>
-      <div className='flex flex-col xs:flex-row xs:items-center xs:justify-between gap-3 xs:gap-4 mb-4 xs:mb-6'>
-        <div className='flex items-center space-x-2 xs:space-x-3'>
-          <h2 className='text-lg xs:text-xl sm:text-2xl font-bold text-foreground bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent animate-fade-in-up'>
-            {title}
-          </h2>
-          <div className='w-1 h-6 xs:h-8 bg-gradient-to-b from-primary to-primary/50 rounded-full animate-pulse'></div>
-        </div>
-        <div className='flex items-center space-x-2 bg-gradient-to-r from-primary/10 to-primary/5 px-2 xs:px-3 py-1 rounded-full border border-primary/20'>
-          <div className='w-1.5 xs:w-2 h-1.5 xs:h-2 rounded-full bg-primary animate-pulse'></div>
-          <span className='text-xs xs:text-sm text-muted-foreground font-medium'>
-            {products.length} produits
-          </span>
-        </div>
+      <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-4'>
+        <h2 className='text-lg sm:text-xl font-semibold text-foreground'>
+          {title}
+        </h2>
+        <span className='text-sm text-muted-foreground'>
+          {products.length} produits
+        </span>
       </div>
       <Carousel
         opts={{
@@ -46,32 +40,31 @@ export default function ProductSlider({
         }}
         className='w-full'
       >
-        <CarouselContent className='-ml-1 xs:-ml-2 md:-ml-4'>
-          {products.map((product, index) => (
+        <CarouselContent className='-ml-2 md:-ml-4'>
+          {products.map((product) => (
             <CarouselItem
               key={product.slug}
               className={
                 hideDetails
-                  ? 'pl-1 xs:pl-2 md:pl-4 basis-2/3 xs:basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/6'
-                  : 'pl-1 xs:pl-2 md:pl-4 basis-2/3 xs:basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5'
+                  ? 'pl-2 md:pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6'
+                  : 'pl-2 md:pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5'
               }
-              style={{
-                animationDelay: `${index * 0.1}s`,
-              }}
             >
-              <div className='group hover:scale-105 transition-all duration-300 hover:shadow-lg rounded-lg overflow-hidden'>
-                <ProductCard
-                  hideDetails={hideDetails}
-                  hideAddToCart
-                  hideBorder
-                  product={product}
-                />
-              </div>
+              <ProductCard
+                hideDetails={hideDetails}
+                hideAddToCart
+                hideBorder
+                product={product}
+              />
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+
+        {/* Boutons de navigation en bas */}
+        <div className='flex justify-center items-center gap-2 mt-4'>
+          <CarouselPrevious className='relative translate-y-0 left-0 right-auto h-8 w-8 sm:h-10 sm:w-10' />
+          <CarouselNext className='relative translate-y-0 right-0 left-auto h-8 w-8 sm:h-10 sm:w-10' />
+        </div>
       </Carousel>
     </div>
   )

@@ -37,7 +37,11 @@ const ProductCard = ({
           </div>
         )}
 
-        {product.images.length > 1 && product.images[0] && product.images[1] ? (
+        {product.images.length > 1 &&
+        product.images[0] &&
+        product.images[1] &&
+        product.images[0].trim() !== '' &&
+        product.images[1].trim() !== '' ? (
           <ImageHover
             src={product.images[0]}
             hoverSrc={product.images[1]}

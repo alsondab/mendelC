@@ -76,29 +76,18 @@ export default async function HomePage() {
       <HomeCarousel items={carousels} />
       <div className='md:p-4 md:space-y-4 bg-border'>
         <HomeCard cards={cards} />
-        <Card className='w-full rounded-2xl shadow-lg hover:shadow-xl transition-shadow bg-gradient-to-br from-background to-muted/20 border border-primary/10'>
-          <CardContent className='p-6'>
+        <Card className='w-full'>
+          <CardContent className='p-4 sm:p-6'>
             <ProductSlider title={t("Today's Deals")} products={todaysDeals} />
           </CardContent>
         </Card>
-        <Card className='w-full rounded-none group hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]'>
-          <CardContent className='p-4 items-center gap-3 relative overflow-hidden'>
-            {/* Effet de brillance animé */}
-            <div className='absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out'></div>
-
-            {/* Contenu avec animation d'entrée */}
-            <div className='relative z-10 animate-fade-in-up'>
-              <ProductSlider
-                title={t('Best Selling Products')}
-                products={bestSellingProducts}
-                hideDetails
-              />
-            </div>
-
-            {/* Particules flottantes */}
-            <div className='absolute top-4 right-4 w-2 h-2 bg-yellow-400 rounded-full animate-bounce opacity-60'></div>
-            <div className='absolute bottom-4 left-4 w-1 h-1 bg-blue-400 rounded-full animate-pulse opacity-40'></div>
-            <div className='absolute top-1/2 right-8 w-1.5 h-1.5 bg-green-400 rounded-full animate-ping opacity-30'></div>
+        <Card className='w-full'>
+          <CardContent className='p-4 sm:p-6'>
+            <ProductSlider
+              title={t('Best Selling Products')}
+              products={bestSellingProducts}
+              hideDetails
+            />
           </CardContent>
         </Card>
       </div>

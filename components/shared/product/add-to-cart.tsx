@@ -78,7 +78,7 @@ export default function AddToCart({
         value={quantity.toString()}
         onValueChange={(i) => setQuantity(Number(i))}
       >
-        <SelectTrigger className='h-10'>
+        <SelectTrigger className=''>
           <SelectValue>
             {t('Product.Quantity')}: {quantity}
           </SelectValue>
@@ -92,77 +92,75 @@ export default function AddToCart({
         </SelectContent>
       </Select>
 
-      <div className='grid grid-cols-1 sm:grid-cols-2 gap-2'>
-        <Button
-          className='rounded-lg h-10 text-sm'
-          type='button'
-          onClick={async () => {
-            try {
-              await addItem(item, quantity)
+      <Button
+        className='rounded-full w-full'
+        type='button'
+        onClick={async () => {
+          try {
+            await addItem(item, quantity)
+            toast({
+              description: t('Product.Added to Cart'),
+              action: (
+                <Button
+                  variant='outline'
+                  size='sm'
+                  onClick={() => {
+                    router.push('/cart')
+                  }}
+                >
+                  {t('Product.Go to Cart')}
+                </Button>
+              ),
+            })
+          } catch (error: any) {
+            // ✅ Gestion élégante de la rupture de stock
+            if (error.message === 'Not enough items in stock') {
               toast({
-                description: t('Product.Added to Cart'),
-                action: (
-                  <Button
-                    variant='outline'
-                    size='sm'
-                    onClick={() => {
-                      router.push('/cart')
-                    }}
-                  >
-                    {t('Product.Go to Cart')}
-                  </Button>
-                ),
+                variant: 'destructive',
+                description: t('Product.Out of Stock'),
               })
-            } catch (error: any) {
-              // ✅ Gestion élégante de la rupture de stock
-              if (error.message === 'Not enough items in stock') {
-                toast({
-                  variant: 'destructive',
-                  description: t('Product.Out of Stock'),
-                })
-              } else {
-                toast({
-                  variant: 'destructive',
-                  description: error.message,
-                })
-              }
+            } else {
+              toast({
+                variant: 'destructive',
+                description: error.message,
+              })
             }
-          }}
-          disabled={item.countInStock === 0}
-        >
-          {item.countInStock === 0
-            ? t('Product.Out of Stock')
-            : t('Product.Add to Cart')}
-        </Button>
-        <Button
-          variant='secondary'
-          onClick={() => {
-            try {
-              addItem(item, quantity)
-              router.push(`/checkout`)
-            } catch (error: any) {
-              // ✅ Gestion élégante de la rupture de stock
-              if (error.message === 'Not enough items in stock') {
-                toast({
-                  variant: 'destructive',
-                  description: t('Product.Out of Stock'),
-                })
-              } else {
-                toast({
-                  variant: 'destructive',
-                  description: error.message,
-                })
-              }
+          }
+        }}
+        disabled={item.countInStock === 0}
+      >
+        {item.countInStock === 0
+          ? t('Product.Out of Stock')
+          : t('Product.Add to Cart')}
+      </Button>
+      <Button
+        variant='secondary'
+        onClick={() => {
+          try {
+            addItem(item, quantity)
+            router.push(`/checkout`)
+          } catch (error: any) {
+            // ✅ Gestion élégante de la rupture de stock
+            if (error.message === 'Not enough items in stock') {
+              toast({
+                variant: 'destructive',
+                description: t('Product.Out of Stock'),
+              })
+            } else {
+              toast({
+                variant: 'destructive',
+                description: error.message,
+              })
             }
-          }}
-          className='h-10 text-sm'
-          disabled={item.countInStock === 0}
-        >
-          {item.countInStock === 0
-            ? t('Product.Out of Stock')
-            : t('Product.Buy Now')}
-        </Button>
-      </div>
+          }
+        }}
+        className='w-full rounded-full '
+        disabled={item.countInStock === 0}
+      >
+        {item.countInStock === 0
+          ? t('Product.Out of Stock')
+          : t('Product.Buy Now')}
+      </Button>
     </div>
   )
 }
