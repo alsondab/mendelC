@@ -261,7 +261,7 @@ export function CategoryForm({ categoryId }: CategoryFormProps) {
                       {(uploadedImage || watch('image')) &&
                       (uploadedImage || watch('image') || '').trim() !== '' ? (
                         <Image
-                          src={uploadedImage || watch('image') || ''}
+                          src={(uploadedImage || watch('image'))!}
                           alt='Aperçu de la catégorie'
                           fill
                           className='object-cover'

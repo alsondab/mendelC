@@ -97,10 +97,10 @@ export default async function ProductDetails(props: {
 
   const t = await getTranslations()
   return (
-    <div className='px-1 py-2 sm:p-4 lg:p-6 max-w-7xl mx-auto'>
+    <div className='px-2 py-3 sm:p-4 lg:p-6 max-w-7xl mx-auto'>
       <AddToBrowsingHistory id={product._id} category={product.category} />
       <section className='mb-4 sm:mb-8'>
-        <div className='grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-6 lg:gap-8'>
+        <div className='grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8'>
           {/* Product Gallery */}
           <div className='lg:col-span-7'>
             <div className='lg:sticky lg:top-4'>
@@ -109,7 +109,7 @@ export default async function ProductDetails(props: {
           </div>
 
           {/* Product Info */}
-          <div className='lg:col-span-5 space-y-3 sm:space-y-6'>
+          <div className='lg:col-span-5 space-y-3 sm:space-y-4'>
             {/* Product Header */}
             <div className='space-y-2 sm:space-y-4'>
               <div className='flex flex-wrap items-center gap-1.5'>
@@ -149,8 +149,8 @@ export default async function ProductDetails(props: {
             </div>
 
             {/* Cart Section */}
-            <Card className='border-2 border-primary/20 shadow-lg'>
-              <CardContent className='p-3 sm:p-6 space-y-3 sm:space-y-4'>
+            <Card className='border border-primary/20'>
+              <CardContent className='p-3 sm:p-4 space-y-3'>
                 <div className='text-center'>
                   <ProductPrice price={product.price} />
                 </div>

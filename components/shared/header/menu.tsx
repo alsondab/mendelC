@@ -18,6 +18,8 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import CartButton from './cart-button'
+import ThemeSwitcher from './theme-switcher'
+import LanguageSwitcher from './language-switcher'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 
@@ -32,6 +34,8 @@ const Menu = ({ forAdmin = false, headerMenus = [] }: MenuProps) => {
     <>
       {/* Desktop Menu */}
       <div className='hidden md:flex items-center space-x-2'>
+        <ThemeSwitcher />
+        <LanguageSwitcher />
         {!forAdmin && <CartButton />}
       </div>
 

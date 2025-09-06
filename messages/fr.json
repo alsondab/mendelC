@@ -45,7 +45,11 @@
     "Wishlist": "Favoris",
     "Account": "Compte",
     "Settings": "Réglages",
-    "Navigation": "Navigation"
+    "Navigation": "Navigation",
+    "Preferences": "Préférences",
+    "Theme": "Thème",
+    "Language": "Langue",
+    "Currency": "Devise"
   },
   "Home": {
     "Categories to explore": "Catégories à explorer",

@@ -20,9 +20,8 @@ function useCartSidebar() {
   const deviceType = useDeviceType()
   const currentPath = usePathname()
 
-  return (
-    items.length > 0 && deviceType === 'desktop' && isNotInPaths(currentPath)
-  )
+  // Désactiver l'ouverture automatique du sidebar
+  return false
 }
 
 export default useCartSidebar

@@ -43,7 +43,11 @@
     "Home": "Home",
     "Search": "Search",
     "Wishlist": "Wishlist",
-    "Account": "Account"
+    "Account": "Account",
+    "Preferences": "Preferences",
+    "Theme": "Theme",
+    "Language": "Language",
+    "Currency": "Currency"
   },
   "Home": {
     "Categories to explore": "Categories to explore",

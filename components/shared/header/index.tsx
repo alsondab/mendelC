@@ -61,7 +61,7 @@ export default async function Header() {
 
           {/* Mobile Actions */}
           <div className='lg:hidden flex items-center space-x-1 sm:space-x-2 flex-shrink-0'>
-            <Sidebar categories={categories} />
+            <Sidebar />
           </div>
 
           {/* Desktop Actions */}
@@ -77,7 +77,7 @@ export default async function Header() {
           <div className='flex items-center justify-between h-10 xl:h-12'>
             {/* Categories Sidebar */}
             <div className='flex items-center flex-shrink-0'>
-              <Sidebar categories={categories} />
+              <Sidebar />
             </div>
 
             {/* Navigation Links */}

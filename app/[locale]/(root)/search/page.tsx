@@ -124,8 +124,8 @@ export default async function SearchPage(props: {
       <div className='bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl p-3 sm:p-4 lg:p-6 mb-4 sm:mb-6'>
         {/* Results Count - Mobile */}
         <div className='flex flex-col gap-3 sm:hidden'>
-          <div className='flex items-center justify-between'>
-            <div className='flex items-center gap-2'>
+          <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2'>
+            <div className='flex flex-wrap items-center gap-1'>
               <span className='font-semibold text-foreground text-sm'>
                 {data.totalProducts === 0
                   ? t('Search.No')
@@ -135,11 +135,13 @@ export default async function SearchPage(props: {
                 {t('Search.results')}
               </span>
             </div>
-            <ProductSortSelector
-              sortOrders={sortOrders}
-              sort={sort}
-              params={params}
-            />
+            <div className='flex justify-end'>
+              <ProductSortSelector
+                sortOrders={sortOrders}
+                sort={sort}
+                params={params}
+              />
+            </div>
           </div>
 
           {/* Active Filters - Mobile */}
@@ -150,29 +152,31 @@ export default async function SearchPage(props: {
           price !== 'all' ? (
             <div className='space-y-2'>
               <div className='flex flex-wrap items-center gap-1 text-xs'>
-                <span className='text-muted-foreground'>{t('Search.for')}</span>
+                <span className='text-muted-foreground mr-1'>
+                  {t('Search.for')}
+                </span>
                 {q !== 'all' && q !== '' && (
-                  <span className='px-2 py-1 bg-primary/10 text-primary rounded-full font-medium text-xs'>
+                  <span className='px-2 py-1 bg-primary/10 text-primary rounded-full font-medium text-xs whitespace-nowrap'>
                     &quot;{q}&quot;
                   </span>
                 )}
                 {category !== 'all' && category !== '' && (
-                  <span className='px-2 py-1 bg-blue-100 text-blue-800 rounded-full font-medium text-xs'>
+                  <span className='px-2 py-1 bg-blue-100 text-blue-800 rounded-full font-medium text-xs whitespace-nowrap'>
                     {t('Search.Category')}: {category}
                   </span>
                 )}
                 {tag !== 'all' && tag !== '' && (
-                  <span className='px-2 py-1 bg-green-100 text-green-800 rounded-full font-medium text-xs'>
+                  <span className='px-2 py-1 bg-green-100 text-green-800 rounded-full font-medium text-xs whitespace-nowrap'>
                     {t('Search.Tag')}: {tag}
                   </span>
                 )}
                 {price !== 'all' && (
-                  <span className='px-2 py-1 bg-purple-100 text-purple-800 rounded-full font-medium text-xs'>
+                  <span className='px-2 py-1 bg-purple-100 text-purple-800 rounded-full font-medium text-xs whitespace-nowrap'>
                     {t('Search.Price')}: {price}
                   </span>
                 )}
                 {rating !== 'all' && (
-                  <span className='px-2 py-1 bg-orange-100 text-orange-800 rounded-full font-medium text-xs'>
+                  <span className='px-2 py-1 bg-orange-100 text-orange-800 rounded-full font-medium text-xs whitespace-nowrap'>
                     {t('Search.Rating')}: {rating} & {t('Search.up')}
                   </span>
                 )}
@@ -192,7 +196,7 @@ export default async function SearchPage(props: {
         {/* Desktop Layout */}
         <div className='hidden sm:flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4'>
           <div className='flex flex-col lg:flex-row items-start lg:items-center gap-2 text-sm lg:text-base'>
-            <div className='flex items-center gap-2'>
+            <div className='flex flex-wrap items-center gap-2'>
               <span className='font-semibold text-foreground'>
                 {data.totalProducts === 0
                   ? t('Search.No')
@@ -209,30 +213,32 @@ export default async function SearchPage(props: {
             (tag !== 'all' && tag !== '') ||
             rating !== 'all' ||
             price !== 'all' ? (
-              <div className='flex flex-wrap items-center gap-2 text-xs lg:text-sm'>
-                <span className='text-muted-foreground'>{t('Search.for')}</span>
+              <div className='flex flex-wrap items-center gap-1 sm:gap-2 text-xs lg:text-sm mt-2 lg:mt-0'>
+                <span className='text-muted-foreground mr-1'>
+                  {t('Search.for')}
+                </span>
                 {q !== 'all' && q !== '' && (
-                  <span className='px-2 py-1 bg-primary/10 text-primary rounded-full font-medium'>
+                  <span className='px-2 py-1 bg-primary/10 text-primary rounded-full font-medium whitespace-nowrap'>
                     &quot;{q}&quot;
                   </span>
                 )}
                 {category !== 'all' && category !== '' && (
-                  <span className='px-2 py-1 bg-blue-100 text-blue-800 rounded-full font-medium'>
+                  <span className='px-2 py-1 bg-blue-100 text-blue-800 rounded-full font-medium whitespace-nowrap'>
                     {t('Search.Category')}: {category}
                   </span>
                 )}
                 {tag !== 'all' && tag !== '' && (
-                  <span className='px-2 py-1 bg-green-100 text-green-800 rounded-full font-medium'>
+                  <span className='px-2 py-1 bg-green-100 text-green-800 rounded-full font-medium whitespace-nowrap'>
                     {t('Search.Tag')}: {tag}
                   </span>
                 )}
                 {price !== 'all' && (
-                  <span className='px-2 py-1 bg-purple-100 text-purple-800 rounded-full font-medium'>
+                  <span className='px-2 py-1 bg-purple-100 text-purple-800 rounded-full font-medium whitespace-nowrap'>
                     {t('Search.Price')}: {price}
                   </span>
                 )}
                 {rating !== 'all' && (
-                  <span className='px-2 py-1 bg-orange-100 text-orange-800 rounded-full font-medium'>
+                  <span className='px-2 py-1 bg-orange-100 text-orange-800 rounded-full font-medium whitespace-nowrap'>
                     {t('Search.Rating')}: {rating} & {t('Search.up')}
                   </span>
                 )}

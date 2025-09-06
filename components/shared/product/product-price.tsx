@@ -25,8 +25,17 @@ const ProductPrice = ({
   const convertedListPrice = round2(currency.convertRate * listPrice)
 
   const format = useFormatter()
+
+  // Formatage spécial pour le CFA - arrondir les prix
+  const displayPrice =
+    currency.code === 'XOF' ? Math.round(convertedPrice) : convertedPrice
+  const displayListPrice =
+    currency.code === 'XOF'
+      ? Math.round(convertedListPrice)
+      : convertedListPrice
+
   const discountPercent = Math.round(
-    100 - (convertedPrice / convertedListPrice) * 100
+    100 - (displayPrice / displayListPrice) * 100
   )
 
   // Formatage spécial pour le Franc CFA
@@ -41,7 +50,7 @@ const ProductPrice = ({
     })
   }
 
-  const stringValue = convertedPrice.toString()
+  const stringValue = displayPrice.toString()
   const [intValue, floatValue] = stringValue.includes('.')
     ? stringValue.split('.')
     : [stringValue, '']
@@ -49,7 +58,9 @@ const ProductPrice = ({
   return plain ? (
     formatPrice(convertedPrice)
   ) : convertedListPrice == 0 ? (
-    <div className={cn('text-lg xs:text-xl sm:text-2xl lg:text-3xl', className)}>
+    <div
+      className={cn('text-lg xs:text-xl sm:text-2xl lg:text-3xl', className)}
+    >
       <span className='text-xs align-super'>{currency.symbol}</span>
       {intValue}
       <span className='text-xs align-super'>{floatValue}</span>
@@ -62,8 +73,15 @@ const ProductPrice = ({
         </span>
       </div>
       <div className='flex flex-col items-center gap-1 xs:gap-2'>
-        <div className={cn('text-lg xs:text-xl sm:text-2xl font-bold text-foreground', className)}>
-          <span className='text-xs xs:text-sm align-super'>{currency.symbol}</span>
+        <div
+          className={cn(
+            'text-lg xs:text-xl sm:text-2xl font-bold text-foreground',
+            className
+          )}
+        >
+          <span className='text-xs xs:text-sm align-super'>
+            {currency.symbol}
+          </span>
           {intValue}
           <span className='text-xs xs:text-sm align-super'>{floatValue}</span>
         </div>
@@ -78,8 +96,15 @@ const ProductPrice = ({
   ) : (
     <div className=''>
       <div className='flex justify-center gap-2 xs:gap-3'>
-        <div className='text-lg xs:text-xl sm:text-2xl lg:text-3xl text-orange-700'>-{discountPercent}%</div>
-        <div className={cn('text-lg xs:text-xl sm:text-2xl lg:text-3xl', className)}>
+        <div className='text-lg xs:text-xl sm:text-2xl lg:text-3xl text-orange-700'>
+          -{discountPercent}%
+        </div>
+        <div
+          className={cn(
+            'text-lg xs:text-xl sm:text-2xl lg:text-3xl',
+            className
+          )}
+        >
           <span className='text-xs align-super'>{currency.symbol}</span>
           {intValue}
           <span className='text-xs align-super'>{floatValue}</span>

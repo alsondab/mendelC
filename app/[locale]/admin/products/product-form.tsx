@@ -516,37 +516,39 @@ const ProductForm = ({
                         </div>
 
                         <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4'>
-                          {images.map((image: string, index: number) => (
-                            <div
-                              key={`${image}-${index}`}
-                              className='relative group aspect-square'
-                            >
-                              <Image
-                                src={image}
-                                alt={`Image ${index + 1}`}
-                                className='w-full h-full object-cover rounded-lg border shadow-sm'
-                                width={150}
-                                height={150}
-                              />
-                              <Button
-                                type='button'
-                                variant='destructive'
-                                size='sm'
-                                className='absolute -top-2 -right-2 w-6 h-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg'
-                                onClick={() => {
-                                  const newImages = images.filter(
-                                    (_, i) => i !== index
-                                  )
-                                  form.setValue('images', newImages)
-                                  toast({
-                                    description: 'Image supprimée',
-                                  })
-                                }}
+                          {images
+                            .filter((image) => image && image.trim() !== '')
+                            .map((image: string, index: number) => (
+                              <div
+                                key={`${image}-${index}`}
+                                className='relative group aspect-square'
                               >
-                                ×
-                              </Button>
-                            </div>
-                          ))}
+                                <Image
+                                  src={image}
+                                  alt={`Image ${index + 1}`}
+                                  className='w-full h-full object-cover rounded-lg border shadow-sm'
+                                  width={150}
+                                  height={150}
+                                />
+                                <Button
+                                  type='button'
+                                  variant='destructive'
+                                  size='sm'
+                                  className='absolute -top-2 -right-2 w-6 h-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg'
+                                  onClick={() => {
+                                    const newImages = images.filter(
+                                      (_, i) => i !== index
+                                    )
+                                    form.setValue('images', newImages)
+                                    toast({
+                                      description: 'Image supprimée',
+                                    })
+                                  }}
+                                >
+                                  ×
+                                </Button>
+                              </div>
+                            ))}
                         </div>
                       </div>
                     )}

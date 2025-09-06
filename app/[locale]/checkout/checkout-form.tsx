@@ -168,110 +168,110 @@ const CheckoutForm = () => {
   }
   const CheckoutSummary = () => {
     return (
-      <Card className='sticky top-4 shadow-lg'>
-        <CardContent className='p-3 xs:p-4'>
-          {!isAddressSelected && (
-            <div className='border-b border-border/50 mb-3 xs:mb-4 pb-3 xs:pb-4'>
-              <Button
-                className='rounded-full w-full text-sm xs:text-base'
-                onClick={handleSelectShippingAddress}
-              >
-                Livrer à cette adresse
-              </Button>
-              <p className='text-xs xs:text-sm text-center py-2 text-muted-foreground'>
+    <Card className='sticky top-4 shadow-lg'>
+      <CardContent className='p-3 xs:p-4'>
+        {!isAddressSelected && (
+          <div className='border-b border-border/50 mb-3 xs:mb-4 pb-3 xs:pb-4'>
+            <Button
+              className='rounded-full w-full text-sm xs:text-base'
+              onClick={handleSelectShippingAddress}
+            >
+              Livrer à cette adresse
+            </Button>
+            <p className='text-xs xs:text-sm text-center py-2 text-muted-foreground'>
                 {t('ChooseAddressAndPayment')}
-                pour calculer les frais de port, de manutention et les taxes.
-              </p>
-            </div>
-          )}
-          {isAddressSelected && !isPaymentMethodSelected && (
-            <div className='mb-3 xs:mb-4'>
-              <Button
-                className='rounded-full w-full text-sm xs:text-base'
-                onClick={handleSelectPaymentMethod}
-              >
+              pour calculer les frais de port, de manutention et les taxes.
+            </p>
+          </div>
+        )}
+        {isAddressSelected && !isPaymentMethodSelected && (
+          <div className='mb-3 xs:mb-4'>
+            <Button
+              className='rounded-full w-full text-sm xs:text-base'
+              onClick={handleSelectPaymentMethod}
+            >
                 {t('UsePaymentMethod')}
-              </Button>
+            </Button>
 
-              <p className='text-xs xs:text-sm text-center py-2 text-muted-foreground'>
+            <p className='text-xs xs:text-sm text-center py-2 text-muted-foreground'>
                 {t('PaymentMethodContinue')}
-              </p>
-            </div>
-          )}
-          {isPaymentMethodSelected && isAddressSelected && (
-            <div>
-              <Button
-                onClick={handlePlaceOrder}
-                className='rounded-full w-full text-sm xs:text-base'
-              >
+            </p>
+          </div>
+        )}
+        {isPaymentMethodSelected && isAddressSelected && (
+          <div>
+            <Button
+              onClick={handlePlaceOrder}
+              className='rounded-full w-full text-sm xs:text-base'
+            >
                 {t('PlaceOrder')}
-              </Button>
-              <p className='text-xs xs:text-sm text-center py-2 text-muted-foreground'>
-                En passant votre commande, vous acceptez la{' '}
-                <Link
-                  href='/page/privacy-policy'
-                  className='text-primary hover:underline'
-                >
-                  politique de confidentialité
-                </Link>{' '}
-                et les{' '}
-                <Link
-                  href='/page/conditions-of-use'
-                  className='text-primary hover:underline'
-                >
-                  conditions d&apos;utilisation
-                </Link>{' '}
-                de {site.name}.
-              </p>
-            </div>
-          )}
+            </Button>
+            <p className='text-xs xs:text-sm text-center py-2 text-muted-foreground'>
+              En passant votre commande, vous acceptez la{' '}
+              <Link
+                href='/page/privacy-policy'
+                className='text-primary hover:underline'
+              >
+                politique de confidentialité
+              </Link>{' '}
+              et les{' '}
+              <Link
+                href='/page/conditions-of-use'
+                className='text-primary hover:underline'
+              >
+                conditions d&apos;utilisation
+              </Link>{' '}
+              de {site.name}.
+            </p>
+          </div>
+        )}
 
-          <div className='mt-4 xs:mt-6'>
-            <div className='text-base xs:text-lg font-bold mb-3'>
-              Résumé de la commande
+        <div className='mt-4 xs:mt-6'>
+          <div className='text-base xs:text-lg font-bold mb-3'>
+            Résumé de la commande
+          </div>
+          <div className='space-y-2 xs:space-y-3'>
+            <div className='flex justify-between text-sm xs:text-base'>
+              <span>Articles:</span>
+              <span>
+                <ProductPrice price={itemsPrice} plain />
+              </span>
             </div>
-            <div className='space-y-2 xs:space-y-3'>
-              <div className='flex justify-between text-sm xs:text-base'>
-                <span>Articles:</span>
+            <div className='flex justify-between text-sm xs:text-base'>
+              <span>Livraison:</span>
+              <span>
+                {shippingPrice === undefined ? (
+                  '--'
+                ) : shippingPrice === 0 ? (
+                  <span className='text-green-600 font-medium'>GRATUIT</span>
+                ) : (
+                  <ProductPrice price={shippingPrice} plain />
+                )}
+              </span>
+            </div>
+            <div className='flex justify-between text-sm xs:text-base'>
+              <span>Taxes:</span>
+              <span>
+                {taxPrice === undefined ? (
+                  '--'
+                ) : (
+                  <ProductPrice price={taxPrice} plain />
+                )}
+              </span>
+            </div>
+            <div className='border-t border-border/50 pt-3 xs:pt-4'>
+              <div className='flex justify-between font-bold text-base xs:text-lg'>
+                <span>Total de la commande:</span>
                 <span>
-                  <ProductPrice price={itemsPrice} plain />
+                  <ProductPrice price={totalPrice} plain />
                 </span>
-              </div>
-              <div className='flex justify-between text-sm xs:text-base'>
-                <span>Livraison:</span>
-                <span>
-                  {shippingPrice === undefined ? (
-                    '--'
-                  ) : shippingPrice === 0 ? (
-                    <span className='text-green-600 font-medium'>GRATUIT</span>
-                  ) : (
-                    <ProductPrice price={shippingPrice} plain />
-                  )}
-                </span>
-              </div>
-              <div className='flex justify-between text-sm xs:text-base'>
-                <span>Taxes:</span>
-                <span>
-                  {taxPrice === undefined ? (
-                    '--'
-                  ) : (
-                    <ProductPrice price={taxPrice} plain />
-                  )}
-                </span>
-              </div>
-              <div className='border-t border-border/50 pt-3 xs:pt-4'>
-                <div className='flex justify-between font-bold text-base xs:text-lg'>
-                  <span>Total de la commande:</span>
-                  <span>
-                    <ProductPrice price={totalPrice} plain />
-                  </span>
-                </div>
               </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
-    )
+        </div>
+      </CardContent>
+    </Card>
+  )
   }
 
   return (
@@ -455,12 +455,12 @@ const CheckoutForm = () => {
                                     <span className='absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground text-sm'>
                                       +225
                                     </span>
-                                    <Input
+                                  <Input
                                       placeholder='07 12 34 56 78'
                                       className='text-sm xs:text-base pl-12'
                                       maxLength={17} // +225 + 10 chiffres + 3 espaces
                                       type='tel'
-                                      {...field}
+                                    {...field}
                                       onChange={(e) => {
                                         let value = e.target.value
                                         // Supprimer +225 s'il est déjà présent
@@ -686,15 +686,15 @@ const CheckoutForm = () => {
                           >
                             <div className='relative w-16 h-16'>
                               {item.image && item.image.trim() !== '' ? (
-                                <Image
-                                  src={item.image}
-                                  alt={item.name}
-                                  fill
-                                  sizes='20vw'
-                                  style={{
-                                    objectFit: 'contain',
-                                  }}
-                                />
+                              <Image
+                                src={item.image}
+                                alt={item.name}
+                                fill
+                                sizes='20vw'
+                                style={{
+                                  objectFit: 'contain',
+                                }}
+                              />
                               ) : (
                                 <div className='w-full h-full bg-muted flex items-center justify-center'>
                                   <span className='text-muted-foreground text-xs'>

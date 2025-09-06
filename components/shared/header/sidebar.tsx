@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Link from 'next/link'
-import { X, UserCircle, ShoppingBag, Grid3X3 } from 'lucide-react'
+import { X, UserCircle, Settings, Grid3X3 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Drawer,
@@ -13,16 +13,12 @@ import {
 import { auth } from '@/auth'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { getDirection } from '@/i18n-config'
-import { ICategory } from '@/types'
-import CategoryAccordion from './category-accordion'
+import ThemeSwitcher from './theme-switcher'
+import LanguageSwitcher from './language-switcher'
 import NavigationAccordion from './navigation-accordion'
 import HelpSettingsAccordion from './help-settings-accordion'
 
-export default async function Sidebar({
-  categories,
-}: {
-  categories: (ICategory & { subCategories: ICategory[] })[]
-}) {
+export default async function Sidebar() {
   const session = await auth()
   const locale = await getLocale()
   const t = await getTranslations()
@@ -83,22 +79,35 @@ export default async function Sidebar({
             </DrawerClose>
           </div>
 
-          {/* Categories Section */}
+          {/* Theme & Currency Section */}
           <div className='flex-1 overflow-y-auto'>
             <div className='p-3 border-b border-border/50'>
               <div className='flex items-center space-x-2'>
-                <ShoppingBag className='h-4 w-4 text-primary' />
+                <Settings className='h-4 w-4 text-primary' />
                 <h2 className='text-base font-semibold text-foreground'>
-                  {t('Header.Shop By Department')}
+                  {t('Header.Preferences')}
                 </h2>
               </div>
               <p className='text-xs text-muted-foreground mt-1 px-1'>
-                Cliquez sur le nom pour naviguer • Cliquez sur ▼ pour voir les
-                sous-catégories
+                Personnalisez votre expérience
               </p>
             </div>
 
-            <CategoryAccordion categories={categories} />
+            <div className='p-3 space-y-3'>
+              <div className='space-y-2'>
+                <h3 className='text-sm font-medium text-foreground'>
+                  {t('Header.Theme')}
+                </h3>
+                <ThemeSwitcher />
+              </div>
+
+              <div className='space-y-2'>
+                <h3 className='text-sm font-medium text-foreground'>
+                  {t('Header.Language')} & {t('Header.Currency')}
+                </h3>
+                <LanguageSwitcher />
+              </div>
+            </div>
           </div>
 
           {/* Navigation Links Section */}

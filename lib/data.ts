@@ -264,7 +264,7 @@ const users: IUserInput[] = [
 const categories: ICategoryInput[] = [
   // Catégories principales
   {
-    name: 'Computer Equipment',
+    name: 'Équipement informatique',
     slug: 'computer-equipment',
     description:
       'Ordinateurs, moniteurs, imprimantes et accessoires informatiques',
@@ -273,7 +273,7 @@ const categories: ICategoryInput[] = [
     sortOrder: 1,
   },
   {
-    name: 'Video Surveillance',
+    name: 'Surveillance vidéo',
     slug: 'video-surveillance',
     description: 'Systèmes de surveillance vidéo et caméras de sécurité',
     image: '/images/categories/video-surveillance.jpg',
@@ -281,7 +281,7 @@ const categories: ICategoryInput[] = [
     sortOrder: 2,
   },
   {
-    name: 'Telephony',
+    name: 'Téléphonie',
     slug: 'telephony',
     description: 'Solutions de téléphonie IP et équipements de communication',
     image: '/images/categories/telephony.jpg',
@@ -289,7 +289,7 @@ const categories: ICategoryInput[] = [
     sortOrder: 3,
   },
   {
-    name: 'Fire Safety',
+    name: 'Sécurité incendie',
     slug: 'fire-safety',
     description: 'Équipements de sécurité incendie et détecteurs',
     image: '/images/categories/fire-safety.jpg',
@@ -299,7 +299,7 @@ const categories: ICategoryInput[] = [
 
   // Sous-catégories pour Computer Equipment
   {
-    name: 'Monitors',
+    name: 'Moniteurs',
     slug: 'monitors',
     description: 'Écrans et moniteurs pour ordinateurs',
     image: '/images/p12-1.jpg',
@@ -308,7 +308,7 @@ const categories: ICategoryInput[] = [
     sortOrder: 1,
   },
   {
-    name: 'Desktop Computers',
+    name: 'Ordinateurs de bureau',
     slug: 'desktop-computers',
     description: 'Ordinateurs de bureau et stations de travail',
     image: '/images/p13-1.jpg',
@@ -317,7 +317,7 @@ const categories: ICategoryInput[] = [
     sortOrder: 2,
   },
   {
-    name: 'Laptops',
+    name: 'Ordinateurs portables',
     slug: 'laptops',
     description: 'Ordinateurs portables et notebooks',
     image: '/images/p14-1.jpg',
@@ -326,7 +326,7 @@ const categories: ICategoryInput[] = [
     sortOrder: 3,
   },
   {
-    name: 'Printers',
+    name: 'Imprimantes',
     slug: 'printers',
     description: 'Imprimantes et scanners',
     image: '/images/p15-1.jpg',
@@ -335,7 +335,7 @@ const categories: ICategoryInput[] = [
     sortOrder: 4,
   },
   {
-    name: 'Storage',
+    name: 'Stockage',
     slug: 'storage',
     description: 'Disques durs, SSD et stockage externe',
     image: '/images/p16-1.jpg',

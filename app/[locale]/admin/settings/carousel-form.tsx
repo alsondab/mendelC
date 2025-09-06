@@ -101,15 +101,16 @@ export default function CarouselForm({
                   )}
                 />
 
-                {watch(`carousels.${index}.image`) && (
-                  <Image
-                    src={watch(`carousels.${index}.image`)}
-                    alt='image'
-                    className=' w-full object-cover object-center rounded-sm'
-                    width={192}
-                    height={68}
-                  />
-                )}
+                {watch(`carousels.${index}.image`) &&
+                  watch(`carousels.${index}.image`).trim() !== '' && (
+                    <Image
+                      src={watch(`carousels.${index}.image`)}
+                      alt='image'
+                      className=' w-full object-cover object-center rounded-sm'
+                      width={192}
+                      height={68}
+                    />
+                  )}
                 {!watch(`carousels.${index}.image`) && (
                   <UploadButton
                     endpoint='imageUploader'

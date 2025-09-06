@@ -271,17 +271,17 @@ export default function OrderDetailsForm({
             {/* User Actions */}
             {!isAdmin && !isCancelled && !isDelivered && (
               <div className='space-y-2 pt-4 border-t'>
-                <div className='grid grid-cols-1 sm:grid-cols-2 gap-2'>
+                <div className='flex flex-col sm:flex-row gap-2'>
                   <ActionButton
                     caption='Annuler la commande'
                     action={() => cancelOrder(order._id.toString())}
-                    className='w-full bg-destructive hover:bg-destructive/90 text-destructive-foreground'
+                    className='w-full sm:w-auto bg-destructive hover:bg-destructive/90 text-destructive-foreground text-sm sm:text-base px-4 py-2 rounded-lg font-medium'
                     refreshOnSuccess={true}
                   />
                 </div>
-                <p className='text-xs text-muted-foreground text-center'>
-                  Vous pouvez annuler votre commande tant qu&apos;elle n&apos;est pas
-                  payée ou livrée
+                <p className='text-xs sm:text-sm text-muted-foreground text-center px-2'>
+                  Vous pouvez annuler votre commande tant qu&apos;elle
+                  n&apos;est pas payée ou livrée
                 </p>
               </div>
             )}
