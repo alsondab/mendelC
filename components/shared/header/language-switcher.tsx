@@ -13,7 +13,7 @@ import {
 
 import { useLocale } from 'next-intl'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname } from '@/i18n/routing'
 import { i18n } from '@/i18n-config'
 import { ChevronDownIcon } from 'lucide-react'
 import useSettingStore from '@/hooks/use-setting-store'
@@ -52,7 +52,7 @@ export default function LanguageSwitcher() {
             <DropdownMenuRadioItem key={c.name} value={c.code}>
               <Link
                 className='w-full flex items-center gap-1'
-                href={`/${c.code}${pathname.replace(/^\/[a-z]{2}(-[A-Z]{2})?/, '')}`}
+                href={`/${c.code}${pathname}`}
               >
                 <span className='text-lg'>{c.icon}</span> {c.name}
               </Link>
