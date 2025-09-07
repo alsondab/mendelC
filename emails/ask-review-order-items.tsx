@@ -30,7 +30,6 @@ AskReviewOrderItemsEmail.PreviewProps = {
     paidAt: new Date(),
     totalPrice: 100,
     itemsPrice: 100,
-    taxPrice: 0,
     shippingPrice: 0,
     user: {
       name: 'John Doe',
@@ -139,7 +138,6 @@ export default async function AskReviewOrderItemsEmail({
               ))}
               {[
                 { name: 'Articles', price: order.itemsPrice },
-                { name: 'Taxe', price: order.taxPrice },
                 { name: 'Livraison', price: order.shippingPrice },
                 { name: 'Total', price: order.totalPrice },
               ].map(({ name, price }) => (

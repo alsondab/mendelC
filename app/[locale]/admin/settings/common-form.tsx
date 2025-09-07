@@ -49,22 +49,6 @@ export default function CommonForm({
               </FormItem>
             )}
           />
-          <FormField
-            control={control}
-            name='common.freeShippingMinPrice'
-            render={({ field }) => (
-              <FormItem className='w-full'>
-                <FormLabel>Prix minimum pour livraison gratuite</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder='Enter Free Shipping Minimum Price'
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
         </div>
         <div className='flex flex-col gap-5 md:flex-row'>
           <FormField

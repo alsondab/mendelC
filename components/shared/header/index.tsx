@@ -3,25 +3,17 @@ import Link from 'next/link'
 import { getCategoryTree } from '@/lib/actions/category.actions'
 import Menu from './menu'
 import Search from './search'
-import data from '@/lib/data'
 import Sidebar from './sidebar'
 import { getSetting } from '@/lib/actions/setting.actions'
-import { getTranslations } from 'next-intl/server'
-import {
-  Clock,
-  Sparkles,
-  Star,
-  TrendingUp,
-  History,
-  MessageCircle,
-  Info,
-  HelpCircle,
-} from 'lucide-react'
+import { auth } from '@/auth'
+import { Sparkles, Star, TrendingUp, Award, LogIn } from 'lucide-react'
+import LogoutButton from './logout-button'
+import WishlistCount from './wishlist-count'
 
 export default async function Header() {
   const categories = await getCategoryTree()
   const { site } = await getSetting()
-  const t = await getTranslations()
+  const session = await auth()
   return (
     <header className='sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border/40 shadow-sm'>
       {/* Main Header */}
@@ -67,6 +59,17 @@ export default async function Header() {
           {/* Desktop Actions */}
           <div className='hidden lg:flex items-center space-x-2 flex-shrink-0'>
             <Menu />
+            {session ? (
+              <LogoutButton />
+            ) : (
+              <Link
+                href='/sign-in'
+                className='flex items-center space-x-1 px-3 py-2 rounded-lg hover:bg-muted/80 transition-colors text-sm font-medium border border-border/50'
+              >
+                <LogIn className='h-4 w-4' />
+                <span>Connexion</span>
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -74,49 +77,43 @@ export default async function Header() {
       {/* Navigation Bar - Desktop Only */}
       <div className='hidden lg:block border-t border-border/40 bg-muted/30'>
         <div className='container mx-auto px-2 sm:px-4'>
-          <div className='flex items-center justify-between h-10 xl:h-12'>
+          <div className='flex items-center h-10 xl:h-12'>
             {/* Categories Sidebar */}
             <div className='flex items-center flex-shrink-0'>
               <Sidebar />
             </div>
 
             {/* Navigation Links */}
-            <div className='flex items-center space-x-4 xl:space-x-6 overflow-x-auto navbar-scroll scrollbar-hide'>
-              {data.headerMenus.map((menu) => {
-                const getIcon = (name: string) => {
-                  switch (name) {
-                    case "Today's Deal":
-                      return <Clock className='h-3 w-3 xl:h-4 xl:w-4' />
-                    case 'New Arrivals':
-                      return <Sparkles className='h-3 w-3 xl:h-4 xl:w-4' />
-                    case 'Featured Products':
-                      return <Star className='h-3 w-3 xl:h-4 xl:w-4' />
-                    case 'Best Sellers':
-                      return <TrendingUp className='h-3 w-3 xl:h-4 xl:w-4' />
-                    case 'Browsing History':
-                      return <History className='h-3 w-3 xl:h-4 xl:w-4' />
-                    case 'Customer Service':
-                      return <MessageCircle className='h-3 w-3 xl:h-4 xl:w-4' />
-                    case 'About Us':
-                      return <Info className='h-3 w-3 xl:h-4 xl:w-4' />
-                    case 'Help':
-                      return <HelpCircle className='h-3 w-3 xl:h-4 xl:w-4' />
-                    default:
-                      return null
-                  }
-                }
-
-                return (
-                  <Link
-                    href={menu.href}
-                    key={menu.href}
-                    className='flex items-center space-x-1 xl:space-x-2 text-xs xl:text-sm font-medium text-muted-foreground hover:text-foreground transition-colors whitespace-nowrap px-2 py-1 rounded-md hover:bg-muted/50'
-                  >
-                    {getIcon(menu.name)}
-                    <span>{t('Header.' + menu.name)}</span>
-                  </Link>
-                )
-              })}
+            <div className='flex items-center space-x-4 ml-4 text-sm'>
+              <Link
+                href='/search?q=&sort=createdAt&order=desc'
+                className='flex items-center space-x-1 text-muted-foreground hover:text-primary transition-colors'
+              >
+                <Sparkles className='h-4 w-4' />
+                <span>Offre du jour</span>
+              </Link>
+              <Link
+                href='/search?q=&sort=createdAt&order=desc'
+                className='flex items-center space-x-1 text-muted-foreground hover:text-primary transition-colors'
+              >
+                <Star className='h-4 w-4' />
+                <span>Nouveautés</span>
+              </Link>
+              <Link
+                href='/search?q=&sort=featured&order=desc'
+                className='flex items-center space-x-1 text-muted-foreground hover:text-primary transition-colors'
+              >
+                <Award className='h-4 w-4' />
+                <span>Produits vedettes</span>
+              </Link>
+              <Link
+                href='/search?q=&sort=sold&order=desc'
+                className='flex items-center space-x-1 text-muted-foreground hover:text-primary transition-colors'
+              >
+                <TrendingUp className='h-4 w-4' />
+                <span>Meilleures ventes</span>
+              </Link>
+              {session && <WishlistCount />}
             </div>
           </div>
         </div>

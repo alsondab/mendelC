@@ -27,7 +27,6 @@ PurchaseReceiptEmail.PreviewProps = {
     isPaid: false,
     totalPrice: 100,
     itemsPrice: 100,
-    taxPrice: 0,
     shippingPrice: 0,
     user: {
       name: 'John Doe',
@@ -215,7 +214,6 @@ export default async function PurchaseReceiptEmail({
               {[
                 { name: 'Sous-total Articles', price: order.itemsPrice },
                 { name: 'Livraison & Manutention', price: order.shippingPrice },
-                { name: 'Taxe', price: order.taxPrice },
               ].map(({ name, price }) => (
                 <Row key={name} className='py-1'>
                   <Column>{name}:</Column>

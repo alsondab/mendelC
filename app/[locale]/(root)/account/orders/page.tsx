@@ -14,7 +14,6 @@ import {
 import { getMyOrders } from '@/lib/actions/order.actions'
 import { IOrder } from '@/lib/db/models/order.model'
 import { formatDateTime, formatId } from '@/lib/utils'
-import BrowsingHistoryList from '@/components/shared/browsing-history-list'
 import ProductPrice from '@/components/shared/product/product-price'
 
 const PAGE_TITLE = 'Vos Commandes'
@@ -209,9 +208,7 @@ export default async function OrdersPage(props: {
         )}
       </div>
 
-      <div className='mt-8 xs:mt-12'>
-        <BrowsingHistoryList />
-      </div>
+      <div className='mt-8 xs:mt-12'></div>
     </div>
   )
 }

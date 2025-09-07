@@ -1,5 +1,4 @@
 'use client'
-import BrowsingHistoryList from '@/components/shared/browsing-history-list'
 import ProductPrice from '@/components/shared/product/product-price'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -18,9 +17,7 @@ import {
   Plus,
   Minus,
   ArrowRight,
-  Truck,
   Package,
-  Heart,
 } from 'lucide-react'
 
 export default function CartPage() {
@@ -33,7 +30,7 @@ export default function CartPage() {
   const {
     setting: {
       site,
-      common: { freeShippingMinPrice },
+      common: {},
     },
   } = useSettingStore()
 
@@ -268,43 +265,7 @@ export default function CartPage() {
                   </CardHeader>
                   <CardContent className='space-y-3 sm:space-y-4'>
                     {/* Shipping Info */}
-                    <div className='p-3 sm:p-4 rounded-lg bg-muted/30'>
-                      {itemsPrice < freeShippingMinPrice ? (
-                        <div className='space-y-2'>
-                          <div className='flex items-center gap-2 text-xs sm:text-sm text-muted-foreground'>
-                            <Truck className='h-3 w-3 sm:h-4 sm:w-4' />
-                            Livraison gratuite
-                          </div>
-                          <p className='text-xs sm:text-sm leading-relaxed'>
-                            {t('Cart.Add')}{' '}
-                            <span className='font-semibold text-primary'>
-                              <ProductPrice
-                                price={freeShippingMinPrice - itemsPrice}
-                                plain
-                              />
-                            </span>{' '}
-                            {t(
-                              'Cart.of eligible items to your order to qualify for FREE Shipping'
-                            )}
-                          </p>
-                          <div className='w-full bg-muted rounded-full h-1.5 sm:h-2'>
-                            <div
-                              className='bg-primary h-1.5 sm:h-2 rounded-full transition-all duration-300'
-                              style={{
-                                width: `${Math.min(100, (itemsPrice / freeShippingMinPrice) * 100)}%`,
-                              }}
-                            />
-                          </div>
-                        </div>
-                      ) : (
-                        <div className='flex items-center gap-2 text-primary'>
-                          <Truck className='h-4 w-4 sm:h-5 sm:w-5' />
-                          <span className='text-sm sm:text-base font-semibold'>
-                            {t('Cart.Your order qualifies for FREE Shipping')}
-                          </span>
-                        </div>
-                      )}
-                    </div>
+                    <div className='p-3 sm:p-4 rounded-lg bg-muted/30'></div>
 
                     {/* Order Summary */}
                     <div className='space-y-3'>
@@ -320,10 +281,8 @@ export default function CartPage() {
                       </div>
                       <div className='flex justify-between text-sm'>
                         <span className='text-muted-foreground'>Livraison</span>
-                        <span className='font-medium text-green-600'>
-                          {itemsPrice >= freeShippingMinPrice
-                            ? 'Gratuite'
-                            : 'À calculer'}
+                        <span className='font-medium text-muted-foreground'>
+                          À calculer
                         </span>
                       </div>
                       <div className='border-t pt-3'>
@@ -368,21 +327,6 @@ export default function CartPage() {
               </div>
             </>
           )}
-        </div>
-
-        {/* Browsing History Section */}
-        <div className='mt-6 sm:mt-8'>
-          <div className='flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4'>
-            <Heart className='h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0' />
-            <h2 className='text-base sm:text-lg font-bold text-foreground'>
-              Articles récemment consultés
-            </h2>
-          </div>
-          <Card>
-            <CardContent className='pt-3 sm:pt-4 px-2 sm:px-4'>
-              <BrowsingHistoryList />
-            </CardContent>
-          </Card>
         </div>
       </div>
     </div>

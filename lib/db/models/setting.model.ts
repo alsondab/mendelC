@@ -12,7 +12,6 @@ const settingSchema = new Schema<ISetting>(
     common: {
       pageSize: { type: Number, required: true, default: 9 },
       isMaintenanceMode: { type: Boolean, required: true, default: false },
-      freeShippingMinPrice: { type: Number, required: true, default: 0 },
       defaultTheme: { type: String, required: true, default: 'light' },
       defaultColor: { type: String, required: true, default: 'gold' },
     },
@@ -90,7 +89,6 @@ const settingSchema = new Schema<ISetting>(
         name: { type: String, required: true },
         daysToDeliver: { type: Number, required: true },
         shippingPrice: { type: Number, required: true },
-        freeShippingMinPrice: { type: Number, required: true },
       },
     ],
     defaultDeliveryDate: { type: String, required: true },

@@ -9,7 +9,7 @@ const locales = i18n.locales
 
 const isNotInPaths = (s: string) => {
   const localePattern = `/(?:${locales.join('|')})` // Match locales
-  const pathsPattern = `^(?:${localePattern})?(?:/$|/cart$|/checkout$|/sign-in$|/sign-up$|/order(?:/.*)?$|/account(?:/.*)?$|/admin(?:/.*)?$)?$`
+  const pathsPattern = `^(?:${localePattern})?(?:/cart$|/checkout$|/sign-in$|/sign-up$|/order(?:/.*)?$|/account(?:/.*)?$|/admin(?:/.*)?$)$`
   return !new RegExp(pathsPattern).test(s)
 }
 
@@ -20,8 +20,9 @@ function useCartSidebar() {
   const deviceType = useDeviceType()
   const currentPath = usePathname()
 
-  // Désactiver l'ouverture automatique du sidebar
-  return false
+  return (
+    items.length > 0 && deviceType === 'desktop' && isNotInPaths(currentPath)
+  )
 }
 
 export default useCartSidebar

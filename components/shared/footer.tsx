@@ -1,14 +1,7 @@
 'use client'
 import {
   ChevronUp,
-  Users,
-  DollarSign,
   HelpCircle,
-  Briefcase,
-  BookOpen,
-  Info,
-  ShoppingBag,
-  Megaphone,
   Truck,
   RotateCcw,
   HelpCircle as Help,
@@ -53,119 +46,41 @@ export default function Footer() {
 
         {/* Main Footer Content */}
         <div className='p-3 xs:p-4 sm:p-6 max-w-7xl mx-auto'>
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 xs:gap-8 sm:gap-10'>
-            {/* Get to Know Us */}
-            <div className='space-y-4 text-center sm:text-left'>
-              <div className='flex items-center justify-center sm:justify-start gap-2 mb-4'>
-                <Users className='w-5 h-5 text-blue-400' />
-                <h3 className='font-bold text-base xs:text-lg text-white'>
-                  {t('Footer.Get to Know Us')}
-                </h3>
-              </div>
-              <ul className='space-y-3'>
-                <li>
-                  <Link
-                    href='/page/careers'
-                    className='flex items-center justify-center sm:justify-start gap-2 text-gray-300 hover:text-white transition-colors text-sm xs:text-base group'
-                  >
-                    <Briefcase className='w-4 h-4 group-hover:text-blue-400 transition-colors' />
-                    {t('Footer.Careers')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href='/page/blog'
-                    className='flex items-center justify-center sm:justify-start gap-2 text-gray-300 hover:text-white transition-colors text-sm xs:text-base group'
-                  >
-                    <BookOpen className='w-4 h-4 group-hover:text-blue-400 transition-colors' />
-                    {t('Footer.Blog')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href='/page/about-us'
-                    className='flex items-center justify-center sm:justify-start gap-2 text-gray-300 hover:text-white transition-colors text-sm xs:text-base group'
-                  >
-                    <Info className='w-4 h-4 group-hover:text-blue-400 transition-colors' />
-                    {t('Footer.About name', { name: site.name })}
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Make Money with Us */}
-            <div className='space-y-4 text-center sm:text-left'>
-              <div className='flex items-center justify-center sm:justify-start gap-2 mb-4'>
-                <DollarSign className='w-5 h-5 text-green-400' />
-                <h3 className='font-bold text-base xs:text-lg text-white'>
-                  {t('Footer.Make Money with Us')}
-                </h3>
-              </div>
-              <ul className='space-y-3'>
-                <li>
-                  <Link
-                    href='/page/sell'
-                    className='flex items-center justify-center sm:justify-start gap-2 text-gray-300 hover:text-white transition-colors text-sm xs:text-base group'
-                  >
-                    <ShoppingBag className='w-4 h-4 group-hover:text-green-400 transition-colors' />
-                    {t('Footer.Sell products on', { name: site.name })}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href='/page/become-affiliate'
-                    className='flex items-center justify-center sm:justify-start gap-2 text-gray-300 hover:text-white transition-colors text-sm xs:text-base group'
-                  >
-                    <Users className='w-4 h-4 group-hover:text-green-400 transition-colors' />
-                    {t('Footer.Become an Affiliate')}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href='/page/advertise'
-                    className='flex items-center justify-center sm:justify-start gap-2 text-gray-300 hover:text-white transition-colors text-sm xs:text-base group'
-                  >
-                    <Megaphone className='w-4 h-4 group-hover:text-green-400 transition-colors' />
-                    {t('Footer.Advertise Your Products')}
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Let Us Help You */}
-            <div className='space-y-4 text-center sm:text-left sm:col-span-2 lg:col-span-1'>
-              <div className='flex items-center justify-center sm:justify-start gap-2 mb-4'>
+          <div className='flex justify-center'>
+            {/* Laissez-nous vous aider */}
+            <div className='space-y-4 text-center'>
+              <div className='flex items-center justify-center gap-2 mb-4'>
                 <HelpCircle className='w-5 h-5 text-orange-400' />
                 <h3 className='font-bold text-base xs:text-lg text-white'>
-                  {t('Footer.Let Us Help You')}
+                  Laissez-nous vous aider
                 </h3>
               </div>
               <ul className='space-y-3'>
                 <li>
                   <Link
                     href='/page/shipping'
-                    className='flex items-center justify-center sm:justify-start gap-2 text-gray-300 hover:text-white transition-colors text-sm xs:text-base group'
+                    className='flex items-center justify-center gap-2 text-gray-300 hover:text-white transition-colors text-sm xs:text-base group'
                   >
                     <Truck className='w-4 h-4 group-hover:text-orange-400 transition-colors' />
-                    {t('Footer.Shipping Rates & Policies')}
+                    Tarifs et politiques d&apos;expédition
                   </Link>
                 </li>
                 <li>
                   <Link
                     href='/page/returns-policy'
-                    className='flex items-center justify-center sm:justify-start gap-2 text-gray-300 hover:text-white transition-colors text-sm xs:text-base group'
+                    className='flex items-center justify-center gap-2 text-gray-300 hover:text-white transition-colors text-sm xs:text-base group'
                   >
                     <RotateCcw className='w-4 h-4 group-hover:text-orange-400 transition-colors' />
-                    {t('Footer.Returns & Replacements')}
+                    Retours et remplacements
                   </Link>
                 </li>
                 <li>
                   <Link
                     href='/page/help'
-                    className='flex items-center justify-center sm:justify-start gap-2 text-gray-300 hover:text-white transition-colors text-sm xs:text-base group'
+                    className='flex items-center justify-center gap-2 text-gray-300 hover:text-white transition-colors text-sm xs:text-base group'
                   >
                     <Help className='w-4 h-4 group-hover:text-orange-400 transition-colors' />
-                    {t('Footer.Help')}
+                    Aide
                   </Link>
                 </li>
               </ul>
@@ -258,21 +173,21 @@ export default function Footer() {
               href='/page/conditions-of-use'
               className='text-gray-400 hover:text-white transition-colors'
             >
-              {t('Footer.Conditions of Use')}
+              Conditions d&apos;utilisation
             </Link>
             <span className='text-gray-600 hidden xs:inline'>•</span>
             <Link
               href='/page/privacy-policy'
               className='text-gray-400 hover:text-white transition-colors'
             >
-              {t('Footer.Privacy Notice')}
+              Avis de confidentialité
             </Link>
             <span className='text-gray-600 hidden xs:inline'>•</span>
             <Link
               href='/page/help'
               className='text-gray-400 hover:text-white transition-colors'
             >
-              {t('Footer.Help')}
+              Aide
             </Link>
           </div>
 

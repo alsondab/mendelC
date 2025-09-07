@@ -57,7 +57,7 @@ export function HomeCarousel({ items }: { items: ICarousel[] }) {
                       'text-sm xs:text-base sm:text-lg md:text-2xl lg:text-4xl xl:text-6xl font-bold mb-2 xs:mb-3 sm:mb-4 text-primary leading-tight'
                     )}
                   >
-                    {t(`${item.title}`)}
+                    {item.title}
                   </h2>
                   <Button
                     size='sm'

@@ -105,8 +105,7 @@ export const formatError = (error: any): string => {
     return fieldErrors.join('. ')
   } else if (error.name === 'ValidationError') {
     const fieldErrors = Object.keys(error.errors).map((field) => {
-      const errorMessage = error.errors[field].message
-      return errorMessage
+      return error.errors[field].message
     })
     return fieldErrors.join('. ')
   } else if (error.code === 11000) {

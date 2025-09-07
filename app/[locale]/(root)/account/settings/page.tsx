@@ -20,7 +20,6 @@ import { useState } from 'react'
 import { useLocale } from 'next-intl'
 import { useTheme } from 'next-themes'
 import useSettingStore from '@/hooks/use-setting-store'
-import useColorStore from '@/hooks/use-color-store'
 import { setCurrencyOnServer } from '@/lib/actions/setting.actions'
 import { i18n } from '@/i18n-config'
 import Link from 'next/link'
@@ -35,8 +34,6 @@ export default function SettingsPage() {
     setting: { availableCurrencies, currency },
     setCurrency,
   } = useSettingStore()
-
-  const { availableColors, color, setColor } = useColorStore(theme)
 
   const [notifications, setNotifications] = useState({
     email: true,
@@ -199,24 +196,6 @@ export default function SettingsPage() {
             </div>
 
             <Separator />
-
-            <div className='flex items-center justify-between'>
-              <div className='space-y-1'>
-                <Label htmlFor='browsing-history'>
-                  Historique de navigation
-                </Label>
-                <p className='text-sm text-muted-foreground'>
-                  Enregistrer les pages visitées pour des recommandations
-                </p>
-              </div>
-              <Switch
-                id='browsing-history'
-                checked={privacy.browsingHistory}
-                onCheckedChange={(checked: boolean) =>
-                  setPrivacy((prev) => ({ ...prev, browsingHistory: checked }))
-                }
-              />
-            </div>
           </CardContent>
         </Card>
 
@@ -308,31 +287,6 @@ export default function SettingsPage() {
                     <span>Sombre</span>
                     {theme === 'dark' && <span className='text-xs'>✓</span>}
                   </button>
-                </div>
-              </div>
-
-              <div className='space-y-2'>
-                <Label>Couleur d&apos;accent</Label>
-                <div className='grid grid-cols-4 gap-2'>
-                  {availableColors.map((c) => (
-                    <button
-                      key={c.name}
-                      onClick={() => setColor(c.name, true)}
-                      className={`flex items-center justify-center gap-2 p-2 rounded-md border transition-colors ${
-                        color.name === c.name
-                          ? 'bg-primary text-primary-foreground border-primary'
-                          : 'bg-background hover:bg-muted'
-                      }`}
-                    >
-                      <div
-                        style={{ backgroundColor: c.name }}
-                        className='h-4 w-4 rounded-full'
-                      />
-                      {color.name === c.name && (
-                        <span className='text-xs'>✓</span>
-                      )}
-                    </button>
-                  ))}
                 </div>
               </div>
             </div>

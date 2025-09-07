@@ -49,11 +49,21 @@ export const createOrder = async (clientSideCart: Cart) => {
       clientSideCart.paymentMethod === 'CashOnDelivery'
     ) {
       try {
+        console.log('🔍 ID de la commande créée:', createdOrder._id)
+        console.log("🔍 ID de l'utilisateur de la session:", session.user.id)
+
         const populatedOrder = await Order.findById(createdOrder._id).populate<{
           user: { email: string; name: string }
         }>('user', 'name email')
 
-        if (populatedOrder && populatedOrder.user.email) {
+        console.log('🔍 Commande peuplée:', populatedOrder)
+        console.log('🔍 Utilisateur peuplé:', populatedOrder?.user)
+
+        if (
+          populatedOrder &&
+          populatedOrder.user &&
+          populatedOrder.user.email
+        ) {
           console.log(
             "📧 Envoi de l'email de confirmation à:",
             populatedOrder.user.email
@@ -103,7 +113,6 @@ export const createOrderFromCart = async (
     paymentMethod: cart.paymentMethod,
     itemsPrice: cart.itemsPrice,
     shippingPrice: cart.shippingPrice,
-    taxPrice: cart.taxPrice,
     totalPrice: cart.totalPrice,
     expectedDeliveryDate: cart.expectedDeliveryDate,
   })
@@ -343,16 +352,12 @@ export const calcDeliveryDateAndPrice = async ({
   const shippingPrice =
     !shippingAddress || !deliveryDate
       ? undefined
-      : deliveryDate.freeShippingMinPrice > 0 &&
-          itemsPrice >= deliveryDate.freeShippingMinPrice
+      : false
         ? 0
         : deliveryDate.shippingPrice
 
-  const taxPrice = !shippingAddress ? undefined : round2(itemsPrice * 0.15)
   const totalPrice = round2(
-    itemsPrice +
-      (shippingPrice ? round2(shippingPrice) : 0) +
-      (taxPrice ? round2(taxPrice) : 0)
+    itemsPrice + (shippingPrice ? round2(shippingPrice) : 0)
   )
   return {
     availableDeliveryDates,
@@ -362,7 +367,6 @@ export const calcDeliveryDateAndPrice = async ({
         : deliveryDateIndex,
     itemsPrice,
     shippingPrice,
-    taxPrice,
     totalPrice,
   }
 }

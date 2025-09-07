@@ -41,7 +41,7 @@ const ProductPrice = ({
   // Formatage spécial pour le Franc CFA
   const formatPrice = (price: number) => {
     if (currency.code === 'XOF') {
-      return `${Math.round(price).toLocaleString('fr-FR')} ${currency.symbol}`
+      return `${Math.round(price).toLocaleString('fr-FR')} CFA`
     }
     return format.number(price, {
       style: 'currency',
@@ -61,9 +61,19 @@ const ProductPrice = ({
     <div
       className={cn('text-lg xs:text-xl sm:text-2xl lg:text-3xl', className)}
     >
-      <span className='text-xs align-super'>{currency.symbol}</span>
-      {intValue}
-      <span className='text-xs align-super'>{floatValue}</span>
+      {currency.code === 'XOF' ? (
+        <>
+          {intValue}
+          <span className='text-xs align-super'>{floatValue}</span>
+          <span className='text-xs align-super ml-1'>CFA</span>
+        </>
+      ) : (
+        <>
+          <span className='text-xs align-super'>{currency.symbol}</span>
+          {intValue}
+          <span className='text-xs align-super'>{floatValue}</span>
+        </>
+      )}
     </div>
   ) : isDeal ? (
     <div className='space-y-1 xs:space-y-2 text-center'>
@@ -79,11 +89,25 @@ const ProductPrice = ({
             className
           )}
         >
-          <span className='text-xs xs:text-sm align-super'>
-            {currency.symbol}
-          </span>
-          {intValue}
-          <span className='text-xs xs:text-sm align-super'>{floatValue}</span>
+          {currency.code === 'XOF' ? (
+            <>
+              {intValue}
+              <span className='text-xs xs:text-sm align-super'>
+                {floatValue}
+              </span>
+              <span className='text-xs xs:text-sm align-super ml-1'>CFA</span>
+            </>
+          ) : (
+            <>
+              <span className='text-xs xs:text-sm align-super'>
+                {currency.symbol}
+              </span>
+              {intValue}
+              <span className='text-xs xs:text-sm align-super'>
+                {floatValue}
+              </span>
+            </>
+          )}
         </div>
         <div className='text-muted-foreground text-xs xs:text-sm'>
           {t('Product.Was')}:{' '}
@@ -105,9 +129,19 @@ const ProductPrice = ({
             className
           )}
         >
-          <span className='text-xs align-super'>{currency.symbol}</span>
-          {intValue}
-          <span className='text-xs align-super'>{floatValue}</span>
+          {currency.code === 'XOF' ? (
+            <>
+              {intValue}
+              <span className='text-xs align-super'>{floatValue}</span>
+              <span className='text-xs align-super ml-1'>CFA</span>
+            </>
+          ) : (
+            <>
+              <span className='text-xs align-super'>{currency.symbol}</span>
+              {intValue}
+              <span className='text-xs align-super'>{floatValue}</span>
+            </>
+          )}
         </div>
       </div>
       <div className='text-muted-foreground text-xs py-1 xs:py-2'>

@@ -25,7 +25,6 @@
     "New Arrivals": "New Arrivals",
     "Featured Products": "Featured Products",
     "Best Sellers": "Best Sellers",
-    "Browsing History": "Browsing History",
     "Customer Service": "Customer Service",
     "About Us": "About Us",
     "Help": "Help",
@@ -59,8 +58,6 @@
     "Shop Now": "Shop Now",
     "Today's Deals": "Today's Deals",
     "Best Selling Products": "Best Selling Products",
-    "Related to items that you've viewed": "Related to items that you've viewed",
-    "Your browsing history": "Your browsing history",
     "Best Deals on Computer Equipment": "Best Deals on Computer Equipment",
     "Professional Video Surveillance Systems": "Professional Video Surveillance Systems",
     "Advanced Telephony Solutions": "Advanced Telephony Solutions",
@@ -133,8 +130,6 @@
     "Quantity": "Quantity",
     "items": "items",
     "Your Shopping Cart is empty": "Your Shopping Cart is empty.",
-    "Your order qualifies for FREE Shipping": "Your order qualifies for FREE Shipping.",
-    "of eligible items to your order to qualify for FREE Shipping": "of eligible items to your order to qualify for FREE Shipping.",
     "Continue shopping on": "Continue shopping on <home>{name} home page</home>",
     "Add": "Add",
     "Added to cart": "Added to cart",
@@ -145,7 +140,6 @@
     "Items": "Items",
     "Subtotal": "Subtotal",
     "Shipping": "Shipping",
-    "Tax": "Tax",
     "Proceed to Checkout": "Proceed to Checkout",
     "Delete": "Delete",
     "Update": "Update",
@@ -202,7 +196,17 @@
     "Returns & Replacements": "Returns & Replacements",
     "Conditions of Use": "Conditions of Use",
     "Privacy Notice": "Privacy Notice",
-    "Help": "Help"
+    "Help": "Help",
+    "Wishlist": "Wishlist"
+  },
+  "Wishlist": {
+    "Title": "My Wishlist",
+    "Description": "Find all your favorite products",
+    "Empty": {
+      "Title": "Your wishlist is empty",
+      "Description": "Add products to your wishlist to find them easily",
+      "ContinueShopping": "Continue Shopping"
+    }
   },
   "Loading": {
     "Loading": "Loading..."
@@ -250,7 +254,6 @@
     "OrderSummary": "Order Summary",
     "Items": "Items",
     "Shipping": "Shipping",
-    "Tax": "Tax",
     "OrderTotal": "Order Total",
     "DeliveryDate": "Delivery date",
     "PaymentMethod": "Payment Method",
@@ -270,7 +273,7 @@
     "FullName": "Full Name",
     "Street": "Street",
     "City": "City",
-    "Province": "Province",
+    "Province": "Commune/Quarter",
     "PostalCode": "Postal Code",
     "Phone": "Phone",
     "Country": "Country",

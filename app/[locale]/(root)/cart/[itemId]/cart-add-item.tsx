@@ -1,5 +1,4 @@
 'use client'
-import BrowsingHistoryList from '@/components/shared/browsing-history-list'
 import ProductPrice from '@/components/shared/product/product-price'
 import { buttonVariants } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -18,7 +17,7 @@ export default function CartAddItem({ itemId }: { itemId: string }) {
   } = useCartStore()
   const {
     setting: {
-      common: { freeShippingMinPrice },
+      common: {},
     },
   } = useSettingStore()
   const item = items.find((x) => x.clientId === itemId)
@@ -69,31 +68,7 @@ export default function CartAddItem({ itemId }: { itemId: string }) {
         <Card className='w-full rounded-none'>
           <CardContent className='p-4 h-full'>
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
-              <div className='flex justify-center items-center'>
-                {itemsPrice < freeShippingMinPrice ? (
-                  <div className='text-center '>
-                    {t('Cart.Add')}{' '}
-                    <span className='text-green-700'>
-                      <ProductPrice
-                        price={freeShippingMinPrice - itemsPrice}
-                        plain
-                      />
-                    </span>{' '}
-                    {t(
-                      'Cart.of eligible items to your order to qualify for FREE Shipping'
-                    )}
-                  </div>
-                ) : (
-                  <div className='flex items-center'>
-                    <div>
-                      <span className='text-green-700'>
-                        Your order qualifies for FREE Shipping.
-                      </span>{' '}
-                      Choose this option at checkout.
-                    </div>
-                  </div>
-                )}
-              </div>
+              <div className='flex justify-center items-center'></div>
               <div className='lg:border-l lg:border-muted lg:pl-3 flex flex-col items-center gap-3  '>
                 <div className='flex gap-3'>
                   <span className='text-lg font-bold'>Cart Subtotal:</span>
@@ -120,7 +95,6 @@ export default function CartAddItem({ itemId }: { itemId: string }) {
           </CardContent>
         </Card>
       </div>
-      <BrowsingHistoryList />
     </div>
   )
 }

@@ -18,7 +18,6 @@ export default function OrderDetailsForm({ order }: { order: IOrder }) {
     shippingAddress,
     items,
     itemsPrice,
-    taxPrice,
     shippingPrice,
     totalPrice,
     paymentMethod,
@@ -56,16 +55,7 @@ export default function OrderDetailsForm({ order }: { order: IOrder }) {
                 )}
               </span>
             </div>
-            <div className='flex justify-between'>
-              <span> {t('Tax')}:</span>
-              <span>
-                {taxPrice === undefined ? (
-                  '--'
-                ) : (
-                  <ProductPrice price={taxPrice} plain />
-                )}
-              </span>
-            </div>
+            <div className='flex justify-between'></div>
             <div className='flex justify-between  pt-1 font-bold text-lg'>
               <span> {t('OrderTotal')}:</span>
               <span>

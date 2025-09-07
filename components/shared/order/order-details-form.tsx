@@ -45,7 +45,6 @@ export default function OrderDetailsForm({
     shippingAddress,
     items,
     itemsPrice,
-    taxPrice,
     shippingPrice,
     totalPrice,
     paymentMethod,
@@ -252,10 +251,7 @@ export default function OrderDetailsForm({
                 <span className='text-muted-foreground'>Articles</span>
                 <ProductPrice price={itemsPrice} plain />
               </div>
-              <div className='flex justify-between items-center text-sm'>
-                <span className='text-muted-foreground'>Taxes</span>
-                <ProductPrice price={taxPrice} plain />
-              </div>
+              <div className='flex justify-between items-center text-sm'></div>
               <div className='flex justify-between items-center text-sm'>
                 <span className='text-muted-foreground'>Livraison</span>
                 <ProductPrice price={shippingPrice} plain />

@@ -297,7 +297,7 @@ const categories: ICategoryInput[] = [
     sortOrder: 4,
   },
 
-  // Sous-catégories pour Computer Equipment
+  // Sous-catégories pour Équipement informatique
   {
     name: 'Moniteurs',
     slug: 'monitors',
@@ -344,7 +344,7 @@ const categories: ICategoryInput[] = [
     sortOrder: 5,
   },
 
-  // Sous-catégories pour Video Surveillance
+  // Sous-catégories pour Surveillance vidéo
   {
     name: 'IP Cameras',
     slug: 'ip-cameras',
@@ -373,7 +373,7 @@ const categories: ICategoryInput[] = [
     sortOrder: 3,
   },
 
-  // Sous-catégories pour Telephony
+  // Sous-catégories pour Téléphonie
   {
     name: 'IP Phones',
     slug: 'ip-phones',
@@ -402,7 +402,7 @@ const categories: ICategoryInput[] = [
     sortOrder: 3,
   },
 
-  // Sous-catégories pour Fire Safety
+  // Sous-catégories pour Sécurité incendie
   {
     name: 'Fire Extinguishers',
     slug: 'fire-extinguishers',
@@ -436,7 +436,7 @@ const products: IProductInput[] = [
   {
     name: 'Hikvision Dome Camera 4MP IP Security Camera',
     slug: toSlug('Hikvision Dome Camera 4MP IP Security Camera'),
-    category: 'Video Surveillance',
+    category: 'Surveillance vidéo',
     subCategory: 'IP Cameras',
     images: ['/images/p11-1.jpg', '/images/p11-2.jpg'],
     tags: ['new-arrival', 'featured', 'todays-deal'],
@@ -479,7 +479,7 @@ const products: IProductInput[] = [
   {
     name: 'Dahua IP Camera 2MP Bullet Security Camera',
     slug: toSlug('Dahua IP Camera 2MP Bullet Security Camera'),
-    category: 'Video Surveillance',
+    category: 'Surveillance vidéo',
     subCategory: 'IP Cameras',
     images: [
       '/images/p12-1.jpg',
@@ -522,7 +522,7 @@ const products: IProductInput[] = [
   {
     name: 'Samsung 24" LED Monitor Full HD',
     slug: toSlug('Samsung 24 LED Monitor Full HD'),
-    category: 'Computer Equipment',
+    category: 'Équipement informatique',
     subCategory: 'Monitors',
     brand: 'Samsung',
     images: ['/images/p13-1.jpg', '/images/p13-2.jpg'],
@@ -567,7 +567,7 @@ const products: IProductInput[] = [
   {
     name: 'Dell OptiPlex 7090 Desktop Computer',
     slug: toSlug('Dell OptiPlex 7090 Desktop Computer'),
-    category: 'Computer Equipment',
+    category: 'Équipement informatique',
     subCategory: 'Desktop Computers',
     brand: 'Dell',
     images: ['/images/p14-1.jpg', '/images/p14-2.jpg'],
@@ -610,7 +610,7 @@ const products: IProductInput[] = [
   {
     name: 'HP LaserJet Pro M404n Printer',
     slug: toSlug('HP LaserJet Pro M404n Printer'),
-    category: 'Computer Equipment',
+    category: 'Équipement informatique',
     subCategory: 'Printers',
     brand: 'HP',
     images: ['/images/p15-1.jpg', '/images/p15-2.jpg'],
@@ -648,7 +648,7 @@ const products: IProductInput[] = [
   {
     name: 'Cisco IP Phone 7841',
     slug: toSlug('Cisco IP Phone 7841'),
-    category: 'Telephony',
+    category: 'Téléphonie',
     subCategory: 'IP Phones',
     brand: 'Cisco',
     images: ['/images/p16-1.jpg', '/images/p16-2.jpg'],
@@ -691,7 +691,7 @@ const products: IProductInput[] = [
   {
     name: 'Kidde Fire Extinguisher 10-B:C',
     slug: toSlug('Kidde Fire Extinguisher 10-B:C'),
-    category: 'Fire Safety',
+    category: 'Sécurité incendie',
     subCategory: 'Fire Extinguishers',
     brand: 'Kidde',
     images: ['/images/p21-1.jpg', '/images/p21-2.jpg'],
@@ -734,7 +734,7 @@ const products: IProductInput[] = [
   {
     name: 'First Alert Smoke Detector Battery Powered',
     slug: toSlug('First Alert Smoke Detector Battery Powered'),
-    category: 'Fire Safety',
+    category: 'Sécurité incendie',
     subCategory: 'Smoke Detectors',
     brand: 'First Alert',
     images: ['/images/p22-1.jpg', '/images/p22-2.jpg'],
@@ -777,7 +777,7 @@ const products: IProductInput[] = [
   {
     name: 'Lenovo ThinkPad X1 Carbon Laptop',
     slug: toSlug('Lenovo ThinkPad X1 Carbon Laptop'),
-    category: 'Computer Equipment',
+    category: 'Équipement informatique',
     subCategory: 'Laptops',
     brand: 'Lenovo',
     images: ['/images/p23-1.jpg', '/images/p23-2.jpg'],
@@ -820,7 +820,7 @@ const products: IProductInput[] = [
   {
     name: 'Western Digital 2TB Internal Hard Drive',
     slug: toSlug('Western Digital 2TB Internal Hard Drive'),
-    category: 'Computer Equipment',
+    category: 'Équipement informatique',
     subCategory: 'Storage',
     brand: 'Western Digital',
     images: ['/images/p24-1.jpg', '/images/p24-2.jpg'],
@@ -1087,67 +1087,32 @@ We also provide helpful resources such as order tracking, product guides, and FA
       isPublished: true,
     },
   ],
-  headerMenus: [
-    {
-      name: "Today's Deal",
-      href: '/search?tag=todays-deal',
-    },
-    {
-      name: 'New Arrivals',
-      href: '/search?tag=new-arrival',
-    },
-    {
-      name: 'Featured Products',
-      href: '/search?tag=featured',
-    },
-    {
-      name: 'Best Sellers',
-      href: '/search?tag=best-seller',
-    },
-    {
-      name: 'Browsing History',
-      href: '/#browsing-history',
-    },
-    {
-      name: 'Customer Service',
-      href: '/page/customer-service',
-    },
-    {
-      name: 'About Us',
-      href: '/page/about-us',
-    },
-    {
-      name: 'Help',
-      href: '/page/help',
-    },
-  ],
   carousels: [
     {
-      title: 'Best Deals on Computer Equipment',
+      title: "Meilleures offres sur l'équipement informatique",
       buttonCaption: 'Shop Now',
       image: '/images/banner3.jpg',
-      url: '/search?category=Computer Equipment',
+      url: '/search?category=Équipement informatique',
       isPublished: true,
     },
     {
-      title: 'Professional Video Surveillance Systems',
+      title: 'Systèmes de surveillance vidéo professionnels',
       buttonCaption: 'Shop Now',
       image: '/images/banner1.jpg',
-      url: '/search?category=Video Surveillance',
+      url: '/search?category=Surveillance vidéo',
       isPublished: true,
     },
     {
-      title: 'Advanced Telephony Solutions',
+      title: 'Solutions de téléphonie avancées',
       buttonCaption: 'See More',
       image: '/images/banner2.jpg',
-      url: '/search?category=Telephony',
+      url: '/search?category=Téléphonie',
       isPublished: true,
     },
   ],
   settings: [
     {
       common: {
-        freeShippingMinPrice: 35,
         isMaintenanceMode: false,
         defaultTheme: 'Light',
         defaultColor: 'Gold',
@@ -1158,7 +1123,7 @@ We also provide helpful resources such as order tracking, product guides, and FA
         description:
           'MendelCorp is a leading e-commerce platform specializing in cutting-edge technology products, computer equipment, security systems, and professional telephony solutions.',
         keywords:
-          'Technology, Computer Equipment, Security Systems, Telephony, Fire Safety, Professional Equipment, MendelCorp',
+          'Technologie, Équipement informatique, Systèmes de sécurité, Téléphonie, Sécurité incendie, Équipement professionnel, MendelCorp',
         url: 'https://mendelcorp.com',
         logo: '/icons/logo.png',
         slogan: 'Empowering Technology, Securing Tomorrow.',
@@ -1170,22 +1135,22 @@ We also provide helpful resources such as order tracking, product guides, and FA
       },
       carousels: [
         {
-          title: 'Best Deals on Computer Equipment',
+          title: "Meilleures offres sur l'équipement informatique",
           buttonCaption: 'Shop Now',
           image: '/images/banner3.jpg',
-          url: '/search?category=Computer Equipment',
+          url: '/search?category=Équipement informatique',
         },
         {
-          title: 'Professional Video Surveillance Systems',
+          title: 'Systèmes de surveillance vidéo professionnels',
           buttonCaption: 'Shop Now',
           image: '/images/banner1.jpg',
-          url: '/search?category=Video Surveillance',
+          url: '/search?category=Surveillance vidéo',
         },
         {
-          title: 'Advanced Telephony Solutions',
+          title: 'Solutions de téléphonie avancées',
           buttonCaption: 'See More',
           image: '/images/banner2.jpg',
-          url: '/search?category=Telephony',
+          url: '/search?category=Téléphonie',
         },
       ],
       availableLanguages: i18n.locales.map((locale) => ({
@@ -1217,19 +1182,16 @@ We also provide helpful resources such as order tracking, product guides, and FA
           name: 'Tomorrow',
           daysToDeliver: 1,
           shippingPrice: 12.9,
-          freeShippingMinPrice: 0,
         },
         {
           name: 'Next 3 Days',
           daysToDeliver: 3,
           shippingPrice: 6.9,
-          freeShippingMinPrice: 0,
         },
         {
           name: 'Next 5 Days',
           daysToDeliver: 5,
           shippingPrice: 4.9,
-          freeShippingMinPrice: 35,
         },
       ],
       defaultDeliveryDate: 'Next 5 Days',

@@ -57,10 +57,6 @@ export type Data = {
     rating: number
     comment: string
   }[]
-  headerMenus: {
-    name: string
-    href: string
-  }[]
   carousels: {
     image: string
     url: string

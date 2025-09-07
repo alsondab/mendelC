@@ -13,10 +13,9 @@ import {
 import { auth } from '@/auth'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { getDirection } from '@/i18n-config'
-import ThemeSwitcher from './theme-switcher'
 import LanguageSwitcher from './language-switcher'
-import NavigationAccordion from './navigation-accordion'
 import HelpSettingsAccordion from './help-settings-accordion'
+import LogoutButton from './logout-button'
 
 export default async function Sidebar() {
   const session = await auth()
@@ -96,25 +95,33 @@ export default async function Sidebar() {
             <div className='p-3 space-y-3'>
               <div className='space-y-2'>
                 <h3 className='text-sm font-medium text-foreground'>
-                  {t('Header.Theme')}
-                </h3>
-                <ThemeSwitcher />
-              </div>
-
-              <div className='space-y-2'>
-                <h3 className='text-sm font-medium text-foreground'>
                   {t('Header.Language')} & {t('Header.Currency')}
                 </h3>
                 <LanguageSwitcher />
               </div>
             </div>
+
+            {/* Help & Settings Section */}
+            <HelpSettingsAccordion session={session} />
+
+            {/* Login/Logout Section */}
+            <div className='border-t border-border/50 bg-muted/30'>
+              <div className='p-3'>
+                {session ? (
+                  <LogoutButton />
+                ) : (
+                  <DrawerClose asChild>
+                    <Link
+                      href='/sign-in'
+                      className='flex items-center justify-center space-x-2 px-3 py-2 rounded-lg hover:bg-muted/80 transition-colors text-sm font-medium border border-border/50 w-full'
+                    >
+                      <span>Connexion</span>
+                    </Link>
+                  </DrawerClose>
+                )}
+              </div>
+            </div>
           </div>
-
-          {/* Navigation Links Section */}
-          <NavigationAccordion />
-
-          {/* Help & Settings Section */}
-          <HelpSettingsAccordion session={session} />
         </div>
       </DrawerContent>
     </Drawer>

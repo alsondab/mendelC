@@ -12,9 +12,6 @@ import { generateId, round2 } from '@/lib/utils'
 import SelectVariant from '@/components/shared/product/select-variant'
 import ProductPrice from '@/components/shared/product/product-price'
 import ProductGallery from '@/components/shared/product/product-gallery'
-import AddToBrowsingHistory from '@/components/shared/product/add-to-browsing-history'
-
-import BrowsingHistoryList from '@/components/shared/browsing-history-list'
 import RatingSummary from '@/components/shared/product/rating-summary'
 import ProductSlider from '@/components/shared/product/product-slider'
 import { getTranslations } from 'next-intl/server'
@@ -101,9 +98,6 @@ export default async function ProductDetails(props: {
     // ✅ Container principal ultra-responsive
     <div className='min-h-screen w-full overflow-x-hidden'>
       <div className='w-full max-w-7xl mx-auto px-2 py-2 xs:px-3 xs:py-3 sm:px-4 sm:py-4 md:px-5 md:py-5 lg:px-6 lg:py-6'>
-        {/* ✅ Browsing History Tracker */}
-        <AddToBrowsingHistory id={product._id} category={product.category} />
-
         {/* ✅ Section principale du produit */}
         <section className='mb-3 xs:mb-4 sm:mb-6 md:mb-8'>
           <div className='grid grid-cols-1 lg:grid-cols-12 gap-2 xs:gap-3 sm:gap-4 md:gap-6 lg:gap-8'>
@@ -113,6 +107,64 @@ export default async function ProductDetails(props: {
                 <div className='w-full max-w-full overflow-hidden rounded-lg'>
                   <ProductGallery images={product.images} />
                 </div>
+              </div>
+
+              {/* ✅ Détails du produit - Déplacés en bas de l'image sur grands écrans */}
+              <div className='hidden lg:block w-full space-y-4 mt-6'>
+                {/* ✅ Description */}
+                <div className='w-full bg-muted/30 rounded-lg p-4 overflow-hidden'>
+                  <h3 className='font-semibold text-lg mb-3 text-foreground break-words'>
+                    {t('Product.Description')}
+                  </h3>
+                  <p className='text-muted-foreground leading-relaxed text-base break-words hyphens-auto overflow-hidden'>
+                    {product.description}
+                  </p>
+                </div>
+
+                {/* ✅ Spécifications */}
+                {product.specifications &&
+                  product.specifications.length > 0 && (
+                    <div className='w-full bg-muted/30 rounded-lg p-4 overflow-hidden'>
+                      <h3 className='font-semibold text-lg mb-3 text-foreground break-words'>
+                        {t('Product.Specifications')}
+                      </h3>
+                      <ul className='space-y-2 w-full overflow-hidden'>
+                        {product.specifications.map((spec, index) => (
+                          <li
+                            key={index}
+                            className='flex items-start gap-2 text-muted-foreground text-base w-full min-w-0 overflow-hidden'
+                          >
+                            <div className='w-1.5 h-1.5 bg-primary rounded-full mt-2 shrink-0'></div>
+                            <span className='break-words hyphens-auto flex-1 min-w-0 overflow-hidden'>
+                              {spec}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                {/* ✅ Compatibilité */}
+                {product.compatibility && product.compatibility.length > 0 && (
+                  <div className='w-full bg-muted/30 rounded-lg p-4 overflow-hidden'>
+                    <h3 className='font-semibold text-lg mb-3 text-foreground break-words'>
+                      {t('Product.Compatibility')}
+                    </h3>
+                    <ul className='space-y-2 w-full overflow-hidden'>
+                      {product.compatibility.map((comp, index) => (
+                        <li
+                          key={index}
+                          className='flex items-start gap-2 text-muted-foreground text-base w-full min-w-0 overflow-hidden'
+                        >
+                          <div className='w-1.5 h-1.5 bg-primary rounded-full mt-2 shrink-0'></div>
+                          <span className='break-words hyphens-auto flex-1 min-w-0 overflow-hidden'>
+                            {comp}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -240,8 +292,8 @@ export default async function ProductDetails(props: {
                 </CardContent>
               </Card>
 
-              {/* ✅ Détails du produit - Ultra-responsive */}
-              <div className='w-full space-y-2 xs:space-y-3 sm:space-y-4 md:space-y-5 lg:space-y-6 overflow-hidden'>
+              {/* ✅ Détails du produit - Ultra-responsive - Masqués sur grands écrans */}
+              <div className='lg:hidden w-full space-y-2 xs:space-y-3 sm:space-y-4 md:space-y-5 overflow-hidden'>
                 {/* ✅ Description */}
                 <div className='w-full bg-muted/30 rounded-lg p-1.5 xs:p-2 sm:p-3 md:p-4 overflow-hidden'>
                   <h3 className='font-semibold text-xs xs:text-sm sm:text-base md:text-lg mb-1 xs:mb-1.5 sm:mb-2 md:mb-3 text-foreground break-words'>
@@ -331,14 +383,6 @@ export default async function ProductDetails(props: {
             </div>
           </section>
         )}
-
-        {/* Historique de navigation */}
-        <section className='mt-6 sm:mt-8 mb-6 sm:mb-8'>
-          <h2 className='text-lg sm:text-xl font-semibold text-foreground mb-4 text-center'>
-            Récemment consultés
-          </h2>
-          <BrowsingHistoryList />
-        </section>
       </div>
     </div>
   )

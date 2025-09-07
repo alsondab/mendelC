@@ -10,6 +10,7 @@ import { formatNumber, generateId, round2 } from '@/lib/utils'
 import ProductPrice from './product-price'
 import ImageHover from './image-hover'
 import AddToCart from './add-to-cart'
+import WishlistButton from './wishlist-button'
 
 const ProductCard = ({
   product,
@@ -26,6 +27,7 @@ const ProductCard = ({
     <Link href={`/product/${product.slug}`}>
       <div className='relative h-32 xs:h-40 sm:h-48 lg:h-52'>
         {/* Badge de réduction en haut à gauche */}
+        {/* Badge de réduction */}
         {product.listPrice > 0 && product.listPrice > product.price && (
           <div className='absolute top-1 left-1 sm:top-2 sm:left-2 z-10'>
             <div className='relative'>
@@ -36,6 +38,11 @@ const ProductCard = ({
             </div>
           </div>
         )}
+
+        {/* Bouton Wishlist */}
+        <div className='absolute top-1 right-1 sm:top-2 sm:right-2 z-10'>
+          <WishlistButton productId={product._id} size='sm' />
+        </div>
 
         {product.images.length > 1 &&
         product.images[0] &&

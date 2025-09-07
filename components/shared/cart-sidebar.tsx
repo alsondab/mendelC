@@ -27,7 +27,7 @@ export default function CartSidebar() {
   } = useCartStore()
   const {
     setting: {
-      common: { freeShippingMinPrice },
+      common: {},
     },
   } = useSettingStore()
 
@@ -47,11 +47,6 @@ export default function CartSidebar() {
             <div className='font-bold '>
               <ProductPrice price={itemsPrice} plain />
             </div>
-            {itemsPrice > freeShippingMinPrice && (
-              <div className=' text-center text-xs'>
-                {t('Cart.Your order qualifies for FREE Shipping')}
-              </div>
-            )}
 
             <Link
               className={cn(

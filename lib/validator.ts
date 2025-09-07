@@ -115,12 +115,13 @@ export const ShippingAddressSchema = z.object({
     ),
   postalCode: z
     .string()
-    .min(5, 'Le code postal doit contenir au moins 5 caractères')
-    .max(10, 'Le code postal ne peut pas dépasser 10 caractères')
-    .regex(
-      /^[A-Za-z0-9\s-]+$/,
-      'Le code postal contient des caractères non autorisés'
-    ),
+    .optional()
+    .refine((val) => {
+      if (!val || val.trim() === '') return true // Champ facultatif
+      return (
+        val.length >= 5 && val.length <= 10 && /^[A-Za-z0-9\s-]+$/.test(val)
+      )
+    }, 'Le code postal doit contenir entre 5 et 10 caractères et ne peut contenir que des lettres, chiffres, espaces et tirets'),
   province: z
     .string()
     .min(2, 'La province doit contenir au moins 2 caractères')
@@ -176,7 +177,6 @@ export const OrderInputSchema = z.object({
     .optional(),
   itemsPrice: Price('Items price'),
   shippingPrice: Price('Shipping price'),
-  taxPrice: Price('Tax price'),
   totalPrice: Price('Total price'),
   expectedDeliveryDate: z
     .date()
@@ -198,7 +198,6 @@ export const CartSchema = z.object({
     .array(OrderItemSchema)
     .min(1, 'Order must contain at least one item'),
   itemsPrice: z.number(),
-  taxPrice: z.optional(z.number()),
   shippingPrice: z.optional(z.number()),
   totalPrice: z.number(),
   paymentMethod: z.optional(z.string()),
@@ -368,9 +367,6 @@ export const DeliveryDateSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   daysToDeliver: z.number().min(0, 'Days to deliver must be at least 0'),
   shippingPrice: z.coerce.number().min(0, 'Shipping price must be at least 0'),
-  freeShippingMinPrice: z.coerce
-    .number()
-    .min(0, 'Free shipping min amount must be at least 0'),
 })
 
 // Category
@@ -397,10 +393,6 @@ export const SettingInputSchema = z.object({
       .min(1, 'Page size must be at least 1')
       .default(9),
     isMaintenanceMode: z.boolean().default(false),
-    freeShippingMinPrice: z.coerce
-      .number()
-      .min(0, 'Free shipping min price must be at least 0')
-      .default(0),
     defaultTheme: z
       .string()
       .min(1, 'Default theme is required')

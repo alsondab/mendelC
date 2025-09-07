@@ -25,7 +25,6 @@
     "New Arrivals": "Nouveautés",
     "Featured Products": "Produits vedettes",
     "Best Sellers": "Meilleures ventes",
-    "Browsing History": "Historique de navigation",
     "Customer Service": "Service client",
     "About Us": "À propos de nous",
     "Help": "Aide",
@@ -45,7 +44,6 @@
     "Wishlist": "Favoris",
     "Account": "Compte",
     "Settings": "Réglages",
-    "Navigation": "Navigation",
     "Preferences": "Préférences",
     "Theme": "Thème",
     "Language": "Langue",
@@ -61,8 +59,6 @@
     "Shop Now": "Acheter maintenant",
     "Today's Deals": "Offres du jour",
     "Best Selling Products": "Produits les plus vendus",
-    "Related to items that you've viewed": "Lié aux articles que vous avez consultés",
-    "Your browsing history": "Votre historique de navigation",
     "Best Deals on Computer Equipment": "Meilleures offres sur l'équipement informatique",
     "Professional Video Surveillance Systems": "Systèmes de surveillance vidéo professionnels",
     "Advanced Telephony Solutions": "Solutions de téléphonie avancées",
@@ -136,8 +132,6 @@
     "Quantity": "Quantité",
     "items": "articles",
     "Your Shopping Cart is empty": "Votre panier est vide.",
-    "Your order qualifies for FREE Shipping": "Votre commande est admissible à la livraison GRATUITE.",
-    "of eligible items to your order to qualify for FREE Shipping": "d'articles admissibles à votre commande pour être admissible à la livraison GRATUITE.",
     "Continue shopping on": "Continuer les achats sur <home>{name} page d'accueil</home>",
     "Add": "Ajouter",
     "Added to cart": "Ajouté au panier",
@@ -148,7 +142,6 @@
     "Items": "Articles",
     "Subtotal": "Sous-total",
     "Shipping": "Livraison",
-    "Tax": "Taxes",
     "Proceed to Checkout": "Passer à la caisse",
     "Delete": "Supprimer",
     "Update": "Mettre à jour"
@@ -204,7 +197,17 @@
     "Returns & Replacements": "Retours et remplacements",
     "Conditions of Use": "Conditions d'utilisation",
     "Privacy Notice": "Avis de confidentialité",
-    "Help": "Aide"
+    "Help": "Aide",
+    "Wishlist": "Favoris"
+  },
+  "Wishlist": {
+    "Title": "Mes Favoris",
+    "Description": "Retrouvez tous vos produits favoris",
+    "Empty": {
+      "Title": "Votre liste de favoris est vide",
+      "Description": "Ajoutez des produits à vos favoris pour les retrouver facilement",
+      "ContinueShopping": "Continuer mes achats"
+    }
   },
   "Loading": {
     "Loading": "Chargement..."
@@ -253,7 +256,6 @@
     "OrderSummary": "Résumé de la commande",
     "Items": "Articles",
     "Shipping": "Livraison",
-    "Tax": "Taxes",
     "OrderTotal": "Total de la commande",
     "DeliveryDate": "Date de livraison",
     "PaymentMethod": "Méthode de paiement",
@@ -273,7 +275,7 @@
     "FullName": "Nom complet",
     "Street": "Rue",
     "City": "Ville",
-    "Province": "Province",
+    "Province": "Commune/Quartier",
     "PostalCode": "Code postal",
     "Phone": "Téléphone",
     "Country": "Pays",
