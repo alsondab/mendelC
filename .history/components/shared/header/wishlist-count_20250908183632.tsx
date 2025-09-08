@@ -1,0 +1,76 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { Heart } from 'lucide-react'
+import Link from 'next/link'
+import { getUserWishlist } from '@/lib/actions/wishlist.actions'
+import { useWishlistStore } from '@/hooks/use-wishlist-store'
+import { useSession } from 'next-auth/react'
+import useIsMounted from '@/hooks/use-is-mounted'
+import { usePathname } from 'next/navigation'
+import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
+
+export default function WishlistCount() {
+  const [count, setCount] = useState(0)
+  const { data: session } = useSession()
+  const { items: wishlistItems } = useWishlistStore()
+  const isMounted = useIsMounted()
+  const pathname = usePathname()
+  const t = useTranslations()
+
+  useEffect(() => {
+    const fetchWishlistCount = async () => {
+      if (session?.user?.id) {
+        // Utilisateur connecté - utiliser l'API
+        const { success, wishlist } = await getUserWishlist()
+        if (success && wishlist) {
+          setCount(wishlist.length)
+        }
+      } else {
+        // Utilisateur non connecté - utiliser le store local
+        setCount(wishlistItems.length)
+      }
+    }
+    fetchWishlistCount()
+  }, [session?.user?.id, wishlistItems.length])
+
+  // Écouter les changements de wishlist
+  useEffect(() => {
+    const handleWishlistChange = () => {
+      if (session?.user?.id) {
+        // Pour les utilisateurs connectés, recharger depuis l'API
+        const fetchWishlistCount = async () => {
+          const { success, wishlist } = await getUserWishlist()
+          if (success && wishlist) {
+            setCount(wishlist.length)
+          }
+        }
+        fetchWishlistCount()
+      } else {
+        // Pour les utilisateurs non connectés, utiliser le store local
+        setCount(wishlistItems.length)
+      }
+    }
+
+    window.addEventListener('wishlistChanged', handleWishlistChange)
+    return () => {
+      window.removeEventListener('wishlistChanged', handleWishlistChange)
+    }
+  }, [session?.user?.id, wishlistItems.length])
+
+  return (
+    <Link
+      href='/wishlist'
+      className='flex items-center space-x-1 text-muted-foreground hover:text-primary transition-colors relative'
+    >
+      <Heart className='h-4 w-4' />
+      <span>Favoris</span>
+      {count > 0 && (
+        <span className='absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold'>
+          {count}
+        </span>
+      )}
+    </Link>
+  )
+}
