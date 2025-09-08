@@ -1000,11 +1000,11 @@ const data: Data = {
           'Technologie, Équipement informatique, Systèmes de sécurité, Téléphonie, Sécurité incendie, Équipement professionnel, MendelCorp',
         url: 'https://mendel-c.vercel.app/',
         logo: '/icons/logo.png',
-        slogan: "Renforcer la technologie, sécuriser l'avenir.",
+        slogan: 'Renforcer la technologie, sécuriser l\'avenir.',
         author: 'MendelCorp',
         copyright: '2017-2024, MendelCorp.com.',
         email: 'admin@mendelcorp.com',
-        address: "Cocody, Abidjan Côte d'Ivoire",
+        address: 'Cocody, Abidjan Côte d\'Ivoire',
         phone: '+225 20 30 40 50',
       },
       carousels: [

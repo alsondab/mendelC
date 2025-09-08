@@ -11,6 +11,8 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel'
 import Link from 'next/link'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
 import { useTranslations } from 'next-intl'
 import { ICarousel } from '@/types'
 
