@@ -1,7 +1,9 @@
 'use client'
 
 import { SearchIcon } from 'lucide-react'
+import { useState } from 'react'
 import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import {
   Select,
   SelectContent,
@@ -9,6 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../../ui/select'
+import { Dialog, DialogContent, DialogTitle } from '../../ui/dialog'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { useTranslations } from 'next-intl'
 import { ICategory } from '@/types'
 
@@ -18,6 +22,7 @@ interface SearchProps {
 }
 
 export default function Search({ categories, siteName }: SearchProps) {
+  const [isOpen, setIsOpen] = useState(false)
   const t = useTranslations()
 
   const SearchForm = () => (

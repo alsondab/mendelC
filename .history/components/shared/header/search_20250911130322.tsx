@@ -1,7 +1,9 @@
 'use client'
 
 import { SearchIcon } from 'lucide-react'
+import { useState } from 'react'
 import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import {
   Select,
   SelectContent,
@@ -9,6 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../../ui/select'
+import { Dialog, DialogContent, DialogTitle } from '../../ui/dialog'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { useTranslations } from 'next-intl'
 import { ICategory } from '@/types'
 
@@ -18,6 +22,7 @@ interface SearchProps {
 }
 
 export default function Search({ categories, siteName }: SearchProps) {
+  const [isOpen, setIsOpen] = useState(false)
   const t = useTranslations()
 
   const SearchForm = () => (
@@ -80,26 +85,32 @@ export default function Search({ categories, siteName }: SearchProps) {
         <SearchForm />
       </div>
 
-      {/* Mobile Search - Barre de recherche directe */}
+      {/* Mobile Search - Barre de recherche compacte */}
       <div className='lg:hidden flex-1 max-w-md mx-2'>
-        <form action='/search' method='GET' className='space-y-0'>
-          <div className='relative'>
-            <div className='flex items-stretch h-10 rounded-lg overflow-hidden bg-background/80 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-md transition-all duration-200'>
-              <Input
-                className='flex-1 border-0 rounded-none bg-transparent text-foreground text-sm h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/60 px-3'
-                placeholder={t('Header.Search Site', { name: siteName })}
-                name='q'
-                type='search'
-              />
-              <button
-                type='submit'
-                className='bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground h-full px-3 py-2 transition-all duration-200 flex items-center justify-center'
-              >
-                <SearchIcon className='w-4 h-4' />
-              </button>
+        <Button
+          variant='outline'
+          onClick={() => setIsOpen(true)}
+          className='w-full h-10 rounded-lg border border-border/50 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-all duration-200 justify-start text-muted-foreground'
+        >
+          <SearchIcon className='h-4 w-4 mr-2 flex-shrink-0' />
+          <span className='text-sm truncate'>
+            {t('Header.Search Site', { name: siteName })}
+          </span>
+        </Button>
+
+        {/* Mobile Search Dialog */}
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <DialogContent className='sm:max-w-lg border-0 shadow-2xl bg-background/95 backdrop-blur-xl'>
+            <VisuallyHidden>
+              <DialogTitle>
+                {t('Header.Search Site', { name: siteName })}
+              </DialogTitle>
+            </VisuallyHidden>
+            <div className='p-4 sm:p-6'>
+              <SearchForm />
             </div>
-          </div>
-        </form>
+          </DialogContent>
+        </Dialog>
       </div>
     </>
   )

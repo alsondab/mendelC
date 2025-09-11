@@ -18,6 +18,7 @@ interface SearchProps {
 }
 
 export default function Search({ categories, siteName }: SearchProps) {
+  const [isOpen, setIsOpen] = useState(false)
   const t = useTranslations()
 
   const SearchForm = () => (
