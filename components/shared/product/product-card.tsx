@@ -47,6 +47,8 @@ const ProductCard = ({
               price: product.price,
               image: product.images[0] || '',
               countInStock: product.countInStock,
+              brand: product.brand || '',
+              category: product.category || '',
             }}
             size='sm'
           />

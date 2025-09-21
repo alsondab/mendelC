@@ -62,6 +62,12 @@ const productDefaultValues: IProductInput =
         price: 99.99,
         listPrice: 0,
         countInStock: 15,
+        minStockLevel: 5,
+        maxStockLevel: 100,
+        isLowStock: false,
+        isOutOfStock: false,
+        lastStockUpdate: new Date(),
+        stockStatus: 'in_stock',
         numReviews: 0,
         avgRating: 0,
         numSales: 0,
@@ -83,6 +89,12 @@ const productDefaultValues: IProductInput =
         price: 0,
         listPrice: 0,
         countInStock: 0,
+        minStockLevel: 5,
+        maxStockLevel: 100,
+        isLowStock: false,
+        isOutOfStock: false,
+        lastStockUpdate: new Date(),
+        stockStatus: 'in_stock',
         numReviews: 0,
         avgRating: 0,
         numSales: 0,
@@ -447,6 +459,57 @@ const ProductForm = ({
                   </FormItem>
                 )}
               />
+
+              {/* 🚀 NOUVEAUX CHAMPS POUR LA GESTION DES STOCKS */}
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                <FormField
+                  control={form.control}
+                  name='minStockLevel'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className='text-sm font-medium'>
+                        Seuil d&apos;alerte (stock faible)
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type='number'
+                          placeholder='5'
+                          className='h-11'
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription className='text-xs'>
+                        Alerte quand le stock descend en dessous de ce nombre
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='maxStockLevel'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className='text-sm font-medium'>
+                        Stock maximum recommandé
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type='number'
+                          placeholder='100'
+                          className='h-11'
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription className='text-xs'>
+                        Stock maximum pour éviter la surcharge
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
           </CardContent>
         </Card>

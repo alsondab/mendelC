@@ -5,19 +5,20 @@ import { Heart } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { useWishlistStore } from '@/hooks/use-wishlist-store'
-import { useSession } from 'next-auth/react'
 import { cn } from '@/lib/utils'
 import useIsMounted from '@/hooks/use-is-mounted'
 
 interface WishlistButtonProps {
   productId: string
-  product?: {
+  product: {
     _id: string
     name: string
     slug: string
     price: number
     image: string
     countInStock: number
+    brand: string
+    category: string
   }
   className?: string
   size?: 'sm' | 'md' | 'lg'
@@ -36,14 +37,8 @@ export default function WishlistButton({
   const [isLoading, setIsLoading] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
   const { toast } = useToast()
-  const { data: session } = useSession()
   const isMounted = useIsMounted()
-  const {
-    items: wishlistItems,
-    addItem,
-    removeItem,
-    isInWishlist,
-  } = useWishlistStore()
+  const { addItem, removeItem, isInWishlist } = useWishlistStore()
 
   // État local pour éviter les problèmes d'hydratation
   const [isInWishlistState, setIsInWishlistState] = useState(false)
@@ -54,44 +49,6 @@ export default function WishlistButton({
       setIsInWishlistState(isInWishlist(productId))
     }
   }, [isMounted, isInWishlist, productId])
-
-  useEffect(() => {
-    // Pour les utilisateurs connectés, vérifier le statut via l'API
-    if (session?.user?.id) {
-      const checkWishlistStatus = async () => {
-        try {
-          const response = await fetch(`/api/wishlist?productId=${productId}`)
-          const data = await response.json()
-          if (data.success) {
-            // Synchroniser avec le store local
-            setIsInWishlistState(data.isInWishlist)
-            if (data.isInWishlist && !isInWishlistState) {
-              // Ajouter au store local si pas déjà présent
-              // Note: On aurait besoin des données du produit pour l'ajouter correctement
-            }
-          }
-        } catch (error) {
-          console.error('Error checking wishlist status:', error)
-        }
-      }
-      checkWishlistStatus()
-
-      // Listen for wishlist changes to update the button state
-      const handleWishlistChange = () => {
-        checkWishlistStatus()
-      }
-
-      window.addEventListener('wishlistChanged', handleWishlistChange)
-
-      return () => {
-        window.removeEventListener('wishlistChanged', handleWishlistChange)
-      }
-    } else {
-      // Pour les utilisateurs non connectés, utiliser le store local
-      setIsInWishlistState(isInWishlist(productId))
-    }
-    // Pour les utilisateurs non connectés, le store local gère déjà l'état
-  }, [productId, session?.user?.id, isInWishlistState, isInWishlist])
 
   const handleToggleWishlist = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -105,133 +62,30 @@ export default function WishlistButton({
     try {
       if (isInWishlistState) {
         // Supprimer des favoris
-        if (session?.user?.id) {
-          // Utilisateur connecté - vérifier d'abord si c'est un favori local ou API
-          const wishlistItem = wishlistItems.find(
-            (item) => item.product._id === productId
-          )
-
-          if (wishlistItem && wishlistItem._id.startsWith('local_')) {
-            // C'est un favori local - supprimer du store local seulement
-            removeItem(productId)
-            setIsInWishlistState(false)
-            toast({
-              title: 'Favori supprimé',
-              description: 'Le produit a été retiré de vos favoris',
-            })
-            window.dispatchEvent(new CustomEvent('wishlistChanged'))
-          } else {
-            // C'est un favori API - supprimer via l'API
-            const response = await fetch(
-              `/api/wishlist?productId=${productId}`,
-              {
-                method: 'DELETE',
-              }
-            )
-            const result = await response.json()
-            if (result.success) {
-              removeItem(productId)
-              setIsInWishlistState(false)
-              toast({
-                title: 'Favori supprimé',
-                description: 'Le produit a été retiré de vos favoris',
-              })
-              window.dispatchEvent(new CustomEvent('wishlistChanged'))
-            } else {
-              // Si l'API échoue, supprimer quand même du store local
-              removeItem(productId)
-              setIsInWishlistState(false)
-              toast({
-                title: 'Favori supprimé',
-                description: 'Le produit a été retiré de vos favoris (local)',
-              })
-              window.dispatchEvent(new CustomEvent('wishlistChanged'))
-            }
-          }
-        } else {
-          // Utilisateur non connecté - utiliser le store local
-          removeItem(productId)
-          setIsInWishlistState(false)
-          toast({
-            title: 'Favori supprimé',
-            description: 'Le produit a été retiré de vos favoris',
-          })
-          window.dispatchEvent(new CustomEvent('wishlistChanged'))
-        }
+        removeItem(productId)
+        setIsInWishlistState(false)
+        toast({
+          title: 'Favori supprimé',
+          description: 'Le produit a été retiré de vos favoris',
+        })
       } else {
         // Ajouter aux favoris
-        if (session?.user?.id) {
-          // Utilisateur connecté - utiliser l'API
-          const response = await fetch('/api/wishlist', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ productId }),
-          })
-          const result = await response.json()
-          if (result.success) {
-            // Synchroniser avec le store local
-            if (product) {
-              const wishlistItem = {
-                _id: `api_${productId}_${Date.now()}`,
-                product: {
-                  _id: product._id,
-                  name: product.name,
-                  slug: product.slug,
-                  price: product.price,
-                  image: product.image,
-                  countInStock: product.countInStock,
-                },
-                createdAt: new Date().toISOString(),
-              }
-              addItem(wishlistItem)
-            }
-            setIsInWishlistState(true)
-            toast({
-              title: 'Favori ajouté',
-              description:
-                'Le produit a été ajouté à vos favoris et synchronisé avec votre compte.',
-            })
-            window.dispatchEvent(new CustomEvent('wishlistChanged'))
-          } else {
-            toast({
-              title: 'Erreur',
-              description: result.message,
-              variant: 'destructive',
-            })
-          }
-        } else {
-          // Utilisateur non connecté - utiliser le store local
-          if (product) {
-            const wishlistItem = {
-              _id: `local_${productId}_${Date.now()}`,
-              product: {
-                _id: product._id,
-                name: product.name,
-                slug: product.slug,
-                price: product.price,
-                image: product.image,
-                countInStock: product.countInStock,
-              },
-              createdAt: new Date().toISOString(),
-            }
-            addItem(wishlistItem)
-            setIsInWishlistState(true)
-            toast({
-              title: 'Favori ajouté',
-              description:
-                'Le produit a été ajouté à vos favoris. Connectez-vous pour synchroniser avec votre compte.',
-            })
-            window.dispatchEvent(new CustomEvent('wishlistChanged'))
-          } else {
-            toast({
-              title: 'Erreur',
-              description: 'Données du produit manquantes',
-              variant: 'destructive',
-            })
-          }
+        const wishlistItem = {
+          _id: product._id,
+          name: product.name,
+          slug: product.slug,
+          price: product.price,
+          image: product.image,
+          countInStock: product.countInStock,
+          brand: product.brand,
+          category: product.category,
         }
+        addItem(wishlistItem)
+        setIsInWishlistState(true)
+        toast({
+          title: 'Favori ajouté',
+          description: 'Le produit a été ajouté à vos favoris',
+        })
       }
     } catch {
       toast({

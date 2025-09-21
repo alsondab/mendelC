@@ -1,67 +1,22 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import React from 'react'
 import { Heart } from 'lucide-react'
 import Link from 'next/link'
-import { getUserWishlist } from '@/lib/actions/wishlist.actions'
 import { useWishlistStore } from '@/hooks/use-wishlist-store'
-import { useSession } from 'next-auth/react'
 import useIsMounted from '@/hooks/use-is-mounted'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 
 export default function WishlistCount() {
-  const [count, setCount] = useState(0)
-  const { data: session } = useSession()
   const { items: wishlistItems } = useWishlistStore()
   const isMounted = useIsMounted()
   const pathname = usePathname()
   const t = useTranslations()
 
-  useEffect(() => {
-    if (!isMounted) return
-
-    const fetchWishlistCount = async () => {
-      if (session?.user?.id) {
-        // Utilisateur connecté - utiliser l'API
-        const { success, wishlist } = await getUserWishlist()
-        if (success && wishlist) {
-          setCount(wishlist.length)
-        }
-      } else {
-        // Utilisateur non connecté - utiliser le store local
-        setCount(wishlistItems.length)
-      }
-    }
-    fetchWishlistCount()
-  }, [isMounted, session?.user?.id, wishlistItems.length])
-
-  // Écouter les changements de wishlist
-  useEffect(() => {
-    if (!isMounted) return
-
-    const handleWishlistChange = () => {
-      if (session?.user?.id) {
-        // Pour les utilisateurs connectés, recharger depuis l'API
-        const fetchWishlistCount = async () => {
-          const { success, wishlist } = await getUserWishlist()
-          if (success && wishlist) {
-            setCount(wishlist.length)
-          }
-        }
-        fetchWishlistCount()
-      } else {
-        // Pour les utilisateurs non connectés, utiliser le store local
-        setCount(wishlistItems.length)
-      }
-    }
-
-    window.addEventListener('wishlistChanged', handleWishlistChange)
-    return () => {
-      window.removeEventListener('wishlistChanged', handleWishlistChange)
-    }
-  }, [isMounted, session?.user?.id, wishlistItems.length])
+  // Utiliser directement le store local
+  const count = wishlistItems.length
 
   // Ne pas afficher les favoris dans la page admin
   if (pathname.includes('/admin')) {
