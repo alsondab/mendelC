@@ -43,14 +43,16 @@ export default async function StockManagementPage() {
   return (
     <div className='space-y-6'>
       {/* Header */}
-      <div className='flex items-center justify-between'>
-        <div>
-          <h1 className='text-3xl font-bold'>Gestion des Stocks</h1>
-          <p className='text-muted-foreground'>
+      <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4'>
+        <div className='flex-1'>
+          <h1 className='text-2xl sm:text-3xl font-bold'>Gestion des Stocks</h1>
+          <p className='text-muted-foreground text-sm sm:text-base'>
             Surveillez et gérez les niveaux de stock de vos produits
           </p>
         </div>
-        <RefreshStockButton />
+        <div className='flex-shrink-0'>
+          <RefreshStockButton />
+        </div>
       </div>
 
       {/* Alertes de Stock */}
@@ -165,15 +167,15 @@ export default async function StockManagementPage() {
                 {outOfStockProducts.map((product) => (
                   <div
                     key={product.id}
-                    className='flex items-center justify-between p-3 border rounded-lg'
+                    className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 border rounded-lg'
                   >
-                    <div className='flex-1'>
-                      <h4 className='font-medium'>{product.name}</h4>
+                    <div className='flex-1 min-w-0'>
+                      <h4 className='font-medium truncate'>{product.name}</h4>
                       <p className='text-sm text-muted-foreground'>
                         Stock: {product.countInStock}
                       </p>
                     </div>
-                    <div className='flex items-center gap-2'>
+                    <div className='flex items-center gap-2 flex-shrink-0'>
                       <StockStatus
                         countInStock={product.countInStock}
                         stockStatus={product.stockStatus}
@@ -214,16 +216,16 @@ export default async function StockManagementPage() {
                 {lowStockProducts.map((product) => (
                   <div
                     key={product.id}
-                    className='flex items-center justify-between p-3 border rounded-lg'
+                    className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 border rounded-lg'
                   >
-                    <div className='flex-1'>
-                      <h4 className='font-medium'>{product.name}</h4>
+                    <div className='flex-1 min-w-0'>
+                      <h4 className='font-medium truncate'>{product.name}</h4>
                       <p className='text-sm text-muted-foreground'>
                         Stock: {product.countInStock} / Seuil:{' '}
                         {product.minStockLevel}
                       </p>
                     </div>
-                    <div className='flex items-center gap-2'>
+                    <div className='flex items-center gap-2 flex-shrink-0'>
                       <StockStatus
                         countInStock={product.countInStock}
                         stockStatus={product.stockStatus}
