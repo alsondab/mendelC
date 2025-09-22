@@ -272,69 +272,69 @@ export default function Search({ categories, siteName }: SearchProps) {
     <div className='search-container relative'>
       {/* Desktop Search */}
       <div className='hidden lg:block'>
-    <form action='/search' method='GET' className='space-y-4'>
-      <div className='relative'>
-        <div className='flex items-stretch h-14 rounded-2xl overflow-hidden bg-background/60 backdrop-blur-sm border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 ring-1 ring-white/10'>
-          <Select name='category'>
-            <SelectTrigger className='w-auto h-full bg-gradient-to-br from-muted/40 to-muted/20 border-0 rounded-none border-r border-white/20 focus:ring-0 backdrop-blur-sm'>
-              <SelectValue placeholder={t('Header.All')} />
-            </SelectTrigger>
-            <SelectContent
-              position='popper'
-              className='border-0 shadow-2xl bg-background/95 backdrop-blur-xl ring-1 ring-white/20'
-            >
-              <SelectItem value='all'>{t('Header.All')}</SelectItem>
-              {categories.map((category) => (
-                <div key={category._id}>
+        <form action='/search' method='GET' className='space-y-4'>
+          <div className='relative'>
+            <div className='flex items-stretch h-14 rounded-2xl overflow-hidden bg-background/60 backdrop-blur-sm border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 ring-1 ring-white/10'>
+              <Select name='category'>
+                <SelectTrigger className='w-auto h-full bg-gradient-to-br from-muted/40 to-muted/20 border-0 rounded-none border-r border-white/20 focus:ring-0 backdrop-blur-sm'>
+                  <SelectValue placeholder={t('Header.All')} />
+                </SelectTrigger>
+                <SelectContent
+                  position='popper'
+                  className='border-0 shadow-2xl bg-background/95 backdrop-blur-xl ring-1 ring-white/20'
+                >
+                  <SelectItem value='all'>{t('Header.All')}</SelectItem>
+                  {categories.map((category) => (
+                    <div key={category._id}>
                       <SelectItem value={category.name}>
                         {category.name}
                       </SelectItem>
-                  {category.subCategories &&
-                    category.subCategories.length > 0 && (
-                      <>
-                        {category.subCategories.map((subCategory) => (
-                          <SelectItem
-                            key={subCategory._id}
-                            value={`${category.name}|${subCategory.name}`}
-                            className='ml-4 text-sm'
-                          >
-                            └ {subCategory.name}
-                          </SelectItem>
-                        ))}
-                      </>
-                    )}
-                </div>
-              ))}
-            </SelectContent>
-          </Select>
-          <Input
-            className='flex-1 border-0 rounded-none bg-transparent text-foreground text-base h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/60'
-            placeholder={t('Header.Search Site', { name: siteName })}
-            name='q'
-            type='search'
-          />
-          <button
-            type='submit'
-            className='bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground h-full px-6 py-2 transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl'
-          >
-            <SearchIcon className='w-5 h-5' />
-          </button>
-        </div>
-        {/* Glow effect */}
-        <div className='absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/20 via-transparent to-primary/20 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none'></div>
-      </div>
-    </form>
+                      {category.subCategories &&
+                        category.subCategories.length > 0 && (
+                          <>
+                            {category.subCategories.map((subCategory) => (
+                              <SelectItem
+                                key={subCategory._id}
+                                value={`${category.name}|${subCategory.name}`}
+                                className='ml-4 text-sm'
+                              >
+                                └ {subCategory.name}
+                              </SelectItem>
+                            ))}
+                          </>
+                        )}
+                    </div>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Input
+                className='flex-1 border-0 rounded-none bg-transparent text-foreground text-base h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/60'
+                placeholder={t('Header.Search Site', { name: siteName })}
+                name='q'
+                type='search'
+              />
+              <button
+                type='submit'
+                className='bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground h-full px-6 py-2 transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl'
+              >
+                <SearchIcon className='w-5 h-5' />
+              </button>
+            </div>
+            {/* Glow effect */}
+            <div className='absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/20 via-transparent to-primary/20 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none'></div>
+          </div>
+        </form>
       </div>
 
       {/* Mobile Search - Collé au menu */}
       <div className='lg:hidden'>
-        {/* Barre de recherche compacte (état par défaut) - Collée au menu */}
+        {/* Barre de recherche compacte (état par défaut) - Espacée du menu */}
         {!isExpanded && (
           <button
             onClick={handleSearchClick}
-            className='flex items-center justify-center gap-1 h-8 sm:h-9 md:h-10 px-1 sm:px-2 md:px-3 rounded-full sm:rounded-lg bg-background/80 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 active:scale-95 text-sm text-muted-foreground'
+            className='flex items-center justify-center gap-1 h-8 sm:h-9 md:h-10 px-2 sm:px-2 md:px-3 rounded-full sm:rounded-lg bg-background/90 backdrop-blur-sm border border-border/60 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 text-sm text-muted-foreground hover:text-foreground ml-2 sm:ml-3'
           >
-            <SearchIcon className='w-4 h-4' />
+            <SearchIcon className='w-4 h-4 sm:w-4 sm:h-4 md:w-5 md:h-5' />
             {/* Très petits écrans (< 375px) : Seulement l'icône */}
             <span className='font-medium text-xs hidden min-[375px]:inline sm:hidden'>
               Recherche
@@ -370,9 +370,9 @@ export default function Search({ categories, siteName }: SearchProps) {
 
                 {/* Barre de recherche principale */}
                 <form onSubmit={handleSearchSubmit} className='space-y-3'>
-          <div className='relative'>
+                  <div className='relative'>
                     <div className='flex items-stretch h-12 rounded-xl overflow-hidden bg-background border border-border shadow-sm'>
-              <Input
+                      <Input
                         ref={searchRef}
                         value={searchValue}
                         onChange={(e) => setSearchValue(e.target.value)}
@@ -383,11 +383,11 @@ export default function Search({ categories, siteName }: SearchProps) {
                         placeholder={t('Header.Search Site', {
                           name: siteName,
                         })}
-                type='search'
+                        type='search'
                         autoComplete='off'
-              />
-              <button
-                type='submit'
+                      />
+                      <button
+                        type='submit'
                         className='bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground h-full px-4 py-2 transition-all duration-200 flex items-center justify-center'
                       >
                         <SearchIcon className='w-5 h-5' />
@@ -576,7 +576,7 @@ export default function Search({ categories, siteName }: SearchProps) {
                             className='opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:text-red-500'
                           >
                             <X className='w-3 h-3' />
-              </button>
+                          </button>
                         </div>
                       ))}
                     </div>

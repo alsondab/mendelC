@@ -47,8 +47,8 @@ export default async function Header() {
             <Search categories={categories} siteName={site.name} />
           </div>
 
-          {/* Mobile: Search + Menu collés à droite */}
-          <div className='lg:hidden flex items-center space-x-0 flex-shrink-0'>
+          {/* Mobile: Search + Menu avec espacement */}
+          <div className='lg:hidden flex items-center space-x-1 sm:space-x-2 flex-shrink-0'>
             <Search categories={categories} siteName={site.name} />
             <Sidebar />
           </div>
