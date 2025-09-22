@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
-import { Home, Search, ShoppingCart, User, Heart } from 'lucide-react'
+import { Home, Compass, ShoppingCart, User, Heart } from 'lucide-react'
 import useCartStore from '@/hooks/use-cart-store'
 import { useWishlistStore } from '@/hooks/use-wishlist-store'
 import { usePathname } from 'next/navigation'
@@ -31,8 +31,8 @@ export default function MobileBottomNav() {
     },
     {
       href: '/search',
-      icon: Search,
-      label: t('Header.Search'),
+      icon: Compass,
+      label: 'Parcourir',
       isActive: pathname.includes('/search'),
     },
     {
