@@ -332,13 +332,21 @@ export default function Search({ categories, siteName }: SearchProps) {
         {!isExpanded && (
           <button
             onClick={handleSearchClick}
-            className='flex items-center justify-center gap-1 h-9 px-2 rounded-lg bg-background/80 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 active:scale-95 text-sm text-muted-foreground'
+            className='flex items-center justify-center gap-1 h-8 sm:h-9 md:h-10 px-1 sm:px-2 md:px-3 rounded-full sm:rounded-lg bg-background/80 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 active:scale-95 text-sm text-muted-foreground'
           >
             <SearchIcon className='w-4 h-4' />
-            <span className='font-medium text-xs hidden sm:inline'>
+            {/* Très petits écrans (< 375px) : Seulement l'icône */}
+            <span className='font-medium text-xs hidden min-[375px]:inline sm:hidden'>
+              Recherche
+            </span>
+            {/* Petits écrans (375px - 768px) : Icône + "Recherche" */}
+            <span className='font-medium text-xs hidden sm:inline md:hidden'>
+              Recherche
+            </span>
+            {/* Écrans moyens (768px+) : Icône + "Rechercher" */}
+            <span className='font-medium text-xs hidden md:inline'>
               Rechercher
             </span>
-            <span className='font-medium text-xs sm:hidden'>Recherche</span>
           </button>
         )}
 
