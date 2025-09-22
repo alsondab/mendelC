@@ -8,31 +8,32 @@ body {
 
 @layer base {
   :root {
+    /* Palette luxueuse Or et Rouge */
     --background: 0 0% 100%;
     --foreground: 20 14.3% 4.1%;
     --card: 0 0% 100%;
     --card-foreground: 20 14.3% 4.1%;
     --popover: 0 0% 100%;
     --popover-foreground: 20 14.3% 4.1%;
-    --primary: 24.6 95% 53.1%;
-    --primary-foreground: 60 9.1% 97.8%;
-    --secondary: 60 4.8% 95.9%;
-    --secondary-foreground: 24 9.8% 10%;
-    --muted: 60 4.8% 95.9%;
+    --primary: 45 100% 51%; /* Or luxueux */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 45 100% 95%; /* Or très clair */
+    --secondary-foreground: 20 14.3% 4.1%;
+    --muted: 45 100% 96%; /* Crème */
     --muted-foreground: 25 5.3% 44.7%;
-    --accent: 60 4.8% 95.9%;
-    --accent-foreground: 24 9.8% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 60 9.1% 97.8%;
-    --border: 20 5.9% 90%;
-    --input: 20 5.9% 90%;
-    --ring: 24.6 95% 53.1%;
+    --accent: 0 84% 60%; /* Rouge accent */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%; /* Rouge */
+    --destructive-foreground: 0 0% 100%;
+    --border: 45 100% 90%; /* Or très clair pour les bordures */
+    --input: 45 100% 95%; /* Or très clair pour les inputs */
+    --ring: 45 100% 51%; /* Or pour les focus */
     --radius: 0.65rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    --chart-1: 45 100% 51%; /* Or */
+    --chart-2: 0 84% 60%; /* Rouge */
+    --chart-3: 45 100% 70%; /* Or clair */
+    --chart-4: 0 84% 70%; /* Rouge clair */
+    --chart-5: 45 100% 40%; /* Or foncé */
   }
 }
 
@@ -51,13 +52,13 @@ body {
   }
   .highlight-link a,
   a.highlight-link {
-    @apply text-sky-700  hover:text-orange-700 hover:underline;
+    @apply text-luxury-red hover:text-luxury-gold hover:underline;
   }
   .header-button {
-    @apply cursor-pointer p-1 border border-transparent hover:border-white rounded-[2px];
+    @apply cursor-pointer p-1 border border-transparent hover:border-luxury-gold rounded-[2px];
   }
   .item-button {
-    @apply p-3 hover:bg-muted hover:no-underline;
+    @apply p-3 hover:bg-luxury-cream hover:no-underline;
   }
   .h1-bold {
     @apply font-bold text-2xl lg:text-3xl;
@@ -67,6 +68,38 @@ body {
   }
   .flex-between {
     @apply flex justify-between items-center;
+  }
+
+  /* Classes luxueuses personnalisées */
+  .luxury-gold {
+    @apply text-luxury-gold;
+  }
+  .luxury-gold-bg {
+    @apply bg-luxury-gold text-white;
+  }
+  .luxury-gold-border {
+    @apply border-luxury-gold;
+  }
+  .luxury-red {
+    @apply text-luxury-red;
+  }
+  .luxury-red-bg {
+    @apply bg-luxury-red text-white;
+  }
+  .luxury-red-border {
+    @apply border-luxury-red;
+  }
+  .luxury-gradient {
+    @apply bg-gradient-to-r from-luxury-gold to-luxury-red;
+  }
+  .luxury-gradient-text {
+    @apply bg-gradient-to-r from-luxury-gold to-luxury-red bg-clip-text text-transparent;
+  }
+  .luxury-shadow {
+    @apply shadow-lg shadow-luxury-gold/20;
+  }
+  .luxury-hover {
+    @apply hover:bg-luxury-gold hover:text-white transition-all duration-300;
   }
 
   /* Modern navbar utilities */

@@ -4,6 +4,7 @@ import { connectToDatabase } from '../db'
 import Product from '../db/models/product.model'
 import { formatError } from '../utils'
 import { revalidatePath } from 'next/cache'
+import { calculateStockStatus } from '../utils/stock-utils'
 
 // 🚀 ACTIONS POUR LA GESTION DES STOCKS
 
@@ -83,13 +84,13 @@ export async function getLowStockProducts() {
     return {
       success: true,
       products: products.map((product) => ({
-        id: product._id,
+        id: product._id.toString(),
         name: product.name,
         slug: product.slug,
         countInStock: product.countInStock,
         minStockLevel: product.minStockLevel,
         stockStatus: product.stockStatus,
-        lastStockUpdate: product.lastStockUpdate,
+        lastStockUpdate: product.lastStockUpdate.toISOString(),
       })),
     }
   } catch (error) {
@@ -107,17 +108,20 @@ export async function getOutOfStockProducts() {
     const products = await Product.find({
       isOutOfStock: true,
       isPublished: true,
-    }).select('name slug countInStock stockStatus lastStockUpdate')
+    }).select(
+      'name slug countInStock minStockLevel stockStatus lastStockUpdate'
+    )
 
     return {
       success: true,
       products: products.map((product) => ({
-        id: product._id,
+        id: product._id.toString(),
         name: product.name,
         slug: product.slug,
         countInStock: product.countInStock,
+        minStockLevel: product.minStockLevel,
         stockStatus: product.stockStatus,
-        lastStockUpdate: product.lastStockUpdate,
+        lastStockUpdate: product.lastStockUpdate.toISOString(),
       })),
     }
   } catch (error) {
@@ -232,10 +236,28 @@ export async function updateAllStockStatus() {
 
     for (const product of products) {
       const oldStatus = product.stockStatus
-      // Le statut sera mis à jour automatiquement par le middleware pre-save
+
+      // Calculer le nouveau statut manuellement
+      const stockStatusData = calculateStockStatus(
+        product.countInStock,
+        product.minStockLevel
+      )
+
+      // Mettre à jour les champs de statut
+      product.stockStatus = stockStatusData.stockStatus
+      product.isLowStock = stockStatusData.isLowStock
+      product.isOutOfStock = stockStatusData.isOutOfStock
+      product.lastStockUpdate = new Date()
+
+      // Marquer le document comme modifié pour déclencher la sauvegarde
+      product.markModified('stockStatus')
+      product.markModified('isLowStock')
+      product.markModified('isOutOfStock')
+      product.markModified('lastStockUpdate')
+
       await product.save()
 
-      // Vérifier si le statut a changé après la sauvegarde
+      // Vérifier si le statut a changé
       if (oldStatus !== product.stockStatus) {
         updatedCount++
       }

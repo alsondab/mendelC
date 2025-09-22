@@ -10,15 +10,15 @@ import {
   getLowStockProducts,
   getOutOfStockProducts,
   getStockStatistics,
-  updateAllStockStatus,
 } from '@/lib/actions/stock.actions'
 import { StockStatus } from '@/components/shared/product/stock-status'
+import { StockAlerts } from '@/components/shared/notifications/stock-alerts'
+import { RefreshStockButton } from '@/components/shared/notifications/refresh-stock-button'
 import {
   Package,
   AlertTriangle,
   XCircle,
   CheckCircle,
-  RefreshCw,
   TrendingUp,
   DollarSign,
 } from 'lucide-react'
@@ -50,18 +50,14 @@ export default async function StockManagementPage() {
             Surveillez et gérez les niveaux de stock de vos produits
           </p>
         </div>
-        <form
-          action={async () => {
-            'use server'
-            await updateAllStockStatus()
-          }}
-        >
-          <Button type='submit' variant='outline' className='gap-2'>
-            <RefreshCw className='h-4 w-4' />
-            Actualiser tous les statuts
-          </Button>
-        </form>
+        <RefreshStockButton />
       </div>
+
+      {/* Alertes de Stock */}
+      <StockAlerts
+        lowStockProducts={lowStockProducts || []}
+        outOfStockProducts={outOfStockProducts || []}
+      />
 
       {/* Statistiques */}
       {statistics && (
@@ -184,7 +180,7 @@ export default async function StockManagementPage() {
                         size='sm'
                       />
                       <Button asChild size='sm' variant='outline'>
-                        <Link href={`/admin/products/edit/${product.id}`}>
+                        <Link href={`/admin/products/${product.id}`}>
                           Modifier
                         </Link>
                       </Button>
@@ -234,7 +230,7 @@ export default async function StockManagementPage() {
                         size='sm'
                       />
                       <Button asChild size='sm' variant='outline'>
-                        <Link href={`/admin/products/edit/${product.id}`}>
+                        <Link href={`/admin/products/${product.id}`}>
                           Modifier
                         </Link>
                       </Button>

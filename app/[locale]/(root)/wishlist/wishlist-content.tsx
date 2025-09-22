@@ -117,7 +117,7 @@ export default function WishlistContent() {
             <Button
               variant='outline'
               size='sm'
-              className='flex-1 sm:w-full text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300 text-xs sm:text-sm px-2 sm:px-3'
+              className='flex-1 sm:w-full text-luxury-red border-luxury-red hover:bg-luxury-red hover:text-white text-xs sm:text-sm px-2 sm:px-3'
               onClick={() => {
                 removeItem(item._id)
                 toast({
@@ -126,7 +126,7 @@ export default function WishlistContent() {
                 })
               }}
             >
-              <Heart className='h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 fill-red-500' />
+              <Heart className='h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 fill-luxury-red' />
               <span className='hidden xs:inline'>Retirer</span>
             </Button>
 

@@ -44,6 +44,31 @@ const config: Config = withUt({
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
+        // Palette luxueuse Or et Rouge
+        gold: {
+          50: '#fffbeb',
+          100: '#fef3c7',
+          200: '#fde68a',
+          300: '#fcd34d',
+          400: '#fbbf24',
+          500: '#f59e0b', // Or principal
+          600: '#d97706',
+          700: '#b45309',
+          800: '#92400e',
+          900: '#78350f',
+          950: '#451a03',
+        },
+        luxury: {
+          gold: '#d4af37', // Or luxueux classique
+          'gold-light': '#f4e4bc',
+          'gold-dark': '#b8860b',
+          red: '#dc2626', // Rouge principal
+          'red-light': '#fca5a5',
+          'red-dark': '#991b1b',
+          'red-luxury': '#b91c1c', // Rouge luxueux
+          cream: '#fefce8',
+          'warm-gray': '#78716c',
+        },
         chart: {
           '1': 'hsl(var(--chart-1))',
           '2': 'hsl(var(--chart-2))',

@@ -11,6 +11,7 @@ import {
   Settings,
   FolderTree,
   Warehouse,
+  Bell,
 } from 'lucide-react'
 import {
   Sheet,
@@ -27,12 +28,12 @@ import { useTranslations } from 'next-intl'
 
 const links = [
   {
-    title: 'Aperçu',
+    title: 'Overview',
     href: '/admin/overview',
     icon: BarChart3,
   },
   {
-    title: 'Produits',
+    title: 'Products',
     href: '/admin/products',
     icon: Package,
   },
@@ -42,22 +43,27 @@ const links = [
     icon: Warehouse,
   },
   {
-    title: 'Catégories',
+    title: 'Categories',
     href: '/admin/categories',
     icon: FolderTree,
   },
   {
-    title: 'Commandes',
+    title: 'Orders',
     href: '/admin/orders',
     icon: ShoppingCart,
   },
   {
-    title: 'Utilisateurs',
+    title: 'Users',
     href: '/admin/users',
     icon: Users,
   },
   {
-    title: 'Paramètres',
+    title: 'Notifications',
+    href: '/admin/notifications',
+    icon: Bell,
+  },
+  {
+    title: 'Settings',
     href: '/admin/settings',
     icon: Settings,
   },

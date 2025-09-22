@@ -4,6 +4,9 @@ import React from 'react'
 import { AdminNav, AdminMobileMenu } from './admin-nav'
 import { getSetting } from '@/lib/actions/setting.actions'
 import { AdminGuard } from '@/components/shared/admin/admin-guard'
+import { StockNotificationToast } from '@/components/shared/notifications/stock-notification-toast'
+import { StockPersistentAlert } from '@/components/shared/notifications/stock-persistent-alert'
+import { StockAlertIndicator } from '@/components/shared/notifications/stock-alert-indicator'
 
 export default async function AdminLayout({
   children,
@@ -14,6 +17,10 @@ export default async function AdminLayout({
   return (
     <AdminGuard>
       <div className='flex flex-col'>
+        {/* Notifications de Stock */}
+        <StockNotificationToast />
+        <StockPersistentAlert />
+
         <div className='bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border/40 shadow-sm'>
           <div className='flex h-16 items-center px-4 lg:px-6'>
             {/* Logo and Company Name */}
@@ -42,6 +49,7 @@ export default async function AdminLayout({
 
             {/* Mobile Menu - Right Side */}
             <div className='ml-auto flex items-center space-x-2'>
+              <StockAlertIndicator />
               <AdminMobileMenu />
             </div>
           </div>

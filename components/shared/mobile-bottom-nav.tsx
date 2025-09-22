@@ -4,41 +4,18 @@ import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { Home, Search, ShoppingCart, User, Heart } from 'lucide-react'
 import useCartStore from '@/hooks/use-cart-store'
+import { useWishlistStore } from '@/hooks/use-wishlist-store'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { useEffect, useState } from 'react'
 
 export default function MobileBottomNav() {
   const t = useTranslations()
   const pathname = usePathname()
   const { cart } = useCartStore()
-  const [wishlistCount, setWishlistCount] = useState<number | null>(null)
+  const { items: wishlistItems } = useWishlistStore()
 
-  useEffect(() => {
-    const fetchWishlistCount = async () => {
-      try {
-        const response = await fetch('/api/wishlist/count')
-        const data = await response.json()
-        setWishlistCount(data.count || 0)
-      } catch (error) {
-        console.error('Error fetching wishlist count:', error)
-        setWishlistCount(0)
-      }
-    }
-    fetchWishlistCount()
-
-    // Listen for wishlist changes
-    const handleWishlistChange = () => {
-      fetchWishlistCount()
-    }
-
-    // Add event listener for custom wishlist events
-    window.addEventListener('wishlistChanged', handleWishlistChange)
-
-    return () => {
-      window.removeEventListener('wishlistChanged', handleWishlistChange)
-    }
-  }, [])
+  // Utiliser directement le store local
+  const wishlistCount = wishlistItems.length
 
   // Ne pas afficher la navigation mobile dans les pages admin
   if (pathname.includes('/admin')) {
@@ -70,8 +47,7 @@ export default function MobileBottomNav() {
       icon: Heart,
       label: t('Header.Wishlist'),
       isActive: pathname.includes('/wishlist'),
-      badge:
-        wishlistCount !== null && wishlistCount > 0 ? wishlistCount : undefined,
+      badge: wishlistCount > 0 ? wishlistCount : undefined,
     },
     {
       href: '/account',

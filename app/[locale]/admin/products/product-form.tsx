@@ -127,7 +127,14 @@ const ProductForm = ({
         ? zodResolver(ProductUpdateSchema)
         : zodResolver(ProductInputSchema),
     defaultValues:
-      product && type === 'Update' ? product : productDefaultValues,
+      product && type === 'Update'
+        ? {
+            ...product,
+            lastStockUpdate: product.lastStockUpdate
+              ? new Date(product.lastStockUpdate)
+              : new Date(),
+          }
+        : productDefaultValues,
   })
 
   const { toast } = useToast()
@@ -178,34 +185,54 @@ const ProductForm = ({
   }, [product, type])
 
   async function onSubmit(values: IProductInput) {
-    if (type === 'Create') {
-      const res = await createProduct(values)
-      if (!res.success) {
-        toast({
-          variant: 'destructive',
-          description: res.message,
-        })
-      } else {
-        toast({
-          description: res.message,
-        })
-        router.push(`/admin/products`)
+    try {
+      if (type === 'Create') {
+        const res = await createProduct(values)
+        if (!res.success) {
+          toast({
+            variant: 'destructive',
+            description: res.message,
+          })
+        } else {
+          toast({
+            description: res.message,
+          })
+          router.push(`/admin/products`)
+        }
       }
-    }
-    if (type === 'Update') {
-      if (!productId) {
-        router.push(`/admin/products`)
-        return
+
+      if (type === 'Update') {
+        if (!productId) {
+          toast({
+            variant: 'destructive',
+            description: 'ID du produit manquant',
+          })
+          router.push(`/admin/products`)
+          return
+        }
+
+        const res = await updateProduct({ ...values, _id: productId })
+
+        if (!res.success) {
+          toast({
+            variant: 'destructive',
+            description: res.message,
+          })
+        } else {
+          toast({
+            description: res.message,
+          })
+          // Recharger la page pour afficher les modifications
+          router.refresh()
+        }
       }
-      const res = await updateProduct({ ...values, _id: productId })
-      if (!res.success) {
-        toast({
-          variant: 'destructive',
-          description: res.message,
-        })
-      } else {
-        router.push(`/admin/products`)
-      }
+    } catch (error) {
+      console.error('Error in onSubmit:', error)
+      toast({
+        variant: 'destructive',
+        description:
+          'Une erreur est survenue lors de la soumission du formulaire',
+      })
     }
   }
   const images = form.watch('images')
@@ -767,6 +794,23 @@ const ProductForm = ({
             type='submit'
             size='lg'
             disabled={form.formState.isSubmitting}
+            onClick={async (e) => {
+              e.preventDefault()
+
+              // Forcer la validation du formulaire
+              const isValid = await form.trigger()
+
+              if (isValid) {
+                const values = form.getValues()
+                await onSubmit(values)
+              } else {
+                toast({
+                  variant: 'destructive',
+                  description:
+                    'Veuillez corriger les erreurs dans le formulaire',
+                })
+              }
+            }}
             className='flex-1 h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200'
           >
             {form.formState.isSubmitting ? (

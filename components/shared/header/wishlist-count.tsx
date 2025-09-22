@@ -42,7 +42,7 @@ export default function WishlistCount() {
           <span
             className={cn(
               'absolute -top-1 -right-1',
-              'bg-orange-500 text-white',
+              'bg-luxury-gold text-white',
               'rounded-full text-xs font-bold min-w-[20px] h-5',
               'flex items-center justify-center px-1',
               'animate-in zoom-in-50 duration-200'

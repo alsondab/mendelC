@@ -8,6 +8,7 @@ import { ProductInputSchema, ProductUpdateSchema } from '../validator'
 import { IProductInput } from '@/types'
 import { z } from 'zod'
 import { getSetting } from './setting.actions'
+import { calculateStockStatus } from '../utils/stock-utils'
 
 // CREATE
 export async function createProduct(data: IProductInput) {
@@ -30,8 +31,23 @@ export async function updateProduct(data: z.infer<typeof ProductUpdateSchema>) {
   try {
     const product = ProductUpdateSchema.parse(data)
     await connectToDatabase()
-    await Product.findByIdAndUpdate(product._id, product)
+
+    // Recalculer le statut de stock avant la mise à jour
+    const stockStatusData = calculateStockStatus(
+      product.countInStock,
+      product.minStockLevel
+    )
+
+    // Mettre à jour avec le statut de stock recalculé
+    await Product.findByIdAndUpdate(product._id, {
+      ...product,
+      ...stockStatusData,
+      lastStockUpdate: new Date(),
+    })
+
     revalidatePath('/admin/products')
+    revalidatePath(`/admin/products/${product._id}`)
+    revalidatePath('/admin/stock')
     return {
       success: true,
       message: 'Produit mis à jour avec succès',

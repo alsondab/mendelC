@@ -118,7 +118,7 @@ export default function WishlistButton({
       onClick={handleToggleWishlist}
       disabled={isLoading}
       className={cn(
-        'relative overflow-hidden transition-all duration-300 hover:scale-110',
+        'relative overflow-hidden transition-all duration-300 hover:scale-110 luxury-hover',
         sizeClasses[size],
         className
       )}
@@ -128,8 +128,8 @@ export default function WishlistButton({
           'transition-all duration-300',
           iconSizeClasses[size],
           isInWishlistState
-            ? 'fill-orange-500 text-orange-500 drop-shadow-sm'
-            : 'text-muted-foreground hover:text-orange-500',
+            ? 'fill-luxury-gold text-luxury-gold drop-shadow-sm'
+            : 'text-muted-foreground hover:text-luxury-gold',
           isAnimating && 'animate-pulse scale-125'
         )}
       />
@@ -138,7 +138,7 @@ export default function WishlistButton({
       {isAnimating && (
         <div className='absolute inset-0 pointer-events-none'>
           <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
-            <div className='w-2 h-2 bg-orange-500 rounded-full animate-ping opacity-75'></div>
+            <div className='w-2 h-2 bg-luxury-gold rounded-full animate-ping opacity-75'></div>
           </div>
         </div>
       )}
@@ -150,7 +150,7 @@ export default function WishlistButton({
       )}
 
       {showCount && isInWishlistState && (
-        <span className='absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold'>
+        <span className='absolute -top-1 -right-1 bg-luxury-gold text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold'>
           1
         </span>
       )}
