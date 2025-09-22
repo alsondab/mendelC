@@ -151,7 +151,7 @@ export const ShippingAddressSchema = z.object({
     .string()
     .min(1, 'Le numéro de téléphone est requis')
     .refine((val) => {
-      // Nettoyer le numéro en supprimant tous les espaces
+      // Nettoyer le numéro en supprimant tous les espaces et caractères non numériques sauf +
       const cleanNumber = val.replace(/\s/g, '')
 
       // Vérifier que le numéro commence par +225
@@ -163,8 +163,8 @@ export const ShippingAddressSchema = z.object({
       const digitsOnly = cleanNumber.replace('+225', '').replace(/[^\d]/g, '')
 
       // Vérifier qu'il y a exactement 10 chiffres après +225
-      return digitsOnly.length === 10
-    }, 'Le numéro doit commencer par +225 et contenir exactement 10 chiffres (ex: +225 07 10 14 58 64)'),
+      return digitsOnly.length === 10 && /^\d{10}$/.test(digitsOnly)
+    }, 'Le numéro doit commencer par +225 et contenir exactement 10 chiffres (ex: +225 0710145864)'),
   country: z
     .string()
     .min(2, 'Le pays doit contenir au moins 2 caractères')
@@ -321,7 +321,7 @@ export const UserInputSchema = z.object({
       .string()
       .min(1, 'Le numéro de téléphone est requis')
       .refine((val) => {
-        // Nettoyer le numéro en supprimant tous les espaces
+        // Nettoyer le numéro en supprimant tous les espaces et caractères non numériques sauf +
         const cleanNumber = val.replace(/\s/g, '')
 
         // Vérifier que le numéro commence par +225
@@ -333,8 +333,8 @@ export const UserInputSchema = z.object({
         const digitsOnly = cleanNumber.replace('+225', '').replace(/[^\d]/g, '')
 
         // Vérifier qu'il y a exactement 10 chiffres après +225
-        return digitsOnly.length === 10
-      }, 'Le numéro doit commencer par +225 et contenir exactement 10 chiffres (ex: +225 07 10 14 58 64)'),
+        return digitsOnly.length === 10 && /^\d{10}$/.test(digitsOnly)
+      }, 'Le numéro doit commencer par +225 et contenir exactement 10 chiffres (ex: +225 0710145864)'),
   }),
 })
 
