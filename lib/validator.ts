@@ -170,7 +170,7 @@ export const ShippingAddressSchema = z.object({
     .min(2, 'Le pays doit contenir au moins 2 caractères')
     .max(50, 'Le pays ne peut pas dépasser 50 caractères')
     .regex(
-      /^[a-zA-ZÀ-ÿ\u00C0-\u017F\s'-]+$/u,
+      /^[\p{L}\s'-]+$/u,
       'Le pays ne peut contenir que des lettres, espaces, apostrophes et tirets'
     ),
 })
@@ -314,7 +314,7 @@ export const UserInputSchema = z.object({
       .min(2, 'Le pays doit contenir au moins 2 caractères')
       .max(50, 'Le pays ne peut pas dépasser 50 caractères')
       .regex(
-        /^[a-zA-ZÀ-ÿ\u00C0-\u017F\s'-]+$/u,
+        /^[\p{L}\s'-]+$/u,
         'Le pays ne peut contenir que des lettres, espaces, apostrophes et tirets'
       ),
     phone: z
