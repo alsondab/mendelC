@@ -35,6 +35,7 @@ export default function Footer() {
   const { locales } = i18n
   const locale = useLocale()
   const t = useTranslations()
+  const tFooter = useTranslations('FooterCustom')
 
   return (
     <footer className='bg-slate-900 text-white'>
@@ -74,8 +75,7 @@ export default function Footer() {
               <h3 className='text-xl font-bold'>{site.name}</h3>
             </div>
             <p className='text-slate-400 text-sm leading-relaxed'>
-              Votre destination de confiance pour des produits de qualité. Nous
-              offrons la meilleure expérience d&apos;achat.
+              {tFooter('TrustedDestination')}
             </p>
             <div className='flex space-x-3'>
               {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
@@ -94,7 +94,7 @@ export default function Footer() {
           {/* Services & Aide */}
           <div className='space-y-6'>
             <h4 className='text-lg font-semibold text-white border-b border-orange-500 pb-2'>
-              Services & Aide
+              {tFooter('ServicesHelp')}
             </h4>
             <ul className='space-y-3'>
               <li>
@@ -103,7 +103,7 @@ export default function Footer() {
                   className='text-slate-400 hover:text-orange-500 text-sm flex items-center space-x-3 transition-colors group'
                 >
                   <Truck className='h-4 w-4 group-hover:text-orange-500' />
-                  <span>Tarifs et politiques d&apos;expédition</span>
+                  <span>{tFooter('ShippingRates')}</span>
                 </Link>
               </li>
               <li>
@@ -112,7 +112,7 @@ export default function Footer() {
                   className='text-slate-400 hover:text-orange-500 text-sm flex items-center space-x-3 transition-colors group'
                 >
                   <RotateCcw className='h-4 w-4 group-hover:text-orange-500' />
-                  <span>Retours et remplacements</span>
+                  <span>{tFooter('ReturnsReplacements')}</span>
                 </Link>
               </li>
               <li>
@@ -121,7 +121,7 @@ export default function Footer() {
                   className='text-slate-400 hover:text-orange-500 text-sm flex items-center space-x-3 transition-colors group'
                 >
                   <Info className='h-4 w-4 group-hover:text-orange-500' />
-                  <span>Questions fréquentes</span>
+                  <span>{tFooter('FAQ')}</span>
                 </Link>
               </li>
               <li>
@@ -130,7 +130,7 @@ export default function Footer() {
                   className='text-slate-400 hover:text-orange-500 text-sm flex items-center space-x-3 transition-colors group'
                 >
                   <HelpCircle className='h-4 w-4 group-hover:text-orange-500' />
-                  <span>Aide et support</span>
+                  <span>{tFooter('HelpSupport')}</span>
                 </Link>
               </li>
             </ul>
@@ -139,13 +139,13 @@ export default function Footer() {
           {/* Contact */}
           <div className='space-y-6'>
             <h4 className='text-lg font-semibold text-white border-b border-orange-500 pb-2'>
-              Nous Contacter
+              {tFooter('ContactUs')}
             </h4>
             <div className='space-y-4'>
               <div className='flex items-start space-x-3 group'>
                 <Mail className='h-4 w-4 mt-0.5 text-orange-500 group-hover:text-orange-400' />
                 <div>
-                  <p className='text-slate-400 text-sm'>Email</p>
+                  <p className='text-slate-400 text-sm'>{tFooter('Email')}</p>
                   <a
                     href='mailto:info@mendel-corp.com'
                     className='text-white text-sm hover:text-orange-500 transition-colors'
@@ -157,7 +157,7 @@ export default function Footer() {
               <div className='flex items-start space-x-3 group'>
                 <Phone className='h-4 w-4 mt-0.5 text-orange-500 group-hover:text-orange-400' />
                 <div>
-                  <p className='text-slate-400 text-sm'>Téléphone</p>
+                  <p className='text-slate-400 text-sm'>{tFooter('Phone')}</p>
                   <a
                     href='tel:+2250707582191'
                     className='text-white text-sm hover:text-orange-500 transition-colors'
@@ -169,7 +169,7 @@ export default function Footer() {
               <div className='flex items-start space-x-3 group'>
                 <MapPin className='h-4 w-4 mt-0.5 text-orange-500 group-hover:text-orange-400' />
                 <div>
-                  <p className='text-slate-400 text-sm'>Adresse</p>
+                  <p className='text-slate-400 text-sm'>{tFooter('Address')}</p>
                   <p className='text-white text-sm'>
                     Abidjan
                     <br />
@@ -197,13 +197,13 @@ export default function Footer() {
           {/* Paramètres */}
           <div className='space-y-6'>
             <h4 className='text-lg font-semibold text-white border-b border-orange-500 pb-2'>
-              Paramètres
+              {tFooter('Settings')}
             </h4>
             <div className='space-y-4'>
               {/* Language Select */}
               <div>
                 <label className='text-slate-400 text-sm mb-2 block'>
-                  Langue
+                  {tFooter('Language')}
                 </label>
                 <Select
                   value={locale}
@@ -230,7 +230,7 @@ export default function Footer() {
               {/* Currency Select */}
               <div>
                 <label className='text-slate-400 text-sm mb-2 block'>
-                  Devise
+                  {tFooter('Currency')}
                 </label>
                 <Select
                   value={currency}
@@ -268,20 +268,20 @@ export default function Footer() {
                 href='/conditions-utilisation'
                 className='hover:text-orange-500 transition-colors'
               >
-                Conditions d&apos;utilisation
+                {tFooter('TermsConditions')}
               </Link>
               <Link
                 href='/politique-confidentialite'
                 className='hover:text-orange-500 transition-colors'
               >
-                Politique de confidentialité
+                {tFooter('PrivacyPolicy')}
               </Link>
             </div>
 
             <div className='flex items-center space-x-1 text-slate-400 text-sm'>
-              <span>Fait avec</span>
+              <span>{tFooter('MadeWith')}</span>
               <Heart className='h-4 w-4 text-red-500 animate-pulse' />
-              <span>pour nos clients</span>
+              <span>{tFooter('ForOurClients')}</span>
             </div>
           </div>
         </div>

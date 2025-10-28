@@ -21,6 +21,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { UserSignUpSchema } from '@/lib/validator'
 import { Separator } from '@/components/ui/separator'
 import { isRedirectError } from 'next/dist/client/components/redirect-error'
+import { useTranslations } from 'next-intl'
 
 const signUpDefaultValues =
   process.env.NODE_ENV === 'development'
@@ -43,6 +44,7 @@ export default function CredentialsSignInForm() {
   } = useSettingStore()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') || '/'
+  const t = useTranslations('Auth')
 
   const form = useForm<IUserSignUp>({
     resolver: zodResolver(UserSignUpSchema),
@@ -56,7 +58,7 @@ export default function CredentialsSignInForm() {
       const res = await registerUser(data)
       if (!res.success) {
         toast({
-          title: 'Error',
+          title: t('Error'),
           description: res.error,
           variant: 'destructive',
         })
@@ -72,8 +74,8 @@ export default function CredentialsSignInForm() {
         throw error
       }
       toast({
-        title: 'Error',
-        description: 'Invalid email or password',
+        title: t('Error'),
+        description: t('Invalid email or password'),
         variant: 'destructive',
       })
     }
@@ -89,10 +91,10 @@ export default function CredentialsSignInForm() {
             name='name'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel>Nom complet</FormLabel>
+                <FormLabel>{t('Full Name')}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder='Saisir votre nom complet'
+                    placeholder={t('Enter your full name')}
                     maxLength={50}
                     {...field}
                   />
@@ -107,10 +109,10 @@ export default function CredentialsSignInForm() {
             name='email'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t('Email')}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder='Saisir votre adresse email'
+                    placeholder={t('Enter your email address')}
                     type='email'
                     {...field}
                   />
@@ -125,19 +127,17 @@ export default function CredentialsSignInForm() {
             name='password'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel>Mot de passe</FormLabel>
+                <FormLabel>{t('Password')}</FormLabel>
                 <FormControl>
                   <Input
                     type='password'
-                    placeholder='Saisir votre mot de passe'
+                    placeholder={t('Enter your password')}
                     maxLength={128}
                     {...field}
                   />
                 </FormControl>
                 <div className='text-xs text-muted-foreground mt-1'>
-                  Le mot de passe doit contenir au moins 8 caractères avec une
-                  minuscule, une majuscule, un chiffre et un caractère spécial
-                  (@$!%*?&)
+                  {t('Password must contain')}
                 </div>
                 <FormMessage />
               </FormItem>
@@ -148,11 +148,11 @@ export default function CredentialsSignInForm() {
             name='confirmPassword'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel>Confirmer le mot de passe</FormLabel>
+                <FormLabel>{t('Confirm password')}</FormLabel>
                 <FormControl>
                   <Input
                     type='password'
-                    placeholder='Confirmer votre mot de passe'
+                    placeholder={t('Confirm your password')}
                     maxLength={128}
                     {...field}
                   />
@@ -162,18 +162,19 @@ export default function CredentialsSignInForm() {
             )}
           />
           <div>
-            <Button type='submit'>Sign Up</Button>
+            <Button type='submit'>{t('Sign Up')}</Button>
           </div>
           <div className='text-sm'>
-            By creating an account, you agree to {site.name}&apos;s{' '}
-            <Link href='/page/conditions-of-use'>Conditions of Use</Link> and{' '}
-            <Link href='/page/privacy-policy'> Privacy Notice. </Link>
+            {t('By creating an account')} {site.name}&apos;s{' '}
+            <Link href='/page/conditions-of-use'>{t('Conditions of Use')}</Link>{' '}
+            {t('and')}{' '}
+            <Link href='/page/privacy-policy'>{t('Privacy Notice')}.</Link>
           </div>
           <Separator className='mb-4' />
           <div className='text-sm'>
-            Already have an account?{' '}
+            {t('Already have an account?')}{' '}
             <Link className='link' href={`/sign-in?callbackUrl=${callbackUrl}`}>
-              Sign In
+              {t('Sign In')}
             </Link>
           </div>
         </div>

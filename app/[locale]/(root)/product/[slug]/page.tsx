@@ -19,7 +19,7 @@ import { getTranslations } from 'next-intl/server'
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>
 }) {
-  const t = await getTranslations()
+  const t = await getTranslations('Product')
   const params = await props.params
 
   const { product, isPublished, exists } = await getProductBySlugWithStatus(
@@ -28,15 +28,15 @@ export async function generateMetadata(props: {
 
   if (!exists) {
     return {
-      title: t('Product.Product not found'),
-      description: 'The requested product could not be found.',
+      title: t('Product not found'),
+      description: t('Product not found description'),
     }
   }
 
   if (!isPublished) {
     return {
-      title: 'Product Not Available',
-      description: 'This product is not currently available for viewing.',
+      title: t('Product not available'),
+      description: t('Product not available description'),
     }
   }
 
@@ -73,9 +73,8 @@ export default async function ProductDetails(props: {
 
   if (!isPublished) {
     // Product exists but is not published - show custom error
-    throw new Error(
-      'Product exists but is not published. Please contact an administrator.'
-    )
+    const t = await getTranslations('Product')
+    throw new Error(t('Product not published error'))
   }
 
   const product = productData!

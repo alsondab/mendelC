@@ -1,14 +1,10 @@
-import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
 import { auth } from '@/auth'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 import SignUpForm from './signup-form'
-
-export const metadata: Metadata = {
-  title: 'Sign Up',
-}
+import { getTranslations } from 'next-intl/server'
 
 export default async function SignUpPage(props: {
   searchParams: Promise<{
@@ -16,6 +12,7 @@ export default async function SignUpPage(props: {
   }>
 }) {
   const searchParams = await props.searchParams
+  const t = await getTranslations('Auth')
 
   const { callbackUrl } = searchParams
 
@@ -28,7 +25,7 @@ export default async function SignUpPage(props: {
     <div className='w-full'>
       <Card>
         <CardHeader>
-          <CardTitle className='text-2xl'>Créer un compte</CardTitle>
+          <CardTitle className='text-2xl'>{t('Sign Up')}</CardTitle>
         </CardHeader>
         <CardContent>
           <SignUpForm />

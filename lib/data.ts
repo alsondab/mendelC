@@ -892,93 +892,93 @@ const productsData = [
 const reviews = [
   {
     rating: 1,
-    title: 'Poor quality',
+    title: 'Très mauvaise qualité',
     comment:
-      'Very disappointed. The item broke after just a few uses. Not worth the money.',
+      'Je suis vraiment déçu. L’article s’est cassé après seulement quelques utilisations. Franchement, ça ne vaut pas le prix.',
   },
   {
     rating: 2,
-    title: 'Disappointed',
+    title: 'Assez décevant',
     comment:
-      "Not as expected. The material feels cheap, and it didn't fit well. Wouldn't buy again.",
+      'Le produit ne correspond pas à la description. Le matériau fait cheap et la taille n’est pas adaptée. Je ne rachèterai pas.',
   },
   {
     rating: 2,
-    title: 'Needs improvement',
+    title: 'Peut mieux faire',
     comment:
-      "It looks nice but doesn't perform as expected. Wouldn't recommend without upgrades.",
+      'L’apparence est correcte, mais les performances ne suivent pas. Dommage, il faudrait quelques améliorations.',
   },
   {
     rating: 3,
-    title: 'not bad',
+    title: 'Correct sans plus',
     comment:
-      'This product is decent, the quality is good but it could use some improvements in the details.',
+      'Le produit est globalement bon, mais certains détails pourraient être revus. Rapport qualité-prix moyen.',
   },
   {
     rating: 3,
-    title: 'Okay, not great',
+    title: 'Moyen',
     comment:
-      'It works, but not as well as I hoped. Quality is average and lacks some finishing.',
+      'Ça fonctionne, mais pas comme je l’espérais. La qualité reste basique et les finitions laissent à désirer.',
   },
   {
     rating: 3,
-    title: 'Good product',
+    title: 'Bon produit dans l’ensemble',
     comment:
-      'This product is amazing, I love it! The quality is top notch, the material is comfortable and breathable.',
+      'Le produit est bien conçu, agréable à utiliser et le matériau est confortable. Quelques petits défauts, mais rien de grave.',
   },
   {
     rating: 4,
-    title: 'Pretty good',
+    title: 'Bon rapport qualité-prix',
     comment:
-      "Solid product! Great value for the price, but there's room for minor improvements.",
+      'Un produit solide et fiable. Très bon pour le prix, même s’il reste quelques petits points à améliorer.',
   },
   {
     rating: 4,
-    title: 'Very satisfied',
+    title: 'Très content de mon achat',
     comment:
-      'Good product! High quality and worth the price. Would consider buying again.',
+      'Bonne qualité et conforme à la description. Le prix est justifié. Je pense en recommander un autre.',
   },
   {
     rating: 4,
-    title: 'Absolutely love it!',
+    title: 'Super produit !',
     comment:
-      'Perfect in every way! The quality, design, and comfort exceeded all my expectations.',
+      'Je suis ravi ! Le design, la qualité et le confort sont au top. Ce produit a largement dépassé mes attentes.',
   },
   {
     rating: 4,
-    title: 'Exceeded expectations!',
+    title: 'Vraiment satisfait',
     comment:
-      'Fantastic product! High quality, feels durable, and performs well. Highly recommend!',
+      'Excellente fabrication, semble durable et fonctionne parfaitement. Je recommande sans hésiter !',
   },
   {
     rating: 5,
-    title: 'Perfect purchase!',
+    title: 'Achat parfait',
     comment:
-      "Couldn't be happier with this product. The quality is excellent, and it works flawlessly!",
+      'Je ne pouvais pas espérer mieux ! La qualité est impeccable et tout fonctionne comme prévu. Un vrai coup de cœur.',
   },
   {
     rating: 5,
-    title: 'Highly recommend',
+    title: 'Je recommande à 100 %',
     comment:
-      "Amazing product! Worth every penny, great design, and feels premium. I'm very satisfied.",
+      'Produit exceptionnel ! Très beau design, sensation haut de gamme et utilisation agréable. Je suis totalement conquis.',
   },
   {
     rating: 5,
-    title: 'Just what I needed',
+    title: 'Parfait pour mes besoins',
     comment:
-      'Exactly as described! Quality exceeded my expectations, and it arrived quickly.',
+      'Exactement ce que je cherchais. Bonne qualité, conforme à la description et reçu rapidement.',
   },
   {
     rating: 5,
-    title: 'Excellent choice!',
+    title: 'Excellent choix',
     comment:
-      'This product is outstanding! Everything about it feels top-notch, from material to functionality.',
+      'Vraiment top ! Tout est soigné, du matériau à la performance. On sent que c’est un produit de qualité.',
   },
   {
     rating: 5,
-    title: "Couldn't ask for more!",
+    title: 'Rien à redire',
     comment:
-      "Love this product! It's durable, stylish, and works great. Would buy again without hesitation.",
+      'J’adore ce produit ! Il est robuste, élégant et très pratique. Je le rachèterai sans hésitation.',
   },
 ]
 

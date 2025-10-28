@@ -1,4 +1,56 @@
 {
+  "Auth": {
+    "Sign In": "Sign In",
+    "Sign Up": "Sign Up",
+    "Email": "Email",
+    "Password": "Password",
+    "Enter email address": "Enter email address",
+    "Enter password": "Enter password",
+    "By signing in, you agree to": "By signing in, you agree to",
+    "Conditions of Use": "Conditions of Use",
+    "and": "and",
+    "Privacy Notice": "Privacy Notice",
+    "of": "of",
+    "New to": "New to",
+    "Create your": "Create your",
+    "account": "account",
+    "Error": "Error",
+    "Invalid email or password": "Invalid email or password",
+    "Help": "Help",
+    "footer": "2017-2024, MendelCorp.com.",
+    "Sign In with Google": "Sign In with Google",
+    "Redirecting to Google": "Redirecting to Google...",
+    "Full Name": "Full Name",
+    "Enter your full name": "Enter your full name",
+    "Enter your email address": "Enter your email address",
+    "Enter your password": "Enter your password",
+    "Confirm password": "Confirm password",
+    "Confirm your password": "Confirm your password",
+    "Password must contain": "Password must contain at least 8 characters with a lowercase, an uppercase, a number and a special character (@$!%*?&)",
+    "By creating an account": "By creating an account, you agree to",
+    "Already have an account?": "Already have an account?",
+    "Create account": "Create account"
+  },
+  "FooterCustom": {
+    "TrustedDestination": "Your trusted destination for quality products. We offer the best shopping experience.",
+    "ServicesHelp": "Services & Help",
+    "ShippingRates": "Shipping rates & policies",
+    "ReturnsReplacements": "Returns & Replacements",
+    "FAQ": "Frequently Asked Questions",
+    "HelpSupport": "Help & Support",
+    "ContactUs": "Contact Us",
+    "Email": "Email",
+    "Phone": "Phone",
+    "Address": "Address",
+    "Settings": "Settings",
+    "Language": "Language",
+    "Currency": "Currency",
+    "TermsConditions": "Terms & Conditions",
+    "PrivacyPolicy": "Privacy Policy",
+    "MadeWith": "Made with",
+    "ForOurClients": "for our clients",
+    "Browse": "Browse"
+  },
   "Header": {
     "Hello": "Hello",
     "sign in": "sign in",
@@ -34,7 +86,6 @@
     "Sign in to your account": "Sign in to your account",
     "Close": "Close",
     "Menu": "Menu",
-    "Settings": "Settings",
     "Find exactly what you're looking for": "Find exactly what you're looking for",
     "Search by category or type directly": "Search by category or type directly",
     "Subtotal": "Subtotal",
@@ -52,7 +103,8 @@
     "Sign in to access all features": "Sign in to access all features",
     "My Account": "My Account",
     "Sign In": "Sign In",
-    "Sign Up": "Sign Up"
+    "Sign Up": "Sign Up",
+    "products": "products"
   },
   "Home": {
     "Categories to explore": "Categories to explore",
@@ -112,6 +164,9 @@
     "Most Recent": "Most Recent",
     "Most Helpful": "Most Helpful",
     "Verified Purchase": "Verified Purchase",
+    "You must purchase this product to leave a review": "You must purchase this product to leave a review",
+    "Checking purchase": "Checking purchase",
+    "Sign in to review": "Sign in to review",
     "Best Sellers in": "Best Sellers in {name}",
     "Inspired by Your browsing history": "Inspired by Your browsing history",
     "Recently Viewed Products": "Recently Viewed Products",
@@ -128,7 +183,11 @@
     "Rating": "Rating",
     "No reviews yet": "No reviews yet",
     "Submitting": "Submitting...",
-    "Only X left in stock - order soon": "Only {count} left in stock - order soon"
+    "Only X left in stock - order soon": "Only {count} left in stock - order soon",
+    "Product not found description": "The requested product could not be found.",
+    "Product not available": "Product Not Available",
+    "Product not available description": "This product is not currently available for viewing.",
+    "Product not published error": "Product exists but is not published. Please contact an administrator."
   },
   "Cart": {
     "Shopping Cart": "Shopping Cart",
@@ -223,7 +282,6 @@
     "Back To Home": "Back To Home"
   },
   "Admin": {
-    "Deleted User": "Deleted User",
     "Overview": "Overview",
     "Products": "Products",
     "Orders": "Orders",
@@ -304,36 +362,7 @@
     "ReturnsPolicy": "Returns Policy"
   },
   "Common": {
-    "Processing": "Processing..."
-  },
-  "Admin": {
-    "Aperçu": "Overview",
-    "Produits": "Products",
-    "Catégories": "Categories",
-    "Commandes": "Orders",
-    "Utilisateurs": "Users",
-    "Pages": "Pages",
-    "Paramètres": "Settings",
-    "Dashboard": "Dashboard",
-    "Total Revenue": "Total Revenue",
-    "View revenue": "View revenue",
-    "View orders": "View orders",
-    "View customers": "View customers",
-    "View products": "View products",
-    "Sales Overview": "Sales Overview",
-    "Estimated": "Estimated",
-    "Last 6 months": "Last 6 months",
-    "Product Performance": "Product Performance",
-    "Best-Selling Categories": "Best-Selling Categories",
-    "Recent Sales": "Recent Sales",
-    "Deleted User": "Deleted User",
-    "Sales": "Sales",
-    "Customers": "Customers",
-    "Products": "Products",
-    "Buyer": "Buyer",
-    "Date": "Date",
-    "Total": "Total",
-    "Actions": "Actions",
-    "Details": "Details"
+    "Processing": "Processing...",
+    "CancelOrder": "canceled"
   }
 }

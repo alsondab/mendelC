@@ -49,7 +49,9 @@ export default function ActionButton({
             if (refreshOnSuccess) {
               router.refresh()
               // Si c'est une annulation de commande, rediriger vers la liste
-              if (res.message.includes('annulée')) {
+              // Utiliser la traduction au lieu de texte hardcodé
+              const cancelKeyword = t('CancelOrder')
+              if (res.message.toLowerCase().includes(cancelKeyword)) {
                 setTimeout(() => {
                   window.location.href = '/account/orders'
                 }, 2000)

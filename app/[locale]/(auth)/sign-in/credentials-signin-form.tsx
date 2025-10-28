@@ -21,6 +21,7 @@ import { toast } from '@/hooks/use-toast'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { UserSignInSchema } from '@/lib/validator'
 import { isRedirectError } from 'next/dist/client/components/redirect-error'
+import { useTranslations } from 'next-intl'
 
 const signInDefaultValues =
   process.env.NODE_ENV === 'development'
@@ -39,6 +40,7 @@ export default function CredentialsSignInForm() {
   } = useSettingStore()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') || '/'
+  const t = useTranslations('Auth')
 
   const form = useForm<IUserSignIn>({
     resolver: zodResolver(UserSignInSchema),
@@ -59,8 +61,8 @@ export default function CredentialsSignInForm() {
         throw error
       }
       toast({
-        title: 'Error',
-        description: 'Invalid email or password',
+        title: t('Error'),
+        description: t('Invalid email or password'),
         variant: 'destructive',
       })
     }
@@ -76,9 +78,9 @@ export default function CredentialsSignInForm() {
             name='email'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t('Email')}</FormLabel>
                 <FormControl>
-                  <Input placeholder='Enter email address' {...field} />
+                  <Input placeholder={t('Enter email address')} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -90,11 +92,11 @@ export default function CredentialsSignInForm() {
             name='password'
             render={({ field }) => (
               <FormItem className='w-full'>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>{t('Password')}</FormLabel>
                 <FormControl>
                   <Input
                     type='password'
-                    placeholder='Enter password'
+                    placeholder={t('Enter password')}
                     {...field}
                   />
                 </FormControl>
@@ -104,12 +106,13 @@ export default function CredentialsSignInForm() {
           />
 
           <div>
-            <Button type='submit'>Sign In</Button>
+            <Button type='submit'>{t('Sign In')}</Button>
           </div>
           <div className='text-sm'>
-            By signing in, you agree to {site.name}&apos;s{' '}
-            <Link href='/page/conditions-of-use'>Conditions of Use</Link> and{' '}
-            <Link href='/page/privacy-policy'>Privacy Notice.</Link>
+            {t('By signing in, you agree to')} {site.name}&apos;s{' '}
+            <Link href='/page/conditions-of-use'>{t('Conditions of Use')}</Link>{' '}
+            {t('and')}{' '}
+            <Link href='/page/privacy-policy'>{t('Privacy Notice')}.</Link>
           </div>
         </div>
       </form>

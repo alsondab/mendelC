@@ -625,3 +625,22 @@ export const getCompanyStats = async () => {
     }
   }
 }
+
+export async function hasUserPurchasedProduct({
+  userId,
+  productId,
+}: {
+  userId: string
+  productId: string
+}): Promise<boolean> {
+  await connectToDatabase()
+
+  const order = await Order.findOne({
+    user: userId,
+    'items.product': productId,
+    isPaid: true, // Commande payée uniquement
+    isCancelled: { $ne: true }, // Pas annulée
+  })
+
+  return !!order
+}

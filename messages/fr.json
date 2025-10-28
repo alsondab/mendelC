@@ -1,4 +1,56 @@
 {
+  "Auth": {
+    "Sign In": "Se connecter",
+    "Sign Up": "Créer un compte",
+    "Email": "Email",
+    "Password": "Mot de passe",
+    "Enter email address": "Entrer votre adresse email",
+    "Enter password": "Entrer votre mot de passe",
+    "By signing in, you agree to": "En vous connectant, vous acceptez les",
+    "Conditions of Use": "Conditions d'utilisation",
+    "and": "et",
+    "Privacy Notice": "Avis de confidentialité",
+    "of": "de",
+    "New to": "Nouveau sur",
+    "Create your": "Créer votre",
+    "account": "compte",
+    "Error": "Erreur",
+    "Invalid email or password": "Email ou mot de passe invalide",
+    "Help": "Aide",
+    "footer": "2017-2024, MendelCorp.com.",
+    "Sign In with Google": "Se connecter avec Google",
+    "Redirecting to Google": "Redirection vers Google...",
+    "Full Name": "Nom complet",
+    "Enter your full name": "Saisir votre nom complet",
+    "Enter your email address": "Saisir votre adresse email",
+    "Enter your password": "Saisir votre mot de passe",
+    "Confirm password": "Confirmer le mot de passe",
+    "Confirm your password": "Confirmer votre mot de passe",
+    "Password must contain": "Le mot de passe doit contenir au moins 8 caractères avec une minuscule, une majuscule, un chiffre et un caractère spécial (@$!%*?&)",
+    "By creating an account": "En créant un compte, vous acceptez les",
+    "Already have an account?": "Vous avez déjà un compte ?",
+    "Create account": "Créer le compte"
+  },
+  "FooterCustom": {
+    "TrustedDestination": "Votre destination de confiance pour des produits de qualité. Nous offrons la meilleure expérience d'achat.",
+    "ServicesHelp": "Services & Aide",
+    "ShippingRates": "Tarifs et politiques d'expédition",
+    "ReturnsReplacements": "Retours et remplacements",
+    "FAQ": "Questions fréquentes",
+    "HelpSupport": "Aide et support",
+    "ContactUs": "Nous Contacter",
+    "Email": "Email",
+    "Phone": "Téléphone",
+    "Address": "Adresse",
+    "Settings": "Paramètres",
+    "Language": "Langue",
+    "Currency": "Devise",
+    "TermsConditions": "Conditions d'utilisation",
+    "PrivacyPolicy": "Politique de confidentialité",
+    "MadeWith": "Fait avec",
+    "ForOurClients": "pour nos clients",
+    "Browse": "Parcourir"
+  },
   "Header": {
     "Hello": "Bonjour",
     "sign in": "se connecter",
@@ -34,7 +86,6 @@
     "Sign in to your account": "Se connecter à votre compte",
     "Close": "Fermer",
     "Menu": "Menu",
-    "Settings": "Réglage",
     "Find exactly what you're looking for": "Trouvez exactement ce que vous cherchez",
     "Search by category or type directly": "Recherchez par catégorie ou saisissez directement votre recherche",
     "Subtotal": "Sous-total",
@@ -43,7 +94,6 @@
     "Search": "Recherche",
     "Wishlist": "Favoris",
     "Account": "Compte",
-    "Settings": "Réglages",
     "Preferences": "Préférences",
     "Theme": "Thème",
     "Language": "Langue",
@@ -53,7 +103,8 @@
     "Sign in to access all features": "Connectez-vous pour accéder à toutes les fonctionnalités",
     "My Account": "Mon Compte",
     "Sign In": "Se connecter",
-    "Sign Up": "S'inscrire"
+    "Sign Up": "S'inscrire",
+    "products": "produits"
   },
   "Home": {
     "Categories to explore": "Catégories à explorer",
@@ -114,6 +165,9 @@
     "Most Recent": "Plus récents",
     "Most Helpful": "Plus utiles",
     "Verified Purchase": "Achat vérifié",
+    "You must purchase this product to leave a review": "Vous devez acheter ce produit pour laisser un avis",
+    "Checking purchase": "Vérification de l'achat",
+    "Sign in to review": "Connectez-vous pour laisser un avis",
     "Best Sellers in": "Meilleures ventes dans {name}",
     "Inspired by Your browsing history": "Inspiré par votre historique de navigation",
     "Recently Viewed Products": "Produits récemment consultés",
@@ -130,7 +184,11 @@
     "Rating": "Évaluation",
     "No reviews yet": "Pas encore d'avis",
     "Submitting": "Envoi en cours...",
-    "Only X left in stock - order soon": "Il ne reste que {count} en stock - commandez bientôt"
+    "Only X left in stock - order soon": "Il ne reste que {count} en stock - commandez bientôt",
+    "Product not found description": "Le produit demandé est introuvable.",
+    "Product not available": "Produit non disponible",
+    "Product not available description": "Ce produit n'est pas actuellement disponible.",
+    "Product not published error": "Le produit existe mais n'est pas publié. Veuillez contacter un administrateur."
   },
   "Cart": {
     "Shopping Cart": "Panier d'achat",
@@ -306,6 +364,7 @@
     "ReturnsPolicy": "Politique de retour"
   },
   "Common": {
-    "Processing": "Traitement en cours..."
+    "Processing": "Traitement en cours...",
+    "CancelOrder": "annulée"
   }
 }

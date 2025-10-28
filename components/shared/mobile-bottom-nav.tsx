@@ -10,11 +10,11 @@ import { cn } from '@/lib/utils'
 
 export default function MobileBottomNav() {
   const t = useTranslations()
+  const tCustom = useTranslations('FooterCustom')
   const pathname = usePathname()
   const { cart } = useCartStore()
   const { items: wishlistItems } = useWishlistStore()
 
-  // Utiliser directement le store local
   const wishlistCount = wishlistItems.length
 
   // Ne pas afficher la navigation mobile dans les pages admin
@@ -32,7 +32,7 @@ export default function MobileBottomNav() {
     {
       href: '/search',
       icon: Compass,
-      label: 'Parcourir',
+      label: tCustom('Browse'),
       isActive: pathname.includes('/search'),
     },
     {

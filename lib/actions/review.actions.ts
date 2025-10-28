@@ -13,6 +13,7 @@ import { formatError } from '../utils'
 import { ReviewInputSchema } from '../validator'
 import { IReviewDetails } from '@/types'
 import { getSetting } from './setting.actions'
+import { hasUserPurchasedProduct } from './order.actions'
 
 export async function createUpdateReview({
   data,
@@ -27,9 +28,24 @@ export async function createUpdateReview({
       throw new Error('User is not authenticated')
     }
 
+    // ✅ VÉRIFICATION OBLIGATOIRE DE L'ACHAT
+    const hasPurchased = await hasUserPurchasedProduct({
+      userId: session.user.id!,
+      productId: data.product,
+    })
+
+    // ❌ BLOQUER SI PAS D'ACHAT
+    if (!hasPurchased) {
+      return {
+        success: false,
+        message: 'Vous devez acheter ce produit avant de laisser un avis',
+      }
+    }
+
     const review = ReviewInputSchema.parse({
       ...data,
       user: session?.user?.id,
+      isVerifiedPurchase: true, // ✅ Toujours true car achat vérifié
     })
 
     await connectToDatabase()
@@ -42,13 +58,13 @@ export async function createUpdateReview({
       existReview.comment = review.comment
       existReview.rating = review.rating
       existReview.title = review.title
+      existReview.isVerifiedPurchase = true
       await existReview.save()
       await updateProductReview(review.product)
       revalidatePath(path)
       return {
         success: true,
         message: 'Avis mis à jour avec succès',
-        // data: JSON.parse(JSON.stringify(existReview)),
       }
     } else {
       await Review.create(review)
@@ -57,7 +73,6 @@ export async function createUpdateReview({
       return {
         success: true,
         message: 'Avis créé avec succès',
-        // data: JSON.parse(JSON.stringify(newReview)),
       }
     }
   } catch (error) {

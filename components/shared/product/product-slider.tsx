@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/carousel'
 import ProductCard from './product-card'
 import { IProduct } from '@/lib/db/models/product.model'
+import { useTranslations } from 'next-intl'
 
 export default function ProductSlider({
   title,
@@ -20,6 +21,7 @@ export default function ProductSlider({
   products: IProduct[]
   hideDetails?: boolean
 }) {
+  const t = useTranslations('Header')
   return (
     <div className='w-full bg-background'>
       <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-4'>
@@ -27,7 +29,7 @@ export default function ProductSlider({
           {title}
         </h2>
         <span className='text-sm text-muted-foreground'>
-          {products.length} produits
+          {products.length} {t('products')}
         </span>
       </div>
       <Carousel

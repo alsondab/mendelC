@@ -6,10 +6,12 @@ import Search from './search'
 import Sidebar from './sidebar'
 import { getSetting } from '@/lib/actions/setting.actions'
 import { Sparkles, Star, TrendingUp, Award } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 
 export default async function Header() {
   const categories = await getCategoryTree()
   const { site } = await getSetting()
+  const t = await getTranslations('Header')
   return (
     <header className='sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border/40 shadow-sm'>
       {/* Main Header */}
@@ -72,32 +74,32 @@ export default async function Header() {
             {/* Navigation Links */}
             <div className='flex items-center space-x-4 ml-4 text-sm'>
               <Link
-                href='/search?q=&sort=createdAt&order=desc'
+                href='/search?tag=todays-deal'
                 className='flex items-center space-x-1 text-muted-foreground hover:text-primary transition-colors'
               >
                 <Sparkles className='h-4 w-4' />
-                <span>Offre du jour</span>
+                <span>{t("Today's Deal")}</span>
               </Link>
               <Link
-                href='/search?q=&sort=createdAt&order=desc'
+                href='/search?tag=new-arrival'
                 className='flex items-center space-x-1 text-muted-foreground hover:text-primary transition-colors'
               >
                 <Star className='h-4 w-4' />
-                <span>Nouveautés</span>
+                <span>{t('New Arrivals')}</span>
               </Link>
               <Link
-                href='/search?q=&sort=featured&order=desc'
+                href='/search?tag=featured'
                 className='flex items-center space-x-1 text-muted-foreground hover:text-primary transition-colors'
               >
                 <Award className='h-4 w-4' />
-                <span>Produits vedettes</span>
+                <span>{t('Featured Products')}</span>
               </Link>
               <Link
-                href='/search?q=&sort=sold&order=desc'
+                href='/search?tag=best-seller'
                 className='flex items-center space-x-1 text-muted-foreground hover:text-primary transition-colors'
               >
                 <TrendingUp className='h-4 w-4' />
-                <span>Meilleures ventes</span>
+                <span>{t('Best Sellers')}</span>
               </Link>
             </div>
           </div>
