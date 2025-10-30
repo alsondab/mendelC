@@ -15,6 +15,7 @@ export default function MobileBottomNav() {
   const { cart } = useCartStore()
   const { items: wishlistItems } = useWishlistStore()
 
+  // Utiliser directement le store local
   const wishlistCount = wishlistItems.length
 
   // Ne pas afficher la navigation mobile dans les pages admin
