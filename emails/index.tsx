@@ -85,11 +85,11 @@ export const sendAskReviewOrderItems = async ({ order }: { order: IOrder }) => {
     console.log("📧 Destinataire:", recipientEmail)
     
     const result = await resend.emails.send({
-      from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
+    from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
       to: recipientEmail,
-      subject: 'Évaluez Vos Articles de Commande', // ✅ Sujet pour demande d'avis
-      react: <AskReviewOrderItemsEmail order={order} />,
-    })
+    subject: 'Évaluez Vos Articles de Commande', // ✅ Sujet pour demande d'avis
+    react: <AskReviewOrderItemsEmail order={order} />,
+  })
     
     if (result.error) {
       console.error('❌ Erreur Resend:', JSON.stringify(result.error, null, 2))

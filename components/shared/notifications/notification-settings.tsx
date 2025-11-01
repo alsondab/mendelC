@@ -88,7 +88,9 @@ export function NotificationSettings() {
       if (result.success) {
         toast({
           title: 'Paramètres sauvegardés',
-          description: result.message || 'Vos préférences de notification ont été mises à jour.',
+          description:
+            result.message ||
+            'Vos préférences de notification ont été mises à jour.',
         })
       } else {
         throw new Error(result.message)
@@ -141,7 +143,9 @@ export function NotificationSettings() {
           <div className='space-y-3 sm:space-y-4'>
             <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4'>
               <div className='space-y-0.5 flex-1'>
-                <Label className='text-sm sm:text-base'>Notifications par email</Label>
+                <Label className='text-sm sm:text-base'>
+                  Notifications par email
+                </Label>
                 <p className='text-xs sm:text-sm text-muted-foreground'>
                   Recevez des alertes par email quand le stock est faible
                 </p>
@@ -190,9 +194,7 @@ export function NotificationSettings() {
                 Seuils de Notification
               </h3>
               <Button variant='outline' size='sm' asChild>
-                <Link href='/admin/stock'>
-                  Modifier les seuils globaux
-                </Link>
+                <Link href='/admin/stock'>Modifier les seuils globaux</Link>
               </Button>
             </div>
             <p className='text-xs sm:text-sm text-muted-foreground'>
@@ -271,13 +273,18 @@ export function NotificationSettings() {
                     Minimal
                   </Label>
                   <p className='text-xs sm:text-sm text-muted-foreground'>
-                    Badge dans la navbar uniquement. Discret, ne perturbe pas le travail.
+                    Badge dans la navbar uniquement. Discret, ne perturbe pas le
+                    travail.
                   </p>
                 </div>
               </div>
 
               <div className='flex items-start space-x-3 p-3 sm:p-4 border rounded-lg hover:bg-muted/50 transition-colors bg-accent/30'>
-                <RadioGroupItem value='standard' id='standard' className='mt-1' />
+                <RadioGroupItem
+                  value='standard'
+                  id='standard'
+                  className='mt-1'
+                />
                 <div className='flex-1 space-y-1'>
                   <div className='flex items-center gap-2'>
                     <Label
@@ -291,8 +298,8 @@ export function NotificationSettings() {
                     </span>
                   </div>
                   <p className='text-xs sm:text-sm text-muted-foreground'>
-                    Badge navbar + notification persistante (bottom-right). Équilibre
-                    entre information et discrétion.
+                    Badge navbar + notification persistante (bottom-right).
+                    Équilibre entre information et discrétion.
                   </p>
                 </div>
               </div>
@@ -307,8 +314,8 @@ export function NotificationSettings() {
                     Complet
                   </Label>
                   <p className='text-xs sm:text-sm text-muted-foreground'>
-                    Badge navbar + notification persistante + toasts popup. Maximum de
-                    visibilité pour réagir rapidement.
+                    Badge navbar + notification persistante + toasts popup.
+                    Maximum de visibilité pour réagir rapidement.
                   </p>
                 </div>
               </div>
@@ -319,8 +326,8 @@ export function NotificationSettings() {
 
           {/* Actions */}
           <div className='flex flex-col sm:flex-row gap-4 pt-6 border-t border-border'>
-            <Button 
-              onClick={handleSave} 
+            <Button
+              onClick={handleSave}
               disabled={isLoading}
               size='lg'
               className='flex-1 h-12 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200'

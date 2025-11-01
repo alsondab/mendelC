@@ -53,8 +53,7 @@ export function StockThresholdConfig({
     if (maxStockLevel <= minStockLevel) {
       toast({
         title: 'Erreur de validation',
-        description:
-          'Le seuil maximum doit être supérieur au seuil minimum',
+        description: 'Le seuil maximum doit être supérieur au seuil minimum',
         variant: 'destructive',
       })
       return
@@ -113,7 +112,10 @@ export function StockThresholdConfig({
           <span className='hidden xs:inline'>Seuils</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className='sm:max-w-md' aria-describedby='stock-threshold-description'>
+      <DialogContent
+        className='sm:max-w-md'
+        aria-describedby='stock-threshold-description'
+      >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -123,7 +125,10 @@ export function StockThresholdConfig({
             <DialogTitle className='text-lg sm:text-xl'>
               Configurer les seuils de stock
             </DialogTitle>
-            <DialogDescription id='stock-threshold-description' className='text-sm'>
+            <DialogDescription
+              id='stock-threshold-description'
+              className='text-sm'
+            >
               {productName}
             </DialogDescription>
           </DialogHeader>
@@ -175,8 +180,8 @@ export function StockThresholdConfig({
                 {currentStock <= currentMinStockLevel
                   ? '⚠️ Stock faible ou rupture'
                   : currentStock >= currentMaxStockLevel
-                  ? '✅ Stock optimal'
-                  : '⚠️ En dessous du stock optimal'}
+                    ? '✅ Stock optimal'
+                    : '⚠️ En dessous du stock optimal'}
               </p>
             </div>
           </div>
@@ -209,4 +214,3 @@ export function StockThresholdConfig({
     </Dialog>
   )
 }
-

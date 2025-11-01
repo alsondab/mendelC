@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useCallback } from 'react'
 import { useToast } from '@/hooks/use-toast'
+import { useTranslations } from 'next-intl'
 import { useRealtimeStockAlerts } from '@/hooks/use-stock-alerts'
 import { useNotificationLevel } from '@/hooks/use-notification-level'
 import { AlertTriangle, XCircle, Bell } from 'lucide-react'
@@ -15,6 +16,7 @@ interface QueuedNotification {
 
 export function StockNotificationToast() {
   const { toast } = useToast()
+  const t = useTranslations()
   const { hasNewAlerts, criticalCount, warningCount, clearNewAlerts } =
     useRealtimeStockAlerts()
   const notificationLevel = useNotificationLevel()
@@ -47,15 +49,15 @@ export function StockNotificationToast() {
     if (notification) {
       if (notification.type === 'critical') {
         toast({
-          title: '🚨 Alerte Critique - Rupture de Stock',
-          description: `${notification.count} produit(s) en rupture de stock nécessitent un réapprovisionnement urgent !`,
+          title: t('StockNotifications.CriticalAlertTitle'),
+          description: t('StockNotifications.CriticalAlertDescription', { count: notification.count }),
           variant: 'destructive',
           duration: 10000, // 10 secondes
         })
       } else if (notification.type === 'warning') {
         toast({
-          title: '⚠️ Alerte - Stock Faible',
-          description: `${notification.count} produit(s) ont un stock faible et nécessitent votre attention.`,
+          title: t('StockNotifications.WarningAlertTitle'),
+          description: t('StockNotifications.WarningAlertDescription', { count: notification.count }),
           variant: 'default',
           duration: 8000, // 8 secondes
         })
@@ -72,7 +74,7 @@ export function StockNotificationToast() {
         processQueue()
       }, minDelayBetweenToasts)
     }
-  }, [toast])
+  }, [toast, t])
 
   useEffect(() => {
     // Ne traiter les toasts que si le niveau est "full"

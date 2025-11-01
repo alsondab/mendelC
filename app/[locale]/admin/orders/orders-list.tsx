@@ -54,11 +54,11 @@ const OrdersList = () => {
   useEffect(() => {
     startTransition(async () => {
       try {
-        const orders = await getAllOrders({
-          page: 1,
-        })
+      const orders = await getAllOrders({
+        page: 1,
+      })
         if (orders) {
-          setData(orders)
+      setData(orders)
         } else {
           console.error('getAllOrders returned no data')
         }

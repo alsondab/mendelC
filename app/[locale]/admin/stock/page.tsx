@@ -32,7 +32,7 @@ import { getTranslations } from 'next-intl/server'
 
 export default async function StockManagementPage() {
   const t = await getTranslations('Admin.Stock')
-  
+
   // Utiliser Promise.allSettled pour ne pas bloquer la page si une requête échoue
   const [lowStockResult, outOfStockResult, statisticsResult] =
     await Promise.allSettled([
@@ -41,24 +41,48 @@ export default async function StockManagementPage() {
       getCachedStockStatistics(),
     ]).then((results) => [
       // Normaliser les résultats pour garantir une structure cohérente
-      results[0].status === 'fulfilled' 
-        ? (results[0].value.success && 'products' in results[0].value 
-            ? results[0].value 
-            : { success: false, products: [], message: results[0].value.message || 'Erreur lors du chargement' })
-        : { success: false, products: [], message: 'Erreur lors du chargement' },
+      results[0].status === 'fulfilled'
+        ? results[0].value.success && 'products' in results[0].value
+          ? results[0].value
+          : {
+              success: false,
+              products: [],
+              message: results[0].value.message || 'Erreur lors du chargement',
+            }
+        : {
+            success: false,
+            products: [],
+            message: 'Erreur lors du chargement',
+          },
       results[1].status === 'fulfilled'
-        ? (results[1].value.success && 'products' in results[1].value
-            ? results[1].value
-            : { success: false, products: [], message: results[1].value.message || 'Erreur lors du chargement' })
-        : { success: false, products: [], message: 'Erreur lors du chargement' },
+        ? results[1].value.success && 'products' in results[1].value
+          ? results[1].value
+          : {
+              success: false,
+              products: [],
+              message: results[1].value.message || 'Erreur lors du chargement',
+            }
+        : {
+            success: false,
+            products: [],
+            message: 'Erreur lors du chargement',
+          },
       results[2].status === 'fulfilled'
-        ? (results[2].value.success && 'statistics' in results[2].value
-            ? results[2].value
-            : { success: false, statistics: null, message: results[2].value.message || 'Erreur lors du chargement' })
-        : { success: false, statistics: null, message: 'Erreur lors du chargement' },
+        ? results[2].value.success && 'statistics' in results[2].value
+          ? results[2].value
+          : {
+              success: false,
+              statistics: null,
+              message: results[2].value.message || 'Erreur lors du chargement',
+            }
+        : {
+            success: false,
+            statistics: null,
+            message: 'Erreur lors du chargement',
+          },
     ])
 
-  const lowStockProducts = 
+  const lowStockProducts =
     lowStockResult.success && 'products' in lowStockResult
       ? (lowStockResult.products as Array<{
           id: string
@@ -67,11 +91,15 @@ export default async function StockManagementPage() {
           countInStock: number
           minStockLevel: number
           maxStockLevel: number
-          stockStatus: 'in_stock' | 'low_stock' | 'out_of_stock' | 'discontinued'
+          stockStatus:
+            | 'in_stock'
+            | 'low_stock'
+            | 'out_of_stock'
+            | 'discontinued'
           lastStockUpdate: string
         }>)
       : []
-  const outOfStockProducts = 
+  const outOfStockProducts =
     outOfStockResult.success && 'products' in outOfStockResult
       ? (outOfStockResult.products as Array<{
           id: string
@@ -80,11 +108,15 @@ export default async function StockManagementPage() {
           countInStock: number
           minStockLevel: number
           maxStockLevel: number
-          stockStatus: 'in_stock' | 'low_stock' | 'out_of_stock' | 'discontinued'
+          stockStatus:
+            | 'in_stock'
+            | 'low_stock'
+            | 'out_of_stock'
+            | 'discontinued'
           lastStockUpdate: string
         }>)
       : []
-  const statistics = 
+  const statistics =
     statisticsResult.success && 'statistics' in statisticsResult
       ? statisticsResult.statistics
       : null
@@ -94,7 +126,9 @@ export default async function StockManagementPage() {
       {/* Header */}
       <div className='flex flex-col xs:flex-row xs:items-center xs:justify-between gap-3 sm:gap-4'>
         <div className='flex-1 min-w-0'>
-          <h1 className='text-xl sm:text-2xl lg:text-3xl font-bold'>{t('Title')}</h1>
+          <h1 className='text-xl sm:text-2xl lg:text-3xl font-bold'>
+            {t('Title')}
+          </h1>
           <p className='text-muted-foreground text-xs sm:text-sm lg:text-base mt-1'>
             {t('Description')}
           </p>
@@ -114,61 +148,71 @@ export default async function StockManagementPage() {
       {statistics && (
         <div className='grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4'>
           <Card>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-xs sm:text-sm font-medium'>
-              {t('TotalProducts')}
-            </CardTitle>
-            <Package className='h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0' />
-          </CardHeader>
-          <CardContent>
-            <div className='text-xl sm:text-2xl font-bold'>
-              {statistics.totalProducts}
-            </div>
-            <p className='text-xs text-muted-foreground mt-1'>{t('PublishedProducts')}</p>
-          </CardContent>
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-xs sm:text-sm font-medium'>
+                {t('TotalProducts')}
+              </CardTitle>
+              <Package className='h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground flex-shrink-0' />
+            </CardHeader>
+            <CardContent>
+              <div className='text-xl sm:text-2xl font-bold'>
+                {statistics.totalProducts}
+              </div>
+              <p className='text-xs text-muted-foreground mt-1'>
+                {t('PublishedProducts')}
+              </p>
+            </CardContent>
           </Card>
 
           <Card>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-xs sm:text-sm font-medium'>{t('InStock')}</CardTitle>
-            <CheckCircle className='h-3.5 w-3.5 sm:h-4 sm:w-4 text-green-600 flex-shrink-0' />
-          </CardHeader>
-          <CardContent>
-            <div className='text-xl sm:text-2xl font-bold text-green-600'>
-              {statistics.inStockProducts}
-            </div>
-            <p className='text-xs text-muted-foreground mt-1'>{t('SufficientStock')}</p>
-          </CardContent>
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-xs sm:text-sm font-medium'>
+                {t('InStock')}
+              </CardTitle>
+              <CheckCircle className='h-3.5 w-3.5 sm:h-4 sm:w-4 text-green-600 flex-shrink-0' />
+            </CardHeader>
+            <CardContent>
+              <div className='text-xl sm:text-2xl font-bold text-green-600'>
+                {statistics.inStockProducts}
+              </div>
+              <p className='text-xs text-muted-foreground mt-1'>
+                {t('SufficientStock')}
+              </p>
+            </CardContent>
           </Card>
 
           <Card>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-xs sm:text-sm font-medium'>
-              {t('LowStock')}
-            </CardTitle>
-            <AlertTriangle className='h-3.5 w-3.5 sm:h-4 sm:w-4 text-orange-600 flex-shrink-0' />
-          </CardHeader>
-          <CardContent>
-            <div className='text-xl sm:text-2xl font-bold text-orange-600'>
-              {statistics.lowStockProducts}
-            </div>
-            <p className='text-xs text-muted-foreground mt-1'>{t('AttentionRequired')}</p>
-          </CardContent>
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-xs sm:text-sm font-medium'>
+                {t('LowStock')}
+              </CardTitle>
+              <AlertTriangle className='h-3.5 w-3.5 sm:h-4 sm:w-4 text-orange-600 flex-shrink-0' />
+            </CardHeader>
+            <CardContent>
+              <div className='text-xl sm:text-2xl font-bold text-orange-600'>
+                {statistics.lowStockProducts}
+              </div>
+              <p className='text-xs text-muted-foreground mt-1'>
+                {t('AttentionRequired')}
+              </p>
+            </CardContent>
           </Card>
 
           <Card>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-xs sm:text-sm font-medium'>{t('OutOfStock')}</CardTitle>
-            <XCircle className='h-3.5 w-3.5 sm:h-4 sm:w-4 text-red-600 flex-shrink-0' />
-          </CardHeader>
-          <CardContent>
-            <div className='text-xl sm:text-2xl font-bold text-red-600'>
-              {statistics.outOfStockProducts}
-            </div>
-            <p className='text-xs text-muted-foreground mt-1'>
-              {t('UrgentRestock')}
-            </p>
-          </CardContent>
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+              <CardTitle className='text-xs sm:text-sm font-medium'>
+                {t('OutOfStock')}
+              </CardTitle>
+              <XCircle className='h-3.5 w-3.5 sm:h-4 sm:w-4 text-red-600 flex-shrink-0' />
+            </CardHeader>
+            <CardContent>
+              <div className='text-xl sm:text-2xl font-bold text-red-600'>
+                {statistics.outOfStockProducts}
+              </div>
+              <p className='text-xs text-muted-foreground mt-1'>
+                {t('UrgentRestock')}
+              </p>
+            </CardContent>
           </Card>
         </div>
       )}
@@ -223,7 +267,9 @@ export default async function StockManagementPage() {
                   >
                     <div className='flex flex-col xs:flex-row xs:items-center xs:justify-between gap-2'>
                       <div className='flex-1 min-w-0'>
-                        <h4 className='font-medium truncate text-sm sm:text-base'>{product.name}</h4>
+                        <h4 className='font-medium truncate text-sm sm:text-base'>
+                          {product.name}
+                        </h4>
                         <p className='text-xs sm:text-sm text-muted-foreground'>
                           {t('Stock')}: {product.countInStock}
                         </p>
@@ -275,7 +321,9 @@ export default async function StockManagementPage() {
             {!lowStockProducts || lowStockProducts.length === 0 ? (
               <div className='text-center py-6 sm:py-8 text-muted-foreground'>
                 <CheckCircle className='h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-3 sm:mb-4 text-green-600' />
-                <p className='text-sm sm:text-base'>{t('NoLowStockProducts')}</p>
+                <p className='text-sm sm:text-base'>
+                  {t('NoLowStockProducts')}
+                </p>
               </div>
             ) : (
               <div className='space-y-2 sm:space-y-3'>
@@ -286,10 +334,12 @@ export default async function StockManagementPage() {
                   >
                     <div className='flex flex-col xs:flex-row xs:items-center xs:justify-between gap-2'>
                       <div className='flex-1 min-w-0'>
-                        <h4 className='font-medium truncate text-sm sm:text-base'>{product.name}</h4>
+                        <h4 className='font-medium truncate text-sm sm:text-base'>
+                          {product.name}
+                        </h4>
                         <p className='text-xs sm:text-sm text-muted-foreground'>
-                          {t('Stock')}: {product.countInStock} / {t('Threshold')}:{' '}
-                          {product.minStockLevel}
+                          {t('Stock')}: {product.countInStock} /{' '}
+                          {t('Threshold')}: {product.minStockLevel}
                         </p>
                       </div>
                       <div className='flex items-center gap-2 flex-shrink-0'>
@@ -328,25 +378,48 @@ export default async function StockManagementPage() {
       {/* Actions rapides */}
       <Card>
         <CardHeader className='pb-3 sm:pb-6'>
-          <CardTitle className='text-base sm:text-lg'>{t('QuickActions')}</CardTitle>
-          <CardDescription className='text-xs sm:text-sm'>{t('QuickActionsDescription')}</CardDescription>
+          <CardTitle className='text-base sm:text-lg'>
+            {t('QuickActions')}
+          </CardTitle>
+          <CardDescription className='text-xs sm:text-sm'>
+            {t('QuickActionsDescription')}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className='flex flex-col xs:flex-row flex-wrap gap-2 sm:gap-4'>
             <Button asChild className='w-full xs:w-auto text-xs sm:text-sm'>
-              <Link href='/admin/products' className='flex items-center justify-center'>
+              <Link
+                href='/admin/products'
+                className='flex items-center justify-center'
+              >
                 <Package className='h-3.5 w-3.5 sm:h-4 sm:w-4 mr-2' />
-                <span className='whitespace-nowrap'>{t('ManageAllProducts')}</span>
+                <span className='whitespace-nowrap'>
+                  {t('ManageAllProducts')}
+                </span>
               </Link>
             </Button>
-            <Button asChild variant='outline' className='w-full xs:w-auto text-xs sm:text-sm'>
-              <Link href='/admin/products/create' className='flex items-center justify-center'>
+            <Button
+              asChild
+              variant='outline'
+              className='w-full xs:w-auto text-xs sm:text-sm'
+            >
+              <Link
+                href='/admin/products/create'
+                className='flex items-center justify-center'
+              >
                 <TrendingUp className='h-3.5 w-3.5 sm:h-4 sm:w-4 mr-2' />
                 <span className='whitespace-nowrap'>{t('AddProduct')}</span>
               </Link>
             </Button>
-            <Button asChild variant='outline' className='w-full xs:w-auto text-xs sm:text-sm'>
-              <Link href='/admin/stock/history' className='flex items-center justify-center'>
+            <Button
+              asChild
+              variant='outline'
+              className='w-full xs:w-auto text-xs sm:text-sm'
+            >
+              <Link
+                href='/admin/stock/history'
+                className='flex items-center justify-center'
+              >
                 <History className='h-3.5 w-3.5 sm:h-4 sm:w-4 mr-2' />
                 <span className='whitespace-nowrap'>{t('ViewHistory')}</span>
               </Link>

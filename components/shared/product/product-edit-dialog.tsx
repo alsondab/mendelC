@@ -107,7 +107,9 @@ export function ProductEditDialog({
                       Formulaire de modification pour {product.name}
                     </DialogDescription>
                     <div className='flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-muted-foreground'>
-                      <span className='font-medium truncate'>{product.name}</span>
+                      <span className='font-medium truncate'>
+                        {product.name}
+                      </span>
                     </div>
                   </div>
                   <motion.button
@@ -139,4 +141,3 @@ export function ProductEditDialog({
     </Dialog>
   )
 }
-

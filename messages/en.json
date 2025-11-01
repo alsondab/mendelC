@@ -284,7 +284,16 @@
       "Title": "Your wishlist is empty",
       "Description": "Add products to your wishlist to find them easily",
       "ContinueShopping": "Continue Shopping"
-    }
+    },
+    "Removed": "Item removed",
+    "RemovedDescription": "The product has been removed from your wishlist",
+    "InStock": "In Stock",
+    "OutOfStock": "Out of Stock",
+    "View": "View",
+    "Remove": "Remove",
+    "Item": "item",
+    "Items": "items",
+    "ItemCount": "{count} {count, plural, one {item} other {items}}"
   },
   "Loading": {
     "Loading": "Loading..."
@@ -813,6 +822,12 @@
     "Back": "Back",
     "Next": "Next",
     "Previous": "Previous"
+  },
+  "StockNotifications": {
+    "CriticalAlertTitle": "🚨 Critical Alert - Out of Stock",
+    "CriticalAlertDescription": "{count} product(s) out of stock require urgent restocking!",
+    "WarningAlertTitle": "⚠️ Alert - Low Stock",
+    "WarningAlertDescription": "{count} product(s) have low stock and require your attention."
   },
   "Manage": {
     "Login & Security": "Login & Security",

@@ -206,8 +206,7 @@ const ProductForm = ({
         try {
           const result = await getGlobalStockThresholds()
           if (result.success && result.thresholds) {
-            const { globalLowStockThreshold } =
-              result.thresholds
+            const { globalLowStockThreshold } = result.thresholds
 
             // Mettre à jour les valeurs par défaut du formulaire
             // Seulement si les valeurs actuelles sont les valeurs hardcodées (5 et 100)
@@ -224,10 +223,7 @@ const ProductForm = ({
             }
           }
         } catch (error) {
-          console.error(
-            'Erreur lors du chargement des seuils globaux:',
-            error
-          )
+          console.error('Erreur lors du chargement des seuils globaux:', error)
           // Continuer avec les valeurs par défaut hardcodées en cas d'erreur
         }
       }

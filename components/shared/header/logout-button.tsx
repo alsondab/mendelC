@@ -26,10 +26,10 @@ export default function LogoutButton() {
         variant='outline'
         size='sm'
         onClick={() => setIsOpen(true)}
-        className='flex items-center justify-center space-x-2 px-4 py-3 rounded-xl bg-red-50 hover:bg-red-100 border-red-200 hover:border-red-300 transition-all duration-200 text-sm font-medium w-full group'
+        className='flex items-center justify-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2 sm:py-3 rounded-xl bg-red-50 hover:bg-red-100 border-red-200 hover:border-red-300 transition-all duration-200 text-xs sm:text-sm font-medium w-full h-full group'
       >
-        <LogOut className='h-4 w-4 text-red-600 group-hover:scale-110 transition-transform' />
-        <span className='text-red-600 font-semibold'>Déconnexion</span>
+        <LogOut className='h-3.5 w-3.5 sm:h-4 sm:w-4 text-red-600 group-hover:scale-110 transition-transform flex-shrink-0' />
+        <span className='text-red-600 font-semibold truncate'>Déconnexion</span>
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>

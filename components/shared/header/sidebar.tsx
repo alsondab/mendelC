@@ -79,8 +79,8 @@ export default async function Sidebar() {
           </div>
 
           {/* Contenu scrollable - Prend l'espace restant */}
-          <div className='flex-1 overflow-y-auto overscroll-contain pr-1 min-h-0'>
-            <div className='space-y-0 pb-8'>
+          <div className='flex-1 overflow-y-auto overscroll-contain pr-1 min-h-0 sidebar-scroll'>
+            <div className='space-y-0 pb-20 sm:pb-16'>
               {/* Préférences Section */}
               <div className='p-3 sm:p-4 border-b border-border/50'>
                 <div className='flex items-center space-x-2'>
@@ -107,10 +107,10 @@ export default async function Sidebar() {
               {/* Help & Settings Section */}
               <HelpSettingsAccordion session={session} />
 
-              {/* Login/Logout Section - Espacement amélioré pour garantir l'accessibilité */}
+              {/* Login/Logout Section - Layout responsive avec boutons côte à côte sur mobile */}
               <div className='border-t border-border/50 bg-gradient-to-r from-muted/40 to-muted/20 mt-4'>
-                <div className='p-3 sm:p-4 space-y-3 pb-12 sm:pb-8'>
-                  <div className='text-center'>
+                <div className='p-3 sm:p-4 pb-16 sm:pb-12'>
+                  <div className='text-center mb-3'>
                     <h3 className='text-sm font-semibold text-foreground mb-2'>
                       {session ? t('Header.Account') : t('Header.Get started')}
                     </h3>
@@ -122,37 +122,41 @@ export default async function Sidebar() {
                   </div>
 
                   {session ? (
-                    <div className='space-y-2'>
-                      <DrawerClose asChild>
+                    <div className='flex flex-col sm:flex-row gap-2 sm:gap-3'>
+                      <DrawerClose asChild className='flex-1 min-w-0'>
                         <Link
                           href='/account'
-                          className='flex items-center justify-center space-x-2 px-4 py-3 rounded-xl bg-primary/10 hover:bg-primary/20 transition-all duration-200 text-sm font-medium border border-primary/20 w-full group'
+                          className='flex items-center justify-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2 sm:py-3 rounded-xl bg-primary/10 hover:bg-primary/20 transition-all duration-200 text-xs sm:text-sm font-medium border border-primary/20 w-full h-full group'
                         >
-                          <UserCircle className='h-4 w-4 text-primary group-hover:scale-110 transition-transform flex-shrink-0' />
-                          <span className='text-primary font-semibold'>
+                          <UserCircle className='h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary group-hover:scale-110 transition-transform flex-shrink-0' />
+                          <span className='text-primary font-semibold truncate'>
                             {t('Header.My Account')}
                           </span>
                         </Link>
                       </DrawerClose>
-                      <LogoutButton />
+                      <div className='flex-1 min-w-0'>
+                        <LogoutButton />
+                      </div>
                     </div>
                   ) : (
-                    <div className='space-y-2'>
+                    <div className='flex flex-col sm:flex-row gap-2 sm:gap-3'>
                       <DrawerClose asChild>
                         <Link
                           href='/sign-in'
-                          className='flex items-center justify-center space-x-2 px-4 py-3 rounded-xl bg-primary hover:bg-primary/90 transition-all duration-200 text-sm font-semibold text-primary-foreground w-full group shadow-sm hover:shadow-md'
+                          className='flex items-center justify-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2 sm:py-3 rounded-xl bg-primary hover:bg-primary/90 transition-all duration-200 text-xs sm:text-sm font-semibold text-primary-foreground flex-1 min-w-0 group shadow-sm hover:shadow-md'
                         >
-                          <UserCircle className='h-4 w-4 group-hover:scale-110 transition-transform flex-shrink-0' />
-                          <span>{t('Header.Sign In')}</span>
+                          <UserCircle className='h-3.5 w-3.5 sm:h-4 sm:w-4 group-hover:scale-110 transition-transform flex-shrink-0' />
+                          <span className='truncate'>
+                            {t('Header.Sign In')}
+                          </span>
                         </Link>
                       </DrawerClose>
                       <DrawerClose asChild>
                         <Link
                           href='/sign-up'
-                          className='flex items-center justify-center space-x-2 px-4 py-3 rounded-xl bg-muted hover:bg-muted/80 transition-all duration-200 text-sm font-medium border border-border/50 w-full group'
+                          className='flex items-center justify-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2 sm:py-3 rounded-xl bg-muted hover:bg-muted/80 transition-all duration-200 text-xs sm:text-sm font-medium border border-border/50 flex-1 min-w-0 group'
                         >
-                          <span className='group-hover:scale-105 transition-transform'>
+                          <span className='truncate group-hover:scale-105 transition-transform'>
                             {t('Header.Sign Up')}
                           </span>
                         </Link>
