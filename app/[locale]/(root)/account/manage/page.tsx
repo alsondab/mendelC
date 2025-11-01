@@ -7,13 +7,20 @@ import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
+import { getTranslations } from 'next-intl/server'
 
-const PAGE_TITLE = 'Connexion et Sécurité'
-export const metadata: Metadata = {
-  title: PAGE_TITLE,
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Account')
+  return {
+    title: t('Login & Security'),
+  }
 }
+
 export default async function ProfilePage() {
   const session = await auth()
+  const t = await getTranslations('Account')
+  const tManage = await getTranslations('Manage')
+  
   return (
     <div className='p-1 xs:p-2 sm:p-4 lg:p-6 max-w-7xl mx-auto mb-24'>
       <SessionProvider session={session}>
@@ -23,18 +30,18 @@ export default async function ProfilePage() {
               href='/account'
               className='text-muted-foreground hover:text-foreground transition-colors'
             >
-              Votre compte
+              {t('Title')}
             </Link>
             <span className='text-muted-foreground'>›</span>
-            <span className='text-foreground font-medium'>{PAGE_TITLE}</span>
+            <span className='text-foreground font-medium'>{t('Login & Security')}</span>
           </nav>
 
           <div>
             <h1 className='text-2xl xs:text-3xl sm:text-4xl font-bold text-foreground mb-2'>
-              {PAGE_TITLE}
+              {t('Login & Security')}
             </h1>
             <p className='text-sm xs:text-base text-muted-foreground'>
-              Gérez vos informations de connexion et de sécurité
+              {t('Login & Security Description')}
             </p>
           </div>
         </div>
@@ -45,13 +52,13 @@ export default async function ProfilePage() {
               <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4'>
                 <div className='flex-1'>
                   <h3 className='text-base xs:text-lg font-bold text-foreground mb-1'>
-                    Nom
+                    {tManage('Name')}
                   </h3>
                   <p className='text-sm xs:text-base text-muted-foreground mb-1'>
                     {session?.user.name}
                   </p>
                   <p className='text-xs text-muted-foreground'>
-                    Votre nom d&apos;affichage public
+                    {tManage('Your public display name')}
                   </p>
                 </div>
                 <div className='flex-shrink-0'>
@@ -60,7 +67,7 @@ export default async function ProfilePage() {
                       className='rounded-full w-full sm:w-32 text-sm xs:text-base'
                       variant='outline'
                     >
-                      Modifier
+                      {tManage('Edit')}
                     </Button>
                   </Link>
                 </div>
@@ -73,23 +80,22 @@ export default async function ProfilePage() {
               <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4'>
                 <div className='flex-1'>
                   <h3 className='text-base xs:text-lg font-bold text-foreground mb-1'>
-                    Email
+                    {tManage('Email')}
                   </h3>
                   <p className='text-sm xs:text-base text-muted-foreground mb-1'>
                     {session?.user.email}
                   </p>
                   <p className='text-xs text-muted-foreground'>
-                    Sera implémenté dans la prochaine version
+                    {tManage('Manage your email address')}
                   </p>
                 </div>
                 <div className='flex-shrink-0'>
-                  <Link href='#'>
+                  <Link href='/account/manage/email'>
                     <Button
-                      disabled
                       className='rounded-full w-full sm:w-32 text-sm xs:text-base'
                       variant='outline'
                     >
-                      Modifier
+                      {tManage('Edit')}
                     </Button>
                   </Link>
                 </div>
@@ -102,23 +108,22 @@ export default async function ProfilePage() {
               <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4'>
                 <div className='flex-1'>
                   <h3 className='text-base xs:text-lg font-bold text-foreground mb-1'>
-                    Mot de passe
+                    {tManage('Password')}
                   </h3>
                   <p className='text-sm xs:text-base text-muted-foreground mb-1'>
                     ************
                   </p>
                   <p className='text-xs text-muted-foreground'>
-                    Sera implémenté dans la prochaine version
+                    {tManage('Change your password regularly')}
                   </p>
                 </div>
                 <div className='flex-shrink-0'>
-                  <Link href='#'>
+                  <Link href='/account/manage/password'>
                     <Button
-                      disabled
                       className='rounded-full w-full sm:w-32 text-sm xs:text-base'
                       variant='outline'
                     >
-                      Modifier
+                      {tManage('Edit')}
                     </Button>
                   </Link>
                 </div>

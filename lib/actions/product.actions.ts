@@ -2,7 +2,7 @@
 
 import { connectToDatabase } from '@/lib/db'
 import Product, { IProduct } from '@/lib/db/models/product.model'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { formatError } from '../utils'
 import { ProductInputSchema, ProductUpdateSchema } from '../validator'
 import { IProductInput } from '@/types'
@@ -16,6 +16,16 @@ export async function createProduct(data: IProductInput) {
     const product = ProductInputSchema.parse(data)
     await connectToDatabase()
     await Product.create(product)
+    // Invalider tous les caches
+    revalidateTag('stock')
+    const { invalidateAllProductsCache } = await import('../cache/product-cache')
+    invalidateAllProductsCache()
+    const { invalidateCategoriesCache } = await import('../cache/category-cache')
+    invalidateCategoriesCache()
+    const { invalidateAdminProductsCache } = await import('../cache/admin-cache')
+    invalidateAdminProductsCache()
+    const { invalidateSearchSuggestionsCache } = await import('../cache/search-cache')
+    invalidateSearchSuggestionsCache()
     revalidatePath('/admin/products')
     return {
       success: true,
@@ -32,6 +42,16 @@ export async function updateProduct(data: z.infer<typeof ProductUpdateSchema>) {
     const product = ProductUpdateSchema.parse(data)
     await connectToDatabase()
 
+    // Récupérer le produit actuel pour comparer le stock
+    const currentProduct = await Product.findById(product._id)
+    if (!currentProduct) {
+      throw new Error('Produit non trouvé')
+    }
+
+    const quantityBefore = currentProduct.countInStock
+    const quantityAfter = product.countInStock
+    const stockChanged = quantityBefore !== quantityAfter
+
     // Recalculer le statut de stock avant la mise à jour
     const stockStatusData = calculateStockStatus(
       product.countInStock,
@@ -45,9 +65,77 @@ export async function updateProduct(data: z.infer<typeof ProductUpdateSchema>) {
       lastStockUpdate: new Date(),
     })
 
+    // Enregistrer dans l'historique si le stock a changé (en arrière-plan)
+    if (stockChanged) {
+      const { recordStockMovement } = await import('./stock-history.actions')
+      const { auth } = await import('@/auth')
+      const session = await auth()
+
+      recordStockMovement({
+        productId: product._id.toString(),
+        productName: currentProduct.name,
+        movementType: 'adjustment',
+        quantityBefore,
+        quantityAfter,
+        reason: 'Modification du produit (stock mis à jour)',
+        userId: session?.user?.id,
+        metadata: {
+          action: 'updateProduct',
+          oldStock: quantityBefore.toString(),
+          newStock: quantityAfter.toString(),
+        },
+      }).catch((error) => {
+        console.error('Erreur lors de l\'enregistrement de l\'historique:', error)
+      })
+    }
+
+    // Déclencher automatiquement une notification si le stock est faible ou en rupture
+    if (
+      stockStatusData.stockStatus === 'low_stock' ||
+      stockStatusData.stockStatus === 'out_of_stock'
+    ) {
+      // Importer et déclencher la notification
+      const { checkStockAndNotify } = await import(
+        './stock-notifications.actions'
+      )
+      // Vérifier les paramètres de notification
+      const { getNotificationSettings } = await import(
+        './notification-settings.actions'
+      )
+      const settingsResult = await getNotificationSettings()
+      const emailEnabled =
+        settingsResult.success &&
+        settingsResult.settings?.emailNotifications !== false
+
+      if (emailEnabled) {
+        // Déclencher la vérification et l'envoi en arrière-plan (ne pas bloquer)
+        checkStockAndNotify().catch((error) => {
+          console.error('Erreur lors de la notification automatique:', error)
+        })
+      }
+    }
+
+    // Invalider tous les caches
+    revalidateTag('stock')
+    const { invalidateAllProductsCache, invalidateProductCache } = await import(
+      '../cache/product-cache'
+    )
+    invalidateAllProductsCache()
+    invalidateProductCache(product._id.toString())
+    if (currentProduct.slug) {
+      // Invalider aussi par slug
+      const { revalidateTag } = await import('next/cache')
+      revalidateTag(`product-slug-${currentProduct.slug}`)
+      revalidateTag(`product-slug-status-${currentProduct.slug}`)
+    }
+    const { invalidateAdminProductsCache } = await import('../cache/admin-cache')
+    invalidateAdminProductsCache()
+    const { invalidateSearchSuggestionsCache } = await import('../cache/search-cache')
+    invalidateSearchSuggestionsCache()
     revalidatePath('/admin/products')
     revalidatePath(`/admin/products/${product._id}`)
     revalidatePath('/admin/stock')
+    revalidatePath(`/product/${currentProduct.slug}`)
     return {
       success: true,
       message: 'Produit mis à jour avec succès',
@@ -62,7 +150,24 @@ export async function deleteProduct(id: string) {
     await connectToDatabase()
     const res = await Product.findByIdAndDelete(id)
     if (!res) throw new Error('Product not found')
+    // Invalider tous les caches
+    revalidateTag('stock')
+    const { invalidateAllProductsCache, invalidateProductCache } = await import(
+      '../cache/product-cache'
+    )
+    invalidateAllProductsCache()
+    invalidateProductCache(id)
+    if (res.slug) {
+      invalidateProductCache(`slug-${res.slug}`)
+    }
+    const { invalidateAdminProductsCache } = await import('../cache/admin-cache')
+    invalidateAdminProductsCache()
+    const { invalidateCategoriesCache } = await import('../cache/category-cache')
+    invalidateCategoriesCache()
+    const { invalidateSearchSuggestionsCache } = await import('../cache/search-cache')
+    invalidateSearchSuggestionsCache()
     revalidatePath('/admin/products')
+    revalidatePath('/admin/stock')
     return {
       success: true,
       message: 'Produit supprimé avec succès',
@@ -79,60 +184,89 @@ export async function getProductById(productId: string) {
 }
 
 // GET ALL PRODUCTS FOR ADMIN
+// Utilise le cache si disponible, sinon requête directe
 export async function getAllProductsForAdmin({
   query,
   page = 1,
   sort = 'latest',
   limit,
+  useCache = false, // Désactivé par défaut pour éviter les problèmes côté client
 }: {
   query: string
   page?: number
   sort?: string
   limit?: number
-}) {
-  await connectToDatabase()
+  useCache?: boolean
+}): Promise<{
+  products: IProduct[]
+  totalPages: number
+  totalProducts: number
+  from: number
+  to: number
+}> {
+  // Si cache activé et pas de recherche (recherche = pas de cache), utiliser le cache
+  // Seulement côté serveur (vérifier si on est dans un contexte serveur)
+  if (useCache && (!query || query === '') && typeof window === 'undefined') {
+    try {
+      const { getCachedAllProductsForAdmin } = await import(
+        '../cache/admin-cache'
+      )
+      return await getCachedAllProductsForAdmin({ query, page, sort, limit })
+    } catch (error) {
+      // Fallback si cache échoue
+      console.error('Cache error, falling back to direct query:', error)
+    }
+  }
 
-  const {
-    common: { pageSize },
-  } = await getSetting()
-  limit = limit || pageSize
-  const queryFilter =
-    query && query !== 'all'
-      ? {
-          name: {
-            $regex: query,
-            $options: 'i',
-          },
-        }
-      : {}
+  try {
+    // Requête directe (pas de cache ou recherche active)
+    await connectToDatabase()
 
-  const order: Record<string, 1 | -1> =
-    sort === 'best-selling'
-      ? { numSales: -1 }
-      : sort === 'price-low-to-high'
-        ? { price: 1 }
-        : sort === 'price-high-to-low'
-          ? { price: -1 }
-          : sort === 'avg-customer-review'
-            ? { avgRating: -1 }
-            : { _id: -1 }
-  const products = await Product.find({
-    ...queryFilter,
-  })
-    .sort(order)
-    .skip(limit * (Number(page) - 1))
-    .limit(limit)
-    .lean()
+    const {
+      common: { pageSize },
+    } = await getSetting()
+    limit = limit || pageSize
+    const queryFilter =
+      query && query !== 'all'
+        ? {
+            name: {
+              $regex: query,
+              $options: 'i',
+            },
+          }
+        : {}
 
-  const countProducts = await Product.countDocuments({
-    ...queryFilter,
-  })
-  return {
-    products: JSON.parse(JSON.stringify(products)) as IProduct[],
-    totalPages: Math.ceil(countProducts / pageSize),
-    totalProducts: countProducts,
-    from: pageSize * (Number(page) - 1) + 1,
-    to: pageSize * (Number(page) - 1) + products.length,
+    const order: Record<string, 1 | -1> =
+      sort === 'best-selling'
+        ? { numSales: -1 }
+        : sort === 'price-low-to-high'
+          ? { price: 1 }
+          : sort === 'price-high-to-low'
+            ? { price: -1 }
+            : sort === 'avg-customer-review'
+              ? { avgRating: -1 }
+              : { _id: -1 }
+    const products = await Product.find({
+      ...queryFilter,
+    })
+      .sort(order)
+      .skip(limit * (Number(page) - 1))
+      .limit(limit)
+      .lean()
+
+    const countProducts = await Product.countDocuments({
+      ...queryFilter,
+    })
+    return {
+      products: JSON.parse(JSON.stringify(products)) as IProduct[],
+      totalPages: Math.ceil(countProducts / pageSize),
+      totalProducts: countProducts,
+      from: pageSize * (Number(page) - 1) + 1,
+      to: pageSize * (Number(page) - 1) + products.length,
+    }
+  } catch (error) {
+    console.error('Error in getAllProductsForAdmin:', error)
+    throw error
   }
 }
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Card,
   CardContent,
@@ -13,47 +13,93 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Separator } from '@/components/ui/separator'
-import { Bell, Mail, Clock } from 'lucide-react'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Bell, Save } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
+import {
+  getNotificationSettings,
+  saveNotificationSettings,
+} from '@/lib/actions/notification-settings.actions'
+import { getGlobalStockThresholds } from '@/lib/actions/setting.actions'
+import Link from 'next/link'
 
 interface NotificationSettings {
   emailNotifications: boolean
   adminEmail: string
+  globalLowStockThreshold: number
+  globalCriticalStockThreshold: number
   lowStockThreshold: number
   criticalStockThreshold: number
   notificationFrequency: 'realtime' | 'hourly' | 'daily'
-  enableBanner: boolean
-  enableToast: boolean
+  uiNotificationLevel: 'minimal' | 'standard' | 'full'
 }
 
 export function NotificationSettings() {
   const { toast } = useToast()
   const [settings, setSettings] = useState<NotificationSettings>({
     emailNotifications: true,
-    adminEmail: 'admin@votre-site.com',
+    adminEmail: 'admin@example.com',
+    globalLowStockThreshold: 5,
+    globalCriticalStockThreshold: 2,
     lowStockThreshold: 5,
     criticalStockThreshold: 2,
     notificationFrequency: 'hourly',
-    enableBanner: true,
-    enableToast: true,
+    uiNotificationLevel: 'standard',
   })
 
   const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingSettings, setIsLoadingSettings] = useState(true)
+  const [globalThresholds, setGlobalThresholds] = useState<{
+    globalLowStockThreshold: number
+    globalCriticalStockThreshold: number
+  } | null>(null)
+
+  // Charger les paramètres au montage du composant
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const [settingsResult, thresholdsResult] = await Promise.all([
+          getNotificationSettings(),
+          getGlobalStockThresholds(),
+        ])
+
+        if (settingsResult.success && settingsResult.settings) {
+          setSettings(settingsResult.settings)
+        }
+
+        if (thresholdsResult.success && thresholdsResult.thresholds) {
+          setGlobalThresholds(thresholdsResult.thresholds)
+        }
+      } catch (error) {
+        console.error('Erreur lors du chargement des paramètres:', error)
+      } finally {
+        setIsLoadingSettings(false)
+      }
+    }
+
+    loadSettings()
+  }, [])
 
   const handleSave = async () => {
     setIsLoading(true)
     try {
-      // Ici vous sauvegarderiez les paramètres en base de données
-      // await saveNotificationSettings(settings)
+      const result = await saveNotificationSettings(settings)
 
-      toast({
-        title: 'Paramètres sauvegardés',
-        description: 'Vos préférences de notification ont été mises à jour.',
-      })
-    } catch {
+      if (result.success) {
+        toast({
+          title: 'Paramètres sauvegardés',
+          description: result.message || 'Vos préférences de notification ont été mises à jour.',
+        })
+      } else {
+        throw new Error(result.message)
+      }
+    } catch (error) {
       toast({
         title: 'Erreur',
-        description: 'Impossible de sauvegarder les paramètres.',
+        description:
+          error instanceof Error
+            ? error.message
+            : 'Impossible de sauvegarder les paramètres.',
         variant: 'destructive',
       })
     } finally {
@@ -61,70 +107,63 @@ export function NotificationSettings() {
     }
   }
 
-  const testNotification = async () => {
-    try {
-      const response = await fetch('/api/stock/notifications', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ adminEmail: settings.adminEmail }),
-      })
-
-      const result = await response.json()
-
-      if (result.success) {
-        toast({
-          title: 'Test envoyé',
-          description: `Notification de test envoyée à ${settings.adminEmail}`,
-        })
-      } else {
-        throw new Error(result.message)
-      }
-    } catch {
-      toast({
-        title: 'Erreur',
-        description: "Impossible d'envoyer la notification de test.",
-        variant: 'destructive',
-      })
-    }
+  if (isLoadingSettings) {
+    return (
+      <div className='space-y-4 sm:space-y-6'>
+        <Card>
+          <CardContent className='p-6'>
+            <div className='flex items-center justify-center py-8'>
+              <div className='text-sm text-muted-foreground'>
+                Chargement des paramètres...
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
   }
 
   return (
-    <div className='space-y-6'>
+    <div className='space-y-4 sm:space-y-6'>
       <Card>
-        <CardHeader>
-          <CardTitle className='flex items-center gap-2'>
-            <Bell className='h-5 w-5' />
+        <CardHeader className='pb-3 sm:pb-6'>
+          <CardTitle className='flex items-center gap-2 text-xl sm:text-2xl'>
+            <Bell className='h-4 w-4 sm:h-5 sm:w-5' />
             Configuration des Notifications
           </CardTitle>
-          <CardDescription>
+          <CardDescription className='text-xs sm:text-sm'>
             Configurez comment et quand vous souhaitez recevoir des alertes de
             stock
           </CardDescription>
         </CardHeader>
-        <CardContent className='space-y-6'>
+        <CardContent className='space-y-4 sm:space-y-6 p-4 sm:p-6'>
           {/* Notifications par email */}
-          <div className='space-y-4'>
-            <div className='flex items-center justify-between'>
-              <div className='space-y-0.5'>
-                <Label className='text-base'>Notifications par email</Label>
-                <p className='text-sm text-muted-foreground'>
+          <div className='space-y-3 sm:space-y-4'>
+            <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4'>
+              <div className='space-y-0.5 flex-1'>
+                <Label className='text-sm sm:text-base'>Notifications par email</Label>
+                <p className='text-xs sm:text-sm text-muted-foreground'>
                   Recevez des alertes par email quand le stock est faible
                 </p>
               </div>
-              <Switch
-                checked={settings.emailNotifications}
-                onCheckedChange={(checked) =>
-                  setSettings((prev) => ({
-                    ...prev,
-                    emailNotifications: checked,
-                  }))
-                }
-              />
+              <div className='flex-shrink-0'>
+                <Switch
+                  checked={settings.emailNotifications}
+                  onCheckedChange={(checked) =>
+                    setSettings((prev) => ({
+                      ...prev,
+                      emailNotifications: checked,
+                    }))
+                  }
+                />
+              </div>
             </div>
 
             {settings.emailNotifications && (
-              <div className='space-y-2'>
-                <Label htmlFor='adminEmail'>Email d&apos;administration</Label>
+              <div className='space-y-2 pt-2'>
+                <Label htmlFor='adminEmail' className='text-sm sm:text-base'>
+                  Email d&apos;administration
+                </Label>
                 <Input
                   id='adminEmail'
                   type='email'
@@ -135,7 +174,8 @@ export function NotificationSettings() {
                       adminEmail: e.target.value,
                     }))
                   }
-                  placeholder='admin@votre-site.com'
+                  placeholder='admin@example.com'
+                  className='w-full text-sm sm:text-base'
                 />
               </div>
             )}
@@ -143,92 +183,57 @@ export function NotificationSettings() {
 
           <Separator />
 
-          {/* Seuils de notification */}
-          <div className='space-y-4'>
-            <h3 className='text-lg font-medium'>Seuils de Notification</h3>
+          {/* Seuils de notification - Afficher les seuils globaux (lecture seule) */}
+          <div className='space-y-3 sm:space-y-4'>
+            <div className='flex items-center justify-between'>
+              <h3 className='text-base sm:text-lg font-medium'>
+                Seuils de Notification
+              </h3>
+              <Button variant='outline' size='sm' asChild>
+                <Link href='/admin/stock'>
+                  Modifier les seuils globaux
+                </Link>
+              </Button>
+            </div>
+            <p className='text-xs sm:text-sm text-muted-foreground'>
+              Les seuils globaux définis dans la page Gestion des Stocks sont
+              utilisés pour toutes les notifications. Vous pouvez les modifier
+              depuis la page de gestion des stocks.
+            </p>
 
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4'>
               <div className='space-y-2'>
-                <Label htmlFor='lowStockThreshold'>
+                <Label className='text-sm sm:text-base'>
                   Stock faible (avertissement)
                 </Label>
                 <Input
-                  id='lowStockThreshold'
                   type='number'
-                  min='1'
-                  value={settings.lowStockThreshold}
-                  onChange={(e) =>
-                    setSettings((prev) => ({
-                      ...prev,
-                      lowStockThreshold: parseInt(e.target.value) || 5,
-                    }))
+                  value={
+                    globalThresholds?.globalLowStockThreshold ??
+                    settings.lowStockThreshold
                   }
+                  readOnly
+                  className='text-sm sm:text-base bg-muted/50 cursor-not-allowed'
                 />
                 <p className='text-xs text-muted-foreground'>
-                  Avertir quand le stock ≤ cette valeur
+                  Avertir quand le stock ≤ cette valeur (seuil global)
                 </p>
               </div>
 
               <div className='space-y-2'>
-                <Label htmlFor='criticalStockThreshold'>Stock critique</Label>
+                <Label className='text-sm sm:text-base'>Stock critique</Label>
                 <Input
-                  id='criticalStockThreshold'
                   type='number'
-                  min='0'
-                  value={settings.criticalStockThreshold}
-                  onChange={(e) =>
-                    setSettings((prev) => ({
-                      ...prev,
-                      criticalStockThreshold: parseInt(e.target.value) || 2,
-                    }))
+                  value={
+                    globalThresholds?.globalCriticalStockThreshold ??
+                    settings.criticalStockThreshold
                   }
+                  readOnly
+                  className='text-sm sm:text-base bg-muted/50 cursor-not-allowed'
                 />
                 <p className='text-xs text-muted-foreground'>
-                  Alerte critique quand le stock ≤ cette valeur
+                  Alerte critique quand le stock ≤ cette valeur (seuil global)
                 </p>
-              </div>
-            </div>
-          </div>
-
-          <Separator />
-
-          {/* Fréquence des notifications */}
-          <div className='space-y-4'>
-            <h3 className='text-lg font-medium'>Fréquence des Notifications</h3>
-
-            <div className='space-y-2'>
-              <Label>Vérification automatique</Label>
-              <div className='grid grid-cols-3 gap-2'>
-                {[
-                  { value: 'realtime', label: 'Temps réel', icon: Clock },
-                  { value: 'hourly', label: 'Toutes les heures', icon: Clock },
-                  { value: 'daily', label: 'Quotidien', icon: Clock },
-                ].map((option) => {
-                  const Icon = option.icon
-                  return (
-                    <Button
-                      key={option.value}
-                      variant={
-                        settings.notificationFrequency === option.value
-                          ? 'default'
-                          : 'outline'
-                      }
-                      className='flex items-center gap-2'
-                      onClick={() =>
-                        setSettings((prev) => ({
-                          ...prev,
-                          notificationFrequency: option.value as
-                            | 'realtime'
-                            | 'hourly'
-                            | 'daily',
-                        }))
-                      }
-                    >
-                      <Icon className='h-4 w-4' />
-                      {option.label}
-                    </Button>
-                  )
-                })}
               </div>
             </div>
           </div>
@@ -236,59 +241,101 @@ export function NotificationSettings() {
           <Separator />
 
           {/* Notifications dans l'interface */}
-          <div className='space-y-4'>
-            <h3 className='text-lg font-medium'>
-              Notifications dans l&apos;Interface
-            </h3>
-
-            <div className='space-y-4'>
-              <div className='flex items-center justify-between'>
-                <div className='space-y-0.5'>
-                  <Label>Bannière de notification</Label>
-                  <p className='text-sm text-muted-foreground'>
-                    Afficher une bannière en haut de l&apos;interface admin
-                  </p>
-                </div>
-                <Switch
-                  checked={settings.enableBanner}
-                  onCheckedChange={(checked) =>
-                    setSettings((prev) => ({ ...prev, enableBanner: checked }))
-                  }
-                />
-              </div>
-
-              <div className='flex items-center justify-between'>
-                <div className='space-y-0.5'>
-                  <Label>Notifications toast</Label>
-                  <p className='text-sm text-muted-foreground'>
-                    Afficher des notifications popup temporaires
-                  </p>
-                </div>
-                <Switch
-                  checked={settings.enableToast}
-                  onCheckedChange={(checked) =>
-                    setSettings((prev) => ({ ...prev, enableToast: checked }))
-                  }
-                />
-              </div>
+          <div className='space-y-3 sm:space-y-4'>
+            <div>
+              <h3 className='text-base sm:text-lg font-medium mb-2'>
+                Notifications dans l&apos;Interface
+              </h3>
+              <p className='text-xs sm:text-sm text-muted-foreground mb-4'>
+                Choisissez le niveau de notification dans l&apos;interface admin
+              </p>
             </div>
+
+            <RadioGroup
+              value={settings.uiNotificationLevel}
+              onValueChange={(value) =>
+                setSettings((prev) => ({
+                  ...prev,
+                  uiNotificationLevel: value as 'minimal' | 'standard' | 'full',
+                }))
+              }
+              className='space-y-3 sm:space-y-4'
+            >
+              <div className='flex items-start space-x-3 p-3 sm:p-4 border rounded-lg hover:bg-muted/50 transition-colors'>
+                <RadioGroupItem value='minimal' id='minimal' className='mt-1' />
+                <div className='flex-1 space-y-1'>
+                  <Label
+                    htmlFor='minimal'
+                    className='text-sm sm:text-base font-medium cursor-pointer'
+                  >
+                    Minimal
+                  </Label>
+                  <p className='text-xs sm:text-sm text-muted-foreground'>
+                    Badge dans la navbar uniquement. Discret, ne perturbe pas le travail.
+                  </p>
+                </div>
+              </div>
+
+              <div className='flex items-start space-x-3 p-3 sm:p-4 border rounded-lg hover:bg-muted/50 transition-colors bg-accent/30'>
+                <RadioGroupItem value='standard' id='standard' className='mt-1' />
+                <div className='flex-1 space-y-1'>
+                  <div className='flex items-center gap-2'>
+                    <Label
+                      htmlFor='standard'
+                      className='text-sm sm:text-base font-medium cursor-pointer'
+                    >
+                      Standard
+                    </Label>
+                    <span className='text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 font-medium border border-blue-200 dark:border-blue-800'>
+                      Recommandé
+                    </span>
+                  </div>
+                  <p className='text-xs sm:text-sm text-muted-foreground'>
+                    Badge navbar + notification persistante (bottom-right). Équilibre
+                    entre information et discrétion.
+                  </p>
+                </div>
+              </div>
+
+              <div className='flex items-start space-x-3 p-3 sm:p-4 border rounded-lg hover:bg-muted/50 transition-colors'>
+                <RadioGroupItem value='full' id='full' className='mt-1' />
+                <div className='flex-1 space-y-1'>
+                  <Label
+                    htmlFor='full'
+                    className='text-sm sm:text-base font-medium cursor-pointer'
+                  >
+                    Complet
+                  </Label>
+                  <p className='text-xs sm:text-sm text-muted-foreground'>
+                    Badge navbar + notification persistante + toasts popup. Maximum de
+                    visibilité pour réagir rapidement.
+                  </p>
+                </div>
+              </div>
+            </RadioGroup>
           </div>
 
           <Separator />
 
           {/* Actions */}
-          <div className='flex gap-4'>
-            <Button onClick={handleSave} disabled={isLoading}>
-              {isLoading ? 'Sauvegarde...' : 'Sauvegarder'}
-            </Button>
-
-            <Button
-              variant='outline'
-              onClick={testNotification}
-              disabled={!settings.emailNotifications}
+          <div className='flex flex-col sm:flex-row gap-4 pt-6 border-t border-border'>
+            <Button 
+              onClick={handleSave} 
+              disabled={isLoading}
+              size='lg'
+              className='flex-1 h-12 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200'
             >
-              <Mail className='h-4 w-4 mr-2' />
-              Tester la notification
+              {isLoading ? (
+                <div className='flex items-center gap-2'>
+                  <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin' />
+                  <span>Sauvegarde en cours...</span>
+                </div>
+              ) : (
+                <div className='flex items-center gap-2'>
+                  <Save className='h-5 w-5' />
+                  <span>Sauvegarder</span>
+                </div>
+              )}
             </Button>
           </div>
         </CardContent>

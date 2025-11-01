@@ -92,6 +92,26 @@ const settingSchema = new Schema<ISetting>(
       },
     ],
     defaultDeliveryDate: { type: String, required: true },
+    notificationSettings: {
+      emailNotifications: { type: Boolean, default: true },
+      adminEmail: { type: String, default: 'admin@example.com' },
+      // Seuils globaux (source unique de vérité)
+      globalLowStockThreshold: { type: Number, default: 5 },
+      globalCriticalStockThreshold: { type: Number, default: 2 },
+      // Anciens champs (dépréciés, conservés pour compatibilité)
+      lowStockThreshold: { type: Number, default: 5 },
+      criticalStockThreshold: { type: Number, default: 2 },
+      notificationFrequency: {
+        type: String,
+        enum: ['realtime', 'hourly', 'daily'],
+        default: 'hourly',
+      },
+      uiNotificationLevel: {
+        type: String,
+        enum: ['minimal', 'standard', 'full'],
+        default: 'standard',
+      },
+    },
   },
   {
     timestamps: true,

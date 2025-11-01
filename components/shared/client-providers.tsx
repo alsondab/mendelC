@@ -1,7 +1,9 @@
 'use client'
 import React from 'react'
-import useCartSidebar from '@/hooks/use-cart-sidebar'
 import CartSidebar from './cart-sidebar'
+import WishlistSidebar from './wishlist-sidebar'
+import SliderAutoOpener from './slider-auto-opener'
+import SliderStoreInit from './slider-store-init'
 import { ThemeProvider } from './theme-provider'
 import { Toaster } from '../ui/toaster'
 import AppInitializer from './app-initializer'
@@ -15,8 +17,6 @@ export default function ClientProviders({
   setting: ClientSetting
   children: React.ReactNode
 }) {
-  const visible = useCartSidebar()
-
   return (
     <SessionProvider>
       <AppInitializer setting={setting}>
@@ -24,14 +24,12 @@ export default function ClientProviders({
           attribute='class'
           defaultTheme={setting.common.defaultTheme.toLocaleLowerCase()}
         >
-          {visible ? (
-            <div className='flex min-h-screen'>
-              <div className='flex-1 overflow-hidden'>{children}</div>
-              <CartSidebar />
-            </div>
-          ) : (
-            <div>{children}</div>
-          )}
+          <SliderStoreInit />
+          <SliderAutoOpener />
+          {children}
+          {/* Les sliders gèrent leur propre overlay et animations */}
+          <CartSidebar />
+          <WishlistSidebar />
           <Toaster />
         </ThemeProvider>
       </AppInitializer>

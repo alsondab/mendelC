@@ -1,14 +1,14 @@
 'use client'
 
 import { ShoppingCartIcon } from 'lucide-react'
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import useIsMounted from '@/hooks/use-is-mounted'
-import useShowSidebar from '@/hooks/use-cart-sidebar'
 import { cn } from '@/lib/utils'
 import useCartStore from '@/hooks/use-cart-store'
-import { useLocale, useTranslations } from 'next-intl'
-import { getDirection } from '@/i18n-config'
+import { useTranslations } from 'next-intl'
+import useCartSliderStore from '@/hooks/use-cart-slider-store'
+import { motion } from 'framer-motion'
+import { buttonVariants } from '@/lib/utils/animations'
 
 export default function CartButton() {
   const isMounted = useIsMounted()
@@ -17,9 +17,8 @@ export default function CartButton() {
     cart: { items },
   } = useCartStore()
   const cartItemsCount = items.reduce((a, c) => a + c.quantity, 0)
-  const showSidebar = useShowSidebar()
+  const { toggle } = useCartSliderStore()
   const t = useTranslations()
-  const locale = useLocale()
 
   // Ne pas afficher le panier dans la page admin
   if (pathname.includes('/admin')) {
@@ -27,12 +26,17 @@ export default function CartButton() {
   }
 
   return (
-    <Link
-      href='/cart'
+    <motion.button
+      variants={buttonVariants}
+      initial="rest"
+      whileHover="hover"
+      whileTap="tap"
+      onClick={toggle}
       className={cn(
         'relative flex items-center justify-center transition-all duration-200',
-        'flex-row space-x-2 px-3 py-2 rounded-lg hover:bg-muted/80'
+        'flex-row space-x-2 px-3 py-2 rounded-lg hover:bg-muted/80 cursor-pointer'
       )}
+      aria-label={t('Header.Cart') || 'Panier'}
     >
       <div className='relative'>
         <ShoppingCartIcon className='h-5 w-5 text-foreground' />
@@ -57,20 +61,6 @@ export default function CartButton() {
       <span className='hidden md:block font-medium text-sm'>
         {t('Header.Cart')}
       </span>
-
-      {/* Sidebar Indicator */}
-      {showSidebar && (
-        <div
-          className={cn(
-            'absolute top-full mt-1 z-10',
-            'w-0 h-0 border-l-[6px] border-r-[6px] border-b-[7px]',
-            'border-transparent border-b-background',
-            getDirection(locale) === 'rtl'
-              ? 'left-4 rotate-[-270deg]'
-              : 'right-4 rotate-[-90deg]'
-          )}
-        />
-      )}
-    </Link>
+    </motion.button>
   )
 }

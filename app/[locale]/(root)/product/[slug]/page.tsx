@@ -2,10 +2,8 @@ import { auth } from '@/auth'
 import { notFound } from 'next/navigation'
 import AddToCart from '@/components/shared/product/add-to-cart'
 import { Card, CardContent } from '@/components/ui/card'
-import {
-  getProductBySlugWithStatus,
-  getRelatedProductsByCategory,
-} from '@/lib/actions/product.actions'
+import { getCachedProductBySlugWithStatus } from '@/lib/cache/product-cache'
+import { getCachedRelatedProducts } from '@/lib/cache/product-cache'
 
 import ReviewList from './review-list'
 import { generateId, round2 } from '@/lib/utils'
@@ -22,9 +20,8 @@ export async function generateMetadata(props: {
   const t = await getTranslations('Product')
   const params = await props.params
 
-  const { product, isPublished, exists } = await getProductBySlugWithStatus(
-    params.slug
-  )
+  const { product, isPublished, exists } =
+    await getCachedProductBySlugWithStatus(params.slug)
 
   if (!exists) {
     return {
@@ -64,7 +61,7 @@ export default async function ProductDetails(props: {
     product: productData,
     isPublished,
     exists,
-  } = await getProductBySlugWithStatus(slug)
+  } = await getCachedProductBySlugWithStatus(slug)
 
   if (!exists) {
     // Product doesn't exist at all
@@ -81,7 +78,7 @@ export default async function ProductDetails(props: {
   let relatedProducts
 
   try {
-    relatedProducts = await getRelatedProductsByCategory({
+    relatedProducts = await getCachedRelatedProducts({
       category: product.category,
       productId: product._id,
       page: Number(page || '1'),

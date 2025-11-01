@@ -1,8 +1,9 @@
 'use client'
-import Link from 'next/link'
 import React, { useEffect, useState, useTransition } from 'react'
+import { useTranslations } from 'next-intl'
 
 import DeleteDialog from '@/components/shared/delete-dialog'
+import { UserEditDialog } from '@/components/shared/user/user-edit-dialog'
 import Pagination from '@/components/shared/pagination'
 import { Button } from '@/components/ui/button'
 import {
@@ -24,9 +25,21 @@ type UsersListDataProps = {
 }
 
 const UsersList = () => {
+  const t = useTranslations('Admin.UsersList')
   const [page, setPage] = useState<number>(1)
   const [data, setData] = useState<UsersListDataProps>()
   const [, startTransition] = useTransition()
+  const [selectedUser, setSelectedUser] = useState<IUser | null>(null)
+  const [dialogOpen, setDialogOpen] = useState(false)
+
+  const refreshUsers = () => {
+    startTransition(async () => {
+      const users = await getAllUsers({
+        page: page,
+      })
+      setData(users)
+    })
+  }
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage)
@@ -40,10 +53,18 @@ const UsersList = () => {
 
   useEffect(() => {
     startTransition(async () => {
-      const users = await getAllUsers({
-        page: 1,
-      })
-      setData(users)
+      try {
+        const users = await getAllUsers({
+          page: 1,
+        })
+        if (users) {
+          setData(users)
+        } else {
+          console.error('getAllUsers returned no data')
+        }
+      } catch (error) {
+        console.error('Error loading users:', error)
+      }
     })
   }, [])
 
@@ -157,30 +178,30 @@ const UsersList = () => {
                             : 'bg-gray-100 text-gray-800'
                       }`}
                     >
-                      {user.role}
+                      {user.role === 'Admin'
+                        ? t('Admin')
+                        : user.role === 'User'
+                          ? t('User')
+                          : user.role}
                     </span>
                   </TableCell>
                   <TableCell>
                     <div className='flex flex-col sm:flex-row gap-1'>
                       <Button
-                        asChild
                         variant='outline'
                         size='sm'
                         className='text-xs'
+                        onClick={() => {
+                          setSelectedUser(user)
+                          setDialogOpen(true)
+                        }}
                       >
-                        <Link href={`/admin/users/${user._id}`}>Modifier</Link>
+                        Modifier
                       </Button>
                       <DeleteDialog
                         id={user._id}
                         action={deleteUser}
-                        callbackAction={() => {
-                          startTransition(async () => {
-                            const users = await getAllUsers({
-                              page: page,
-                            })
-                            setData(users)
-                          })
-                        }}
+                        callbackAction={refreshUsers}
                       />
                     </div>
                   </TableCell>
@@ -200,6 +221,14 @@ const UsersList = () => {
             />
           </div>
         )}
+
+        {/* User Edit Dialog */}
+        <UserEditDialog
+          user={selectedUser}
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          onSuccess={refreshUsers}
+        />
       </div>
     </div>
   )

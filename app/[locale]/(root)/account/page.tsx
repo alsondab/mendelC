@@ -3,20 +3,26 @@ import { Home, PackageCheckIcon, User, Settings } from 'lucide-react'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import React from 'react'
+import { getTranslations } from 'next-intl/server'
 
-const PAGE_TITLE = 'Votre Compte'
-export const metadata: Metadata = {
-  title: PAGE_TITLE,
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Header')
+  return {
+    title: t('My Account'),
+  }
 }
-export default function AccountPage() {
+
+export default async function AccountPage() {
+  const t = await getTranslations('Account')
+
   return (
     <div className='p-1 xs:p-2 sm:p-4 lg:p-6 max-w-7xl mx-auto'>
       <div className='mb-6 xs:mb-8'>
         <h1 className='text-2xl xs:text-3xl sm:text-4xl font-bold text-foreground mb-2'>
-          {PAGE_TITLE}
+          {t('Title')}
         </h1>
         <p className='text-sm xs:text-base text-muted-foreground'>
-          Gérez vos commandes, paramètres de compte et préférences
+          {t('Subtitle')}
         </p>
       </div>
 
@@ -31,11 +37,10 @@ export default function AccountPage() {
               </div>
               <div className='flex-1 min-w-0'>
                 <h2 className='text-lg xs:text-xl font-bold text-foreground mb-1 xs:mb-2'>
-                  Commandes
+                  {t('Orders')}
                 </h2>
                 <p className='text-xs xs:text-sm text-muted-foreground leading-relaxed'>
-                  Suivez, retournez, annulez une commande, téléchargez une
-                  facture ou rachetez
+                  {t('Orders Description')}
                 </p>
               </div>
             </CardContent>
@@ -52,10 +57,10 @@ export default function AccountPage() {
               </div>
               <div className='flex-1 min-w-0'>
                 <h2 className='text-lg xs:text-xl font-bold text-foreground mb-1 xs:mb-2'>
-                  Connexion & sécurité
+                  {t('Login & Security')}
                 </h2>
                 <p className='text-xs xs:text-sm text-muted-foreground leading-relaxed'>
-                  Gérez votre mot de passe, email et numéro de téléphone
+                  {t('Login & Security Description')}
                 </p>
               </div>
             </CardContent>
@@ -72,10 +77,10 @@ export default function AccountPage() {
               </div>
               <div className='flex-1 min-w-0'>
                 <h2 className='text-lg xs:text-xl font-bold text-foreground mb-1 xs:mb-2'>
-                  Adresses
+                  {t('Addresses')}
                 </h2>
                 <p className='text-xs xs:text-sm text-muted-foreground leading-relaxed'>
-                  Modifiez, supprimez ou définissez une adresse par défaut
+                  {t('Addresses Description')}
                 </p>
               </div>
             </CardContent>
@@ -92,11 +97,10 @@ export default function AccountPage() {
               </div>
               <div className='flex-1 min-w-0'>
                 <h2 className='text-lg xs:text-xl font-bold text-foreground mb-1 xs:mb-2'>
-                  Réglages
+                  {t('Settings')}
                 </h2>
                 <p className='text-xs xs:text-sm text-muted-foreground leading-relaxed'>
-                  Préférences, notifications, confidentialité et paramètres
-                  avancés
+                  {t('Settings Description')}
                 </p>
               </div>
             </CardContent>

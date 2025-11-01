@@ -4,37 +4,32 @@ import ProductSlider from '@/components/shared/product/product-slider'
 import { Card, CardContent } from '@/components/ui/card'
 
 import {
-  getProductsForCard,
-  getProductsByTag,
-} from '@/lib/actions/product.actions'
-import { getCategoryTree } from '@/lib/actions/category.actions'
+  getCachedProductsForCard,
+  getCachedProductsByTag,
+} from '@/lib/cache/product-cache'
+import { getCachedCategoryTree } from '@/lib/cache/category-cache'
 import { getSetting } from '@/lib/actions/setting.actions'
 import { getTranslations } from 'next-intl/server'
 
 export default async function HomePage() {
   const t = await getTranslations('Home')
   const { carousels } = await getSetting()
-  const todaysDeals = await getProductsByTag({ tag: 'todays-deal' })
-  const bestSellingProducts = await getProductsByTag({ tag: 'best-seller' })
+  
+  // Utiliser le cache pour tous les produits
+  const [todaysDeals, bestSellingProducts, categories, newArrivals, featureds, bestSellers] = await Promise.all([
+    getCachedProductsByTag({ tag: 'todays-deal' }),
+    getCachedProductsByTag({ tag: 'best-seller' }),
+    getCachedCategoryTree(),
+    getCachedProductsForCard({ tag: 'new-arrival' }),
+    getCachedProductsForCard({ tag: 'featured' }),
+    getCachedProductsForCard({ tag: 'best-seller' }),
+  ])
 
-  const categories = (await getCategoryTree()).slice(0, 4)
-
-  // ✅ Utiliser les images des catégories depuis la base de données
-  const categoryCards = categories.map((category) => ({
+  const categoryCards = categories.slice(0, 4).map((category) => ({
     name: category.name,
     image: category.image || `/images/categories/${category.slug}.jpg`,
     href: `/search?category=${category.name}`,
   }))
-
-  const newArrivals = await getProductsForCard({
-    tag: 'new-arrival',
-  })
-  const featureds = await getProductsForCard({
-    tag: 'featured',
-  })
-  const bestSellers = await getProductsForCard({
-    tag: 'best-seller',
-  })
   const cards = [
     {
       title: t('Categories to explore'),

@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { getCategoryTree } from '@/lib/actions/category.actions'
+import { getCachedCategoryTree } from '@/lib/cache/category-cache'
 import Menu from './menu'
 import Search from './search'
 import Sidebar from './sidebar'
@@ -9,7 +9,7 @@ import { Sparkles, Star, TrendingUp, Award } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 
 export default async function Header() {
-  const categories = await getCategoryTree()
+  const categories = await getCachedCategoryTree()
   const { site } = await getSetting()
   const t = await getTranslations('Header')
   return (
@@ -29,6 +29,7 @@ export default async function Header() {
                   width={64}
                   height={64}
                   alt={`${site.name} logo`}
+                  priority
                   className='w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 flex-shrink-0'
                 />
               ) : (

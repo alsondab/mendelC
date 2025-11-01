@@ -57,3 +57,126 @@ export const setCurrencyOnServer = async (newCurrency: string) => {
     message: 'Devise mise à jour avec succès',
   }
 }
+
+/**
+ * Récupère les seuils globaux de stock (source unique de vérité)
+ */
+export const getGlobalStockThresholds = async (): Promise<{
+  success: boolean
+  thresholds?: {
+    globalLowStockThreshold: number
+    globalCriticalStockThreshold: number
+  }
+  message?: string
+}> => {
+  try {
+    await connectToDatabase()
+    const setting = await Setting.findOne().select(
+      'notificationSettings.globalLowStockThreshold notificationSettings.globalCriticalStockThreshold'
+    )
+
+    if (!setting || !setting.notificationSettings) {
+      // Valeurs par défaut si non définies
+      return {
+        success: true,
+        thresholds: {
+          globalLowStockThreshold: 5,
+          globalCriticalStockThreshold: 2,
+        },
+      }
+    }
+
+    // Utiliser les nouveaux champs globaux, fallback sur les anciens pour migration
+    const globalLowStockThreshold =
+      setting.notificationSettings.globalLowStockThreshold ??
+      setting.notificationSettings.lowStockThreshold ??
+      5
+    const globalCriticalStockThreshold =
+      setting.notificationSettings.globalCriticalStockThreshold ??
+      setting.notificationSettings.criticalStockThreshold ??
+      2
+
+    return {
+      success: true,
+      thresholds: {
+        globalLowStockThreshold,
+        globalCriticalStockThreshold,
+      },
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    }
+  }
+}
+
+/**
+ * Met à jour les seuils globaux de stock
+ */
+export const updateGlobalStockThresholds = async ({
+  globalLowStockThreshold,
+  globalCriticalStockThreshold,
+}: {
+  globalLowStockThreshold: number
+  globalCriticalStockThreshold: number
+}): Promise<{ success: boolean; message?: string }> => {
+  try {
+    await connectToDatabase()
+
+    if (globalLowStockThreshold < 0 || globalCriticalStockThreshold < 0) {
+      throw new Error('Les seuils ne peuvent pas être négatifs')
+    }
+
+    if (globalCriticalStockThreshold >= globalLowStockThreshold) {
+      throw new Error(
+        'Le seuil critique doit être strictement inférieur au seuil faible'
+      )
+    }
+
+    const setting = await Setting.findOne()
+
+    if (!setting) {
+      throw new Error('Aucun paramètre trouvé. Veuillez initialiser les paramètres du site.')
+    }
+
+    // Mettre à jour les seuils globaux
+    if (!setting.notificationSettings) {
+      setting.notificationSettings = {
+        emailNotifications: true,
+        adminEmail: 'admin@example.com',
+        globalLowStockThreshold: 5,
+        globalCriticalStockThreshold: 2,
+        lowStockThreshold: 5,
+        criticalStockThreshold: 2,
+        notificationFrequency: 'hourly',
+        uiNotificationLevel: 'standard',
+      }
+    }
+
+    setting.notificationSettings.globalLowStockThreshold =
+      globalLowStockThreshold
+    setting.notificationSettings.globalCriticalStockThreshold =
+      globalCriticalStockThreshold
+
+    // Migration: mettre à jour aussi les anciens champs pour compatibilité
+    setting.notificationSettings.lowStockThreshold = globalLowStockThreshold
+    setting.notificationSettings.criticalStockThreshold =
+      globalCriticalStockThreshold
+
+    await setting.save()
+
+    // Invalider le cache
+    globalForSettings.cachedSettings = null
+
+    return {
+      success: true,
+      message: 'Seuils globaux mis à jour avec succès',
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    }
+  }
+}

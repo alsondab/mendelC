@@ -12,8 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 import { useLocale } from 'next-intl'
-import Link from 'next/link'
-import { usePathname } from '@/i18n/routing'
+import { usePathname, useRouter } from '@/i18n/routing'
 import { i18n } from '@/i18n-config'
 import { ChevronDownIcon } from 'lucide-react'
 import useSettingStore from '@/hooks/use-setting-store'
@@ -23,6 +22,7 @@ export default function LanguageSwitcher() {
   const { locales } = i18n
   const locale = useLocale()
   const pathname = usePathname()
+  const router = useRouter()
 
   const {
     setting: { availableCurrencies, currency },
@@ -49,13 +49,19 @@ export default function LanguageSwitcher() {
         <DropdownMenuLabel>Language</DropdownMenuLabel>
         <DropdownMenuRadioGroup value={locale}>
           {locales.map((c) => (
-            <DropdownMenuRadioItem key={c.name} value={c.code}>
-              <Link
-                className='w-full flex items-center gap-1'
-                href={`/${c.code}${pathname}`}
-              >
+            <DropdownMenuRadioItem
+              key={c.name}
+              value={c.code}
+              onMouseEnter={() => {
+                try {
+                  router.prefetch(pathname, { locale: c.code })
+                } catch {}
+              }}
+              onClick={() => router.replace(pathname, { locale: c.code })}
+            >
+              <div className='w-full flex items-center gap-1'>
                 <span className='text-lg'>{c.icon}</span> {c.name}
-              </Link>
+              </div>
             </DropdownMenuRadioItem>
           ))}
         </DropdownMenuRadioGroup>

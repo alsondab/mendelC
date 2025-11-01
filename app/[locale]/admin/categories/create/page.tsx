@@ -2,8 +2,10 @@ import { CategoryForm } from '../category-form'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, Grid3X3 } from 'lucide-react'
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
 export default async function CreateCategoryPage() {
+  const t = await getTranslations('Admin.CategoryForm')
   return (
     <div className='space-y-6 p-4 xs:p-6'>
       {/* Header */}
@@ -17,11 +19,11 @@ export default async function CreateCategoryPage() {
           <div className='flex items-center gap-2'>
             <Grid3X3 className='h-6 w-6 text-primary' />
             <h1 className='text-2xl font-bold tracking-tight'>
-              Nouvelle catégorie
+              {t('CreateTitle')}
             </h1>
           </div>
           <p className='text-muted-foreground'>
-            Créez une nouvelle catégorie ou sous-catégorie
+            {t('CreateDescription')}
           </p>
         </div>
       </div>

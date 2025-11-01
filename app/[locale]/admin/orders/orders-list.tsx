@@ -1,8 +1,8 @@
 'use client'
-import Link from 'next/link'
 import React, { useEffect, useState, useTransition } from 'react'
-
+import { useTranslations } from 'next-intl'
 import DeleteDialog from '@/components/shared/delete-dialog'
+import { OrderDetailsDialog } from '@/components/shared/order/order-details-dialog'
 import Pagination from '@/components/shared/pagination'
 import { Button } from '@/components/ui/button'
 import {
@@ -25,9 +25,21 @@ type OrdersListDataProps = {
 }
 
 const OrdersList = () => {
+  const t = useTranslations('Admin.OrdersList')
   const [page, setPage] = useState<number>(1)
   const [data, setData] = useState<OrdersListDataProps>()
   const [, startTransition] = useTransition()
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null)
+  const [dialogOpen, setDialogOpen] = useState(false)
+
+  const refreshOrders = () => {
+    startTransition(async () => {
+      const orders = await getAllOrders({
+        page: page,
+      })
+      setData(orders)
+    })
+  }
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage)
@@ -41,10 +53,18 @@ const OrdersList = () => {
 
   useEffect(() => {
     startTransition(async () => {
-      const orders = await getAllOrders({
-        page: 1,
-      })
-      setData(orders)
+      try {
+        const orders = await getAllOrders({
+          page: 1,
+        })
+        if (orders) {
+          setData(orders)
+        } else {
+          console.error('getAllOrders returned no data')
+        }
+      } catch (error) {
+        console.error('Error loading orders:', error)
+      }
     })
   }, [])
 
@@ -171,12 +191,12 @@ const OrdersList = () => {
                       <div className='flex flex-wrap gap-1 mt-1'>
                         {order.isCancelled && (
                           <span className='px-1.5 py-0.5 text-xs bg-red-100 text-red-800 rounded-full'>
-                            Annulée
+                            {t('Cancelled')}
                           </span>
                         )}
                         {order.isPaid && !order.isCancelled && (
                           <span className='px-1.5 py-0.5 text-xs bg-green-100 text-green-800 rounded-full'>
-                            Payé
+                            {t('Paid')}
                           </span>
                         )}
                         {order.isDelivered && !order.isCancelled && (
@@ -202,10 +222,10 @@ const OrdersList = () => {
                         }`}
                       ></div>
                       {order.isCancelled
-                        ? 'Annulée'
+                        ? t('Cancelled')
                         : order.isPaid && order.paidAt
                           ? formatDateTime(order.paidAt).dateOnly
-                          : 'Non payé'}
+                          : t('NotPaid')}
                     </div>
                   </TableCell>
                   <TableCell className='hidden md:table-cell'>
@@ -220,33 +240,29 @@ const OrdersList = () => {
                         }`}
                       ></div>
                       {order.isCancelled
-                        ? 'Annulée'
+                        ? t('Cancelled')
                         : order.isDelivered && order.deliveredAt
                           ? formatDateTime(order.deliveredAt).dateOnly
-                          : 'En cours'}
+                          : t('InProgress')}
                     </div>
                   </TableCell>
                   <TableCell>
                     <div className='flex flex-col sm:flex-row gap-1'>
                       <Button
-                        asChild
                         variant='outline'
                         size='sm'
                         className='text-xs'
+                        onClick={() => {
+                          setSelectedOrderId(order._id)
+                          setDialogOpen(true)
+                        }}
                       >
-                        <Link href={`/admin/orders/${order._id}`}>Détails</Link>
+                        Détails
                       </Button>
                       <DeleteDialog
                         id={order._id}
                         action={deleteOrder}
-                        callbackAction={() => {
-                          startTransition(async () => {
-                            const orders = await getAllOrders({
-                              page: page,
-                            })
-                            setData(orders)
-                          })
-                        }}
+                        callbackAction={refreshOrders}
                       />
                     </div>
                   </TableCell>
@@ -266,6 +282,14 @@ const OrdersList = () => {
             />
           </div>
         )}
+
+        {/* Order Details Dialog */}
+        <OrderDetailsDialog
+          orderId={selectedOrderId}
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          onSuccess={refreshOrders}
+        />
       </div>
     </div>
   )

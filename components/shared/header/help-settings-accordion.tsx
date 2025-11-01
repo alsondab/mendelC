@@ -27,7 +27,7 @@ export default async function HelpSettingsAccordion({
         <div className='flex items-center space-x-2'>
           <Settings className='h-4 w-4 text-primary' />
           <h2 className='text-base font-semibold text-foreground'>
-            Navigation
+            {t('Header.Navigation')}
           </h2>
         </div>
       </div>
@@ -77,30 +77,34 @@ export default async function HelpSettingsAccordion({
         </div>
       </div>
 
-      {/* Dashboard Section */}
-      <div className='p-3'>
-        <div className='flex items-center space-x-2'>
-          <Settings className='h-4 w-4 text-primary' />
-          <h2 className='text-base font-semibold text-foreground'>Dashboard</h2>
-        </div>
-      </div>
+      {/* Dashboard Section - Only show if user is Admin */}
+      {session?.user?.role === 'Admin' && (
+        <>
+          <div className='p-3'>
+            <div className='flex items-center space-x-2'>
+              <Settings className='h-4 w-4 text-primary' />
+              <h2 className='text-base font-semibold text-foreground'>
+                {t('Header.Dashboard')}
+              </h2>
+            </div>
+          </div>
 
-      {/* Dashboard Content */}
-      <div className='border-t border-border/50'>
-        <div className='flex flex-col'>
-          {session?.user?.role === 'Admin' && (
-            <DrawerClose asChild>
-              <Link
-                href='/admin/overview'
-                className='flex items-center space-x-2 px-3 py-2 hover:bg-muted/50 transition-colors text-foreground'
-              >
-                <Shield className='h-4 w-4 text-muted-foreground' />
-                <span className='text-sm'>{t('Header.Admin')}</span>
-              </Link>
-            </DrawerClose>
-          )}
-        </div>
-      </div>
+          {/* Dashboard Content */}
+          <div className='border-t border-border/50'>
+            <div className='flex flex-col'>
+              <DrawerClose asChild>
+                <Link
+                  href='/admin/overview'
+                  className='flex items-center space-x-2 px-3 py-2 hover:bg-muted/50 transition-colors text-foreground'
+                >
+                  <Shield className='h-4 w-4 text-muted-foreground' />
+                  <span className='text-sm'>{t('Header.Admin')}</span>
+                </Link>
+              </DrawerClose>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

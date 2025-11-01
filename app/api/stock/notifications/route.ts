@@ -25,17 +25,42 @@ export async function GET() {
   }
 }
 
-export async function POST() {
+export async function POST(request: Request) {
   try {
-    const { adminEmail } = { adminEmail: 'admin@votre-site.com' }
+    let adminEmail = 'admin@example.com'
 
-    const result = await checkStockAndNotify()
+    // Essayer de récupérer l'email depuis le body de la requête
+    try {
+      const body = await request.json().catch(() => null)
+      if (body?.adminEmail) {
+        adminEmail = body.adminEmail
+      }
+    } catch {
+      // Ignorer les erreurs de parsing
+    }
+
+    // Si pas d'email depuis le body, essayer de récupérer depuis les paramètres stockés
+    if (adminEmail === 'admin@example.com') {
+      try {
+        const { getNotificationSettings } = await import(
+          '@/lib/actions/notification-settings.actions'
+        )
+        const settingsResult = await getNotificationSettings()
+        if (settingsResult.success && settingsResult.settings?.adminEmail) {
+          adminEmail = settingsResult.settings.adminEmail
+        }
+      } catch {
+        // Ignorer les erreurs
+      }
+    }
+
+    const result = await checkStockAndNotify(adminEmail)
 
     return NextResponse.json({
       success: result.success,
       message: result.message,
       notificationsSent: result.notificationsSent,
-      adminEmail: adminEmail || 'admin@votre-site.com',
+      adminEmail: adminEmail,
       timestamp: new Date().toISOString(),
     })
   } catch (error) {

@@ -1,35 +1,108 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import { useToast } from '@/hooks/use-toast'
 import { useRealtimeStockAlerts } from '@/hooks/use-stock-alerts'
+import { useNotificationLevel } from '@/hooks/use-notification-level'
 import { AlertTriangle, XCircle, Bell } from 'lucide-react'
+
+// Queue pour différer les notifications
+interface QueuedNotification {
+  type: 'critical' | 'warning'
+  count: number
+  timestamp: number
+}
 
 export function StockNotificationToast() {
   const { toast } = useToast()
   const { hasNewAlerts, criticalCount, warningCount, clearNewAlerts } =
     useRealtimeStockAlerts()
+  const notificationLevel = useNotificationLevel()
 
-  useEffect(() => {
-    if (hasNewAlerts) {
-      if (criticalCount > 0) {
+  const lastToastTimeRef = useRef<number>(0)
+  const notificationQueueRef = useRef<QueuedNotification[]>([])
+  const processingRef = useRef<boolean>(false)
+  const minDelayBetweenToasts = 5000 // 5 secondes minimum entre toasts
+
+  const processQueue = useCallback(() => {
+    if (processingRef.current || notificationQueueRef.current.length === 0) {
+      return
+    }
+
+    const now = Date.now()
+    const timeSinceLastToast = now - lastToastTimeRef.current
+
+    if (timeSinceLastToast < minDelayBetweenToasts) {
+      // Attendre avant de traiter la prochaine notification
+      const remainingDelay = minDelayBetweenToasts - timeSinceLastToast
+      setTimeout(() => {
+        processQueue()
+      }, remainingDelay)
+      return
+    }
+
+    processingRef.current = true
+    const notification = notificationQueueRef.current.shift()
+
+    if (notification) {
+      if (notification.type === 'critical') {
         toast({
           title: '🚨 Alerte Critique - Rupture de Stock',
-          description: `${criticalCount} produit(s) en rupture de stock nécessitent un réapprovisionnement urgent !`,
+          description: `${notification.count} produit(s) en rupture de stock nécessitent un réapprovisionnement urgent !`,
           variant: 'destructive',
           duration: 10000, // 10 secondes
         })
-      } else if (warningCount > 0) {
+      } else if (notification.type === 'warning') {
         toast({
           title: '⚠️ Alerte - Stock Faible',
-          description: `${warningCount} produit(s) ont un stock faible et nécessitent votre attention.`,
+          description: `${notification.count} produit(s) ont un stock faible et nécessitent votre attention.`,
           variant: 'default',
           duration: 8000, // 8 secondes
         })
       }
+
+      lastToastTimeRef.current = Date.now()
+    }
+
+    processingRef.current = false
+
+    // Traiter la prochaine notification dans la queue si disponible
+    if (notificationQueueRef.current.length > 0) {
+      setTimeout(() => {
+        processQueue()
+      }, minDelayBetweenToasts)
+    }
+  }, [toast])
+
+  useEffect(() => {
+    // Ne traiter les toasts que si le niveau est "full"
+    if (hasNewAlerts && notificationLevel === 'full') {
+      const now = Date.now()
+      const notification: QueuedNotification = {
+        type: criticalCount > 0 ? 'critical' : 'warning',
+        count: criticalCount > 0 ? criticalCount : warningCount,
+        timestamp: now,
+      }
+
+      // Ajouter à la queue
+      notificationQueueRef.current.push(notification)
+
+      // Déclencher le traitement de la queue
+      processQueue()
+
+      clearNewAlerts()
+    } else if (hasNewAlerts) {
+      // Si niveau != 'full', on clear juste les alertes sans afficher de toast
       clearNewAlerts()
     }
-  }, [hasNewAlerts, criticalCount, warningCount, toast, clearNewAlerts])
+  }, [
+    hasNewAlerts,
+    criticalCount,
+    warningCount,
+    clearNewAlerts,
+    processQueue,
+    notificationLevel,
+  ])
 
   return null // Ce composant n'affiche rien, il gère juste les toasts
 }

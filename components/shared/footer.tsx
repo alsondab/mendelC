@@ -207,6 +207,17 @@ export default function Footer() {
                 </label>
                 <Select
                   value={locale}
+                  onOpenChange={(open) => {
+                    if (open) {
+                      locales.forEach((lang) => {
+                        if (lang.code !== locale) {
+                          try {
+                            router.prefetch(pathname, { locale: lang.code })
+                          } catch {}
+                        }
+                      })
+                    }
+                  }}
                   onValueChange={(value) =>
                     router.push(pathname, { locale: value })
                   }

@@ -37,6 +37,7 @@
     "date-fns": "^4.1.0",
     "embla-carousel-autoplay": "^8.5.1",
     "embla-carousel-react": "^8.5.1",
+    "framer-motion": "^11.18.2",
     "lucide-react": "^0.542.0",
     "mongodb": "^6.20.0",
     "mongoose": "^8.9.0",

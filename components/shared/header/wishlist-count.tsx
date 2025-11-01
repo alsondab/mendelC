@@ -2,17 +2,20 @@
 
 import React from 'react'
 import { Heart } from 'lucide-react'
-import Link from 'next/link'
 import { useWishlistStore } from '@/hooks/use-wishlist-store'
 import useIsMounted from '@/hooks/use-is-mounted'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
+import { useWishlistSliderStore } from '@/hooks/use-wishlist-slider-store'
+import { motion } from 'framer-motion'
+import { buttonVariants } from '@/lib/utils/animations'
 
 export default function WishlistCount() {
   const { items: wishlistItems } = useWishlistStore()
   const isMounted = useIsMounted()
   const pathname = usePathname()
+  const { toggle } = useWishlistSliderStore()
   const t = useTranslations()
 
   // Utiliser directement le store local
@@ -23,16 +26,18 @@ export default function WishlistCount() {
     return null
   }
 
-  // Toujours rediriger vers la page des favoris (comme le panier)
-  const href = '/wishlist'
-
   return (
-    <Link
-      href={href}
+    <motion.button
+      variants={buttonVariants}
+      initial="rest"
+      whileHover="hover"
+      whileTap="tap"
+      onClick={toggle}
       className={cn(
         'relative flex items-center justify-center transition-all duration-200',
-        'flex-row space-x-2 px-3 py-2 rounded-lg hover:bg-muted/80'
+        'flex-row space-x-2 px-3 py-2 rounded-lg hover:bg-muted/80 cursor-pointer'
       )}
+      aria-label={t('Header.Wishlist') || 'Favoris'}
     >
       <div className='relative'>
         <Heart className='h-5 w-5 text-foreground' />
@@ -57,6 +62,6 @@ export default function WishlistCount() {
       <span className='hidden md:block font-medium text-sm'>
         {t('Header.Wishlist')}
       </span>
-    </Link>
+    </motion.button>
   )
 }

@@ -141,15 +141,22 @@ export default function ReviewList({
       data: { ...values, product: product._id },
       path: `/product/${product.slug}`,
     })
-    if (!res.success)
+    if (!res.success) {
+      const errorMessage = res.messageKey 
+        ? t(res.messageKey as string) 
+        : res.message || t('Error in fetching reviews')
       return toast({
         variant: 'destructive',
-        description: res.message,
+        description: errorMessage,
       })
+    }
     setOpen(false)
     reload()
+    const successMessage = res.messageKey 
+      ? t(res.messageKey as string) 
+      : res.message || t('Review created successfully')
     toast({
-      description: res.message,
+      description: successMessage,
     })
   }
 

@@ -3,6 +3,7 @@ import { redirect, useSearchParams } from 'next/navigation'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import PasswordInput from '@/components/ui/password-input'
 import Link from 'next/link'
 import useSettingStore from '@/hooks/use-setting-store'
 import {
@@ -129,9 +130,9 @@ export default function CredentialsSignInForm() {
               <FormItem className='w-full'>
                 <FormLabel>{t('Password')}</FormLabel>
                 <FormControl>
-                  <Input
-                    type='password'
+                  <PasswordInput
                     placeholder={t('Enter your password')}
+                    autoComplete='new-password'
                     maxLength={128}
                     {...field}
                   />
@@ -150,9 +151,9 @@ export default function CredentialsSignInForm() {
               <FormItem className='w-full'>
                 <FormLabel>{t('Confirm password')}</FormLabel>
                 <FormControl>
-                  <Input
-                    type='password'
+                  <PasswordInput
                     placeholder={t('Confirm your password')}
+                    autoComplete='new-password'
                     maxLength={128}
                     {...field}
                   />

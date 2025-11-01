@@ -11,6 +11,8 @@ const nextConfig: NextConfig = withNextIntl()({
         port: '',
       },
     ],
+    // Permet de charger les images locales depuis /public
+    unoptimized: process.env.NODE_ENV === 'development',
   },
 })
 

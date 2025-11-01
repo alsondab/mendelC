@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import {
   getLowStockProducts,
   getOutOfStockProducts,
@@ -36,7 +36,13 @@ export function useStockAlerts(refreshInterval: number = 30000) {
 
   const fetchAlerts = useCallback(async () => {
     try {
-      setState((prev) => ({ ...prev, isLoading: true, error: null }))
+      // Ne pas mettre isLoading à true si on a déjà des alertes pour éviter les disparitions
+      // Garder les alertes précédentes pendant la mise à jour
+      setState((prev) => ({ 
+        ...prev, 
+        isLoading: prev.alerts.length === 0, // Seulement true si pas encore d'alertes
+        error: null 
+      }))
 
       const [lowStockResult, outOfStockResult] = await Promise.all([
         getLowStockProducts(),
@@ -71,10 +77,12 @@ export function useStockAlerts(refreshInterval: number = 30000) {
       })
     } catch (error) {
       console.error('Erreur lors du chargement des alertes:', error)
+      // En cas d'erreur, garder les alertes précédentes pour éviter les disparitions
       setState((prev) => ({
         ...prev,
         isLoading: false,
         error: error instanceof Error ? error.message : 'Erreur inconnue',
+        // Ne pas vider les alertes en cas d'erreur pour maintenir l'affichage
       }))
     }
   }, [])
@@ -92,35 +100,84 @@ export function useStockAlerts(refreshInterval: number = 30000) {
     fetchAlerts()
   }, [fetchAlerts])
 
-  return {
-    ...state,
-    refresh,
-  }
+  // Mémoriser les valeurs pour éviter les re-renders inutiles
+  const memoizedState = useMemo(
+    () => ({
+      ...state,
+      refresh,
+    }),
+    [
+      state.alerts,
+      state.isLoading,
+      state.error,
+      state.criticalCount,
+      state.warningCount,
+      state.totalCount,
+      refresh,
+    ]
+  )
+
+  return memoizedState
 }
 
 // Hook pour les notifications en temps réel (WebSocket ou Server-Sent Events)
 export function useRealtimeStockAlerts() {
   const [hasNewAlerts, setHasNewAlerts] = useState(false)
   const [lastAlertCount, setLastAlertCount] = useState(0)
+  const lastUpdateTimeRef = useRef<number>(0)
+  const throttleTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const { alerts, totalCount, ...rest } = useStockAlerts(10000) // Refresh plus fréquent
 
+  // Throttle les mises à jour de hasNewAlerts (max 1 par seconde)
   useEffect(() => {
-    if (totalCount > lastAlertCount && lastAlertCount > 0) {
-      setHasNewAlerts(true)
+    const now = Date.now()
+    const timeSinceLastUpdate = now - lastUpdateTimeRef.current
+
+    // Si une mise à jour est en attente, l'annuler
+    if (throttleTimeoutRef.current) {
+      clearTimeout(throttleTimeoutRef.current)
     }
+
+    if (totalCount > lastAlertCount && lastAlertCount > 0) {
+      // Throttle: attendre au moins 1 seconde depuis la dernière mise à jour
+      const delay = Math.max(0, 1000 - timeSinceLastUpdate)
+
+      throttleTimeoutRef.current = setTimeout(() => {
+        setHasNewAlerts(true)
+        lastUpdateTimeRef.current = Date.now()
+      }, delay)
+    } else if (totalCount === 0) {
+      // Réinitialiser immédiatement si plus d'alertes
+      setHasNewAlerts(false)
+      lastUpdateTimeRef.current = Date.now()
+    }
+
     setLastAlertCount(totalCount)
+
+    return () => {
+      if (throttleTimeoutRef.current) {
+        clearTimeout(throttleTimeoutRef.current)
+      }
+    }
   }, [totalCount, lastAlertCount])
 
   const clearNewAlerts = useCallback(() => {
     setHasNewAlerts(false)
+    lastUpdateTimeRef.current = Date.now()
   }, [])
 
-  return {
-    ...rest,
-    alerts,
-    totalCount,
-    hasNewAlerts,
-    clearNewAlerts,
-  }
+  // Mémoriser le résultat pour éviter les re-renders inutiles
+  const memoizedResult = useMemo(
+    () => ({
+      ...rest,
+      alerts,
+      totalCount,
+      hasNewAlerts,
+      clearNewAlerts,
+    }),
+    [rest, alerts, totalCount, hasNewAlerts, clearNewAlerts]
+  )
+
+  return memoizedResult
 }

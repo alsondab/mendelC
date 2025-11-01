@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react'
 import { useRealtimeStockAlerts } from '@/hooks/use-stock-alerts'
 import { AlertTriangle, XCircle, Bell, X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 
 export function StockFloatingAlert() {
+  const t = useTranslations('Admin.Stock.StockAlerts')
   const { alerts, isLoading, criticalCount, warningCount } =
     useRealtimeStockAlerts()
   const [isVisible, setIsVisible] = useState(false)
@@ -61,8 +63,8 @@ export function StockFloatingAlert() {
                   }`}
                 >
                   {criticalCount > 0
-                    ? `${criticalCount} rupture(s) de stock`
-                    : `${warningCount} stock(s) faible(s)`}
+                    ? t('OutOfStockCount', { count: criticalCount })
+                    : t('LowStockCount', { count: warningCount })}
                 </span>
               </div>
 
@@ -72,8 +74,8 @@ export function StockFloatingAlert() {
                 }`}
               >
                 {criticalCount > 0
-                  ? 'Réapprovisionnement urgent requis'
-                  : 'Vérifiez les niveaux de stock'}
+                  ? t('UrgentRestockRequired')
+                  : t('CheckStockLevels')}
               </p>
 
               <div className='flex items-center justify-between gap-2'>
@@ -83,7 +85,7 @@ export function StockFloatingAlert() {
                   className='text-xs h-7'
                   onClick={() => (window.location.href = '/admin/stock')}
                 >
-                  Voir les détails
+                  {t('ViewDetails')}
                 </Button>
 
                 <Button

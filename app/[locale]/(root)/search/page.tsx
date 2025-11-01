@@ -4,7 +4,7 @@ import Pagination from '@/components/shared/pagination'
 import ProductCard from '@/components/shared/product/product-card'
 import { Button } from '@/components/ui/button'
 import { getAllProducts, getAllTags } from '@/lib/actions/product.actions'
-import { getCategoryTree } from '@/lib/actions/category.actions'
+import { getCachedCategoryTree } from '@/lib/cache/category-cache'
 import { IProduct } from '@/lib/db/models/product.model'
 import ProductSortSelector from '@/components/shared/product/product-sort-selector'
 import { getFilterUrl, toSlug } from '@/lib/utils'
@@ -105,7 +105,7 @@ export default async function SearchPage(props: {
 
   const params = { q, category, subCategory, tag, price, rating, sort, page }
 
-  const categories = await getCategoryTree()
+  const categories = await getCachedCategoryTree()
   const tags = await getAllTags()
   const data = await getAllProducts({
     category,

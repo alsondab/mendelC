@@ -15,15 +15,9 @@ export interface StockNotification {
   severity: 'warning' | 'critical'
 }
 
-// Configuration des seuils de notification
-const NOTIFICATION_THRESHOLDS = {
-  LOW_STOCK_WARNING: 5, // Avertir quand stock ≤ 5
-  CRITICAL_STOCK: 2, // Critique quand stock ≤ 2
-  OUT_OF_STOCK: 0, // Rupture quand stock = 0
-}
-
 /**
  * Récupère tous les produits nécessitant une notification
+ * Utilise les seuils globaux comme source de vérité, avec fallback sur les seuils produits individuels
  */
 export async function getProductsNeedingNotification(): Promise<{
   success: boolean
@@ -33,6 +27,19 @@ export async function getProductsNeedingNotification(): Promise<{
   try {
     await connectToDatabase()
 
+    // Récupérer les seuils globaux (source unique de vérité)
+    const { getGlobalStockThresholds } = await import('./setting.actions')
+    const thresholdsResult = await getGlobalStockThresholds()
+
+    if (!thresholdsResult.success || !thresholdsResult.thresholds) {
+      throw new Error(
+        'Impossible de récupérer les seuils globaux. Veuillez les définir dans les paramètres.'
+      )
+    }
+
+    const { globalLowStockThreshold, globalCriticalStockThreshold } =
+      thresholdsResult.thresholds
+
     // Récupérer tous les produits publiés
     const products = await Product.find({ isPublished: true })
       .select('name countInStock minStockLevel stockStatus lastStockUpdate')
@@ -41,20 +48,28 @@ export async function getProductsNeedingNotification(): Promise<{
     const notifications: StockNotification[] = []
 
     for (const product of products) {
+      // Utiliser le seuil personnalisé du produit s'il existe, sinon utiliser le seuil global
+      const effectiveLowThreshold =
+        product.minStockLevel && product.minStockLevel > 0
+          ? product.minStockLevel
+          : globalLowStockThreshold
+      const effectiveCriticalThreshold = globalCriticalStockThreshold
+
       let needsNotification = false
       let severity: 'warning' | 'critical' = 'warning'
+
+      // Logique de notification unifiée:
+      // - Rupture: stock = 0 → CRITIQUE
+      // - Critique: stock ≤ seuil critique global → CRITIQUE
+      // - Faible: stock ≤ seuil faible (produit ou global) → WARNING
 
       if (product.countInStock === 0) {
         needsNotification = true
         severity = 'critical'
-      } else if (
-        product.countInStock <= NOTIFICATION_THRESHOLDS.CRITICAL_STOCK
-      ) {
+      } else if (product.countInStock <= effectiveCriticalThreshold) {
         needsNotification = true
         severity = 'critical'
-      } else if (
-        product.countInStock <= NOTIFICATION_THRESHOLDS.LOW_STOCK_WARNING
-      ) {
+      } else if (product.countInStock <= effectiveLowThreshold) {
         needsNotification = true
         severity = 'warning'
       }
@@ -64,7 +79,7 @@ export async function getProductsNeedingNotification(): Promise<{
           productId: product._id.toString(),
           productName: product.name,
           countInStock: product.countInStock,
-          minStockLevel: product.minStockLevel,
+          minStockLevel: effectiveLowThreshold, // Utiliser le seuil effectif (personnalisé ou global)
           stockStatus: product.stockStatus as 'low_stock' | 'out_of_stock',
           lastStockUpdate: product.lastStockUpdate.toISOString(),
           severity,
@@ -87,20 +102,15 @@ export async function getProductsNeedingNotification(): Promise<{
 }
 
 /**
- * Envoie une notification par email (simulation)
- * Dans un vrai projet, vous utiliseriez un service comme SendGrid, Resend, etc.
+ * Envoie une notification par email via Resend
  */
 export async function sendStockNotificationEmail(
   notifications: StockNotification[],
-  adminEmail: string = 'admin@votre-site.com'
+  adminEmail: string = 'admin@example.com'
 ): Promise<{ success: boolean; message: string }> {
   try {
-    // Simulation d'envoi d'email
     console.log('📧 Envoi de notification par email à:', adminEmail)
     console.log('📊 Produits concernés:', notifications.length)
-
-    // Ici vous intégreriez votre service d'email
-    // Exemple avec Resend, SendGrid, etc.
 
     const criticalCount = notifications.filter(
       (n) => n.severity === 'critical'
@@ -109,18 +119,44 @@ export async function sendStockNotificationEmail(
       (n) => n.severity === 'warning'
     ).length
 
-    // Simulation du contenu de l'email
+    // Essayer d'envoyer l'email via Resend si la clé API est disponible
+    if (process.env.RESEND_API_KEY) {
+      try {
+        const { Resend } = await import('resend')
+        const { SENDER_NAME, SENDER_EMAIL } = await import('@/lib/constants')
+        const resend = new Resend(process.env.RESEND_API_KEY)
+
+        const result = await resend.emails.send({
+          from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
+          to: adminEmail,
+          subject: `🚨 Alertes de Stock - ${criticalCount} critique(s), ${warningCount} avertissement(s)`,
+          html: generateEmailHTML(notifications),
+        })
+
+        console.log('✅ Email envoyé via Resend:', result)
+
+        return {
+          success: true,
+          message: `Notification envoyée à ${adminEmail} pour ${notifications.length} produit(s)`,
+        }
+      } catch (resendError) {
+        console.error('❌ Erreur Resend, fallback sur simulation:', resendError)
+        // Fallback sur simulation si Resend échoue
+      }
+    }
+
+    // Simulation si Resend n'est pas configuré
     const emailContent = {
       to: adminEmail,
       subject: `🚨 Alertes de Stock - ${criticalCount} critique(s), ${warningCount} avertissement(s)`,
       html: generateEmailHTML(notifications),
     }
 
-    console.log('📧 Email simulé:', emailContent)
+    console.log('📧 Email simulé (Resend non configuré):', emailContent)
 
     return {
       success: true,
-      message: `Notification envoyée à ${adminEmail} pour ${notifications.length} produit(s)`,
+      message: `Notification simulée à ${adminEmail} pour ${notifications.length} produit(s). Configurez RESEND_API_KEY pour envoyer de vrais emails.`,
     }
   } catch (error) {
     return {
@@ -233,7 +269,7 @@ function generateEmailHTML(notifications: StockNotification[]): string {
  * Tâche programmée pour vérifier les stocks et envoyer des notifications
  * À exécuter via un cron job ou un service comme Vercel Cron
  */
-export async function checkStockAndNotify(): Promise<{
+export async function checkStockAndNotify(adminEmail?: string): Promise<{
   success: boolean
   message: string
   notificationsSent: number
@@ -249,8 +285,25 @@ export async function checkStockAndNotify(): Promise<{
       }
     }
 
+    // Récupérer l'email depuis les paramètres si non fourni
+    let emailToUse = adminEmail
+    if (!emailToUse) {
+      const { getNotificationSettings } = await import(
+        './notification-settings.actions'
+      )
+      const settingsResult = await getNotificationSettings()
+      if (settingsResult.success && settingsResult.settings?.adminEmail) {
+        emailToUse = settingsResult.settings.adminEmail
+      } else {
+        emailToUse = 'admin@example.com'
+      }
+    }
+
     // Envoyer l'email de notification
-    const emailResult = await sendStockNotificationEmail(result.notifications)
+    const emailResult = await sendStockNotificationEmail(
+      result.notifications,
+      emailToUse
+    )
 
     if (!emailResult.success) {
       return {

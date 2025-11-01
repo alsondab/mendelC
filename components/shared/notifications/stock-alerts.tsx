@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { AlertTriangle, XCircle, CheckCircle, Bell } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import {
   Card,
   CardContent,
@@ -11,7 +12,7 @@ import {
 } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import Link from 'next/link'
+import { ProductEditDialog } from '@/components/shared/product/product-edit-dialog'
 
 interface StockAlert {
   id: string
@@ -31,7 +32,10 @@ export function StockAlerts({
   lowStockProducts,
   outOfStockProducts,
 }: StockAlertsProps) {
+  const t = useTranslations('Admin.Stock.StockAlerts')
   const [isExpanded, setIsExpanded] = useState(false)
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null)
+  const [editDialogOpen, setEditDialogOpen] = useState(false)
 
   // Créer les alertes à partir des props
   const alerts: StockAlert[] = [
@@ -52,7 +56,7 @@ export function StockAlerts({
           <div className='flex items-center gap-2'>
             <CheckCircle className='h-4 w-4 text-green-600' />
             <span className='text-sm text-green-800'>
-              Aucune alerte de stock
+              {t('NoAlerts')}
             </span>
           </div>
         </CardContent>
@@ -77,7 +81,7 @@ export function StockAlerts({
             <Bell
               className={`h-5 w-5 ${criticalAlerts.length > 0 ? 'text-red-600' : 'text-orange-600'}`}
             />
-            <CardTitle className='text-lg'>Alertes de Stock</CardTitle>
+            <CardTitle className='text-lg'>{t('Title')}</CardTitle>
             <Badge
               variant={criticalAlerts.length > 0 ? 'destructive' : 'secondary'}
             >
@@ -89,13 +93,16 @@ export function StockAlerts({
             size='sm'
             onClick={() => setIsExpanded(!isExpanded)}
           >
-            {isExpanded ? 'Masquer' : 'Voir tout'}
+            {isExpanded ? t('Hide') : t('ShowAll')}
           </Button>
         </div>
         <CardDescription>
           {criticalAlerts.length > 0
-            ? `${criticalAlerts.length} rupture(s) de stock, ${warningAlerts.length} stock(s) faible(s)`
-            : `${warningAlerts.length} produit(s) en stock faible`}
+            ? t('CriticalAndWarning', { 
+                critical: criticalAlerts.length, 
+                warning: warningAlerts.length 
+              })
+            : t('WarningOnly', { count: warningAlerts.length })}
         </CardDescription>
       </CardHeader>
 
@@ -113,14 +120,19 @@ export function StockAlerts({
                   <div>
                     <h4 className='font-medium text-red-900'>{alert.name}</h4>
                     <p className='text-sm text-red-700'>
-                      Rupture de stock - {alert.countInStock} unité(s)
+                      {t('OutOfStockAlert', { count: alert.countInStock })}
                     </p>
                   </div>
                 </div>
-                <Button asChild size='sm' variant='destructive'>
-                  <Link href={`/admin/products/${alert.id}`}>
-                    Réapprovisionner
-                  </Link>
+                <Button
+                  size='sm'
+                  variant='destructive'
+                  onClick={() => {
+                    setSelectedProductId(alert.id)
+                    setEditDialogOpen(true)
+                  }}
+                >
+                  {t('Restock')}
                 </Button>
               </div>
             ))}
@@ -138,19 +150,40 @@ export function StockAlerts({
                       {alert.name}
                     </h4>
                     <p className='text-sm text-orange-700'>
-                      Stock faible: {alert.countInStock} / {alert.minStockLevel}{' '}
-                      (seuil)
+                      {t('LowStockAlert', { 
+                        current: alert.countInStock, 
+                        threshold: alert.minStockLevel 
+                      })}
                     </p>
                   </div>
                 </div>
-                <Button asChild size='sm' variant='outline'>
-                  <Link href={`/admin/products/${alert.id}`}>Modifier</Link>
+                <Button
+                  size='sm'
+                  variant='outline'
+                  onClick={() => {
+                    setSelectedProductId(alert.id)
+                    setEditDialogOpen(true)
+                  }}
+                >
+                  {t('Edit')}
                 </Button>
               </div>
             ))}
           </div>
         </CardContent>
       )}
+
+      {/* Product Edit Dialog */}
+      <ProductEditDialog
+        productId={selectedProductId}
+        open={editDialogOpen}
+        onOpenChange={(open) => {
+          setEditDialogOpen(open)
+          if (!open) {
+            setSelectedProductId(null)
+          }
+        }}
+      />
     </Card>
   )
 }
@@ -160,6 +193,7 @@ export function StockAlertsSidebar({
   lowStockProducts,
   outOfStockProducts,
 }: StockAlertsProps) {
+  const t = useTranslations('Admin.Stock.StockAlerts')
   const alerts: StockAlert[] = [
     ...outOfStockProducts.map((p) => ({
       ...p,
@@ -184,20 +218,20 @@ export function StockAlertsSidebar({
     <div className='space-y-2'>
       <div className='flex items-center gap-2 text-sm font-medium'>
         <Bell className='h-4 w-4' />
-        Alertes de Stock
+        {t('StockAlertsLabel')}
       </div>
 
       {criticalCount > 0 && (
         <div className='flex items-center gap-2 text-sm text-red-600'>
           <XCircle className='h-4 w-4' />
-          <span>{criticalCount} rupture(s)</span>
+          <span>{t('OutOfStockCount', { count: criticalCount })}</span>
         </div>
       )}
 
       {warningCount > 0 && (
         <div className='flex items-center gap-2 text-sm text-orange-600'>
           <AlertTriangle className='h-4 w-4' />
-          <span>{warningCount} stock(s) faible(s)</span>
+          <span>{t('LowStockCount', { count: warningCount })}</span>
         </div>
       )}
     </div>

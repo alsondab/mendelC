@@ -3,7 +3,12 @@
 import bcrypt from 'bcryptjs'
 import { auth, signIn, signOut } from '@/auth'
 import { IUserName, IUserSignIn, IUserSignUp } from '@/types'
-import { UserSignUpSchema, UserUpdateSchema } from '../validator'
+import {
+  UserSignUpSchema,
+  UserUpdateSchema,
+  Email,
+  Password,
+} from '../validator'
 import { connectToDatabase } from '../db'
 import User, { IUser } from '../db/models/user.model'
 import { formatError } from '../utils'
@@ -26,6 +31,7 @@ export async function registerUser(userSignUp: IUserSignUp) {
     await User.create({
       ...user,
       password: await bcrypt.hash(user.password, 5),
+      emailVerified: true, // ✅ Considérer tous les emails comme vérifiés (cohérence avec Google OAuth)
     })
     return { success: true, message: 'Utilisateur créé avec succès' }
   } catch (error) {
@@ -130,4 +136,132 @@ export async function getUserById(userId: string) {
   const user = await User.findById(userId)
   if (!user) throw new Error('User not found')
   return JSON.parse(JSON.stringify(user)) as IUser
+}
+
+// UPDATE EMAIL
+export async function updateUserEmail({
+  newEmail,
+  password,
+}: {
+  newEmail: string
+  password: string
+}) {
+  try {
+    await connectToDatabase()
+    const session = await auth()
+    if (!session?.user?.id) {
+      throw new Error('User not authenticated')
+    }
+
+    const user = await User.findById(session.user.id)
+    if (!user) {
+      throw new Error('User not found')
+    }
+
+    // Vérifier le mot de passe
+    if (!user.password) {
+      throw new Error('Password verification not available for this account')
+    }
+
+    const isValidPassword = await bcrypt.compare(password, user.password)
+    if (!isValidPassword) {
+      throw new Error('Invalid password')
+    }
+
+    // Vérifier que le nouvel email n'existe pas déjà
+    const existingUser = await User.findOne({ email: newEmail })
+    if (existingUser && existingUser._id.toString() !== session.user.id) {
+      throw new Error('Email already in use')
+    }
+
+    // Valider l'email
+    const validatedEmail = Email.parse(newEmail)
+
+    // Mettre à jour l'email
+    user.email = validatedEmail
+    await user.save()
+
+    revalidatePath('/account/manage')
+    return {
+      success: true,
+      message: 'Email mis à jour avec succès',
+    }
+  } catch (error) {
+    return { success: false, message: formatError(error) }
+  }
+}
+
+// UPDATE PASSWORD
+export async function updateUserPassword({
+  currentPassword,
+  newPassword,
+}: {
+  currentPassword: string
+  newPassword: string
+}) {
+  try {
+    await connectToDatabase()
+    const session = await auth()
+    if (!session?.user?.id) {
+      throw new Error('User not authenticated')
+    }
+
+    const user = await User.findById(session.user.id)
+    if (!user) {
+      throw new Error('User not found')
+    }
+
+    // Vérifier l'ancien mot de passe
+    if (!user.password) {
+      throw new Error('Password verification not available for this account')
+    }
+
+    const isValidPassword = await bcrypt.compare(currentPassword, user.password)
+    if (!isValidPassword) {
+      throw new Error('Invalid current password')
+    }
+
+    // Valider le nouveau mot de passe
+    const validatedPassword = Password.parse(newPassword)
+
+    // Hasher et mettre à jour le mot de passe
+    user.password = await bcrypt.hash(validatedPassword, 5)
+    await user.save()
+
+    revalidatePath('/account/manage')
+    return {
+      success: true,
+      message: 'Mot de passe mis à jour avec succès',
+    }
+  } catch (error) {
+    return { success: false, message: formatError(error) }
+  }
+}
+
+// DELETE USER ACCOUNT (RGPD)
+export async function deleteUserAccount() {
+  try {
+    await connectToDatabase()
+    const session = await auth()
+    if (!session?.user?.id) {
+      throw new Error('User not authenticated')
+    }
+
+    const userId = session.user.id
+
+    // Supprimer toutes les adresses associées
+    const Address = (await import('../db/models/address.model')).default
+    await Address.deleteMany({ user: userId })
+
+    // Supprimer l'utilisateur
+    await User.findByIdAndDelete(userId)
+
+    // Déconnexion sera gérée côté client après redirection
+    return {
+      success: true,
+      message: 'Compte supprimé avec succès',
+    }
+  } catch (error) {
+    return { success: false, message: formatError(error) }
+  }
 }

@@ -16,6 +16,7 @@ import { getDirection } from '@/i18n-config'
 import LanguageSwitcher from './language-switcher'
 import HelpSettingsAccordion from './help-settings-accordion'
 import LogoutButton from './logout-button'
+import { SidebarScrollIndicator } from './sidebar-scroll-indicator'
 
 export default async function Sidebar() {
   const session = await auth()
@@ -29,10 +30,10 @@ export default async function Sidebar() {
         <span>{t('Header.Menu')}</span>
       </DrawerTrigger>
 
-      <DrawerContent className='w-[280px] sm:w-[320px] md:w-[400px] mt-0 top-0'>
-        <div className='flex flex-col h-full bg-background'>
-          {/* User Section */}
-          <div className='border-b border-border/50 bg-muted/30'>
+      <DrawerContent className='w-[280px] sm:w-[320px] md:w-[400px] mt-0 top-0 max-h-screen overflow-hidden flex flex-col !h-screen !inset-y-0 !left-0 !right-auto !bottom-auto !rounded-none [&>[data-vaul-handle]]:hidden'>
+        <div className='flex flex-col h-full bg-background min-h-0 overflow-hidden'>
+          {/* User Section - Fixe en haut */}
+          <div className='border-b border-border/50 bg-muted/30 flex-shrink-0 relative'>
             <DrawerHeader className='pb-3'>
               <DrawerTitle className='flex items-center space-x-2'>
                 <div className='w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center'>
@@ -78,8 +79,8 @@ export default async function Sidebar() {
             </DrawerClose>
           </div>
 
-          {/* Theme & Currency Section */}
-          <div className='flex-1 overflow-y-auto'>
+          {/* Theme & Currency Section - Scrollable avec scrollbar visible */}
+          <SidebarScrollIndicator>
             <div className='p-3 border-b border-border/50'>
               <div className='flex items-center space-x-2'>
                 <Settings className='h-4 w-4 text-primary' />
@@ -88,7 +89,7 @@ export default async function Sidebar() {
                 </h2>
               </div>
               <p className='text-xs text-muted-foreground mt-1 px-1'>
-                Personnalisez votre expérience
+                {t('Header.Personalize your experience')}
               </p>
             </div>
 
@@ -158,7 +159,7 @@ export default async function Sidebar() {
                 )}
               </div>
             </div>
-          </div>
+          </SidebarScrollIndicator>
         </div>
       </DrawerContent>
     </Drawer>

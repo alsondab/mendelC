@@ -6,7 +6,7 @@ import { connectToDatabase } from '../db'
 import { auth } from '@/auth'
 import { OrderInputSchema } from '../validator'
 import Order, { IOrder } from '../db/models/order.model'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import {
   sendAskReviewOrderItems,
   sendPurchaseReceipt,
@@ -132,6 +132,10 @@ export async function updateOrderToPaid(orderId: string) {
     await order.save()
     if (!process.env.MONGODB_URI?.startsWith('mongodb://localhost'))
       await updateProductStock(order._id)
+    // Invalider tous les caches
+    revalidateTag('stock')
+    const { invalidateAdminOrdersCache } = await import('../cache/admin-cache')
+    invalidateAdminOrdersCache()
     if (order.user && order.user.email) {
       try {
         console.log(
@@ -168,19 +172,68 @@ const updateProductStock = async (orderId: string) => {
     )
     if (!order) throw new Error('Commande non trouvée')
 
+    // Stocker les données avant modification pour l'historique
+    const stockChanges: Array<{
+      productId: string
+      productName: string
+      quantityBefore: number
+      quantityAfter: number
+      quantity: number
+    }> = []
+
     for (const item of order.items) {
       const product = await Product.findById(item.product).session(session)
       if (!product) throw new Error('Product not found')
 
+      const quantityBefore = product.countInStock
       product.countInStock -= item.quantity
+      const quantityAfter = product.countInStock
+
       await Product.updateOne(
         { _id: product._id },
         { countInStock: product.countInStock },
         opts
       )
+
+      // Stocker les données pour l'historique
+      stockChanges.push({
+        productId: product._id.toString(),
+        productName: product.name,
+        quantityBefore,
+        quantityAfter,
+        quantity: item.quantity,
+      })
     }
     await session.commitTransaction()
     session.endSession()
+
+    // Enregistrer dans l'historique pour chaque produit (en arrière-plan)
+    const { recordStockMovement } = await import('./stock-history.actions')
+    const { auth } = await import('@/auth')
+    const sessionAuth = await auth()
+
+    for (const change of stockChanges) {
+      recordStockMovement({
+        productId: change.productId,
+        productName: change.productName,
+        movementType: 'sale',
+        quantityBefore: change.quantityBefore,
+        quantityAfter: change.quantityAfter,
+        orderId: orderId,
+        reason: `Vente - Commande ${orderId}`,
+        userId: sessionAuth?.user?.id,
+        metadata: {
+          orderId: orderId,
+          quantity: change.quantity.toString(),
+        },
+      }).catch((error) => {
+        console.error('Erreur lors de l\'enregistrement de l\'historique:', error)
+      })
+    }
+
+    // Invalider le cache après la mise à jour du stock
+    const { revalidateTag } = await import('next/cache')
+    revalidateTag('stock')
     return true
   } catch (error) {
     await session.abortTransaction()
@@ -199,6 +252,9 @@ export async function deliverOrder(orderId: string) {
     order.isDelivered = true
     order.deliveredAt = new Date()
     await order.save()
+    // Invalider le cache des commandes
+    const { invalidateAdminOrdersCache } = await import('../cache/admin-cache')
+    invalidateAdminOrdersCache()
     if (order.user && order.user.email) await sendAskReviewOrderItems({ order })
     revalidatePath(`/account/orders/${orderId}`)
     return { success: true, message: 'Commande livrée avec succès' }
@@ -238,7 +294,9 @@ export async function cancelOrder(orderId: string) {
     order.isCancelled = true
     order.cancelledAt = new Date()
     await order.save()
-
+    // Invalider le cache des commandes
+    const { invalidateAdminOrdersCache } = await import('../cache/admin-cache')
+    invalidateAdminOrdersCache()
     revalidatePath(`/account/orders`)
     revalidatePath(`/account/orders/${orderId}`)
     revalidatePath(`/admin/orders`)
@@ -268,14 +326,31 @@ export async function deleteOrder(id: string) {
 }
 
 // GET ALL ORDERS
-
+// Utilise le cache si disponible
 export async function getAllOrders({
   limit,
   page,
+  useCache = false, // Désactivé par défaut pour éviter les problèmes côté client
 }: {
   limit?: number
   page: number
-}) {
+  useCache?: boolean
+}): Promise<{
+  data: IOrderList[]
+  totalPages: number
+}> {
+  // Utiliser le cache si activé et côté serveur uniquement
+  if (useCache && typeof window === 'undefined') {
+    try {
+      const { getCachedAllOrders } = await import('../cache/admin-cache')
+      return await getCachedAllOrders({ limit, page })
+    } catch (error) {
+      // Fallback si cache échoue
+      console.error('Cache error, falling back to direct query:', error)
+    }
+  }
+
+  // Requête directe (pas de cache ou fallback)
   const {
     common: { pageSize },
   } = await getSetting()

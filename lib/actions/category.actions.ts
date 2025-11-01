@@ -24,6 +24,13 @@ export async function createCategory(data: ICategoryInput) {
     }
 
     await Category.create(cleanData)
+    // Invalider tous les caches liés aux catégories
+    const { invalidateCategoriesCache } = await import('../cache/category-cache')
+    invalidateCategoriesCache()
+    const { invalidateAdminCategoriesCache } = await import('../cache/admin-cache')
+    invalidateAdminCategoriesCache()
+    const { invalidateSearchSuggestionsCache } = await import('../cache/search-cache')
+    invalidateSearchSuggestionsCache()
     revalidatePath('/admin/categories')
     return {
       success: true,
@@ -52,6 +59,18 @@ export async function updateCategory(
     }
 
     await Category.findByIdAndUpdate(category._id, cleanData)
+    // Invalider tous les caches liés aux catégories
+    const { invalidateCategoriesCache, invalidateCategoryCache } = await import(
+      '../cache/category-cache'
+    )
+    invalidateCategoriesCache()
+    invalidateCategoryCache(category.name)
+    const { invalidateAdminCategoriesCache } = await import('../cache/admin-cache')
+    invalidateAdminCategoriesCache()
+    const { invalidateAllProductsCache } = await import('../cache/product-cache')
+    invalidateAllProductsCache() // Les produits peuvent être affectés par le changement de catégorie
+    const { invalidateSearchSuggestionsCache } = await import('../cache/search-cache')
+    invalidateSearchSuggestionsCache()
     revalidatePath('/admin/categories')
     return {
       success: true,
@@ -68,6 +87,20 @@ export async function deleteCategory(id: string) {
     await connectToDatabase()
     const res = await Category.findByIdAndDelete(id)
     if (!res) throw new Error('Category not found')
+    // Invalider tous les caches liés aux catégories
+    const { invalidateCategoriesCache, invalidateCategoryCache } = await import(
+      '../cache/category-cache'
+    )
+    invalidateCategoriesCache()
+    if (res.name) {
+      invalidateCategoryCache(res.name)
+    }
+    const { invalidateAdminCategoriesCache } = await import('../cache/admin-cache')
+    invalidateAdminCategoriesCache()
+    const { invalidateAllProductsCache } = await import('../cache/product-cache')
+    invalidateAllProductsCache() // Les produits peuvent être affectés
+    const { invalidateSearchSuggestionsCache } = await import('../cache/search-cache')
+    invalidateSearchSuggestionsCache()
     revalidatePath('/admin/categories')
     return {
       success: true,
@@ -91,51 +124,78 @@ export async function getAllCategoriesForAdmin({
   page = 1,
   sort = 'name',
   limit,
+  useCache = false, // Désactivé par défaut pour éviter les problèmes côté client
 }: {
   query: string
   page?: number
   sort?: string
   limit?: number
-}) {
-  await connectToDatabase()
+  useCache?: boolean
+}): Promise<{
+  categories: ICategory[]
+  totalPages: number
+  totalCategories: number
+  from: number
+  to: number
+}> {
+  // Utiliser le cache si activé et pas de recherche et côté serveur uniquement
+  if (useCache && (!query || query === '') && typeof window === 'undefined') {
+    try {
+      const { getCachedAllCategoriesForAdmin } = await import(
+        '../cache/admin-cache'
+      )
+      return await getCachedAllCategoriesForAdmin({ query, page, limit })
+    } catch (error) {
+      // Fallback si cache échoue
+      console.error('Cache error, falling back to direct query:', error)
+    }
+  }
 
-  limit = limit || 20
-  const queryFilter =
-    query && query !== 'all'
-      ? {
-          name: {
-            $regex: query,
-            $options: 'i',
-          },
-        }
-      : {}
+  try {
+    // Requête directe (pas de cache ou recherche active)
+    await connectToDatabase()
 
-  const order: Record<string, 1 | -1> =
-    sort === 'name'
-      ? { name: 1 }
-      : sort === 'sortOrder'
-        ? { sortOrder: 1 }
-        : { createdAt: -1 }
+    limit = limit || 20
+    const queryFilter =
+      query && query !== 'all'
+        ? {
+            name: {
+              $regex: query,
+              $options: 'i',
+            },
+          }
+        : {}
 
-  const categories = await Category.find({
-    ...queryFilter,
-  })
-    .populate('parentCategory', 'name slug')
-    .sort(order)
-    .skip(limit * (Number(page) - 1))
-    .limit(limit)
-    .lean()
+    const order: Record<string, 1 | -1> =
+      sort === 'name'
+        ? { name: 1 }
+        : sort === 'sortOrder'
+          ? { sortOrder: 1 }
+          : { createdAt: -1 }
 
-  const countCategories = await Category.countDocuments({
-    ...queryFilter,
-  })
+    const categories = await Category.find({
+      ...queryFilter,
+    })
+      .populate('parentCategory', 'name slug')
+      .sort(order)
+      .skip(limit * (Number(page) - 1))
+      .limit(limit)
+      .lean()
 
-  return {
-    categories: JSON.parse(JSON.stringify(categories)) as ICategory[],
-    totalPages: Math.ceil(countCategories / limit),
-    totalCategories: countCategories,
-    from: limit * (Number(page) - 1) + 1,
-    to: limit * (Number(page) - 1) + categories.length,
+    const countCategories = await Category.countDocuments({
+      ...queryFilter,
+    })
+
+    return {
+      categories: JSON.parse(JSON.stringify(categories)) as ICategory[],
+      totalPages: Math.ceil(countCategories / limit),
+      totalCategories: countCategories,
+      from: limit * (Number(page) - 1) + 1,
+      to: limit * (Number(page) - 1) + categories.length,
+    }
+  } catch (error) {
+    console.error('Error in getAllCategoriesForAdmin:', error)
+    throw error
   }
 }
 

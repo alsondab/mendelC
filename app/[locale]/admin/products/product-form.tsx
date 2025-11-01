@@ -31,6 +31,7 @@ import {
   getAllMainCategories,
   getCategoryTree,
 } from '@/lib/actions/category.actions'
+import { getGlobalStockThresholds } from '@/lib/actions/setting.actions'
 import { IProduct } from '@/lib/db/models/product.model'
 import { ICategory } from '@/types'
 import { UploadButton } from '@/lib/uploadthing'
@@ -111,10 +112,12 @@ const ProductForm = ({
   type,
   product,
   productId,
+  onSuccess,
 }: {
   type: 'Create' | 'Update'
   product?: IProduct
   productId?: string
+  onSuccess?: () => void
 }) => {
   const router = useRouter()
   const [categories, setCategories] = useState<ICategory[]>([])
@@ -126,15 +129,7 @@ const ProductForm = ({
       type === 'Update'
         ? zodResolver(ProductUpdateSchema)
         : zodResolver(ProductInputSchema),
-    defaultValues:
-      product && type === 'Update'
-        ? {
-            ...product,
-            lastStockUpdate: product.lastStockUpdate
-              ? new Date(product.lastStockUpdate)
-              : new Date(),
-          }
-        : productDefaultValues,
+    defaultValues: productDefaultValues,
   })
 
   const { toast } = useToast()
@@ -177,12 +172,69 @@ const ProductForm = ({
     loadSubCategories()
   }, [selectedCategory])
 
-  // Initialiser selectedCategory pour l'édition
+  // Initialiser selectedCategory et réinitialiser le formulaire pour l'édition
   useEffect(() => {
     if (product && type === 'Update') {
       setSelectedCategory(product.category || '')
+      // Réinitialiser le formulaire avec les données du produit
+      // Convertir lastStockUpdate en Date si c'est une string
+      const productData = {
+        ...product,
+        lastStockUpdate: product.lastStockUpdate
+          ? product.lastStockUpdate instanceof Date
+            ? product.lastStockUpdate
+            : new Date(product.lastStockUpdate)
+          : new Date(),
+        // S'assurer que toutes les valeurs optionnelles sont définies
+        images: product.images || [],
+        tags: product.tags || [],
+        colors: product.colors || [],
+        specifications: product.specifications || [],
+        compatibility: product.compatibility || [],
+        ratingDistribution: product.ratingDistribution || [],
+        reviews: product.reviews || [],
+      }
+      form.reset(productData)
     }
-  }, [product, type])
+  }, [product, type, form])
+
+  // Charger les seuils globaux pour les valeurs par défaut lors de la création
+  useEffect(() => {
+    const loadGlobalThresholds = async () => {
+      // Seulement lors de la création et si les valeurs par défaut sont encore les valeurs hardcodées
+      if (type === 'Create') {
+        try {
+          const result = await getGlobalStockThresholds()
+          if (result.success && result.thresholds) {
+            const { globalLowStockThreshold } =
+              result.thresholds
+
+            // Mettre à jour les valeurs par défaut du formulaire
+            // Seulement si les valeurs actuelles sont les valeurs hardcodées (5 et 100)
+            const currentMinStock = form.getValues('minStockLevel')
+            const currentMaxStock = form.getValues('maxStockLevel')
+
+            if (currentMinStock === 5 && currentMaxStock === 100) {
+              form.setValue('minStockLevel', globalLowStockThreshold)
+              // Utiliser 20x le seuil faible comme max par défaut
+              form.setValue(
+                'maxStockLevel',
+                globalLowStockThreshold * 20 || 100
+              )
+            }
+          }
+        } catch (error) {
+          console.error(
+            'Erreur lors du chargement des seuils globaux:',
+            error
+          )
+          // Continuer avec les valeurs par défaut hardcodées en cas d'erreur
+        }
+      }
+    }
+
+    loadGlobalThresholds()
+  }, [type, form])
 
   async function onSubmit(values: IProductInput) {
     try {
@@ -197,7 +249,11 @@ const ProductForm = ({
           toast({
             description: res.message,
           })
-          router.push(`/admin/products`)
+          if (onSuccess) {
+            onSuccess()
+          } else {
+            router.push(`/admin/products`)
+          }
         }
       }
 
@@ -222,8 +278,12 @@ const ProductForm = ({
           toast({
             description: res.message,
           })
-          // Recharger la page pour afficher les modifications
-          router.refresh()
+          if (onSuccess) {
+            onSuccess()
+          } else {
+            // Recharger la page pour afficher les modifications
+            router.refresh()
+          }
         }
       }
     } catch (error) {
@@ -619,6 +679,7 @@ const ProductForm = ({
                                   className='w-full h-full object-cover rounded-lg border shadow-sm'
                                   width={150}
                                   height={150}
+                                  unoptimized={image.startsWith('/images/')}
                                 />
                                 <Button
                                   type='button'
@@ -811,12 +872,14 @@ const ProductForm = ({
                 })
               }
             }}
-            className='flex-1 h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200'
+            className='flex-1 h-12 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200'
           >
             {form.formState.isSubmitting ? (
               <div className='flex items-center gap-2'>
                 <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin' />
-                Création en cours...
+                {type === 'Create'
+                  ? 'Création en cours...'
+                  : 'Mise à jour en cours...'}
               </div>
             ) : (
               <div className='flex items-center gap-2'>

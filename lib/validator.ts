@@ -171,6 +171,79 @@ export const ShippingAddressSchema = z.object({
     .max(50, 'Le pays ne peut pas dépasser 50 caractères'),
 })
 
+// Address (réutilise ShippingAddressSchema mais avec postalCode requis)
+export const AddressInputSchema = z.object({
+  fullName: z
+    .string()
+    .min(2, 'Le nom complet doit contenir au moins 2 caractères')
+    .max(50, 'Le nom complet ne peut pas dépasser 50 caractères')
+    .regex(
+      /^[a-zA-ZÀ-ÿ\s'-]+$/,
+      'Le nom ne peut contenir que des lettres, espaces, apostrophes et tirets'
+    ),
+  street: z
+    .string()
+    .min(5, "L'adresse doit contenir au moins 5 caractères")
+    .max(100, "L'adresse ne peut pas dépasser 100 caractères")
+    .regex(
+      /^[a-zA-Z0-9À-ÿ\s\-#.,]+$/,
+      "L'adresse contient des caractères non autorisés"
+    ),
+  city: z
+    .string()
+    .min(2, 'La ville doit contenir au moins 2 caractères')
+    .max(50, 'La ville ne peut pas dépasser 50 caractères')
+    .regex(
+      /^[a-zA-ZÀ-ÿ\s'-]+$/,
+      'La ville ne peut contenir que des lettres, espaces, apostrophes et tirets'
+    ),
+  province: z
+    .string()
+    .min(2, 'La province doit contenir au moins 2 caractères')
+    .max(50, 'La province ne peut pas dépasser 50 caractères')
+    .regex(
+      /^[a-zA-ZÀ-ÿ\s'-]+$/,
+      'La province ne peut contenir que des lettres, espaces, apostrophes et tirets'
+    ),
+  postalCode: z
+    .string()
+    .min(5, 'Le code postal doit contenir au moins 5 caractères')
+    .max(10, 'Le code postal ne peut pas dépasser 10 caractères')
+    .regex(
+      /^[A-Za-z0-9\s-]+$/,
+      'Le code postal contient des caractères non autorisés'
+    ),
+  country: z
+    .string()
+    .min(2, 'Le pays doit contenir au moins 2 caractères')
+    .max(50, 'Le pays ne peut pas dépasser 50 caractères'),
+  phone: z
+    .string()
+    .min(1, 'Le numéro de téléphone est requis')
+    .refine((val) => {
+      if (!val) return false
+
+      // Enlever tous les espaces et le préfixe +225 si présent
+      const cleanNumber = val
+        .trim()
+        .replace(/\s/g, '')
+        .replace(/^\+225/, '')
+
+      // Vérifier qu'il ne reste que des chiffres
+      if (!/^\d+$/.test(cleanNumber)) {
+        return false
+      }
+
+      // Vérifier qu'il y a exactement 10 chiffres
+      return cleanNumber.length === 10 && /^\d{10}$/.test(cleanNumber)
+    }, 'Le numéro doit contenir exactement 10 chiffres (ex: 07 10 14 58 64)'),
+  isDefault: z.boolean().optional().default(false),
+})
+
+export const AddressUpdateSchema = AddressInputSchema.extend({
+  _id: z.string(),
+}).partial()
+
 // Order
 export const OrderInputSchema = z.object({
   user: z.union([
@@ -234,8 +307,11 @@ const UserName = z
     'Le nom ne peut contenir que des lettres, espaces, apostrophes et tirets'
   )
   .refine((val) => val.trim().length >= 2, 'Le nom ne peut pas être vide')
-const Email = z.string().min(1, 'Email is required').email('Email is invalid')
-const Password = z
+export const Email = z
+  .string()
+  .min(1, 'Email is required')
+  .email('Email is invalid')
+export const Password = z
   .string()
   .min(8, 'Le mot de passe doit contenir au moins 8 caractères')
   .max(128, 'Le mot de passe ne peut pas dépasser 128 caractères')
@@ -442,4 +518,25 @@ export const SettingInputSchema = z.object({
     .array(DeliveryDateSchema)
     .min(1, 'At least one delivery date is required'),
   defaultDeliveryDate: z.string().min(1, 'Delivery date is required'),
+  notificationSettings: z
+    .object({
+      emailNotifications: z.boolean().default(true),
+      adminEmail: z
+        .string()
+        .email('Format email invalide')
+        .default('admin@example.com'),
+      // Seuils globaux (source unique de vérité)
+      globalLowStockThreshold: z.number().min(0).default(5),
+      globalCriticalStockThreshold: z.number().min(0).default(2),
+      // Anciens champs (dépréciés, conservés pour compatibilité)
+      lowStockThreshold: z.number().min(0).default(5),
+      criticalStockThreshold: z.number().min(0).default(2),
+      notificationFrequency: z
+        .enum(['realtime', 'hourly', 'daily'])
+        .default('hourly'),
+      uiNotificationLevel: z
+        .enum(['minimal', 'standard', 'full'])
+        .default('standard'),
+    })
+    .optional(),
 })

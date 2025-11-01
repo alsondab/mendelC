@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -36,6 +37,7 @@ import {
 import { ICategory } from '@/types'
 import { deleteCategory } from '@/lib/actions/category.actions'
 import { toast } from '@/hooks/use-toast'
+import { CategoryEditDialog } from '@/components/shared/category/category-edit-dialog'
 
 interface CategoryListProps {
   categories: ICategory[]
@@ -54,14 +56,16 @@ export function CategoryList({
   to,
   currentPage,
 }: CategoryListProps) {
-  // const t = useTranslations('Admin')
+  const t = useTranslations('Admin.CategoriesList')
   const router = useRouter()
   const searchParams = useSearchParams()
   const [isDeleting, setIsDeleting] = useState<string | null>(null)
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null)
+  const [editDialogOpen, setEditDialogOpen] = useState(false)
 
   const handleDelete = async (id: string, name: string) => {
     if (
-      !confirm(`Êtes-vous sûr de vouloir supprimer la catégorie "${name}" ?`)
+      !confirm(t('DeleteConfirm', { name }))
     ) {
       return
     }
@@ -71,21 +75,21 @@ export function CategoryList({
       const result = await deleteCategory(id)
       if (result.success) {
         toast({
-          title: 'Succès',
-          description: 'Catégorie supprimée avec succès',
+          title: t('Success'),
+          description: t('CategoryDeleted'),
         })
         router.refresh()
       } else {
         toast({
-          title: 'Erreur',
+          title: t('Error'),
           description: result.message,
           variant: 'destructive',
         })
       }
     } catch {
       toast({
-        title: 'Erreur',
-        description: 'Une erreur est survenue',
+        title: t('Error'),
+        description: t('ErrorOccurred'),
         variant: 'destructive',
       })
     } finally {
@@ -110,13 +114,13 @@ export function CategoryList({
     const sort = searchParams.get('sort')
     switch (sort) {
       case 'name':
-        return 'Par nom'
+        return t('SortByName')
       case 'sortOrder':
-        return 'Par ordre d&apos;affichage'
+        return t('SortByDisplayOrder')
       case 'createdAt':
-        return 'Par date de création'
+        return t('SortByCreationDate')
       default:
-        return 'Aucun tri'
+        return t('NoSort')
     }
   }
 
@@ -142,14 +146,14 @@ export function CategoryList({
       {/* Search and Filters */}
       <Card>
         <CardHeader className='pb-3'>
-          <CardTitle className='text-lg'>Rechercher et filtrer</CardTitle>
+          <CardTitle className='text-lg'>{t('SearchAndFilter')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className='flex flex-col gap-4 sm:flex-row sm:items-center'>
             <div className='relative flex-1'>
               <Search className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground' />
               <Input
-                placeholder='Rechercher une catégorie...'
+                placeholder={t('SearchPlaceholder')}
                 defaultValue={searchParams.get('query') || ''}
                 onChange={(e) => handleSearch(e.target.value)}
                 className='pl-9'
@@ -165,15 +169,15 @@ export function CategoryList({
               <DropdownMenuContent align='end'>
                 <DropdownMenuItem onClick={() => handleSort('name')}>
                   <ArrowUpDown className='mr-2 h-4 w-4' />
-                  Par nom
+                  {t('SortByName')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleSort('sortOrder')}>
                   <ArrowUpDown className='mr-2 h-4 w-4' />
-                  Par ordre d&apos;affichage
+                  {t('SortByDisplayOrder')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleSort('createdAt')}>
                   <ArrowUpDown className='mr-2 h-4 w-4' />
-                  Par date de création
+                  {t('SortByCreationDate')}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
@@ -183,7 +187,7 @@ export function CategoryList({
                     router.push(`/admin/categories?${params.toString()}`)
                   }}
                 >
-                  Aucun tri
+                  {t('NoSort')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -195,9 +199,9 @@ export function CategoryList({
       <Card>
         <CardHeader>
           <div className='flex items-center justify-between'>
-            <CardTitle className='text-lg'>Liste des catégories</CardTitle>
+            <CardTitle className='text-lg'>{t('CategoriesList')}</CardTitle>
             <div className='text-sm text-muted-foreground'>
-              {from}-{to} sur {totalCategories} catégories
+              {t('CategoriesCount', { from, to, total: totalCategories })}
             </div>
           </div>
         </CardHeader>
@@ -213,19 +217,19 @@ export function CategoryList({
                       onClick={() => handleSort('name')}
                       className='h-auto p-0 font-semibold'
                     >
-                      Nom
+                      {t('Name')}
                       <ArrowUpDown className='ml-2 h-4 w-4' />
                     </Button>
                   </TableHead>
-                  <TableHead className='hidden sm:table-cell'>Slug</TableHead>
+                  <TableHead className='hidden sm:table-cell'>{t('Slug')}</TableHead>
                   <TableHead className='hidden md:table-cell'>
-                    Description
+                    {t('Description')}
                   </TableHead>
-                  <TableHead className='hidden lg:table-cell'>Parent</TableHead>
-                  <TableHead className='text-center'>Statut</TableHead>
-                  <TableHead className='text-center'>Ordre</TableHead>
+                  <TableHead className='hidden lg:table-cell'>{t('Parent')}</TableHead>
+                  <TableHead className='text-center'>{t('Status')}</TableHead>
+                  <TableHead className='text-center'>{t('Order')}</TableHead>
                   <TableHead className='w-[100px] text-center'>
-                    Actions
+                    {t('Actions')}
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -250,14 +254,14 @@ export function CategoryList({
                     </TableCell>
                     <TableCell className='hidden md:table-cell'>
                       <div className='max-w-[200px] truncate text-sm'>
-                        {category.description || 'Aucune description'}
+                        {category.description || t('NoDescription')}
                       </div>
                     </TableCell>
                     <TableCell className='hidden lg:table-cell'>
                       {category.parentCategory ? (
-                        <Badge variant='secondary'>Sous-catégorie</Badge>
+                        <Badge variant='secondary'>{t('SubCategory')}</Badge>
                       ) : (
-                        <Badge variant='default'>Catégorie principale</Badge>
+                        <Badge variant='default'>{t('MainCategory')}</Badge>
                       )}
                     </TableCell>
                     <TableCell className='text-center'>
@@ -272,12 +276,12 @@ export function CategoryList({
                         {category.isActive ? (
                           <>
                             <Eye className='mr-1 h-3 w-3' />
-                            Actif
+                            {t('Active')}
                           </>
                         ) : (
                           <>
                             <EyeOff className='mr-1 h-3 w-3' />
-                            Inactif
+                            {t('Inactive')}
                           </>
                         )}
                       </Badge>
@@ -297,11 +301,14 @@ export function CategoryList({
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align='end'>
-                          <DropdownMenuItem asChild>
-                            <a href={`/admin/categories/${category._id}`}>
-                              <Edit className='mr-2 h-4 w-4' />
-                              Modifier
-                            </a>
+                          <DropdownMenuItem
+                            onClick={() => {
+                              setSelectedCategoryId(category._id)
+                              setEditDialogOpen(true)
+                            }}
+                          >
+                            <Edit className='mr-2 h-4 w-4' />
+                            {t('Edit')}
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             onClick={() =>
@@ -312,8 +319,8 @@ export function CategoryList({
                           >
                             <Trash2 className='mr-2 h-4 w-4' />
                             {isDeleting === category._id
-                              ? 'Suppression...'
-                              : 'Supprimer'}
+                              ? t('Deleting')
+                              : t('Delete')}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -328,7 +335,7 @@ export function CategoryList({
           {totalPages > 1 && (
             <div className='mt-4 flex items-center justify-between'>
               <div className='text-sm text-muted-foreground'>
-                Page {currentPage} sur {totalPages}
+                {t('PageInfo', { current: currentPage, total: totalPages })}
               </div>
               <div className='flex items-center gap-2'>
                 <Button
@@ -338,7 +345,7 @@ export function CategoryList({
                   disabled={currentPage <= 1}
                 >
                   <ChevronLeft className='h-4 w-4' />
-                  Précédent
+                  {t('Previous')}
                 </Button>
                 <Button
                   variant='outline'
@@ -346,7 +353,7 @@ export function CategoryList({
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage >= totalPages}
                 >
-                  Suivant
+                  {t('Next')}
                   <ChevronRight className='h-4 w-4' />
                 </Button>
               </div>
@@ -354,6 +361,21 @@ export function CategoryList({
           )}
         </CardContent>
       </Card>
+
+      {/* Category Edit Dialog */}
+      <CategoryEditDialog
+        categoryId={selectedCategoryId}
+        open={editDialogOpen}
+        onOpenChange={(open) => {
+          setEditDialogOpen(open)
+          if (!open) {
+            setSelectedCategoryId(null)
+          }
+        }}
+        onSuccess={() => {
+          router.refresh()
+        }}
+      />
     </div>
   )
 }

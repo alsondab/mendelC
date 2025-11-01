@@ -1,4 +1,6 @@
 import {
+  AddressInputSchema,
+  AddressUpdateSchema,
   CarouselSchema,
   CartSchema,
   DeliveryDateSchema,
@@ -99,6 +101,16 @@ export type IUserInput = z.infer<typeof UserInputSchema>
 export type IUserSignIn = z.infer<typeof UserSignInSchema>
 export type IUserSignUp = z.infer<typeof UserSignUpSchema>
 export type IUserName = z.infer<typeof UserNameSchema>
+
+// Address
+export type IAddressInput = z.infer<typeof AddressInputSchema>
+export type IAddressUpdate = z.infer<typeof AddressUpdateSchema>
+export type IAddress = IAddressInput & {
+  _id: string
+  user: string
+  createdAt: Date
+  updatedAt: Date
+}
 
 // setting
 export type ICarousel = z.infer<typeof CarouselSchema>

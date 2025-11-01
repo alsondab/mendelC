@@ -2,6 +2,7 @@ import { CategoryForm } from '../category-form'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, Grid3X3 } from 'lucide-react'
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
 interface EditCategoryPageProps {
   params: Promise<{
@@ -12,6 +13,7 @@ interface EditCategoryPageProps {
 export default async function EditCategoryPage({
   params,
 }: EditCategoryPageProps) {
+  const t = await getTranslations('Admin.CategoryForm')
   const { id } = await params
   return (
     <div className='space-y-6 p-4 xs:p-6'>
@@ -26,11 +28,11 @@ export default async function EditCategoryPage({
           <div className='flex items-center gap-2'>
             <Grid3X3 className='h-6 w-6 text-primary' />
             <h1 className='text-2xl font-bold tracking-tight'>
-              Modifier la catégorie
+              {t('EditTitle')}
             </h1>
           </div>
           <p className='text-muted-foreground'>
-            Modifiez les informations de la catégorie
+            {t('EditDescription')}
           </p>
         </div>
       </div>

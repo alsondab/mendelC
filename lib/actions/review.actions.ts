@@ -38,7 +38,8 @@ export async function createUpdateReview({
     if (!hasPurchased) {
       return {
         success: false,
-        message: 'Vous devez acheter ce produit avant de laisser un avis',
+        messageKey: 'You must purchase this product before leaving a review',
+        message: 'You must purchase this product before leaving a review', // Fallback
       }
     }
 
@@ -64,7 +65,8 @@ export async function createUpdateReview({
       revalidatePath(path)
       return {
         success: true,
-        message: 'Avis mis à jour avec succès',
+        messageKey: 'Review updated successfully',
+        message: 'Review updated successfully', // Fallback
       }
     } else {
       await Review.create(review)
@@ -72,7 +74,8 @@ export async function createUpdateReview({
       revalidatePath(path)
       return {
         success: true,
-        message: 'Avis créé avec succès',
+        messageKey: 'Review created successfully',
+        message: 'Review created successfully', // Fallback
       }
     }
   } catch (error) {

@@ -1,6 +1,9 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { motion } from 'framer-motion'
 
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { IProduct } from '@/lib/db/models/product.model'
@@ -11,6 +14,7 @@ import ProductPrice from './product-price'
 import ImageHover from './image-hover'
 import AddToCart from './add-to-cart'
 import WishlistButton from './wishlist-button'
+import { scale } from '@/lib/utils/animations'
 
 const ProductCard = ({
   product,
@@ -131,7 +135,16 @@ const ProductCard = ({
   )
 
   return hideBorder ? (
-    <div className='flex flex-col group'>
+    <motion.div
+      className='flex flex-col group'
+      variants={scale}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-50px' }}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+    >
       <ProductImage />
       {!hideDetails && (
         <>
@@ -141,23 +154,33 @@ const ProductCard = ({
           {!hideAddToCart && <AddButton />}
         </>
       )}
-    </div>
+    </motion.div>
   ) : (
-    <Card className='flex flex-col group hover:shadow-lg transition-shadow duration-200'>
-      <CardHeader className='p-2 xs:p-3 sm:p-4'>
-        <ProductImage />
-      </CardHeader>
-      {!hideDetails && (
-        <>
-          <CardContent className='p-2 xs:p-3 sm:p-4 flex-1 text-center space-y-2 xs:space-y-3'>
-            <ProductDetails />
-          </CardContent>
-          <CardFooter className='p-2 xs:p-3 sm:p-4 pt-0'>
-            {!hideAddToCart && <AddButton />}
-          </CardFooter>
-        </>
-      )}
-    </Card>
+    <motion.div
+      variants={scale}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-50px' }}
+      whileHover={{ scale: 1.02, y: -4 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+    >
+      <Card className='flex flex-col group hover:shadow-lg transition-shadow duration-200'>
+        <CardHeader className='p-2 xs:p-3 sm:p-4'>
+          <ProductImage />
+        </CardHeader>
+        {!hideDetails && (
+          <>
+            <CardContent className='p-2 xs:p-3 sm:p-4 flex-1 text-center space-y-2 xs:space-y-3'>
+              <ProductDetails />
+            </CardContent>
+            <CardFooter className='p-2 xs:p-3 sm:p-4 pt-0'>
+              {!hideAddToCart && <AddButton />}
+            </CardFooter>
+          </>
+        )}
+      </Card>
+    </motion.div>
   )
 }
 
