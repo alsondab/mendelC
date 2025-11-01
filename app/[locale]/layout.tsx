@@ -15,11 +15,13 @@ import MobileBottomNav from '@/components/shared/mobile-bottom-nav'
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
+  display: 'swap',
 })
 
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
+  display: 'swap',
 })
 
 export async function generateMetadata() {

@@ -15,7 +15,7 @@ type TableChartProps = {
   }[]
 }
 
-import React from 'react'
+import React, { useMemo } from 'react'
 
 interface ProgressBarProps {
   value: number // Accepts a number between 0 and 100
@@ -27,12 +27,12 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ value }) => {
   const boundedValue = Math.min(100, Math.max(0, value))
 
   return (
-    <div className='relative w-full h-4 overflow-hidden'>
+    <div className='relative h-4 w-full overflow-hidden rounded-lg bg-border/40'>
       <div
-        className='bg-primary h-full transition-all duration-300 rounded-lg'
+        className='h-full rounded-lg bg-primary transition-transform duration-300 ease-out will-change-transform'
         style={{
-          width: `${boundedValue}%`,
-          float: 'right', // Aligns the bar to start from the right
+          transform: `scaleX(${boundedValue / 100})`,
+          transformOrigin: 'left',
         }}
       />
     </div>
@@ -43,12 +43,15 @@ export default function TableChart({
   labelType = 'month',
   data = [],
 }: TableChartProps) {
-  const max = Math.max(...data.map((item) => item.value))
-  const dataWithPercentage = data.map((x) => ({
-    ...x,
-    label: labelType === 'month' ? getMonthName(x.label) : x.label,
-    percentage: Math.round((x.value / max) * 100),
-  }))
+  const dataWithPercentage = useMemo(() => {
+    if (!data.length) return []
+    const max = Math.max(...data.map((item) => item.value)) || 1
+    return data.map((x) => ({
+      ...x,
+      label: labelType === 'month' ? getMonthName(x.label) : x.label,
+      percentage: Math.round((x.value / max) * 100),
+    }))
+  }, [data, labelType])
   return (
     <div className='space-y-3'>
       {dataWithPercentage.map(

@@ -1,14 +1,26 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import Image from 'next/image'
-import Zoom from 'react-medium-image-zoom'
+import dynamic from 'next/dynamic'
 import 'react-medium-image-zoom/dist/styles.css'
+
+const Zoom = dynamic(() => import('react-medium-image-zoom'), {
+  ssr: false,
+  loading: () => (
+    <div className='flex h-full items-center justify-center rounded-xl bg-muted'>
+      <span className='text-sm text-muted-foreground'>Chargement…</span>
+    </div>
+  ),
+})
 export default function ProductGallery({ images }: { images: string[] }) {
   const [selectedImage, setSelectedImage] = useState(0)
 
   // Filtrer les images vides
-  const validImages = images.filter((image) => image && image.trim() !== '')
+  const validImages = useMemo(
+    () => images.filter((image) => image && image.trim() !== ''),
+    [images]
+  )
 
   if (validImages.length === 0) {
     return (
@@ -36,6 +48,7 @@ export default function ProductGallery({ images }: { images: string[] }) {
                 ? 'ring-2 ring-blue-500'
                 : 'ring-1 ring-gray-300'
             }`}
+            aria-label={`Voir l’image ${index + 1}`}
           >
             {image && image.trim() !== '' ? (
               <Image src={image} alt={'product image'} width={48} height={48} />
@@ -50,15 +63,15 @@ export default function ProductGallery({ images }: { images: string[] }) {
 
       {/* Main image */}
       <div className='w-full'>
-        <Zoom>
+        <Zoom zoomMargin={24}>
           <div className='relative h-[250px] xs:h-[300px] sm:h-[400px] lg:h-[500px]'>
             <Image
               src={validImages[selectedImage]}
               alt={'product image'}
               fill
-              sizes='(max-width: 475px) 100vw, (max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw'
+              sizes='(max-width: 475px) 100vw, (max-width: 768px) 80vw, (max-width: 1200px) 50vw, 600px'
               className='object-contain'
-              priority
+              priority={selectedImage === 0}
             />
           </div>
         </Zoom>
@@ -76,6 +89,7 @@ export default function ProductGallery({ images }: { images: string[] }) {
                   ? 'ring-2 ring-blue-500'
                   : 'ring-1 ring-gray-300'
               }`}
+              aria-label={`Sélectionner l’image ${index + 1}`}
             >
               {image && image.trim() !== '' ? (
                 <Image

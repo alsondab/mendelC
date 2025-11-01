@@ -3,7 +3,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { motion } from 'framer-motion'
 
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { IProduct } from '@/lib/db/models/product.model'
@@ -14,7 +13,6 @@ import ProductPrice from './product-price'
 import ImageHover from './image-hover'
 import AddToCart from './add-to-cart'
 import WishlistButton from './wishlist-button'
-import { scale } from '@/lib/utils/animations'
 
 const ProductCard = ({
   product,
@@ -135,16 +133,7 @@ const ProductCard = ({
   )
 
   return hideBorder ? (
-    <motion.div
-      className='flex flex-col group'
-      variants={scale}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-50px' }}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-    >
+    <div className='flex flex-col transition-transform duration-200 ease-out will-change-transform hover:scale-[1.02] active:scale-[0.98]'>
       <ProductImage />
       {!hideDetails && (
         <>
@@ -154,17 +143,9 @@ const ProductCard = ({
           {!hideAddToCart && <AddButton />}
         </>
       )}
-    </motion.div>
+    </div>
   ) : (
-    <motion.div
-      variants={scale}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-50px' }}
-      whileHover={{ scale: 1.02, y: -4 }}
-      whileTap={{ scale: 0.98 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-    >
+    <div className='transition-transform duration-200 ease-out will-change-transform hover:-translate-y-1 hover:scale-[1.01] active:scale-[0.98]'>
       <Card className='flex flex-col group hover:shadow-lg transition-shadow duration-200'>
         <CardHeader className='p-2 xs:p-3 sm:p-4'>
           <ProductImage />
@@ -180,7 +161,7 @@ const ProductCard = ({
           </>
         )}
       </Card>
-    </motion.div>
+    </div>
   )
 }
 

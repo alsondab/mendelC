@@ -42,6 +42,8 @@ export function HomeCarousel({ items }: { items: ICarousel[] }) {
                     className='object-cover'
                     priority={index === 0}
                     loading={index === 0 ? undefined : 'lazy'}
+                    quality={index === 0 ? 85 : 70}
+                    sizes='(max-width: 768px) 100vw, 1200px'
                   />
                 ) : (
                   <div className='w-full h-full bg-muted flex items-center justify-center'>
