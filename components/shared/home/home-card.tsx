@@ -42,6 +42,7 @@ export function HomeCard({ cards }: { cards: CardItem[] }) {
                         height={80}
                         width={80}
                         sizes='(max-width: 640px) 80px, (max-width: 768px) 100px, 120px'
+                        loading='lazy'
                       />
                     ) : (
                       <div className='aspect-square flex items-center justify-center bg-muted rounded-md xs:rounded-lg'>

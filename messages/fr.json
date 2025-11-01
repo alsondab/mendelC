@@ -112,7 +112,14 @@
     "products": "produits",
     "Dashboard": "Tableau de bord",
     "Personalize your experience": "Personnalisez votre expérience",
-    "Navigation": "Navigation"
+    "Navigation": "Navigation",
+    "Open Search": "Ouvrir la recherche",
+    "Close Search": "Fermer la recherche",
+    "Select Suggestion": "Sélectionner la suggestion",
+    "Search For": "Rechercher",
+    "Clear All Recent Searches": "Effacer toutes les recherches récentes",
+    "Remove Recent Search": "Supprimer la recherche récente",
+    "Search": "Rechercher {name}"
   },
   "Home": {
     "Categories to explore": "Catégories à explorer",
@@ -838,7 +845,8 @@
     "CriticalAlertTitle": "🚨 Alerte Critique - Rupture de Stock",
     "CriticalAlertDescription": "{count} produit(s) en rupture de stock nécessitent un réapprovisionnement urgent !",
     "WarningAlertTitle": "⚠️ Alerte - Stock Faible",
-    "WarningAlertDescription": "{count} produit(s) ont un stock faible et nécessitent votre attention."
+    "WarningAlertDescription": "{count} produit(s) ont un stock faible et nécessitent votre attention.",
+    "View Stock Management": "Voir la gestion des stocks"
   },
   "Manage": {
     "Login & Security": "Connexion et Sécurité",

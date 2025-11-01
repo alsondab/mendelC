@@ -1,7 +1,6 @@
 'use client'
-import React from 'react'
-import CartSidebar from './cart-sidebar'
-import WishlistSidebar from './wishlist-sidebar'
+import React, { Suspense } from 'react'
+import dynamic from 'next/dynamic'
 import SliderAutoOpener from './slider-auto-opener'
 import SliderStoreInit from './slider-store-init'
 import { ThemeProvider } from './theme-provider'
@@ -9,6 +8,15 @@ import { Toaster } from '../ui/toaster'
 import AppInitializer from './app-initializer'
 import { ClientSetting } from '@/types'
 import { SessionProvider } from 'next-auth/react'
+
+// Lazy load sliders only when needed (reduces initial bundle by ~50KB)
+const CartSidebar = dynamic(() => import('./cart-sidebar'), {
+  ssr: false,
+})
+
+const WishlistSidebar = dynamic(() => import('./wishlist-sidebar'), {
+  ssr: false,
+})
 
 export default function ClientProviders({
   setting,
@@ -28,8 +36,10 @@ export default function ClientProviders({
           <SliderAutoOpener />
           {children}
           {/* Les sliders gèrent leur propre overlay et animations */}
-          <CartSidebar />
-          <WishlistSidebar />
+          <Suspense fallback={null}>
+            <CartSidebar />
+            <WishlistSidebar />
+          </Suspense>
           <Toaster />
         </ThemeProvider>
       </AppInitializer>
