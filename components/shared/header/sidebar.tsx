@@ -16,7 +16,6 @@ import { getDirection } from '@/i18n-config'
 import LanguageSwitcher from './language-switcher'
 import HelpSettingsAccordion from './help-settings-accordion'
 import LogoutButton from './logout-button'
-import { SidebarScrollIndicator } from './sidebar-scroll-indicator'
 
 export default async function Sidebar() {
   const session = await auth()
@@ -34,19 +33,19 @@ export default async function Sidebar() {
         <div className='flex flex-col h-full bg-background min-h-0 overflow-hidden'>
           {/* User Section - Fixe en haut */}
           <div className='border-b border-border/50 bg-muted/30 flex-shrink-0 relative'>
-            <DrawerHeader className='pb-3'>
+            <DrawerHeader className='pb-3 pt-4'>
               <DrawerTitle className='flex items-center space-x-2'>
-                <div className='w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center'>
+                <div className='w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0'>
                   <UserCircle className='h-5 w-5 text-primary' />
                 </div>
-                <div className='flex-1'>
+                <div className='flex-1 min-w-0'>
                   {session ? (
                     <DrawerClose asChild>
                       <Link href='/account' className='block'>
-                        <span className='text-base font-semibold text-foreground'>
+                        <span className='text-base font-semibold text-foreground truncate block'>
                           {t('Header.Hello')}, {session.user.name}
                         </span>
-                        <p className='text-xs text-muted-foreground'>
+                        <p className='text-xs text-muted-foreground truncate'>
                           {t('Header.View your account')}
                         </p>
                       </Link>
@@ -79,87 +78,91 @@ export default async function Sidebar() {
             </DrawerClose>
           </div>
 
-          {/* Theme & Currency Section - Scrollable avec scrollbar visible */}
-          <SidebarScrollIndicator>
-            <div className='p-3 border-b border-border/50'>
-              <div className='flex items-center space-x-2'>
-                <Settings className='h-4 w-4 text-primary' />
-                <h2 className='text-base font-semibold text-foreground'>
-                  {t('Header.Preferences')}
-                </h2>
-              </div>
-              <p className='text-xs text-muted-foreground mt-1 px-1'>
-                {t('Header.Personalize your experience')}
-              </p>
-            </div>
-
-            <div className='p-3 space-y-3'>
-              <div className='space-y-2'>
-                <h3 className='text-sm font-medium text-foreground'>
-                  {t('Header.Language')} & {t('Header.Currency')}
-                </h3>
-                <LanguageSwitcher />
-              </div>
-            </div>
-
-            {/* Help & Settings Section */}
-            <HelpSettingsAccordion session={session} />
-
-            {/* Login/Logout Section */}
-            <div className='border-t border-border/50 bg-gradient-to-r from-muted/40 to-muted/20'>
-              <div className='p-4 space-y-3'>
-                <div className='text-center'>
-                  <h3 className='text-sm font-semibold text-foreground mb-2'>
-                    {session ? t('Header.Account') : t('Header.Get started')}
-                  </h3>
-                  <p className='text-xs text-muted-foreground'>
-                    {session
-                      ? t('Header.Manage your account')
-                      : t('Header.Sign in to access all features')}
-                  </p>
+          {/* Contenu scrollable - Prend l'espace restant */}
+          <div className='flex-1 overflow-y-auto overscroll-contain pr-1 min-h-0'>
+            <div className='space-y-0 pb-8'>
+              {/* Préférences Section */}
+              <div className='p-3 sm:p-4 border-b border-border/50'>
+                <div className='flex items-center space-x-2'>
+                  <Settings className='h-4 w-4 text-primary flex-shrink-0' />
+                  <h2 className='text-base font-semibold text-foreground'>
+                    {t('Header.Preferences')}
+                  </h2>
                 </div>
+                <p className='text-xs text-muted-foreground mt-1 px-1'>
+                  {t('Header.Personalize your experience')}
+                </p>
+              </div>
 
-                {session ? (
-                  <div className='space-y-2'>
-                    <DrawerClose asChild>
-                      <Link
-                        href='/account'
-                        className='flex items-center justify-center space-x-2 px-4 py-3 rounded-xl bg-primary/10 hover:bg-primary/20 transition-all duration-200 text-sm font-medium border border-primary/20 w-full group'
-                      >
-                        <UserCircle className='h-4 w-4 text-primary group-hover:scale-110 transition-transform' />
-                        <span className='text-primary font-semibold'>
-                          {t('Header.My Account')}
-                        </span>
-                      </Link>
-                    </DrawerClose>
-                    <LogoutButton />
+              {/* Language Section */}
+              <div className='p-3 sm:p-4 space-y-3'>
+                <div className='space-y-2'>
+                  <h3 className='text-sm font-medium text-foreground'>
+                    {t('Header.Language')} & {t('Header.Currency')}
+                  </h3>
+                  <LanguageSwitcher />
+                </div>
+              </div>
+
+              {/* Help & Settings Section */}
+              <HelpSettingsAccordion session={session} />
+
+              {/* Login/Logout Section - Espacement amélioré pour garantir l'accessibilité */}
+              <div className='border-t border-border/50 bg-gradient-to-r from-muted/40 to-muted/20 mt-4'>
+                <div className='p-3 sm:p-4 space-y-3 pb-12 sm:pb-8'>
+                  <div className='text-center'>
+                    <h3 className='text-sm font-semibold text-foreground mb-2'>
+                      {session ? t('Header.Account') : t('Header.Get started')}
+                    </h3>
+                    <p className='text-xs text-muted-foreground'>
+                      {session
+                        ? t('Header.Manage your account')
+                        : t('Header.Sign in to access all features')}
+                    </p>
                   </div>
-                ) : (
-                  <div className='space-y-2'>
-                    <DrawerClose asChild>
-                      <Link
-                        href='/sign-in'
-                        className='flex items-center justify-center space-x-2 px-4 py-3 rounded-xl bg-primary hover:bg-primary/90 transition-all duration-200 text-sm font-semibold text-primary-foreground w-full group shadow-sm hover:shadow-md'
-                      >
-                        <UserCircle className='h-4 w-4 group-hover:scale-110 transition-transform' />
-                        <span>{t('Header.Sign In')}</span>
-                      </Link>
-                    </DrawerClose>
-                    <DrawerClose asChild>
-                      <Link
-                        href='/sign-up'
-                        className='flex items-center justify-center space-x-2 px-4 py-3 rounded-xl bg-muted hover:bg-muted/80 transition-all duration-200 text-sm font-medium border border-border/50 w-full group'
-                      >
-                        <span className='group-hover:scale-105 transition-transform'>
-                          {t('Header.Sign Up')}
-                        </span>
-                      </Link>
-                    </DrawerClose>
-                  </div>
-                )}
+
+                  {session ? (
+                    <div className='space-y-2'>
+                      <DrawerClose asChild>
+                        <Link
+                          href='/account'
+                          className='flex items-center justify-center space-x-2 px-4 py-3 rounded-xl bg-primary/10 hover:bg-primary/20 transition-all duration-200 text-sm font-medium border border-primary/20 w-full group'
+                        >
+                          <UserCircle className='h-4 w-4 text-primary group-hover:scale-110 transition-transform flex-shrink-0' />
+                          <span className='text-primary font-semibold'>
+                            {t('Header.My Account')}
+                          </span>
+                        </Link>
+                      </DrawerClose>
+                      <LogoutButton />
+                    </div>
+                  ) : (
+                    <div className='space-y-2'>
+                      <DrawerClose asChild>
+                        <Link
+                          href='/sign-in'
+                          className='flex items-center justify-center space-x-2 px-4 py-3 rounded-xl bg-primary hover:bg-primary/90 transition-all duration-200 text-sm font-semibold text-primary-foreground w-full group shadow-sm hover:shadow-md'
+                        >
+                          <UserCircle className='h-4 w-4 group-hover:scale-110 transition-transform flex-shrink-0' />
+                          <span>{t('Header.Sign In')}</span>
+                        </Link>
+                      </DrawerClose>
+                      <DrawerClose asChild>
+                        <Link
+                          href='/sign-up'
+                          className='flex items-center justify-center space-x-2 px-4 py-3 rounded-xl bg-muted hover:bg-muted/80 transition-all duration-200 text-sm font-medium border border-border/50 w-full group'
+                        >
+                          <span className='group-hover:scale-105 transition-transform'>
+                            {t('Header.Sign Up')}
+                          </span>
+                        </Link>
+                      </DrawerClose>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </SidebarScrollIndicator>
+          </div>
         </div>
       </DrawerContent>
     </Drawer>

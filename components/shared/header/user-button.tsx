@@ -52,14 +52,14 @@ export default async function UserButton() {
         </DropdownMenuTrigger>
         {session ? (
           <DropdownMenuContent
-            className='w-56 sm:w-64 md:w-72 max-h-[calc(100vh-8rem)] overflow-y-auto overflow-x-hidden dropdown-scroll'
+            className='w-56 sm:w-64 md:w-72 max-h-[80vh] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent hover:scrollbar-thumb-primary/40'
             align='end'
             forceMount
           >
-            {/* Header fixe - infos utilisateur */}
-            <DropdownMenuLabel className='font-normal sticky top-0 bg-background z-10 border-b border-border/50 pb-2'>
+            {/* Header - infos utilisateur */}
+            <DropdownMenuLabel className='font-normal border-b border-border/50 pb-2 sticky top-0 bg-popover z-10'>
               <div className='flex flex-col space-y-1'>
-                <p className='text-sm font-medium leading-none'>
+                <p className='text-sm font-medium leading-none truncate'>
                   {session.user.name}
                 </p>
                 <p className='text-xs leading-none text-muted-foreground truncate'>
@@ -68,67 +68,73 @@ export default async function UserButton() {
               </div>
             </DropdownMenuLabel>
 
-            {/* Section Compte principal - scrollable */}
+            {/* Section Compte principal */}
             <DropdownMenuGroup className='py-1'>
               <Link className='w-full' href='/account'>
                 <DropdownMenuItem className='flex items-center space-x-2 cursor-pointer'>
-                  <UserCircle className='h-4 w-4' />
-                  <span>{t('Header.Your account')}</span>
+                  <UserCircle className='h-4 w-4 flex-shrink-0' />
+                  <span className='truncate'>{t('Header.Your account')}</span>
                 </DropdownMenuItem>
               </Link>
               <Link className='w-full' href='/account/orders'>
                 <DropdownMenuItem className='flex items-center space-x-2 cursor-pointer'>
-                  <Package className='h-4 w-4' />
-                  <span>{t('Header.Your orders')}</span>
+                  <Package className='h-4 w-4 flex-shrink-0' />
+                  <span className='truncate'>{t('Header.Your orders')}</span>
                 </DropdownMenuItem>
               </Link>
             </DropdownMenuGroup>
 
             <DropdownMenuSeparator />
 
-            {/* Section Gestion - scrollable */}
+            {/* Section Gestion */}
             <DropdownMenuGroup className='py-1'>
               <Link className='w-full' href='/account/addresses'>
                 <DropdownMenuItem className='flex items-center space-x-2 cursor-pointer'>
-                  <Home className='h-4 w-4' />
-                  <span>{t('Header.Addresses') || 'Adresses'}</span>
+                  <Home className='h-4 w-4 flex-shrink-0' />
+                  <span className='truncate'>
+                    {t('Header.Addresses') || 'Adresses'}
+                  </span>
                 </DropdownMenuItem>
               </Link>
               <Link className='w-full' href='/account/settings'>
                 <DropdownMenuItem className='flex items-center space-x-2 cursor-pointer'>
-                  <Settings className='h-4 w-4' />
-                  <span>{t('Header.Settings') || 'Paramètres'}</span>
+                  <Settings className='h-4 w-4 flex-shrink-0' />
+                  <span className='truncate'>
+                    {t('Header.Settings') || 'Paramètres'}
+                  </span>
                 </DropdownMenuItem>
               </Link>
               <Link className='w-full' href='/account/manage'>
                 <DropdownMenuItem className='flex items-center space-x-2 cursor-pointer'>
-                  <User className='h-4 w-4' />
-                  <span>{t('Header.Manage account') || 'Gérer le compte'}</span>
+                  <User className='h-4 w-4 flex-shrink-0' />
+                  <span className='truncate'>
+                    {t('Header.Manage account') || 'Gérer le compte'}
+                  </span>
                 </DropdownMenuItem>
               </Link>
             </DropdownMenuGroup>
 
-            {/* Section Admin - conditionnelle et scrollable */}
+            {/* Section Admin - conditionnelle */}
             {session.user.role === 'Admin' && (
               <>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup className='py-1'>
                   <Link className='w-full' href='/admin/overview'>
                     <DropdownMenuItem className='flex items-center space-x-2 cursor-pointer'>
-                      <Shield className='h-4 w-4' />
-                      <span>{t('Header.Admin')}</span>
+                      <Shield className='h-4 w-4 flex-shrink-0' />
+                      <span className='truncate'>{t('Header.Admin')}</span>
                     </DropdownMenuItem>
                   </Link>
                 </DropdownMenuGroup>
               </>
             )}
 
-            {/* Section Déconnexion - fixe en bas */}
-            <div className='sticky bottom-0 bg-background border-t border-border/50 pt-1'>
+            {/* Section Déconnexion - Sticky en bas */}
+            <div className='border-t border-border/50 pt-1 sticky bottom-0 bg-popover'>
               <DropdownMenuItem className='p-0 mt-1'>
                 <form action={SignOut} className='w-full'>
                   <Button
-                    className='w-full py-4 px-2 h-4 justify-start'
+                    className='w-full py-4 px-2 h-9 justify-start font-medium'
                     variant='ghost'
                   >
                     {t('Header.Sign out')}
@@ -144,7 +150,7 @@ export default async function UserButton() {
             forceMount
           >
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem className='p-0'>
                 <Link
                   className={cn(buttonVariants(), 'w-full')}
                   href='/sign-in'
@@ -153,10 +159,13 @@ export default async function UserButton() {
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
+            <DropdownMenuSeparator />
             <DropdownMenuLabel>
-              <div className='font-normal'>
+              <div className='font-normal text-sm'>
                 {t('Header.New Customer')}?{' '}
-                <Link href='/sign-up'>{t('Header.Sign up')}</Link>
+                <Link href='/sign-up' className='text-primary hover:underline'>
+                  {t('Header.Sign up')}
+                </Link>
               </div>
             </DropdownMenuLabel>
           </DropdownMenuContent>
