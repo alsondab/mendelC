@@ -44,24 +44,47 @@ export function useStockAlerts(refreshInterval: number = 30000) {
         error: null 
       }))
 
-      const [lowStockResult, outOfStockResult] = await Promise.all([
+      // Utiliser Promise.allSettled pour ne pas bloquer si une requête échoue
+      const [lowStockSettled, outOfStockSettled] = await Promise.allSettled([
         getLowStockProducts(),
         getOutOfStockProducts(),
       ])
 
-      const lowStockAlerts = lowStockResult.success
-        ? (lowStockResult.products || []).map((p) => ({
-            ...p,
-            stockStatus: 'low_stock' as const,
-          }))
-        : []
+      // Normaliser les résultats pour garantir une structure cohérente
+      const lowStockResult =
+        lowStockSettled.status === 'fulfilled'
+          ? lowStockSettled.value &&
+            typeof lowStockSettled.value === 'object' &&
+            'success' in lowStockSettled.value
+            ? lowStockSettled.value
+            : { success: false, products: [], message: 'Résultat invalide' }
+          : { success: false, products: [], message: 'Erreur lors du chargement' }
 
-      const outOfStockAlerts = outOfStockResult.success
-        ? (outOfStockResult.products || []).map((p) => ({
-            ...p,
-            stockStatus: 'out_of_stock' as const,
-          }))
-        : []
+      const outOfStockResult =
+        outOfStockSettled.status === 'fulfilled'
+          ? outOfStockSettled.value &&
+            typeof outOfStockSettled.value === 'object' &&
+            'success' in outOfStockSettled.value
+            ? outOfStockSettled.value
+            : { success: false, products: [], message: 'Résultat invalide' }
+          : { success: false, products: [], message: 'Erreur lors du chargement' }
+
+      // Vérifier que les résultats existent et ont la structure attendue
+      const lowStockAlerts =
+        lowStockResult.success && 'products' in lowStockResult
+          ? (lowStockResult.products || []).map((p) => ({
+              ...p,
+              stockStatus: 'low_stock' as const,
+            }))
+          : []
+
+      const outOfStockAlerts =
+        outOfStockResult.success && 'products' in outOfStockResult
+          ? (outOfStockResult.products || []).map((p) => ({
+              ...p,
+              stockStatus: 'out_of_stock' as const,
+            }))
+          : []
 
       const allAlerts = [...outOfStockAlerts, ...lowStockAlerts]
       const criticalCount = outOfStockAlerts.length

@@ -206,6 +206,8 @@
     "Shopping Cart": "Panier d'achat",
     "Price": "Prix",
     "Quantity": "Quantité",
+    "Decrease quantity": "Diminuer la quantité",
+    "Increase quantity": "Augmenter la quantité",
     "items": "articles",
     "Your Shopping Cart is empty": "Votre panier est vide.",
     "Continue shopping on": "Continuer vos achats",
