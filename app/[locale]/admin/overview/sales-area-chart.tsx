@@ -5,19 +5,9 @@ import ProductPrice from '@/components/shared/product/product-price'
 import { Card, CardContent } from '@/components/ui/card'
 import { formatDateTime } from '@/lib/utils'
 import { useTheme } from 'next-themes'
-import React from 'react'
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  TooltipProps,
-  XAxis,
-  YAxis,
-} from 'recharts'
+import React, { useState, useEffect } from 'react'
 
-interface CustomTooltipProps extends TooltipProps<number, string> {
+interface CustomTooltipProps {
   active?: boolean
   payload?: { value: number }[]
   label?: string
@@ -71,6 +61,44 @@ const CustomXAxisTick: React.FC<any> = ({ x, y, payload }) => {
 
 export default function SalesAreaChart({ data }: { data: any[] }) {
   const { theme } = useTheme()
+  const [componentsReady, setComponentsReady] = useState(false)
+  const [RechartsComponents, setRechartsComponents] = useState<any>(null)
+
+  useEffect(() => {
+    // Charger recharts après le premier rendu
+    Promise.all([
+      import('recharts').then((mod) => ({
+        AreaChart: mod.AreaChart,
+        Area: mod.Area,
+        ResponsiveContainer: mod.ResponsiveContainer,
+        CartesianGrid: mod.CartesianGrid,
+        Tooltip: mod.Tooltip,
+        XAxis: mod.XAxis,
+        YAxis: mod.YAxis,
+      })),
+    ]).then(([components]) => {
+      setRechartsComponents(components)
+      setComponentsReady(true)
+    })
+  }, [])
+
+  if (!componentsReady || !RechartsComponents) {
+    return (
+      <div className='w-full h-[400px] flex items-center justify-center'>
+        <div className='animate-pulse text-muted-foreground'>Chargement...</div>
+      </div>
+    )
+  }
+
+  const {
+    AreaChart,
+    Area,
+    ResponsiveContainer,
+    CartesianGrid,
+    Tooltip,
+    XAxis,
+    YAxis,
+  } = RechartsComponents
 
   return (
     <ResponsiveContainer width='100%' height={400}>

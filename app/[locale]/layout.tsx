@@ -9,7 +9,11 @@ import { routing } from '@/i18n/routing'
 import { notFound } from 'next/navigation'
 import { getSetting } from '@/lib/actions/setting.actions'
 import { cookies } from 'next/headers'
-import { FloatingCartButton, MobileBottomNav } from '@/components/shared/layout-components'
+import {
+  FloatingCartButton,
+  MobileBottomNav,
+} from '@/components/shared/layout-components'
+import { NetworkOptimizations } from '@/components/shared/network-optimizations'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -72,6 +76,7 @@ export default async function AppLayout({
       <body
         className={`min-h-screen ${geistSans.variable} ${geistMono.variable} antialiased pb-16 md:pb-0`}
       >
+        <NetworkOptimizations />
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ClientProviders setting={{ ...setting, currency }}>
             {children}

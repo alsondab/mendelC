@@ -2,8 +2,8 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
-import { motion } from 'framer-motion'
+import React, { useState, useEffect } from 'react'
+import type { Variants } from 'framer-motion'
 
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { IProduct } from '@/lib/db/models/product.model'
@@ -14,7 +14,6 @@ import ProductPrice from './product-price'
 import ImageHover from './image-hover'
 import AddToCart from './add-to-cart'
 import WishlistButton from './wishlist-button'
-import { scale } from '@/lib/utils/animations'
 
 const ProductCard = ({
   product,
@@ -27,10 +26,26 @@ const ProductCard = ({
   hideBorder?: boolean
   hideAddToCart?: boolean
 }) => {
+  const [motionReady, setMotionReady] = useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [MotionDiv, setMotionDiv] = useState<any>(null)
+  const [scale, setScale] = useState<Variants | null>(null)
+
+  useEffect(() => {
+    // Lazy load framer-motion après le premier rendu pour réduire TBT
+    Promise.all([
+      import('framer-motion').then((mod) => mod.motion),
+      import('@/lib/utils/animations').then((mod) => mod.scale),
+    ]).then(([motion, scaleAnim]) => {
+      setMotionDiv(() => motion.div)
+      setScale(scaleAnim)
+      setMotionReady(true)
+    })
+  }, [])
+
   const ProductImage = () => (
     <Link href={`/product/${product.slug}`}>
       <div className='relative h-32 xs:h-40 sm:h-48 lg:h-52'>
-        {/* Badge de réduction en haut à gauche */}
         {/* Badge de réduction */}
         {product.listPrice > 0 && product.listPrice > product.price && (
           <div className='absolute top-1 left-1 sm:top-2 sm:left-2 z-10'>
@@ -134,17 +149,23 @@ const ProductCard = ({
     </div>
   )
 
+  // Fallback sans animation si framer-motion n'est pas encore chargé
+  const CardWrapper = motionReady && MotionDiv ? MotionDiv : 'div'
+  const motionProps =
+    motionReady && scale
+      ? {
+          variants: scale,
+          initial: 'hidden',
+          whileInView: 'visible',
+          viewport: { once: true, margin: '-50px' },
+          whileHover: hideBorder ? { scale: 1.02 } : { scale: 1.02, y: -4 },
+          whileTap: { scale: 0.98 },
+          transition: { type: 'spring', stiffness: 300, damping: 30 },
+        }
+      : {}
+
   return hideBorder ? (
-    <motion.div
-      className='flex flex-col group'
-      variants={scale}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-50px' }}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-    >
+    <CardWrapper className='flex flex-col group' {...motionProps}>
       <ProductImage />
       {!hideDetails && (
         <>
@@ -154,17 +175,9 @@ const ProductCard = ({
           {!hideAddToCart && <AddButton />}
         </>
       )}
-    </motion.div>
+    </CardWrapper>
   ) : (
-    <motion.div
-      variants={scale}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-50px' }}
-      whileHover={{ scale: 1.02, y: -4 }}
-      whileTap={{ scale: 0.98 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-    >
+    <CardWrapper {...motionProps}>
       <Card className='flex flex-col group hover:shadow-lg transition-shadow duration-200'>
         <CardHeader className='p-2 xs:p-3 sm:p-4'>
           <ProductImage />
@@ -180,7 +193,7 @@ const ProductCard = ({
           </>
         )}
       </Card>
-    </motion.div>
+    </CardWrapper>
   )
 }
 

@@ -1,17 +1,38 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import React from 'react'
-import {
-  PieChart,
-  Pie,
-  ResponsiveContainer,
-  Cell,
-  Legend,
-  Tooltip,
-} from 'recharts'
+import React, { useState, useEffect } from 'react'
 
 export default function SalesCategoryPieChart({ data }: { data: any[] }) {
+  const [componentsReady, setComponentsReady] = useState(false)
+  const [RechartsComponents, setRechartsComponents] = useState<any>(null)
+
+  useEffect(() => {
+    // Lazy load recharts pour réduire le bundle initial
+    import('recharts').then((mod) => {
+      setRechartsComponents({
+        PieChart: mod.PieChart,
+        Pie: mod.Pie,
+        ResponsiveContainer: mod.ResponsiveContainer,
+        Cell: mod.Cell,
+        Legend: mod.Legend,
+        Tooltip: mod.Tooltip,
+      })
+      setComponentsReady(true)
+    })
+  }, [])
+
+  if (!componentsReady || !RechartsComponents) {
+    return (
+      <div className='w-full h-[400px] flex items-center justify-center'>
+        <div className='animate-pulse text-muted-foreground'>Chargement...</div>
+      </div>
+    )
+  }
+
+  const { PieChart, Pie, ResponsiveContainer, Cell, Legend, Tooltip } =
+    RechartsComponents
+
   // Couleurs différentes pour chaque secteur
   const COLORS = [
     '#0088FE',
@@ -65,7 +86,7 @@ export default function SalesCategoryPieChart({ data }: { data: any[] }) {
           <Legend
             verticalAlign='bottom'
             height={36}
-            formatter={(value, entry: any) => (
+            formatter={(value: string, entry: any) => (
               <span className='text-sm'>
                 {value} ({entry.payload.totalSales} unités)
               </span>
