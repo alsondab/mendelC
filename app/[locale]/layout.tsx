@@ -9,8 +9,7 @@ import { routing } from '@/i18n/routing'
 import { notFound } from 'next/navigation'
 import { getSetting } from '@/lib/actions/setting.actions'
 import { cookies } from 'next/headers'
-import FloatingCartButton from '@/components/shared/header/floating-cart-button'
-import MobileBottomNav from '@/components/shared/mobile-bottom-nav'
+import { FloatingCartButton, MobileBottomNav } from '@/components/shared/layout-components'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -47,7 +46,7 @@ export default async function AppLayout({
   params,
   children,
 }: {
-  params: { locale: string }
+  params: Promise<{ locale: string }>
   children: React.ReactNode
 }) {
   const setting = await getSetting()
