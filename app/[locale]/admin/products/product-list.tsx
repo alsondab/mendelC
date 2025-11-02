@@ -16,10 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import {
-  deleteProduct,
-  getAllProductsForAdmin,
-} from '@/lib/actions/product.actions'
+import { deleteProduct, getAllProductsForAdmin } from '@/lib/actions/product.actions'
 import { IProduct } from '@/lib/db/models/product.model'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -41,9 +38,7 @@ const ProductList = () => {
   const [isPending, startTransition] = useTransition()
   const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
-  const [selectedProductId, setSelectedProductId] = useState<string | null>(
-    null
-  )
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null)
   const [editDialogOpen, setEditDialogOpen] = useState(false)
 
   const handlePageChange = (changeType: 'next' | 'prev') => {
@@ -210,8 +205,8 @@ const ProductList = () => {
             </div>
           </div>
 
-          <Button
-            asChild
+          <Button 
+            asChild 
             className='w-full sm:w-auto bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200'
           >
             <Link href='/admin/products/create'>{t('CreateProduct')}</Link>
@@ -295,8 +290,7 @@ const ProductList = () => {
                       >
                         {product.stockStatus === 'in_stock' && t('InStock')}
                         {product.stockStatus === 'low_stock' && t('LowStock')}
-                        {product.stockStatus === 'out_of_stock' &&
-                          t('OutOfStock')}
+                        {product.stockStatus === 'out_of_stock' && t('OutOfStock')}
                         {product.stockStatus === 'discontinued' &&
                           'Discontinué'}
                       </span>
@@ -346,11 +340,6 @@ const ProductList = () => {
                           product.isPublished
                             ? 'Voir les détails du produit'
                             : 'Produit non publié'
-                        }
-                        aria-label={
-                          product.isPublished
-                            ? `${t('View')} ${product.name}`
-                            : `${t('Draft')}: ${product.name}`
                         }
                         onClick={() => {
                           if (product.isPublished) {

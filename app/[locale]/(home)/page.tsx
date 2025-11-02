@@ -1,5 +1,5 @@
 import { HomeCard } from '@/components/shared/home/home-card'
-import { OptimizedHomeCarousel } from '@/components/shared/home/optimized-carousel'
+import { HomeCarousel } from '@/components/shared/home/home-carousel'
 import ProductSlider from '@/components/shared/product/product-slider'
 import { Card, CardContent } from '@/components/ui/card'
 
@@ -67,7 +67,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <OptimizedHomeCarousel items={carousels} />
+      <HomeCarousel items={carousels} />
       <div className='md:p-4 md:space-y-4 bg-border'>
         <HomeCard cards={cards} />
         <Card className='w-full'>

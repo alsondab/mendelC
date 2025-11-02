@@ -285,41 +285,41 @@ export default function Search({ categories, siteName }: SearchProps) {
       <div className='hidden lg:block'>
         <div className='relative'>
           <form onSubmit={handleSearchSubmit} className='space-y-4'>
-            <div className='relative'>
-              <div className='flex items-stretch h-14 rounded-2xl overflow-hidden bg-background/60 backdrop-blur-sm border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 ring-1 ring-white/10'>
-                <Select name='category'>
-                  <SelectTrigger className='w-auto h-full bg-gradient-to-br from-muted/40 to-muted/20 border-0 rounded-none border-r border-white/20 focus:ring-0 backdrop-blur-sm'>
-                    <SelectValue placeholder={t('Header.All')} />
-                  </SelectTrigger>
-                  <SelectContent
-                    position='popper'
-                    className='border-0 shadow-2xl bg-background/95 backdrop-blur-xl ring-1 ring-white/20'
-                  >
-                    <SelectItem value='all'>{t('Header.All')}</SelectItem>
-                    {categories.map((category) => (
-                      <div key={category._id}>
-                        <SelectItem value={category.name}>
-                          {category.name}
-                        </SelectItem>
-                        {category.subCategories &&
-                          category.subCategories.length > 0 && (
-                            <>
-                              {category.subCategories.map((subCategory) => (
-                                <SelectItem
-                                  key={subCategory._id}
-                                  value={`${category.name}|${subCategory.name}`}
-                                  className='ml-4 text-sm'
-                                >
-                                  └ {subCategory.name}
-                                </SelectItem>
-                              ))}
-                            </>
-                          )}
-                      </div>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Input
+          <div className='relative'>
+            <div className='flex items-stretch h-14 rounded-2xl overflow-hidden bg-background/60 backdrop-blur-sm border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 ring-1 ring-white/10'>
+              <Select name='category'>
+                <SelectTrigger className='w-auto h-full bg-gradient-to-br from-muted/40 to-muted/20 border-0 rounded-none border-r border-white/20 focus:ring-0 backdrop-blur-sm'>
+                  <SelectValue placeholder={t('Header.All')} />
+                </SelectTrigger>
+                <SelectContent
+                  position='popper'
+                  className='border-0 shadow-2xl bg-background/95 backdrop-blur-xl ring-1 ring-white/20'
+                >
+                  <SelectItem value='all'>{t('Header.All')}</SelectItem>
+                  {categories.map((category) => (
+                    <div key={category._id}>
+                      <SelectItem value={category.name}>
+                        {category.name}
+                      </SelectItem>
+                      {category.subCategories &&
+                        category.subCategories.length > 0 && (
+                          <>
+                            {category.subCategories.map((subCategory) => (
+                              <SelectItem
+                                key={subCategory._id}
+                                value={`${category.name}|${subCategory.name}`}
+                                className='ml-4 text-sm'
+                              >
+                                └ {subCategory.name}
+                              </SelectItem>
+                            ))}
+                          </>
+                        )}
+                    </div>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Input
                   value={searchValue}
                   onChange={(e) => {
                     setSearchValue(e.target.value)
@@ -328,23 +328,22 @@ export default function Search({ categories, siteName }: SearchProps) {
                   onFocus={() =>
                     setShowSuggestions(searchValue.trim().length >= 2)
                   }
-                  className='flex-1 border-0 rounded-none bg-transparent text-foreground text-base h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/60'
-                  placeholder={t('Header.Search Site', { name: siteName })}
-                  type='search'
+                className='flex-1 border-0 rounded-none bg-transparent text-foreground text-base h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/60'
+                placeholder={t('Header.Search Site', { name: siteName })}
+                type='search'
                   autoComplete='off'
-                />
-                <button
-                  type='submit'
-                  className='bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground h-full px-6 py-2 transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl'
-                  aria-label={t('Header.Search', { name: siteName })}
-                >
-                  <SearchIcon className='w-5 h-5' />
-                </button>
-              </div>
-              {/* Glow effect */}
-              <div className='absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/20 via-transparent to-primary/20 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none'></div>
+              />
+              <button
+                type='submit'
+                className='bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground h-full px-6 py-2 transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl'
+              >
+                <SearchIcon className='w-5 h-5' />
+              </button>
             </div>
-          </form>
+            {/* Glow effect */}
+            <div className='absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/20 via-transparent to-primary/20 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none'></div>
+          </div>
+        </form>
 
           {/* Suggestions Desktop */}
           {showSuggestions && (
@@ -391,7 +390,6 @@ export default function Search({ categories, siteName }: SearchProps) {
                             window.location.href = `/search?q=${encodeURIComponent(suggestion.text)}`
                           }, 100)
                         }}
-                        aria-label={`${t('Header.Select Suggestion')}: ${suggestion.text}`}
                         className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-all duration-200 flex items-center gap-3 ${
                           index === selectedSuggestionIndex
                             ? 'bg-primary/10 text-primary border border-primary/20'
@@ -447,7 +445,6 @@ export default function Search({ categories, siteName }: SearchProps) {
           <button
             onClick={handleSearchClick}
             className='flex items-center justify-center gap-1 h-8 sm:h-9 md:h-10 px-2 sm:px-2 md:px-3 rounded-full sm:rounded-lg bg-background/90 backdrop-blur-sm border border-border/60 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 text-sm text-muted-foreground hover:text-foreground ml-2 sm:ml-3'
-            aria-label={t('Header.Open Search')}
           >
             <SearchIcon className='w-4 h-4 sm:w-4 sm:h-4 md:w-5 md:h-5' />
             {/* Très petits écrans (< 375px) : Seulement l'icône */}
@@ -478,7 +475,6 @@ export default function Search({ categories, siteName }: SearchProps) {
                     size='sm'
                     onClick={clearSearch}
                     className='h-8 w-8 p-0 hover:bg-muted/50'
-                    aria-label={t('Header.Close Search')}
                   >
                     <X className='w-4 h-4' />
                   </Button>
@@ -505,7 +501,6 @@ export default function Search({ categories, siteName }: SearchProps) {
                       <button
                         type='submit'
                         className='bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground h-full px-4 py-2 transition-all duration-200 flex items-center justify-center'
-                        aria-label={t('Header.Search', { name: siteName })}
                       >
                         <SearchIcon className='w-5 h-5' />
                       </button>
@@ -552,7 +547,6 @@ export default function Search({ categories, siteName }: SearchProps) {
                                       window.location.href = `/search?q=${encodeURIComponent(suggestion.text)}`
                                     }, 100)
                                   }}
-                                  aria-label={`${t('Header.Select Suggestion')}: ${suggestion.text}`}
                                   className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors duration-200 flex items-center gap-2 ${
                                     index === selectedSuggestionIndex
                                       ? 'bg-primary/10 text-primary'
@@ -667,7 +661,6 @@ export default function Search({ categories, siteName }: SearchProps) {
                       <button
                         onClick={clearAllRecentSearches}
                         className='text-xs text-muted-foreground hover:text-foreground transition-colors duration-200'
-                        aria-label={t('Header.Clear All Recent Searches')}
                       >
                         Tout effacer
                       </button>
@@ -684,7 +677,6 @@ export default function Search({ categories, siteName }: SearchProps) {
                               setSearchValue(term)
                             }}
                             className='flex-1 text-left'
-                            aria-label={`${t('Header.Search For')}: ${term}`}
                           >
                             {term}
                           </button>
@@ -694,7 +686,6 @@ export default function Search({ categories, siteName }: SearchProps) {
                               removeRecentSearch(term)
                             }}
                             className='opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:text-red-500'
-                            aria-label={`${t('Header.Remove Recent Search')}: ${term}`}
                           >
                             <X className='w-3 h-3' />
                           </button>

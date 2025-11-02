@@ -284,7 +284,16 @@
       "Title": "Votre liste de favoris est vide",
       "Description": "Ajoutez des produits à vos favoris pour les retrouver facilement",
       "ContinueShopping": "Continuer mes achats"
-    }
+    },
+    "Removed": "Favori supprimé",
+    "RemovedDescription": "Le produit a été retiré de vos favoris",
+    "InStock": "En stock",
+    "OutOfStock": "Rupture de stock",
+    "View": "Voir",
+    "Remove": "Retirer",
+    "Item": "favori",
+    "Items": "favoris",
+    "ItemCount": "{count} {count, plural, one {favori} other {favoris}}"
   },
   "Loading": {
     "Loading": "Chargement..."
@@ -824,6 +833,12 @@
     "Back": "Retour",
     "Next": "Suivant",
     "Previous": "Précédent"
+  },
+  "StockNotifications": {
+    "CriticalAlertTitle": "🚨 Alerte Critique - Rupture de Stock",
+    "CriticalAlertDescription": "{count} produit(s) en rupture de stock nécessitent un réapprovisionnement urgent !",
+    "WarningAlertTitle": "⚠️ Alerte - Stock Faible",
+    "WarningAlertDescription": "{count} produit(s) ont un stock faible et nécessitent votre attention."
   },
   "Manage": {
     "Login & Security": "Connexion et Sécurité",

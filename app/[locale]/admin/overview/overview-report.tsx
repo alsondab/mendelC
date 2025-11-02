@@ -31,21 +31,12 @@ import {
 } from '@/components/ui/table'
 import { calculatePastDate, formatDateTime, formatNumber } from '@/lib/utils'
 
+import SalesCategoryPieChart from './sales-category-pie-chart'
+
 import React, { useEffect, useState, useTransition } from 'react'
-import dynamic from 'next/dynamic'
 import { DateRange } from 'react-day-picker'
 import { getOrderSummary } from '@/lib/actions/order.actions'
-
-// Lazy load charts to reduce initial bundle (~50KB saved)
-const SalesCategoryPieChart = dynamic(() => import('./sales-category-pie-chart'), {
-  ssr: false,
-  loading: () => <div className="h-[400px] flex items-center justify-center"><div className="text-muted-foreground">Chargement...</div></div>,
-})
-
-const SalesAreaChart = dynamic(() => import('./sales-area-chart'), {
-  ssr: false,
-  loading: () => <div className="h-[400px] flex items-center justify-center"><div className="text-muted-foreground">Chargement...</div></div>,
-})
+import SalesAreaChart from './sales-area-chart'
 import { CalendarDateRangePicker } from './date-range-picker'
 import { IOrderList } from '@/types'
 import ProductPrice from '@/components/shared/product/product-price'

@@ -3,7 +3,6 @@ import { routing } from './i18n/routing'
 
 import NextAuth from 'next-auth'
 import authConfig from './auth.config'
-import { NextResponse } from 'next/server'
 
 const publicPages = [
   '/',
@@ -29,10 +28,9 @@ export default auth((req) => {
   )
   const isPublicPage = publicPathnameRegex.test(req.nextUrl.pathname)
 
-  let response: NextResponse | Response
-
   if (isPublicPage) {
-    response = intlMiddleware(req)
+    // return NextResponse.next()
+    return intlMiddleware(req)
   } else {
     if (!req.auth) {
       const newUrl = new URL(
@@ -43,27 +41,9 @@ export default auth((req) => {
       )
       return Response.redirect(newUrl)
     } else {
-      response = intlMiddleware(req)
+      return intlMiddleware(req)
     }
   }
-
-  // Convert to NextResponse if needed
-  if (!(response instanceof NextResponse)) {
-    response = NextResponse.next(response)
-  }
-
-  // Add security headers
-  response.headers.set(
-    'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data:; connect-src 'self' https://*.vercel.live; frame-ancestors 'none';"
-  )
-  
-  response.headers.set('Cross-Origin-Opener-Policy', 'same-origin')
-  response.headers.set('X-Frame-Options', 'DENY')
-  response.headers.set('X-Content-Type-Options', 'nosniff')
-  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
-
-  return response
 })
 
 export const config = {

@@ -112,14 +112,7 @@
     "products": "products",
     "Dashboard": "Dashboard",
     "Personalize your experience": "Personalize your experience",
-    "Navigation": "Navigation",
-    "Open Search": "Open search",
-    "Close Search": "Close search",
-    "Select Suggestion": "Select suggestion",
-    "Search For": "Search for",
-    "Clear All Recent Searches": "Clear all recent searches",
-    "Remove Recent Search": "Remove recent search",
-    "Search": "Search {name}"
+    "Navigation": "Navigation"
   },
   "Home": {
     "Categories to explore": "Categories to explore",
@@ -834,8 +827,7 @@
     "CriticalAlertTitle": "🚨 Critical Alert - Out of Stock",
     "CriticalAlertDescription": "{count} product(s) out of stock require urgent restocking!",
     "WarningAlertTitle": "⚠️ Alert - Low Stock",
-    "WarningAlertDescription": "{count} product(s) have low stock and require your attention.",
-    "View Stock Management": "View stock management"
+    "WarningAlertDescription": "{count} product(s) have low stock and require your attention."
   },
   "Manage": {
     "Login & Security": "Login & Security",

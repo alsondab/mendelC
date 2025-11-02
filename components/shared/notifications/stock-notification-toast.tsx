@@ -50,18 +50,14 @@ export function StockNotificationToast() {
       if (notification.type === 'critical') {
         toast({
           title: t('StockNotifications.CriticalAlertTitle'),
-          description: t('StockNotifications.CriticalAlertDescription', {
-            count: notification.count,
-          }),
+          description: t('StockNotifications.CriticalAlertDescription', { count: notification.count }),
           variant: 'destructive',
           duration: 10000, // 10 secondes
         })
       } else if (notification.type === 'warning') {
         toast({
           title: t('StockNotifications.WarningAlertTitle'),
-          description: t('StockNotifications.WarningAlertDescription', {
-            count: notification.count,
-          }),
+          description: t('StockNotifications.WarningAlertDescription', { count: notification.count }),
           variant: 'default',
           duration: 8000, // 8 secondes
         })
@@ -117,7 +113,6 @@ export function StockNotificationToast() {
 export function StockNotificationBanner() {
   const { alerts, isLoading, criticalCount, warningCount } =
     useRealtimeStockAlerts()
-  const t = useTranslations()
 
   if (isLoading || alerts.length === 0) return null
 
@@ -167,7 +162,6 @@ export function StockNotificationBanner() {
                     ? 'bg-red-600 text-white hover:bg-red-700'
                     : 'bg-orange-600 text-white hover:bg-orange-700'
                 } transition-colors`}
-                aria-label={t('StockNotifications.View Stock Management')}
               >
                 Voir
               </button>
