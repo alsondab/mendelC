@@ -31,12 +31,37 @@ import {
 } from '@/components/ui/table'
 import { calculatePastDate, formatDateTime, formatNumber } from '@/lib/utils'
 
-import SalesCategoryPieChart from './sales-category-pie-chart'
+// ⚡ Optimization: Lazy load SalesCategoryPieChart (contient Recharts) pour réduire le bundle initial
+import dynamic from 'next/dynamic'
+const SalesCategoryPieChart = dynamic(
+  () => import('./sales-category-pie-chart'),
+  {
+    ssr: false, // ⚡ Optimization: Pas de SSR nécessaire pour Recharts (client-side seulement)
+    loading: () => (
+      <div className='w-full h-[400px] flex items-center justify-center'>
+        <div className='animate-pulse text-muted-foreground'>
+          Chargement du graphique...
+        </div>
+      </div>
+    ),
+  }
+)
+
+// ⚡ Optimization: Lazy load SalesAreaChart (contient Recharts) pour réduire le bundle initial
+const SalesAreaChart = dynamic(() => import('./sales-area-chart'), {
+  ssr: false, // ⚡ Optimization: Pas de SSR nécessaire pour Recharts (client-side seulement)
+  loading: () => (
+    <div className='w-full h-[400px] flex items-center justify-center'>
+      <div className='animate-pulse text-muted-foreground'>
+        Chargement du graphique...
+      </div>
+    </div>
+  ),
+})
 
 import React, { useEffect, useState, useTransition } from 'react'
 import { DateRange } from 'react-day-picker'
 import { getOrderSummary } from '@/lib/actions/order.actions'
-import SalesAreaChart from './sales-area-chart'
 import { CalendarDateRangePicker } from './date-range-picker'
 import { IOrderList } from '@/types'
 import ProductPrice from '@/components/shared/product/product-price'
@@ -53,8 +78,8 @@ export default function OverviewReport() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [data, setData] = useState<{ [key: string]: any }>()
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isPending, startTransition] = useTransition()
+  // ⚡ Optimization: useTransition pour éviter de bloquer le thread principal lors du chargement des données
+  const [, startTransition] = useTransition()
   useEffect(() => {
     if (date) {
       startTransition(async () => {

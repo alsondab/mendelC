@@ -89,8 +89,13 @@ const ProductCard = ({
               src={product.images[0]}
               alt={product.name}
               fill
+              // ⚡ Optimization: Sizes optimisé pour responsive
               sizes='(max-width: 320px) 50vw, (max-width: 480px) 60vw, (max-width: 768px) 40vw, 20vw'
               className='object-contain'
+              // ⚡ Optimization: Lazy loading pour toutes les images produits (hors écran initial)
+              loading='lazy'
+              // ⚡ Optimization: Qualité réduite pour réduire la taille
+              quality={75}
             />
           </div>
         ) : (

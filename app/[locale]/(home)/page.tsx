@@ -1,7 +1,6 @@
 import { HomeCard } from '@/components/shared/home/home-card'
-import { HomeCarousel } from '@/components/shared/home/home-carousel'
-import ProductSlider from '@/components/shared/product/product-slider'
 import { Card, CardContent } from '@/components/ui/card'
+import dynamic from 'next/dynamic'
 
 import {
   getCachedProductsForCard,
@@ -11,12 +10,49 @@ import { getCachedCategoryTree } from '@/lib/cache/category-cache'
 import { getSetting } from '@/lib/actions/setting.actions'
 import { getTranslations } from 'next-intl/server'
 
+// ⚡ Optimization: Lazy load HomeCarousel (contient Embla Carousel) pour réduire le bundle initial
+const HomeCarousel = dynamic(
+  () =>
+    import('@/components/shared/home/home-carousel').then((mod) => ({
+      default: mod.HomeCarousel,
+    })),
+  {
+    // ⚡ Optimization: SSR activé pour meilleur SEO, le composant gère son propre lazy loading client
+    ssr: true,
+    loading: () => (
+      <div className='w-full aspect-[16/6] bg-muted animate-pulse flex items-center justify-center'>
+        <span className='text-muted-foreground'>Chargement...</span>
+      </div>
+    ),
+  }
+)
+
+// ⚡ Optimization: Lazy load ProductSlider (contient Embla Carousel) pour réduire le bundle initial
+const ProductSlider = dynamic(
+  () => import('@/components/shared/product/product-slider'),
+  {
+    ssr: true, // ⚡ Optimization: SSR possible pour le contenu statique
+    loading: () => (
+      <div className='w-full h-64 bg-muted animate-pulse flex items-center justify-center'>
+        <span className='text-muted-foreground'>Chargement...</span>
+      </div>
+    ),
+  }
+)
+
 export default async function HomePage() {
   const t = await getTranslations('Home')
   const { carousels } = await getSetting()
-  
+
   // Utiliser le cache pour tous les produits
-  const [todaysDeals, bestSellingProducts, categories, newArrivals, featureds, bestSellers] = await Promise.all([
+  const [
+    todaysDeals,
+    bestSellingProducts,
+    categories,
+    newArrivals,
+    featureds,
+    bestSellers,
+  ] = await Promise.all([
     getCachedProductsByTag({ tag: 'todays-deal' }),
     getCachedProductsByTag({ tag: 'best-seller' }),
     getCachedCategoryTree(),

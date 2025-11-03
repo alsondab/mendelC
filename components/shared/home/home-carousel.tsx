@@ -40,9 +40,16 @@ export function HomeCarousel({ items }: { items: ICarousel[] }) {
                     alt={item.title}
                     fill
                     className='object-cover'
+                    // ⚡ Optimization: Priority uniquement pour la première image (LCP)
                     priority={index === 0}
-                    fetchPriority={index === 0 ? 'high' : 'auto'}
+                    // ⚡ Optimization: fetchPriority high pour LCP uniquement
+                    fetchPriority={index === 0 ? 'high' : 'low'}
+                    // ⚡ Optimization: Sizes optimisé pour le carousel (plein écran)
                     sizes='100vw'
+                    // ⚡ Optimization: Lazy loading pour les images suivantes
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    // ⚡ Optimization: Qualité réduite pour les images non prioritaires
+                    quality={index === 0 ? 90 : 75}
                   />
                 ) : (
                   <div className='w-full h-full bg-muted flex items-center justify-center'>
