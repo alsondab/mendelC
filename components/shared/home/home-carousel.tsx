@@ -48,8 +48,10 @@ export function HomeCarousel({ items }: { items: ICarousel[] }) {
                     sizes='100vw'
                     // ⚡ Optimization: Lazy loading pour les images suivantes
                     loading={index === 0 ? 'eager' : 'lazy'}
-                    // ⚡ Optimization: Qualité réduite pour les images non prioritaires
-                    quality={index === 0 ? 90 : 75}
+                    // ⚡ Optimization: Qualité réduite pour les images non prioritaires (65 au lieu de 75)
+                    quality={index === 0 ? 85 : 65}
+                    // ⚡ Optimization: Décodage asynchrone pour améliorer le TBT
+                    decoding='async'
                   />
                 ) : (
                   <div className='w-full h-full bg-muted flex items-center justify-center'>

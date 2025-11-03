@@ -51,7 +51,8 @@ export async function generateMetadata() {
       shortcut: logo,
       apple: logo,
     },
-    // ⚡ Optimization: Preload de l'image LCP et preconnect pour améliorer les performances
+    // ⚡ Optimization: Preconnects déplacés côté serveur pour meilleure performance (limite à 4)
+    // Preconnects pour Google Fonts et UploadThing CDN
     other: {
       ...(firstCarouselImage && {
         'preload-image': firstCarouselImage,

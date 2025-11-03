@@ -36,8 +36,9 @@ const nextConfig: NextConfig = withNextIntl()({
       'recharts',
       'embla-carousel-react',
     ],
-    // ⚡ Optimization: optimizeCss nécessite critters - désactivé pour éviter les erreurs
-    // optimizeCss: true,
+    // ⚡ Optimization: Activer optimizeCss avec critters pour extraire le CSS critique et réduire le render blocking
+    // Critters est déjà installé dans package.json
+    optimizeCss: true,
   },
 
   // ⚡ Optimization: Modulariser les imports pour réduire la taille des bundles
@@ -74,8 +75,8 @@ const nextConfig: NextConfig = withNextIntl()({
         runtimeChunk: 'single',
         splitChunks: {
           chunks: 'all',
-          // ⚡ Optimization: Réduire maxInitialRequests pour éviter trop de chunks initiaux (25 au lieu de 30)
-          maxInitialRequests: 25,
+          // ⚡ Optimization: Réduire maxInitialRequests pour réduire la chaîne de dépendances critiques (20 au lieu de 25)
+          maxInitialRequests: 20,
           maxAsyncRequests: 30,
           // ⚡ Optimization: Taille minimale pour éviter les micro-chunks inutiles (20 KB)
           minSize: 20000,
@@ -90,8 +91,8 @@ const nextConfig: NextConfig = withNextIntl()({
               name: 'vendors',
               priority: 10,
               reuseExistingChunk: true,
-              // ⚡ Optimization: Limiter la taille pour éviter les gros bundles
-              maxSize: 200000, // 200 KB
+              // ⚡ Optimization: Limiter la taille pour éviter les gros bundles (réduit de 200 KB à 150 KB)
+              maxSize: 150000, // 150 KB
             },
             // ⚡ Optimization: Framer Motion dans un chunk séparé (lazy load)
             framerMotion: {

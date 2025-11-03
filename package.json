@@ -2,6 +2,7 @@
   "name": "nextjs-amazona",
   "version": "0.1.0",
   "private": true,
+  "sideEffects": false,
   "scripts": {
     "email": "email dev",
     "seed": "npx tsx ./lib/db/seed.ts",

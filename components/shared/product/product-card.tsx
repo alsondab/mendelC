@@ -94,8 +94,10 @@ const ProductCard = ({
               className='object-contain'
               // ⚡ Optimization: Lazy loading pour toutes les images produits (hors écran initial)
               loading='lazy'
-              // ⚡ Optimization: Qualité réduite pour réduire la taille
-              quality={75}
+              // ⚡ Optimization: Qualité réduite pour réduire la taille (65 au lieu de 75)
+              quality={65}
+              // ⚡ Optimization: Décodage asynchrone pour améliorer le TBT
+              decoding='async'
             />
           </div>
         ) : (

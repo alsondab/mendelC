@@ -72,6 +72,10 @@ export default function ProductGallery({ images }: { images: string[] }) {
               sizes='(max-width: 475px) 100vw, (max-width: 768px) 80vw, (max-width: 1200px) 50vw, 600px'
               className='object-contain'
               priority={selectedImage === 0}
+              // ⚡ Optimization: Qualité réduite pour réduire la taille (70 pour images principales)
+              quality={selectedImage === 0 ? 80 : 65}
+              // ⚡ Optimization: Décodage asynchrone pour améliorer le TBT
+              decoding='async'
             />
           </div>
         </Zoom>
