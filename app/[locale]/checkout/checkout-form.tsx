@@ -67,7 +67,7 @@ const CheckoutForm = () => {
   const { toast } = useToast()
   const router = useRouter()
   const t = useTranslations('Checkout')
-  
+
   // Helper function to translate delivery date names
   const translateDeliveryDate = (name: string): string => {
     try {

@@ -134,14 +134,13 @@ export default function CommonForm({
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
+                    disabled
                   />
                 </FormControl>
                 <div className='space-y-1'>
                   <FormLabel>Mode maintenance</FormLabel>
                   <FormDescription>
-                    Active une page de maintenance visible par tous les visiteurs
-                    du site. Utile lors des mises à jour ou des interventions
-                    techniques.
+                    À implémenter dans une version ultérieure
                   </FormDescription>
                 </div>
                 <FormMessage />
