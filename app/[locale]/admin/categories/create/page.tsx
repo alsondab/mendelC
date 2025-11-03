@@ -22,9 +22,7 @@ export default async function CreateCategoryPage() {
               {t('CreateTitle')}
             </h1>
           </div>
-          <p className='text-muted-foreground'>
-            {t('CreateDescription')}
-          </p>
+          <p className='text-muted-foreground'>{t('CreateDescription')}</p>
         </div>
       </div>
 

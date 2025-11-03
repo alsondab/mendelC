@@ -11,11 +11,13 @@ Trois endpoints ont été configurés :
 - **`logoUploader`** : Endpoint dédié aux logos (2MB max, admin seulement)
 
 **Sécurité** :
+
 - ✅ Vérification admin obligatoire pour `carouselImageUploader` et `logoUploader`
 - ✅ Authentification requise pour tous les endpoints
 - ✅ Gestion d'erreurs avec messages clairs
 
 **Optimisations automatiques** :
+
 - ✅ CDN UploadThing (utfs.io) pour livraison rapide
 - ✅ Conversion automatique en formats modernes (WebP, AVIF)
 - ✅ Compression automatique des images
@@ -34,11 +36,13 @@ Un composant complet avec :
 ### 3. **Formulaires améliorés**
 
 #### Carousel Form (`app/[locale]/admin/settings/carousel-form.tsx`)
+
 - ✅ Interface restructurée avec cartes par carousel
 - ✅ Utilisation du composant `ImageUpload` avec endpoint `carouselImageUploader`
 - ✅ Meilleure organisation visuelle avec grille responsive
 
 #### Site Info Form (`app/[locale]/admin/settings/site-info-form.tsx`)
+
 - ✅ Utilisation du composant `ImageUpload` avec endpoint `logoUploader`
 - ✅ Interface simplifiée et professionnelle
 
@@ -57,11 +61,13 @@ Un composant complet avec :
 7. Sauvegarder les paramètres
 
 **Remplacement d'image** :
+
 - Survoler l'image existante
 - Cliquer sur **"Remplacer"**
 - Sélectionner une nouvelle image
 
 **Suppression** :
+
 - Survoler l'image existante
 - Cliquer sur **"Supprimer"**
 
@@ -140,14 +146,17 @@ Le composant `ImageUpload` peut être personnalisé :
 ## 🐛 Dépannage
 
 ### Erreur "Unauthorized"
+
 - Vérifier que vous êtes connecté en tant qu'administrateur
 - Vérifier les variables d'environnement UploadThing
 
 ### Erreur "File too large"
+
 - Réduire la taille de l'image avant upload
 - Utiliser un outil de compression d'images
 
 ### L'image ne s'affiche pas
+
 - Vérifier que l'URL est bien sauvegardée dans les paramètres
 - Vérifier la connexion internet
 - Vérifier les permissions CORS si nécessaire
@@ -160,4 +169,3 @@ Le composant `ImageUpload` peut être personnalisé :
 - [ ] Compression côté client avant upload
 - [ ] Gestion de plusieurs images simultanées
 - [ ] Historique des uploads
-

@@ -112,9 +112,14 @@ export default function PaymentMethodForm({
             type='button'
             variant={'outline'}
             onClick={() => append({ name: '', commission: 0 })}
+            disabled
+            className='opacity-50 cursor-not-allowed'
           >
             Ajouter une méthode de paiement
           </Button>
+          <p className='text-sm text-muted-foreground'>
+            À implémenter dans une version ultérieure
+          </p>
         </div>
 
         <FormField

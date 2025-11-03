@@ -110,9 +110,14 @@ export default function LanguageForm({
             type='button'
             variant={'outline'}
             onClick={() => append({ name: '', code: '' })}
+            disabled
+            className='opacity-50 cursor-not-allowed'
           >
             Ajouter une langue
           </Button>
+          <p className='text-sm text-muted-foreground'>
+            À implémenter dans une version ultérieure
+          </p>
         </div>
 
         <FormField

@@ -139,7 +139,9 @@ export const updateGlobalStockThresholds = async ({
     const setting = await Setting.findOne()
 
     if (!setting) {
-      throw new Error('Aucun paramètre trouvé. Veuillez initialiser les paramètres du site.')
+      throw new Error(
+        'Aucun paramètre trouvé. Veuillez initialiser les paramètres du site.'
+      )
     }
 
     // Mettre à jour les seuils globaux

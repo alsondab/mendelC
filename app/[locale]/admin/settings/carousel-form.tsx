@@ -86,28 +86,12 @@ export default function CarouselForm({
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name={`carousels.${index}.buttonCaption`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Texte du bouton</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder='En savoir plus' />
-                      </FormControl>
-                      <FormMessage>
-                        {errors.carousels?.[index]?.buttonCaption?.message}
-                      </FormMessage>
-                    </FormItem>
-                  )}
-                />
-
                 {/* ⚡ Optimization: Utilisation du composant ImageUpload pour meilleure UX */}
                 <FormField
                   control={form.control}
                   name={`carousels.${index}.image`}
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className='md:col-span-2'>
                       <FormLabel>Image du carrousel</FormLabel>
                       <FormControl>
                         <ImageUpload

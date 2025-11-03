@@ -147,9 +147,14 @@ export default function CurrencyForm({
             onClick={() =>
               append({ name: '', code: '', symbol: '', convertRate: 1 })
             }
+            disabled
+            className='opacity-50 cursor-not-allowed'
           >
             Ajouter une devise
           </Button>
+          <p className='text-sm text-muted-foreground'>
+            À implémenter dans une version ultérieure
+          </p>
         </div>
 
         <FormField

@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -43,8 +44,17 @@ export default function CommonForm({
               <FormItem className='w-full'>
                 <FormLabel>Taille de page</FormLabel>
                 <FormControl>
-                  <Input placeholder='Entrez la taille de page' {...field} />
+                  <Input
+                    type='number'
+                    placeholder='Entrez la taille de page'
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
                 </FormControl>
+                <FormDescription>
+                  Nombre de produits affichés par page dans les listes (ex: liste
+                  produits, résultats de recherche)
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -61,6 +71,7 @@ export default function CommonForm({
                   <Select
                     value={field.value || ''}
                     onValueChange={(value) => field.onChange(value)}
+                    disabled
                   >
                     <SelectTrigger>
                       <SelectValue placeholder='Select a color' />
@@ -74,6 +85,9 @@ export default function CommonForm({
                     </SelectContent>
                   </Select>
                 </FormControl>
+                <FormDescription>
+                  Non configurable - Couleur or/jaune fixe
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -88,6 +102,7 @@ export default function CommonForm({
                   <Select
                     value={field.value || ''}
                     onValueChange={(value) => field.onChange(value)}
+                    disabled
                   >
                     <SelectTrigger>
                       <SelectValue placeholder='Select a theme' />
@@ -101,6 +116,9 @@ export default function CommonForm({
                     </SelectContent>
                   </Select>
                 </FormControl>
+                <FormDescription>
+                  À implémenter dans une version ultérieure
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -118,7 +136,14 @@ export default function CommonForm({
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
-                <FormLabel>Mode maintenance ?</FormLabel>
+                <div className='space-y-1'>
+                  <FormLabel>Mode maintenance</FormLabel>
+                  <FormDescription>
+                    Active une page de maintenance visible par tous les visiteurs
+                    du site. Utile lors des mises à jour ou des interventions
+                    techniques.
+                  </FormDescription>
+                </div>
                 <FormMessage />
               </FormItem>
             )}

@@ -1080,22 +1080,22 @@ const data: Data = {
       defaultPaymentMethod: 'CashOnDelivery',
       availableDeliveryDates: [
         {
-          name: 'Tomorrow',
+          name: 'Demain',
           daysToDeliver: 1,
-          shippingPrice: 12.9,
+          shippingPrice: 2000,
         },
         {
-          name: 'Next 3 Days',
+          name: 'Dans 3 jours',
           daysToDeliver: 3,
-          shippingPrice: 6.9,
+          shippingPrice: 1500,
         },
         {
-          name: 'Next 5 Days',
+          name: 'Dans 5 jours',
           daysToDeliver: 5,
-          shippingPrice: 4.9,
+          shippingPrice: 1000,
         },
       ],
-      defaultDeliveryDate: 'Next 5 Days',
+      defaultDeliveryDate: 'Dans 5 jours',
     },
   ],
 }

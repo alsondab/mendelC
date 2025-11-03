@@ -793,7 +793,7 @@
       "Replace": "Rep.",
       "Remove": "Rem."
     },
-    "Overview": {
+    "OverviewPage": {
       "PerformanceOverview": "Performance and statistics overview",
       "SalesEvolution": "Sales evolution over the selected period",
       "MonthlyRevenue": "Monthly revenue",
@@ -845,6 +845,18 @@
     "Shipping": "Shipping",
     "OrderTotal": "Order Total",
     "DeliveryDate": "Delivery date",
+    "DeliveryDates": {
+      "Tomorrow": "Tomorrow",
+      "Next 3 Days": "Next 3 Days",
+      "Next 5 Days": "Next 5 Days",
+      "Next 7 Days": "Next 7 Days",
+      "Next 10 Days": "Next 10 Days",
+      "Demain": "Tomorrow",
+      "Dans 3 jours": "Next 3 Days",
+      "Dans 5 jours": "Next 5 Days",
+      "Dans 7 jours": "Next 7 Days",
+      "Dans 10 jours": "Next 10 Days"
+    },
     "PaymentMethod": "Payment Method",
     "CashOnDelivery": "Cash On Delivery",
     "Cash On Delivery": "Cash On Delivery",

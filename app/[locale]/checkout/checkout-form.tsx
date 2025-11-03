@@ -67,6 +67,21 @@ const CheckoutForm = () => {
   const { toast } = useToast()
   const router = useRouter()
   const t = useTranslations('Checkout')
+  
+  // Helper function to translate delivery date names
+  const translateDeliveryDate = (name: string): string => {
+    try {
+      const translation = t(`DeliveryDates.${name}` as Parameters<typeof t>[0])
+      return translation !== `DeliveryDates.${name}` ? translation : name
+    } catch {
+      return name
+    }
+  }
+
+  // Helper function to format shipping price in CFA (no conversion needed)
+  const formatShippingPrice = (price: number): string => {
+    return `${Math.round(price).toLocaleString('fr-FR')} CFA`
+  }
   const {
     setting: {
       site,
@@ -244,7 +259,7 @@ const CheckoutForm = () => {
                   ) : shippingPrice === 0 ? (
                     <span className='text-green-600 font-medium'>GRATUIT</span>
                   ) : (
-                    <ProductPrice price={shippingPrice} plain />
+                    formatShippingPrice(shippingPrice)
                   )}
                 </span>
               </div>
@@ -618,15 +633,10 @@ const CheckoutForm = () => {
                 </div>
                 <div className='col-span-5'>
                   <p>
-                    Delivery date:{' '}
-                    {
-                      formatDateTime(
-                        calculateFutureDate(
-                          availableDeliveryDates[deliveryDateIndex]
-                            .daysToDeliver
-                        )
-                      ).dateOnly
-                    }
+                    {t('DeliveryDate')}:{' '}
+                    {translateDeliveryDate(
+                      availableDeliveryDates[deliveryDateIndex].name
+                    )}
                   </p>
                   <ul>
                     {items.map((item, index) => (
@@ -763,17 +773,10 @@ const CheckoutForm = () => {
                                     htmlFor={`address-${dd.name}`}
                                   >
                                     <div className='text-green-700 font-semibold'>
-                                      {
-                                        formatDateTime(
-                                          calculateFutureDate(dd.daysToDeliver)
-                                        ).dateOnly
-                                      }
+                                      {translateDeliveryDate(dd.name)}
                                     </div>
-                                    <div>
-                                      <ProductPrice
-                                        price={dd.shippingPrice}
-                                        plain
-                                      />
+                                    <div className='text-sm font-medium'>
+                                      {formatShippingPrice(dd.shippingPrice)}
                                     </div>
                                   </Label>
                                 </div>

@@ -29,9 +29,9 @@ export default function WishlistCount() {
   return (
     <motion.button
       variants={buttonVariants}
-      initial="rest"
-      whileHover="hover"
-      whileTap="tap"
+      initial='rest'
+      whileHover='hover'
+      whileTap='tap'
       onClick={toggle}
       className={cn(
         'relative flex items-center justify-center transition-all duration-200',

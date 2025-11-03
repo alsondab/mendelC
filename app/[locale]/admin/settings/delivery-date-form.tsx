@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -55,6 +56,14 @@ export default function DeliveryDateForm({
         <CardTitle>Dates de livraison</CardTitle>
       </CardHeader>
       <CardContent className='space-y-4'>
+        <div className='p-3 bg-muted rounded-md mb-4'>
+          <p className='text-sm text-muted-foreground'>
+            <strong>Note importante :</strong> Les prix doivent être saisis en{' '}
+            <strong>CFA</strong> (ex: 2000 pour 2000 CFA, 5000 pour 5000 CFA).
+            Les noms doivent être en français (ex: &quot;Demain&quot;,
+            &quot;Dans 3 jours&quot;, &quot;Dans 5 jours&quot;).
+          </p>
+        </div>
         <div className='space-y-4'>
           {fields.map((field, index) => (
             <div key={field.id} className='flex gap-2'>
@@ -65,7 +74,10 @@ export default function DeliveryDateForm({
                   <FormItem>
                     {index == 0 && <FormLabel>Nom</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='Nom' />
+                      <Input
+                        {...field}
+                        placeholder='Ex: Demain, Dans 3 jours, Dans 5 jours'
+                      />
                     </FormControl>
                     <FormMessage>
                       {errors.availableDeliveryDates?.[index]?.name?.message}
@@ -80,7 +92,14 @@ export default function DeliveryDateForm({
                   <FormItem>
                     {index == 0 && <FormLabel>Jours</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='Jours à livrer' />
+                      <Input
+                        type='number'
+                        {...field}
+                        placeholder='1'
+                        onChange={(e) =>
+                          field.onChange(Number(e.target.value))
+                        }
+                      />
                     </FormControl>
                     <FormMessage>
                       {
@@ -96,10 +115,31 @@ export default function DeliveryDateForm({
                 name={`availableDeliveryDates.${index}.shippingPrice`}
                 render={({ field }) => (
                   <FormItem>
-                    {index == 0 && <FormLabel>Prix de livraison</FormLabel>}
+                    {index == 0 && (
+                      <FormLabel>Prix de livraison (CFA)</FormLabel>
+                    )}
                     <FormControl>
-                      <Input {...field} placeholder='Prix de livraison' />
+                      <div className='relative'>
+                        <Input
+                          type='number'
+                          {...field}
+                          placeholder='2000'
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                          className='pr-16'
+                          value={field.value || ''}
+                        />
+                        <span className='absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground'>
+                          CFA
+                        </span>
+                      </div>
                     </FormControl>
+                    {field.value > 0 && (
+                      <FormDescription className='text-xs'>
+                        {field.value.toLocaleString('fr-FR')} CFA
+                      </FormDescription>
+                    )}
                     <FormMessage>
                       {
                         errors.availableDeliveryDates?.[index]?.shippingPrice
@@ -158,9 +198,17 @@ export default function DeliveryDateForm({
                   <SelectContent>
                     {availableDeliveryDates
                       .filter((x) => x.name)
-                      .map((lang, index) => (
-                        <SelectItem key={index} value={lang.name}>
-                          {lang.name} ({lang.name})
+                      .map((deliveryDate, index) => (
+                        <SelectItem key={index} value={deliveryDate.name}>
+                          {deliveryDate.name}
+                          {deliveryDate.shippingPrice > 0 && (
+                            <span className='ml-2 text-xs text-muted-foreground'>
+                              ({deliveryDate.shippingPrice.toLocaleString(
+                                'fr-FR'
+                              )}{' '}
+                              CFA)
+                            </span>
+                          )}
                         </SelectItem>
                       ))}
                   </SelectContent>
