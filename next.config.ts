@@ -5,7 +5,6 @@ const nextConfig: NextConfig = withNextIntl()({
   // ⚡ Optimization: Activer React Strict Mode pour meilleures performances
   reactStrictMode: true,
   // ⚡ Optimization: SWC minify est activé par défaut dans Next.js 15 (pas besoin de le configurer)
-  // ⚡ Optimization: Next.js 15 transpile automatiquement vers ES2020+ selon tsconfig.json target
 
   images: {
     remotePatterns: [
@@ -37,9 +36,8 @@ const nextConfig: NextConfig = withNextIntl()({
       'recharts',
       'embla-carousel-react',
     ],
-    // ⚡ Optimization: Activer optimizeCss avec critters pour extraire le CSS critique et réduire le render blocking
-    // Critters est déjà installé dans package.json
-    optimizeCss: true,
+    // ⚡ Optimization: optimizeCss nécessite critters - désactivé pour éviter les erreurs
+    // optimizeCss: true,
   },
 
   // ⚡ Optimization: Modulariser les imports pour réduire la taille des bundles
@@ -52,12 +50,6 @@ const nextConfig: NextConfig = withNextIntl()({
       transform: 'lucide-react/dist/esm/icons/{{kebabCase member}}',
       skipDefaultConversion: true,
     },
-    // ⚡ Optimization: Modulariser date-fns pour réduire la taille
-    'date-fns': {
-      transform: 'date-fns/{{member}}',
-      skipDefaultConversion: true,
-    },
-    // ⚡ Optimization: Zod n'a pas besoin de modularisation car il exporte déjà correctement depuis le package principal
   },
 
   // Optimize compiler
@@ -82,13 +74,9 @@ const nextConfig: NextConfig = withNextIntl()({
         runtimeChunk: 'single',
         splitChunks: {
           chunks: 'all',
-          // ⚡ Optimization: Réduire maxInitialRequests pour réduire la chaîne de dépendances critiques (20 au lieu de 25)
-          maxInitialRequests: 20,
+          // ⚡ Optimization: Limiter la taille maximale des chunks pour meilleur code splitting
+          maxInitialRequests: 30,
           maxAsyncRequests: 30,
-          // ⚡ Optimization: Taille minimale pour éviter les micro-chunks inutiles (20 KB)
-          minSize: 20000,
-          // ⚡ Optimization: Seuil pour forcer le splitting des gros chunks (50 KB)
-          enforceSizeThreshold: 50000,
           cacheGroups: {
             default: false,
             vendors: false,
@@ -98,8 +86,8 @@ const nextConfig: NextConfig = withNextIntl()({
               name: 'vendors',
               priority: 10,
               reuseExistingChunk: true,
-              // ⚡ Optimization: Limiter la taille pour éviter les gros bundles (réduit à 100 KB pour chunks plus petits)
-              maxSize: 100000, // 100 KB
+              // ⚡ Optimization: Limiter la taille pour éviter les gros bundles
+              maxSize: 200000, // 200 KB
             },
             // ⚡ Optimization: Framer Motion dans un chunk séparé (lazy load)
             framerMotion: {
@@ -134,8 +122,8 @@ const nextConfig: NextConfig = withNextIntl()({
               minChunks: 2,
               priority: 5,
               reuseExistingChunk: true,
-              // ⚡ Optimization: Limiter la taille des chunks communs (réduit à 100 KB)
-              maxSize: 100000, // 100 KB
+              // ⚡ Optimization: Limiter la taille des chunks communs
+              maxSize: 200000, // 200 KB
             },
           },
         },
@@ -143,51 +131,10 @@ const nextConfig: NextConfig = withNextIntl()({
     }
     return config
   },
-  // ⚡ Optimization: Headers pour optimiser le cache des assets statiques
-  async headers() {
-    return [
-      {
-        // Cache pour toutes les images statiques
-        source: '/images/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        // Cache pour les icônes
-        source: '/icons/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        // Cache pour les fichiers statiques Next.js
-        source: '/_next/static/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        // Cache pour les fonts
-        source: '/fonts/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-    ]
-  },
+  // Compression headers
+  compress: true,
+  // PoweredByHeader removed by default in Next.js 15
+  poweredByHeader: false,
 })
 
 export default nextConfig

@@ -122,6 +122,8 @@ const ProductForm = ({
   onSuccess?: () => void
 }) => {
   const router = useRouter()
+  const t = useTranslations('ProductForm')
+  const tProductsList = useTranslations('ProductsList')
   const [categories, setCategories] = useState<ICategory[]>([])
   const [subCategories, setSubCategories] = useState<ICategory[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string>('')
@@ -135,8 +137,6 @@ const ProductForm = ({
   })
 
   const { toast } = useToast()
-  const t = useTranslations('Admin.Products')
-  const tProductsList = useTranslations('Admin.ProductsList')
 
   // Charger les catégories
   useEffect(() => {

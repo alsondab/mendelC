@@ -123,8 +123,8 @@ export default function ImageUpload({
               sizes='(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw'
               // ⚡ Optimization: Lazy loading pour les images déjà uploadées
               loading='lazy'
-              // ⚡ Optimization: Qualité réduite pour meilleures performances (65 au lieu de 75)
-              quality={65}
+              // ⚡ Optimization: Qualité réduite pour meilleures performances
+              quality={75}
               // ⚡ Optimization: Décodage asynchrone pour améliorer le TBT
               decoding='async'
             />

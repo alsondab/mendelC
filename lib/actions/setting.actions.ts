@@ -34,9 +34,11 @@ export const updateSetting = async (newSetting: ISettingInput) => {
       upsert: true,
       new: true,
     }).lean()
+    // Update the server-side cache with the new values
+    // This ensures that subsequent getSetting() calls return the updated data
     globalForSettings.cachedSettings = JSON.parse(
       JSON.stringify(updatedSetting)
-    ) // Update the cache
+    )
     return {
       success: true,
       message: 'Paramètres mis à jour avec succès',

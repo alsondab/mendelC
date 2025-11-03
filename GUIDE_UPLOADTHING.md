@@ -161,4 +161,3 @@ Le composant `ImageUpload` peut être personnalisé :
 - [ ] Gestion de plusieurs images simultanées
 - [ ] Historique des uploads
 
-

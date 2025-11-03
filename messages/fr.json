@@ -660,7 +660,7 @@
       "CategoriesCount": "{from}-{to} sur {total} catégories",
       "Name": "Nom",
       "Slug": "Slug",
-      "DescriptionLabel": "Description",
+      "Description": "Description",
       "Parent": "Parent",
       "Status": "Statut",
       "Order": "Ordre",
@@ -793,7 +793,7 @@
       "Replace": "Rem.",
       "Remove": "Sup."
     },
-    "OverviewPage": {
+    "Overview": {
       "PerformanceOverview": "Aperçu des performances et statistiques",
       "SalesEvolution": "Évolution des ventes sur la période sélectionnée",
       "MonthlyRevenue": "Revenus mensuels",

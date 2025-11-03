@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
 import { useToast } from '@/hooks/use-toast'
@@ -19,6 +20,7 @@ import CarouselForm from './carousel-form'
 
 const SettingForm = ({ setting }: { setting: ISettingInput }) => {
   const { setSetting } = useSetting()
+  const router = useRouter()
 
   const form = useForm<ISettingInput>({
     resolver: zodResolver(SettingInputSchema),
@@ -41,6 +43,8 @@ const SettingForm = ({ setting }: { setting: ISettingInput }) => {
         description: res.message,
       })
       setSetting(values as ClientSetting)
+      // Force Next.js to refresh server data and update all client components
+      router.refresh()
     }
   }
 
