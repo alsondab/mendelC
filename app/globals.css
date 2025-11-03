@@ -116,10 +116,10 @@ body {
   }
   .highlight-link a,
   a.highlight-link {
-    @apply text-luxury-red hover:text-luxury-gold hover:underline;
+    @apply text-luxury-red hover:text-amber-500 hover:underline;
   }
   .header-button {
-    @apply cursor-pointer p-1 border border-transparent hover:border-luxury-gold rounded-[2px];
+    @apply cursor-pointer p-1 border border-transparent hover:border-amber-500 rounded-[2px];
   }
   .item-button {
     @apply p-3 hover:bg-luxury-cream hover:no-underline;

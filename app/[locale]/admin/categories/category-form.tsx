@@ -29,73 +29,8 @@ import { getAllMainCategories } from '@/lib/actions/category.actions'
 import { ICategory } from '@/types'
 import { toSlug } from '@/lib/utils'
 import { UploadButton } from '@/lib/uploadthing'
-import { Upload, Trash2 } from 'lucide-react'
-
-// Composant pour l'aperçu d'image avec gestion d'erreur
-function ImagePreviewComponent({
-  imageSrc,
-  t,
-}: {
-  imageSrc: string | undefined
-  t: (key: string) => string
-}) {
-  const [imageError, setImageError] = useState(false)
-  const [imageLoaded, setImageLoaded] = useState(false)
-
-  useEffect(() => {
-    // Reset states when image source changes
-    setImageError(false)
-    setImageLoaded(false)
-  }, [imageSrc])
-
-  if (!imageSrc || imageSrc.trim() === '') {
-    return (
-      <div className='w-full h-full bg-muted flex items-center justify-center'>
-        <span className='text-muted-foreground'>{t('NoImage')}</span>
-      </div>
-    )
-  }
-
-  if (imageError) {
-    return (
-      <div className='w-full h-full bg-muted flex flex-col items-center justify-center gap-2 p-4'>
-        <span className='text-muted-foreground text-sm text-center'>
-          {t('NoImage')}
-        </span>
-        <span className='text-xs text-muted-foreground/70 break-all text-center'>
-          {imageSrc}
-        </span>
-      </div>
-    )
-  }
-
-  // Utiliser une balise img normale pour toutes les images (plus fiable)
-  return (
-    <>
-      {!imageLoaded && (
-        <div className='absolute inset-0 bg-muted flex items-center justify-center'>
-          <span className='text-muted-foreground text-xs'>Chargement...</span>
-        </div>
-      )}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={imageSrc}
-        alt={t('ImagePreview')}
-        className={`w-full h-full object-cover transition-opacity ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-        onError={() => {
-          // Gérer l'erreur silencieusement - ne pas logger pour éviter les erreurs console
-          setImageError(true)
-          setImageLoaded(false)
-        }}
-        onLoad={() => {
-          setImageError(false)
-          setImageLoaded(true)
-        }}
-        loading='lazy'
-      />
-    </>
-  )
-}
+import { UploadCloud, Trash2, X } from 'lucide-react'
+import Image from 'next/image'
 
 interface CategoryFormProps {
   categoryId?: string
@@ -331,81 +266,151 @@ export function CategoryForm({
                 )}
               </div>
 
+              {/* ⚡ Optimization: Section Image de Catégorie - Design moderne identique aux produits */}
               <div className='space-y-4'>
-                <Label htmlFor='image'>{t('CategoryImage')}</Label>
-
-                {/* Upload Section */}
-                <div className='border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center hover:border-muted-foreground/50 transition-colors'>
-                  <Upload className='h-8 w-8 mx-auto text-muted-foreground mb-2' />
-                  <p className='text-sm text-muted-foreground mb-4'>
-                    {t('DragDropImage')}
-                  </p>
-                  <UploadButton
-                    endpoint='imageUploader'
-                    onClientUploadComplete={(res: { url: string }[]) => {
-                      if (res && res.length > 0 && res[0].url) {
-                        const imageUrl = res[0].url
-                        console.log('Image uploaded successfully:', imageUrl)
-                        setUploadedImage(imageUrl)
-                        setValue('image', imageUrl, { shouldValidate: true })
-                        toast({
-                          description: t('ImageUploaded'),
-                        })
-                      }
-                    }}
-                    onUploadError={(error: Error) => {
-                      console.error('Upload error:', error)
-                      toast({
-                        variant: 'destructive',
-                        description: t('UploadError', { error: error.message }),
-                      })
-                    }}
-                  />
+                {/* Header avec titre */}
+                <div className='flex items-center gap-2 mb-2'>
+                  <Label className='text-base font-semibold'>
+                    {t('CategoryImage')}
+                  </Label>
                 </div>
 
-                {/* Image Preview - Toujours afficher si uploadedImage ou watch('image') a une valeur */}
-                {(() => {
-                  const currentImage = uploadedImage || watch('image') || ''
-                  const hasImage = currentImage && currentImage.trim() !== ''
+                {/* Zone d'upload drag & drop moderne */}
+                <div className='border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 sm:p-8 transition-all hover:border-primary/50 hover:bg-muted/30 group'>
+                  <div className='flex flex-col items-center justify-center space-y-4'>
+                    {/* Icône UploadCloud */}
+                    <div className='rounded-full bg-primary/10 p-3 group-hover:bg-primary/20 transition-colors'>
+                      <UploadCloud className='h-8 w-8 text-amber-500' />
+                    </div>
 
-                  if (!hasImage) return null
+                    {/* Texte et bouton */}
+                    <div className='text-center space-y-2'>
+                      <p className='text-sm font-medium text-foreground'>
+                        Ajouter une image
+                      </p>
+                      <p className='text-xs text-muted-foreground'>
+                        Taille max : 4MB
+                      </p>
+                    </div>
 
-                  return (
-                    <div className='space-y-2'>
-                      <Label>{t('ImagePreview')}</Label>
-                      <div className='relative w-full h-48 rounded-lg overflow-hidden border bg-muted'>
-                        <ImagePreviewComponent imageSrc={currentImage} t={t} />
+                    {/* Bouton UploadButton stylisé */}
+                    <div className='w-full max-w-[200px]'>
+                      <UploadButton
+                        endpoint='imageUploader'
+                        onClientUploadComplete={(res: { url: string }[]) => {
+                          if (res && res[0]?.url) {
+                            setUploadedImage(res[0].url)
+                            setValue('image', res[0].url, {
+                              shouldValidate: true,
+                            })
+                            toast({
+                              description: 'Image uploadée avec succès !',
+                            })
+                          }
+                        }}
+                        onUploadError={(error: Error) => {
+                          toast({
+                            variant: 'destructive',
+                            description: `Erreur d&apos;upload: ${error.message}`,
+                          })
+                        }}
+                        content={{
+                          button: ({ ready }) => (
+                            <span className='text-sm font-medium'>
+                              {ready ? 'Choisir un fichier' : 'Chargement...'}
+                            </span>
+                          ),
+                          allowedContent: 'Taille max 4MB',
+                        }}
+                        className='ut-button:bg-primary ut-button:ut-readying:bg-primary/50 ut-button:ut-uploading:bg-primary/50 ut-button:ut-uploading:text-white ut-button:hover:bg-primary/90'
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Aperçu de l'image uploadée - Design moderne */}
+                {(watch('image')?.trim() || uploadedImage?.trim()) && (
+                  <div className='mt-6 space-y-4'>
+                    <div className='flex items-center justify-between'>
+                      <p className='text-sm font-medium text-muted-foreground'>
+                        Image uploadée
+                      </p>
+                      <Button
+                        type='button'
+                        variant='outline'
+                        size='sm'
+                        onClick={() => {
+                          setUploadedImage('')
+                          setValue('image', '', { shouldValidate: true })
+                          toast({
+                            description: 'Image supprimée',
+                          })
+                        }}
+                        className='text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20 border-red-200 dark:border-red-900'
+                      >
+                        <Trash2 className='h-4 w-4 mr-1.5' />
+                        Supprimer
+                      </Button>
+                    </div>
+
+                    {/* Carte stylée pour l'aperçu */}
+                    <div className='relative group aspect-square max-w-[300px] rounded-lg overflow-hidden border bg-card shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.02]'>
+                      <Image
+                        src={watch('image') || uploadedImage || ''}
+                        alt='Image de catégorie'
+                        fill
+                        className='object-cover'
+                        sizes='(max-width: 640px) 100vw, (max-width: 768px) 50vw, 300px'
+                        loading='lazy'
+                        quality={75}
+                        decoding='async'
+                      />
+
+                      {/* Overlay avec bouton de suppression au hover */}
+                      <div className='absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-200 flex items-center justify-center'>
                         <Button
                           type='button'
                           variant='destructive'
                           size='sm'
-                          className='absolute top-2 right-2 z-10'
+                          className='opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg'
                           onClick={() => {
                             setUploadedImage('')
-                            setValue('image', '')
+                            setValue('image', '', { shouldValidate: true })
+                            toast({
+                              description: 'Image supprimée',
+                            })
                           }}
+                          aria-label="Supprimer l'image"
                         >
-                          <Trash2 className='h-4 w-4' />
+                          <X className='h-4 w-4 mr-1' />
+                          Supprimer
                         </Button>
                       </div>
                     </div>
-                  )
-                })()}
+                  </div>
+                )}
 
-                {/* Manual URL Input */}
-                <div className='space-y-2'>
-                  <Label htmlFor='image'>{t('OrEnterImageUrl')}</Label>
+                {/* Input URL manuel (optionnel) */}
+                <div className='space-y-2 pt-2 border-t border-muted'>
+                  <Label
+                    htmlFor='image-url'
+                    className='text-sm text-muted-foreground'
+                  >
+                    {t('OrEnterImageUrl')} (optionnel)
+                  </Label>
                   <Input
-                    id='image'
+                    id='image-url'
                     {...register('image')}
                     placeholder={t('ImageUrl')}
                     onChange={(e) => {
-                      setUploadedImage('')
-                      setValue('image', e.target.value)
+                      const url = e.target.value
+                      setUploadedImage(url)
+                      setValue('image', url)
                     }}
+                    className='text-sm'
                   />
                   {errors.image && (
-                    <p className='text-sm text-destructive'>
+                    <p className='text-xs text-destructive'>
                       {errors.image.message}
                     </p>
                   )}

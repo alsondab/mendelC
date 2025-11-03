@@ -8,12 +8,10 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { toast } from '@/hooks/use-toast'
-import { UploadButton } from '@/lib/uploadthing'
 import { ISettingInput } from '@/types'
 import { TrashIcon } from 'lucide-react'
-import Image from 'next/image'
 import { useFieldArray, UseFormReturn } from 'react-hook-form'
+import ImageUpload from '@/components/shared/image-upload'
 
 export default function CarouselForm({
   form,
@@ -27,7 +25,6 @@ export default function CarouselForm({
     name: 'carousels',
   })
   const {
-    watch,
     formState: { errors },
   } = form
   return (
@@ -36,109 +33,96 @@ export default function CarouselForm({
         <CardTitle>Carrousels</CardTitle>
       </CardHeader>
       <CardContent className='space-y-4'>
-        <div className='space-y-4'>
+        <div className='space-y-6'>
           {fields.map((field, index) => (
-            <div key={field.id} className='flex justify-between gap-1 w-full  '>
-              <FormField
-                control={form.control}
-                name={`carousels.${index}.title`}
-                render={({ field }) => (
-                  <FormItem>
-                    {index == 0 && <FormLabel>Titre</FormLabel>}
-                    <FormControl>
-                      <Input {...field} placeholder='Titre' />
-                    </FormControl>
-                    <FormMessage>
-                      {errors.carousels?.[index]?.title?.message}
-                    </FormMessage>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`carousels.${index}.url`}
-                render={({ field }) => (
-                  <FormItem>
-                    {index == 0 && <FormLabel>URL</FormLabel>}
-                    <FormControl>
-                      <Input {...field} placeholder='Url' />
-                    </FormControl>
-                    <FormMessage>
-                      {errors.carousels?.[index]?.url?.message}
-                    </FormMessage>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`carousels.${index}.buttonCaption`}
-                render={({ field }) => (
-                  <FormItem>
-                    {index == 0 && <FormLabel>Légende</FormLabel>}
-                    <FormControl>
-                      <Input {...field} placeholder='buttonCaption' />
-                    </FormControl>
-                    <FormMessage>
-                      {errors.carousels?.[index]?.buttonCaption?.message}
-                    </FormMessage>
-                  </FormItem>
-                )}
-              />
-              <div>
+            <div
+              key={field.id}
+              className='p-4 border rounded-lg space-y-4 bg-card'
+            >
+              <div className='flex items-center justify-between mb-4'>
+                <h3 className='text-sm font-semibold'>Carrousel {index + 1}</h3>
+                <Button
+                  type='button'
+                  disabled={fields.length === 1}
+                  variant='outline'
+                  size='sm'
+                  onClick={() => remove(index)}
+                >
+                  <TrashIcon className='w-4 h-4 mr-2' />
+                  Supprimer
+                </Button>
+              </div>
+
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                <FormField
+                  control={form.control}
+                  name={`carousels.${index}.title`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Titre</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder='Titre du carrousel' />
+                      </FormControl>
+                      <FormMessage>
+                        {errors.carousels?.[index]?.title?.message}
+                      </FormMessage>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name={`carousels.${index}.url`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>URL de destination</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder='https://...' />
+                      </FormControl>
+                      <FormMessage>
+                        {errors.carousels?.[index]?.url?.message}
+                      </FormMessage>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name={`carousels.${index}.buttonCaption`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Texte du bouton</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder='En savoir plus' />
+                      </FormControl>
+                      <FormMessage>
+                        {errors.carousels?.[index]?.buttonCaption?.message}
+                      </FormMessage>
+                    </FormItem>
+                  )}
+                />
+
+                {/* ⚡ Optimization: Utilisation du composant ImageUpload pour meilleure UX */}
                 <FormField
                   control={form.control}
                   name={`carousels.${index}.image`}
                   render={({ field }) => (
                     <FormItem>
-                      {index == 0 && <FormLabel>Image</FormLabel>}
-
+                      <FormLabel>Image du carrousel</FormLabel>
                       <FormControl>
-                        <Input placeholder='Enter image url' {...field} />
+                        <ImageUpload
+                          value={field.value}
+                          onChange={field.onChange}
+                          endpoint='carouselImageUploader'
+                          maxSize='8MB'
+                          aspectRatio='carousel'
+                          label='Image bannière (ratio 16:6 recommandé)'
+                        />
                       </FormControl>
-
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-
-                {watch(`carousels.${index}.image`) &&
-                  watch(`carousels.${index}.image`).trim() !== '' && (
-                    <Image
-                      src={watch(`carousels.${index}.image`)}
-                      alt='image'
-                      className=' w-full object-cover object-center rounded-sm'
-                      width={192}
-                      height={68}
-                    />
-                  )}
-                {!watch(`carousels.${index}.image`) && (
-                  <UploadButton
-                    endpoint='imageUploader'
-                    onClientUploadComplete={(res) => {
-                      form.setValue(`carousels.${index}.image`, res[0].url)
-                    }}
-                    onUploadError={(error: Error) => {
-                      toast({
-                        variant: 'destructive',
-                        description: `ERROR! ${error.message}`,
-                      })
-                    }}
-                  />
-                )}
-              </div>
-              <div>
-                {index == 0 && <div>Action</div>}
-                <Button
-                  type='button'
-                  disabled={fields.length === 1}
-                  variant='outline'
-                  className={index == 0 ? 'mt-2' : ''}
-                  onClick={() => {
-                    remove(index)
-                  }}
-                >
-                  <TrashIcon className='w-4 h-4' />
-                </Button>
               </div>
             </div>
           ))}

@@ -223,7 +223,7 @@ export function CategoryList({
                   </TableHead>
                   <TableHead className='hidden sm:table-cell'>{t('Slug')}</TableHead>
                   <TableHead className='hidden md:table-cell'>
-                    {t('Description')}
+                    {t('DescriptionLabel')}
                   </TableHead>
                   <TableHead className='hidden lg:table-cell'>{t('Parent')}</TableHead>
                   <TableHead className='text-center'>{t('Status')}</TableHead>

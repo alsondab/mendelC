@@ -30,7 +30,15 @@ const geistMono = Geist_Mono({
 export async function generateMetadata() {
   const {
     site: { slogan, name, description, url, logo },
+    carousels,
   } = await getSetting()
+
+  // ⚡ Optimization: Obtenir la première image du carousel pour le preload LCP
+  const firstCarouselImage =
+    carousels && carousels.length > 0 && carousels[0]?.image
+      ? carousels[0].image
+      : null
+
   return {
     title: {
       template: `%s | ${name}`,
@@ -42,6 +50,12 @@ export async function generateMetadata() {
       icon: logo,
       shortcut: logo,
       apple: logo,
+    },
+    // ⚡ Optimization: Preload de l'image LCP et preconnect pour améliorer les performances
+    other: {
+      ...(firstCarouselImage && {
+        'preload-image': firstCarouselImage,
+      }),
     },
   }
 }

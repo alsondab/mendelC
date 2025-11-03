@@ -128,7 +128,7 @@ export default function OverviewReport() {
         <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4'>
           <div className='flex items-center gap-3'>
             <div className='w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center'>
-              <BarChart3 className='h-6 w-6 text-primary' />
+              <BarChart3 className='h-6 w-6 text-amber-500' />
             </div>
             <div>
               <h1 className='text-xl sm:text-2xl font-bold text-foreground'>
@@ -242,7 +242,7 @@ export default function OverviewReport() {
         <Card className='bg-card rounded-xl border shadow-sm overflow-hidden'>
           <CardHeader className='bg-gradient-to-r from-primary/5 to-primary/10 border-b'>
             <CardTitle className='flex items-center gap-2 text-lg font-semibold'>
-              <TrendingUp className='h-5 w-5 text-primary' />
+              <TrendingUp className='h-5 w-5 text-amber-500' />
               {t('Sales Overview')}
             </CardTitle>
             <CardDescription className='text-sm text-muted-foreground'>

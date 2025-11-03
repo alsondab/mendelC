@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { ShoppingCartIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import useIsMounted from '@/hooks/use-is-mounted'
@@ -7,7 +8,6 @@ import { cn } from '@/lib/utils'
 import useCartStore from '@/hooks/use-cart-store'
 import { useTranslations } from 'next-intl'
 import useCartSliderStore from '@/hooks/use-cart-slider-store'
-import { motion } from 'framer-motion'
 import { buttonVariants } from '@/lib/utils/animations'
 
 export default function CartButton() {
@@ -20,17 +20,38 @@ export default function CartButton() {
   const { toggle } = useCartSliderStore()
   const t = useTranslations()
 
+  // ⚡ Optimization: Lazy load framer-motion pour réduire le bundle initial
+  const [motionReady, setMotionReady] = useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [MotionButton, setMotionButton] = useState<any>(null)
+
+  useEffect(() => {
+    // Lazy load framer-motion après le premier rendu pour réduire TBT
+    import('framer-motion').then((mod) => {
+      setMotionButton(() => mod.motion.button)
+      setMotionReady(true)
+    })
+  }, [])
+
   // Ne pas afficher le panier dans la page admin
   if (pathname.includes('/admin')) {
     return null
   }
 
+  // Fallback sans animation si framer-motion n'est pas encore chargé
+  const ButtonComponent = motionReady && MotionButton ? MotionButton : 'button'
+  const motionProps = motionReady
+    ? {
+        variants: buttonVariants,
+        initial: 'rest',
+        whileHover: 'hover',
+        whileTap: 'tap',
+      }
+    : {}
+
   return (
-    <motion.button
-      variants={buttonVariants}
-      initial="rest"
-      whileHover="hover"
-      whileTap="tap"
+    <ButtonComponent
+      {...motionProps}
       onClick={toggle}
       className={cn(
         'relative flex items-center justify-center transition-all duration-200',
@@ -61,6 +82,6 @@ export default function CartButton() {
       <span className='hidden md:block font-medium text-sm'>
         {t('Header.Cart')}
       </span>
-    </motion.button>
+    </ButtonComponent>
   )
 }

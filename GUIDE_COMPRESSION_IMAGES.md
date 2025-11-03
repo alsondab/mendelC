@@ -46,26 +46,28 @@ magick convert public/images/banner3.jpg -quality 80 -strip public/images/banner
 Créer un script `scripts/compress-images.js` :
 
 ```javascript
-const sharp = require('sharp');
-const fs = require('fs');
-const path = require('path');
+const sharp = require('sharp')
+const fs = require('fs')
+const path = require('path')
 
-const images = ['banner1.jpg', 'banner2.jpg', 'banner3.jpg'];
+const images = ['banner1.jpg', 'banner2.jpg', 'banner3.jpg']
 
 async function compressImages() {
   for (const image of images) {
-    const inputPath = path.join('public', 'images', image);
-    const outputPath = path.join('public', 'images', image.replace('.jpg', '.webp'));
-    
-    await sharp(inputPath)
-      .webp({ quality: 80 })
-      .toFile(outputPath);
-    
-    console.log(`✓ Compressed ${image} -> ${image.replace('.jpg', '.webp')}`);
+    const inputPath = path.join('public', 'images', image)
+    const outputPath = path.join(
+      'public',
+      'images',
+      image.replace('.jpg', '.webp')
+    )
+
+    await sharp(inputPath).webp({ quality: 80 }).toFile(outputPath)
+
+    console.log(`✓ Compressed ${image} -> ${image.replace('.jpg', '.webp')}`)
   }
 }
 
-compressImages().catch(console.error);
+compressImages().catch(console.error)
 ```
 
 ## Objectifs de compression
@@ -87,4 +89,3 @@ compressImages().catch(console.error);
 - Next.js 15 convertit automatiquement les images en AVIF/WebP si configuré dans `next.config.ts`
 - Les images locales doivent être optimisées manuellement avant upload
 - La compression WebP peut réduire la taille de 60-80% par rapport au JPG original
-

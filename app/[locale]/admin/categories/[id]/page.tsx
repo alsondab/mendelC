@@ -26,7 +26,7 @@ export default async function EditCategoryPage({
         </Button>
         <div className='space-y-1'>
           <div className='flex items-center gap-2'>
-            <Grid3X3 className='h-6 w-6 text-primary' />
+            <Grid3X3 className='h-6 w-6 text-amber-500' />
             <h1 className='text-2xl font-bold tracking-tight'>
               {t('EditTitle')}
             </h1>

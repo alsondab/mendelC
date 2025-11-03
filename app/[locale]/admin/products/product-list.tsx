@@ -298,7 +298,7 @@ const ProductList = () => {
                   </TableCell>
                   <TableCell className='hidden lg:table-cell text-xs sm:text-sm'>
                     <div className='flex items-center gap-1'>
-                      <span className='text-yellow-500'>★</span>
+                      <span className='text-amber-500'>★</span>
                       {product.avgRating || 'N/A'}
                     </div>
                   </TableCell>

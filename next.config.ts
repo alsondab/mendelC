@@ -74,9 +74,13 @@ const nextConfig: NextConfig = withNextIntl()({
         runtimeChunk: 'single',
         splitChunks: {
           chunks: 'all',
-          // ⚡ Optimization: Limiter la taille maximale des chunks pour meilleur code splitting
-          maxInitialRequests: 30,
+          // ⚡ Optimization: Réduire maxInitialRequests pour éviter trop de chunks initiaux (25 au lieu de 30)
+          maxInitialRequests: 25,
           maxAsyncRequests: 30,
+          // ⚡ Optimization: Taille minimale pour éviter les micro-chunks inutiles (20 KB)
+          minSize: 20000,
+          // ⚡ Optimization: Seuil pour forcer le splitting des gros chunks (50 KB)
+          enforceSizeThreshold: 50000,
           cacheGroups: {
             default: false,
             vendors: false,
@@ -131,10 +135,51 @@ const nextConfig: NextConfig = withNextIntl()({
     }
     return config
   },
-  // Compression headers
-  compress: true,
-  // PoweredByHeader removed by default in Next.js 15
-  poweredByHeader: false,
+  // ⚡ Optimization: Headers pour optimiser le cache des assets statiques
+  async headers() {
+    return [
+      {
+        // Cache pour toutes les images statiques
+        source: '/images/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        // Cache pour les icônes
+        source: '/icons/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        // Cache pour les fichiers statiques Next.js
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        // Cache pour les fonts
+        source: '/fonts/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ]
+  },
 })
 
 export default nextConfig

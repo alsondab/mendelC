@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -48,7 +49,8 @@ import {
   CheckCircle,
   Wand2,
   Trash2,
-  Upload,
+  UploadCloud,
+  X,
 } from 'lucide-react'
 
 const productDefaultValues: IProductInput =
@@ -133,6 +135,8 @@ const ProductForm = ({
   })
 
   const { toast } = useToast()
+  const t = useTranslations('Admin.Products')
+  const tProductsList = useTranslations('Admin.ProductsList')
 
   // Charger les catégories
   useEffect(() => {
@@ -257,7 +261,7 @@ const ProductForm = ({
         if (!productId) {
           toast({
             variant: 'destructive',
-            description: 'ID du produit manquant',
+            description: tProductsList('MissingProductId'),
           })
           router.push(`/admin/products`)
           return
@@ -286,8 +290,7 @@ const ProductForm = ({
       console.error('Error in onSubmit:', error)
       toast({
         variant: 'destructive',
-        description:
-          'Une erreur est survenue lors de la soumission du formulaire',
+        description: tProductsList('FormSubmissionError'),
       })
     }
   }
@@ -304,8 +307,8 @@ const ProductForm = ({
         <Card>
           <CardHeader>
             <CardTitle className='flex items-center gap-2 text-lg'>
-              <Tag className='h-5 w-5 text-blue-600' />
-              Informations de base
+              <Tag className='h-5 w-5 text-amber-500' />
+              {t('BasicInformation')}
             </CardTitle>
           </CardHeader>
           <CardContent className='space-y-6'>
@@ -316,11 +319,11 @@ const ProductForm = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className='text-sm font-medium'>
-                      Nom du produit
+                      {t('ProductName')}
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='Entrez le nom du produit'
+                        placeholder={t('EnterProductName')}
                         className='h-11'
                         {...field}
                       />
@@ -336,12 +339,12 @@ const ProductForm = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className='text-sm font-medium'>
-                      Slug (URL)
+                      {t('SlugURL')}
                     </FormLabel>
                     <FormControl>
                       <div className='relative'>
                         <Input
-                          placeholder='slug-du-produit'
+                          placeholder={t('ProductSlugPlaceholder')}
                           className='h-11 pr-20'
                           {...field}
                         />
@@ -358,7 +361,7 @@ const ProductForm = ({
                           className='absolute right-1 top-1 h-9 px-3 text-xs'
                         >
                           <Wand2 className='h-3 w-3 mr-1' />
-                          Générer
+                          {t('Generate')}
                         </Button>
                       </div>
                     </FormControl>
@@ -375,7 +378,7 @@ const ProductForm = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className='text-sm font-medium'>
-                      Catégorie
+                      {t('Category')}
                     </FormLabel>
                     <Select
                       onValueChange={(value) => {
@@ -388,7 +391,7 @@ const ProductForm = ({
                     >
                       <FormControl>
                         <SelectTrigger className='h-11'>
-                          <SelectValue placeholder='Sélectionnez une catégorie' />
+                          <SelectValue placeholder={t('SelectCategory')} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -410,7 +413,7 @@ const ProductForm = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className='text-sm font-medium'>
-                      Sous-catégorie
+                      {t('SubCategory')}
                     </FormLabel>
                     <Select
                       onValueChange={field.onChange}
@@ -422,10 +425,10 @@ const ProductForm = ({
                           <SelectValue
                             placeholder={
                               !selectedCategory
-                                ? "Sélectionnez d'abord une catégorie"
+                                ? t('SelectCategoryFirst')
                                 : subCategories.length === 0
-                                  ? 'Aucune sous-catégorie disponible'
-                                  : 'Sélectionnez une sous-catégorie'
+                                  ? t('NoSubCategoriesAvailable')
+                                  : t('SelectSubCategory')
                             }
                           />
                         </SelectTrigger>
@@ -454,11 +457,11 @@ const ProductForm = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className='text-sm font-medium'>
-                      Marque
+                      {t('Brand')}
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='Entrez la marque'
+                        placeholder={t('EnterBrand')}
                         className='h-11'
                         {...field}
                       />
@@ -474,8 +477,8 @@ const ProductForm = ({
         <Card>
           <CardHeader>
             <CardTitle className='flex items-center gap-2 text-lg'>
-              <DollarSign className='h-5 w-5 text-green-600' />
-              Prix et stock
+              <DollarSign className='h-5 w-5 text-amber-500' />
+              {t('PricingStock')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -486,13 +489,13 @@ const ProductForm = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className='text-sm font-medium'>
-                      Prix de liste
+                      {t('ListPrice')}
                     </FormLabel>
                     <FormControl>
                       <Input
                         type='number'
                         step='0.01'
-                        placeholder='0.00'
+                        placeholder={t('PricePlaceholder')}
                         className='h-11'
                         {...field}
                       />
@@ -507,13 +510,13 @@ const ProductForm = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className='text-sm font-medium'>
-                      Prix de vente
+                      {t('SalePrice')}
                     </FormLabel>
                     <FormControl>
                       <Input
                         type='number'
                         step='0.01'
-                        placeholder='0.00'
+                        placeholder={t('PricePlaceholder')}
                         className='h-11'
                         {...field}
                       />
@@ -528,7 +531,7 @@ const ProductForm = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className='text-sm font-medium'>
-                      Stock disponible
+                      {t('AvailableStock')}
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -551,7 +554,7 @@ const ProductForm = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className='text-sm font-medium'>
-                        Seuil d&apos;alerte (stock faible)
+                        {t('AlertThreshold')}
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -562,7 +565,7 @@ const ProductForm = ({
                         />
                       </FormControl>
                       <FormDescription className='text-xs'>
-                        Alerte quand le stock descend en dessous de ce nombre
+                        {t('AlertThresholdDescription')}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -575,7 +578,7 @@ const ProductForm = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className='text-sm font-medium'>
-                        Stock maximum recommandé
+                        {t('MaxStockRecommended')}
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -586,7 +589,7 @@ const ProductForm = ({
                         />
                       </FormControl>
                       <FormDescription className='text-xs'>
-                        Stock maximum pour éviter la surcharge
+                        {t('MaxStockDescription')}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -597,35 +600,68 @@ const ProductForm = ({
           </CardContent>
         </Card>
 
-        {/* Images Section */}
+        {/* Images Section - Design moderne et structuré */}
         <Card>
-          <CardHeader>
-            <CardTitle className='flex items-center gap-2 text-lg'>
-              <ImageIcon className='h-5 w-5 text-purple-600' />
-              Images du produit
-            </CardTitle>
+          <CardHeader className='pb-4'>
+            <div className='flex items-center justify-between'>
+              <CardTitle className='flex items-center gap-2 text-lg font-semibold'>
+                <ImageIcon className='h-5 w-5 text-amber-500' />
+                {t('ProductImages')}
+              </CardTitle>
+              {images.length > 0 && (
+                <Button
+                  type='button'
+                  variant='outline'
+                  size='sm'
+                  onClick={() => {
+                    form.setValue('images', [])
+                    toast({
+                      description: t('AllImagesRemoved'),
+                    })
+                  }}
+                  className='text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20 border-red-200 dark:border-red-900'
+                >
+                  <Trash2 className='h-4 w-4 mr-1.5' />
+                  {t('RemoveAll')}
+                </Button>
+              )}
+            </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className='space-y-6'>
             <FormField
               control={form.control}
               name='images'
               render={() => (
                 <FormItem>
-                  <div className='space-y-4'>
-                    {/* Upload Section */}
-                    <div className='border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg p-6 text-center hover:border-slate-300 dark:hover:border-slate-600 transition-colors'>
-                      <Upload className='h-8 w-8 mx-auto text-slate-400 mb-2' />
-                      <p className='text-sm text-muted-foreground mb-4'>
-                        Glissez-déposez vos images ou cliquez pour sélectionner
-                      </p>
-                      <FormControl>
+                  {/* Zone d'upload drag & drop moderne */}
+                  <div className='border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 sm:p-8 transition-all hover:border-primary/50 hover:bg-muted/30 group'>
+                    <div className='flex flex-col items-center justify-center space-y-4'>
+                      {/* Icône UploadCloud */}
+                      <div className='rounded-full bg-primary/10 p-3 group-hover:bg-primary/20 transition-colors'>
+                        <UploadCloud className='h-8 w-8 text-amber-500' />
+                      </div>
+
+                      {/* Texte et bouton */}
+                      <div className='text-center space-y-2'>
+                        <p className='text-sm font-medium text-foreground'>
+                          {t('AddImage')}
+                        </p>
+                        <p className='text-xs text-muted-foreground'>
+                          {t('MaxSize')}
+                        </p>
+                      </div>
+
+                      {/* Bouton UploadButton stylisé */}
+                      <div className='w-full max-w-[200px]'>
                         <UploadButton
                           endpoint='imageUploader'
                           onClientUploadComplete={(res: { url: string }[]) => {
-                            form.setValue('images', [...images, res[0].url])
-                            toast({
-                              description: 'Image uploadée avec succès !',
-                            })
+                            if (res && res[0]?.url) {
+                              form.setValue('images', [...images, res[0].url])
+                              toast({
+                                description: t('ImageUploadedSuccess'),
+                              })
+                            }
                           }}
                           onUploadError={(error: Error) => {
                             toast({
@@ -633,55 +669,57 @@ const ProductForm = ({
                               description: `Erreur d'upload: ${error.message}`,
                             })
                           }}
+                          content={{
+                            button: ({ ready }) => (
+                              <span className='text-sm font-medium'>
+                                {ready ? t('ChooseFile') : t('Loading')}
+                              </span>
+                            ),
+                            allowedContent: t('MaxSize'),
+                          }}
+                          className='ut-button:bg-primary ut-button:ut-readying:bg-primary/50 ut-button:ut-uploading:bg-primary/50 ut-button:ut-uploading:text-white ut-button:hover:bg-primary/90'
                         />
-                      </FormControl>
+                      </div>
                     </div>
+                  </div>
 
-                    {/* Images Grid */}
-                    {images.length > 0 && (
-                      <div className='space-y-4'>
-                        <div className='flex items-center justify-between'>
-                          <p className='text-sm font-medium'>
-                            Images ({images.length})
-                          </p>
-                          <Button
-                            type='button'
-                            variant='outline'
-                            size='sm'
-                            onClick={() => {
-                              form.setValue('images', [])
-                              toast({
-                                description: 'Images réinitialisées',
-                              })
-                            }}
-                            className='text-red-600 hover:text-red-700'
-                          >
-                            <Trash2 className='h-4 w-4 mr-1' />
-                            Tout supprimer
-                          </Button>
-                        </div>
+                  {/* Grille d'aperçu des images - Design moderne */}
+                  {images.length > 0 && (
+                    <div className='mt-6 space-y-4'>
+                      <div className='flex items-center justify-between'>
+                        <p className='text-sm font-medium text-muted-foreground'>
+                          {images.length} image{images.length > 1 ? 's' : ''}{' '}
+                          uploadée{images.length > 1 ? 's' : ''}
+                        </p>
+                      </div>
 
-                        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4'>
-                          {images
-                            .filter((image) => image && image.trim() !== '')
-                            .map((image: string, index: number) => (
-                              <div
-                                key={`${image}-${index}`}
-                                className='relative group aspect-square'
-                              >
-                                <Image
-                                  src={image}
-                                  alt={`Image ${index + 1}`}
-                                  className='w-full h-full object-cover rounded-lg border shadow-sm'
-                                  width={150}
-                                  height={150}
-                                  unoptimized={image.startsWith('/images/')}
-                                />
+                      {/* Grille responsive avec cartes stylées */}
+                      <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4'>
+                        {images
+                          .filter((image) => image && image.trim() !== '')
+                          .map((image: string, index: number) => (
+                            <div
+                              key={`${image}-${index}`}
+                              className='relative group aspect-square rounded-lg overflow-hidden border bg-card shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.02]'
+                            >
+                              <Image
+                                src={image}
+                                alt={`Image ${index + 1}`}
+                                fill
+                                className='object-cover'
+                                sizes='(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 16vw'
+                                loading='lazy'
+                                quality={75}
+                                decoding='async'
+                              />
+
+                              {/* Overlay avec bouton de suppression au hover */}
+                              <div className='absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-200 flex items-center justify-center'>
                                 <Button
                                   type='button'
                                   variant='destructive'
                                   size='sm'
-                                  className='absolute -top-2 -right-2 w-6 h-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg'
+                                  className='opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg'
                                   onClick={() => {
                                     const newImages = images.filter(
                                       (_, i) => i !== index
@@ -691,15 +729,17 @@ const ProductForm = ({
                                       description: 'Image supprimée',
                                     })
                                   }}
+                                  aria-label={`Supprimer l'image ${index + 1}`}
                                 >
-                                  ×
+                                  <X className='h-4 w-4 mr-1' />
+                                  Supprimer
                                 </Button>
                               </div>
-                            ))}
-                        </div>
+                            </div>
+                          ))}
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
@@ -711,8 +751,8 @@ const ProductForm = ({
         <Card>
           <CardHeader>
             <CardTitle className='flex items-center gap-2 text-lg'>
-              <FileText className='h-5 w-5 text-orange-600' />
-              Contenu et descriptions
+              <FileText className='h-5 w-5 text-amber-500' />
+              {t('ContentDescriptions')}
             </CardTitle>
           </CardHeader>
           <CardContent className='space-y-6'>
@@ -722,19 +762,16 @@ const ProductForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className='text-sm font-medium'>
-                    Description du produit
+                    {t('ProductDescription')}
                   </FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder='Décrivez votre produit en détail...'
+                      placeholder={t('DescribeProductDetail')}
                       className='resize-none min-h-[120px]'
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>
-                    Décrivez les caractéristiques principales et les avantages
-                    de votre produit.
-                  </FormDescription>
+                  <FormDescription>{t('DescriptionHelp')}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -747,11 +784,11 @@ const ProductForm = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className='text-sm font-medium'>
-                      Spécifications techniques
+                      {t('TechnicalSpecs')}
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder='Entrez les spécifications (une par ligne)'
+                        placeholder={t('SpecsPlaceholder')}
                         className='resize-none min-h-[100px]'
                         value={
                           Array.isArray(field.value)
@@ -766,10 +803,7 @@ const ProductForm = ({
                         }}
                       />
                     </FormControl>
-                    <FormDescription>
-                      Une spécification par ligne. Sera affiché sous forme de
-                      liste à puces.
-                    </FormDescription>
+                    <FormDescription>{t('SpecsDescription')}</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -781,11 +815,11 @@ const ProductForm = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className='text-sm font-medium'>
-                      Compatibilité
+                      {t('Compatibility')}
                     </FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder='Entrez les informations de compatibilité (une par ligne)'
+                        placeholder={t('CompatibilityPlaceholder')}
                         className='resize-none min-h-[100px]'
                         value={
                           Array.isArray(field.value)
@@ -801,8 +835,7 @@ const ProductForm = ({
                       />
                     </FormControl>
                     <FormDescription>
-                      Une information par ligne. Sera affiché sous forme de
-                      liste à puces.
+                      {t('CompatibilityDescription')}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -815,7 +848,7 @@ const ProductForm = ({
         <Card>
           <CardHeader>
             <CardTitle className='flex items-center gap-2 text-lg'>
-              <Settings className='h-5 w-5 text-slate-600' />
+              <Settings className='h-5 w-5 text-amber-500' />
               Paramètres de publication
             </CardTitle>
           </CardHeader>
