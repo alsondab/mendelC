@@ -5,6 +5,7 @@ const nextConfig: NextConfig = withNextIntl()({
   // ⚡ Optimization: Activer React Strict Mode pour meilleures performances
   reactStrictMode: true,
   // ⚡ Optimization: SWC minify est activé par défaut dans Next.js 15 (pas besoin de le configurer)
+  // ⚡ Optimization: Next.js 15 transpile automatiquement vers ES2020+ selon tsconfig.json target
 
   images: {
     remotePatterns: [
@@ -51,6 +52,12 @@ const nextConfig: NextConfig = withNextIntl()({
       transform: 'lucide-react/dist/esm/icons/{{kebabCase member}}',
       skipDefaultConversion: true,
     },
+    // ⚡ Optimization: Modulariser date-fns pour réduire la taille
+    'date-fns': {
+      transform: 'date-fns/{{member}}',
+      skipDefaultConversion: true,
+    },
+    // ⚡ Optimization: Zod n'a pas besoin de modularisation car il exporte déjà correctement depuis le package principal
   },
 
   // Optimize compiler
@@ -91,8 +98,8 @@ const nextConfig: NextConfig = withNextIntl()({
               name: 'vendors',
               priority: 10,
               reuseExistingChunk: true,
-              // ⚡ Optimization: Limiter la taille pour éviter les gros bundles (réduit de 200 KB à 150 KB)
-              maxSize: 150000, // 150 KB
+              // ⚡ Optimization: Limiter la taille pour éviter les gros bundles (réduit à 100 KB pour chunks plus petits)
+              maxSize: 100000, // 100 KB
             },
             // ⚡ Optimization: Framer Motion dans un chunk séparé (lazy load)
             framerMotion: {
@@ -127,8 +134,8 @@ const nextConfig: NextConfig = withNextIntl()({
               minChunks: 2,
               priority: 5,
               reuseExistingChunk: true,
-              // ⚡ Optimization: Limiter la taille des chunks communs
-              maxSize: 200000, // 200 KB
+              // ⚡ Optimization: Limiter la taille des chunks communs (réduit à 100 KB)
+              maxSize: 100000, // 100 KB
             },
           },
         },
