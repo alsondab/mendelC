@@ -26,6 +26,7 @@ type OrdersListDataProps = {
 
 const OrdersList = () => {
   const t = useTranslations('Admin.OrdersList')
+  const tAdmin = useTranslations('Admin')
   const [page, setPage] = useState<number>(1)
   const [data, setData] = useState<OrdersListDataProps>()
   const [, startTransition] = useTransition()
@@ -83,20 +84,20 @@ const OrdersList = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className='text-xs sm:text-sm'>ID</TableHead>
-                  <TableHead className='text-xs sm:text-sm'>Date</TableHead>
-                  <TableHead className='text-xs sm:text-sm'>Client</TableHead>
+                  <TableHead className='text-xs sm:text-sm'>{t('ID')}</TableHead>
+                  <TableHead className='text-xs sm:text-sm'>{t('Date')}</TableHead>
+                  <TableHead className='text-xs sm:text-sm'>{t('Client')}</TableHead>
                   <TableHead className='text-right text-xs sm:text-sm'>
-                    Total
+                    {t('Total')}
                   </TableHead>
                   <TableHead className='hidden sm:table-cell text-xs sm:text-sm'>
-                    Payé
+                    {t('Paid')}
                   </TableHead>
                   <TableHead className='hidden md:table-cell text-xs sm:text-sm'>
-                    Livré
+                    {t('Delivered')}
                   </TableHead>
                   <TableHead className='w-[120px] sm:w-[140px] text-xs sm:text-sm'>
-                    Actions
+                    {t('Actions')}
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -139,9 +140,9 @@ const OrdersList = () => {
       <div className='space-y-3 sm:space-y-4'>
         {/* Header Section */}
         <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3'>
-          <h1 className='font-bold text-lg sm:text-xl'>Commandes</h1>
+          <h1 className='font-bold text-lg sm:text-xl'>{t('Title')}</h1>
           <div className='text-sm text-muted-foreground'>
-            {data.data.length} commande(s) trouvée(s)
+            {t('OrdersFound', { count: data.data.length })}
           </div>
         </div>
 
@@ -150,20 +151,20 @@ const OrdersList = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className='text-xs sm:text-sm'>ID</TableHead>
-                <TableHead className='text-xs sm:text-sm'>Date</TableHead>
-                <TableHead className='text-xs sm:text-sm'>Client</TableHead>
+                <TableHead className='text-xs sm:text-sm'>{t('ID')}</TableHead>
+                <TableHead className='text-xs sm:text-sm'>{t('Date')}</TableHead>
+                <TableHead className='text-xs sm:text-sm'>{t('Client')}</TableHead>
                 <TableHead className='text-right text-xs sm:text-sm'>
-                  Total
+                  {t('Total')}
                 </TableHead>
                 <TableHead className='hidden sm:table-cell text-xs sm:text-sm'>
-                  Payé
+                  {t('Paid')}
                 </TableHead>
                 <TableHead className='hidden md:table-cell text-xs sm:text-sm'>
-                  Livré
+                  {t('Delivered')}
                 </TableHead>
                 <TableHead className='w-[120px] sm:w-[140px] text-xs sm:text-sm'>
-                  Actions
+                  {t('Actions')}
                 </TableHead>
               </TableRow>
             </TableHeader>
@@ -186,7 +187,7 @@ const OrdersList = () => {
                   <TableCell className='text-xs sm:text-sm'>
                     <div className='flex flex-col'>
                       <span className='font-medium'>
-                        {order.user ? order.user.name : 'Utilisateur supprimé'}
+                        {order.user ? order.user.name : tAdmin('Deleted User')}
                       </span>
                       <div className='flex flex-wrap gap-1 mt-1'>
                         {order.isCancelled && (
@@ -201,7 +202,7 @@ const OrdersList = () => {
                         )}
                         {order.isDelivered && !order.isCancelled && (
                           <span className='px-1.5 py-0.5 text-xs bg-blue-100 text-blue-800 rounded-full'>
-                            Livré
+                            {t('Delivered')}
                           </span>
                         )}
                       </div>
@@ -257,7 +258,7 @@ const OrdersList = () => {
                           setDialogOpen(true)
                         }}
                       >
-                        Détails
+                        {t('Details')}
                       </Button>
                       <DeleteDialog
                         id={order._id}

@@ -14,9 +14,9 @@ import { useToast } from '@/hooks/use-toast'
 import { OrderItem } from '@/types'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useState, memo } from 'react'
 
-export default function AddToCart({
+const AddToCart = memo(function AddToCart({
   item,
   minimal = false,
 }: {
@@ -151,4 +151,6 @@ export default function AddToCart({
       </Button>
     </div>
   )
-}
+})
+
+export default AddToCart

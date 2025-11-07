@@ -83,14 +83,14 @@ const UsersList = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className='text-xs sm:text-sm'>ID</TableHead>
-                  <TableHead className='text-xs sm:text-sm'>Nom</TableHead>
-                  <TableHead className='text-xs sm:text-sm'>Email</TableHead>
+                  <TableHead className='text-xs sm:text-sm'>{t('ID')}</TableHead>
+                  <TableHead className='text-xs sm:text-sm'>{t('Name')}</TableHead>
+                  <TableHead className='text-xs sm:text-sm'>{t('Email')}</TableHead>
                   <TableHead className='hidden sm:table-cell text-xs sm:text-sm'>
-                    Rôle
+                    {t('Role')}
                   </TableHead>
                   <TableHead className='w-[120px] sm:w-[140px] text-xs sm:text-sm'>
-                    Actions
+                    {t('Actions')}
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -127,9 +127,9 @@ const UsersList = () => {
       <div className='space-y-3 sm:space-y-4'>
         {/* Header Section */}
         <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3'>
-          <h1 className='font-bold text-lg sm:text-xl'>Utilisateurs</h1>
+          <h1 className='font-bold text-lg sm:text-xl'>{t('Title')}</h1>
           <div className='text-sm text-muted-foreground'>
-            {data?.data.length} utilisateur(s) trouvé(s)
+            {t('UsersFound', { count: data?.data.length || 0 })}
           </div>
         </div>
 
@@ -138,14 +138,14 @@ const UsersList = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className='text-xs sm:text-sm'>ID</TableHead>
-                <TableHead className='text-xs sm:text-sm'>Nom</TableHead>
-                <TableHead className='text-xs sm:text-sm'>Email</TableHead>
+                <TableHead className='text-xs sm:text-sm'>{t('ID')}</TableHead>
+                <TableHead className='text-xs sm:text-sm'>{t('Name')}</TableHead>
+                <TableHead className='text-xs sm:text-sm'>{t('Email')}</TableHead>
                 <TableHead className='hidden sm:table-cell text-xs sm:text-sm'>
-                  Rôle
+                  {t('Role')}
                 </TableHead>
                 <TableHead className='w-[120px] sm:w-[140px] text-xs sm:text-sm'>
-                  Actions
+                  {t('Actions')}
                 </TableHead>
               </TableRow>
             </TableHeader>
@@ -196,7 +196,7 @@ const UsersList = () => {
                           setDialogOpen(true)
                         }}
                       >
-                        Modifier
+                        {t('Edit')}
                       </Button>
                       <DeleteDialog
                         id={user._id}

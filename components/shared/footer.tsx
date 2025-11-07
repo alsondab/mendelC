@@ -64,6 +64,9 @@ export default function Footer() {
                   width={40}
                   height={40}
                   className='w-10 h-10'
+                  // ⚡ Optimization: Qualité réduite pour économiser ~4 KiB (logo petit)
+                  quality={60}
+                  sizes='40px'
                 />
               ) : (
                 <div className='w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center'>

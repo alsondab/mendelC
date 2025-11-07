@@ -31,6 +31,9 @@ export default async function Header() {
                   alt={`${site.name} logo`}
                   priority
                   className='w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 flex-shrink-0'
+                  // ⚡ Optimization: Qualité réduite pour économiser ~4 KiB (logo petit)
+                  quality={60}
+                  sizes='(max-width: 640px) 40px, (max-width: 1024px) 48px, 64px'
                 />
               ) : (
                 <div className='w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 bg-muted flex items-center justify-center rounded-lg flex-shrink-0'>

@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+import { Metadata } from 'next'
 
 import { CategoryListWrapper } from './category-list-wrapper'
 import { CategoryListSkeleton } from './category-list-skeleton'
@@ -13,6 +14,13 @@ interface CategoriesPageProps {
     page?: string
     sort?: string
   }>
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Admin.CategoriesList')
+  return {
+    title: t('Title'),
+  }
 }
 
 export default async function CategoriesPage({

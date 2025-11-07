@@ -45,29 +45,29 @@ const ImageHover = ({
         src={src}
         alt={alt}
         fill
-        // ⚡ Optimization: Sizes optimisé pour responsive
-        sizes='(max-width: 480px) 60vw, (max-width: 768px) 40vw, 20vw'
+        // ⚡ Optimization: Sizes précis pour correspondre aux dimensions réelles (266x280px max)
+        sizes='(max-width: 320px) 160px, (max-width: 480px) 192px, (max-width: 768px) 208px, 280px'
         className={`object-contain transition-opacity duration-500 ${
           isHovered ? 'opacity-0' : 'opacity-100'
         }`}
         // ⚡ Optimization: Lazy loading pour les images produits
         loading='lazy'
-        // ⚡ Optimization: Qualité réduite pour réduire la taille
-        quality={75}
+        // ⚡ Optimization: Qualité réduite pour réduire la taille (économie ~15.5 KiB)
+        quality={70}
       />
       <Image
         src={hoverSrc}
         alt={alt}
         fill
-        // ⚡ Optimization: Sizes optimisé pour responsive
-        sizes='(max-width: 480px) 60vw, (max-width: 768px) 40vw, 20vw'
+        // ⚡ Optimization: Sizes précis pour correspondre aux dimensions réelles
+        sizes='(max-width: 320px) 160px, (max-width: 480px) 192px, (max-width: 768px) 208px, 280px'
         className={`absolute inset-0 object-contain transition-opacity duration-500 ${
           isHovered ? 'opacity-100' : 'opacity-0'
         }`}
         // ⚡ Optimization: Lazy loading pour les images hover (chargées après interaction)
         loading='lazy'
         // ⚡ Optimization: Qualité réduite pour réduire la taille
-        quality={75}
+        quality={70}
       />
     </div>
   )

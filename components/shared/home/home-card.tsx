@@ -48,7 +48,8 @@ export function HomeCard({ cards }: { cards: CardItem[] }) {
                           sizes='(max-width: 640px) 80px, (max-width: 768px) 100px, 120px'
                           priority={isPriority}
                           loading={isPriority ? 'eager' : 'lazy'}
-                          quality={75}
+                          // ⚡ Optimization: Qualité réduite pour économiser ~4 KiB par image
+                          quality={65}
                         />
                       ) : (
                         <div className='aspect-square flex items-center justify-center bg-muted rounded-md xs:rounded-lg'>

@@ -8,6 +8,7 @@ import { useWishlistStore } from '@/hooks/use-wishlist-store'
 import { cn } from '@/lib/utils'
 import useIsMounted from '@/hooks/use-is-mounted'
 import { useTranslations } from 'next-intl'
+import { memo } from 'react'
 
 interface WishlistButtonProps {
   productId: string
@@ -27,7 +28,7 @@ interface WishlistButtonProps {
   showCount?: boolean
 }
 
-export default function WishlistButton({
+const WishlistButton = memo(function WishlistButton({
   productId,
   product,
   className,
@@ -167,4 +168,6 @@ export default function WishlistButton({
       )}
     </Button>
   )
-}
+})
+
+export default WishlistButton

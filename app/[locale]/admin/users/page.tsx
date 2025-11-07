@@ -1,8 +1,12 @@
 import { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import UsersList from './users-list'
 
-export const metadata: Metadata = {
-  title: 'Admin Users',
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Admin')
+  return {
+    title: t('Users'),
+  }
 }
 
 export default async function AdminUser() {

@@ -1,8 +1,12 @@
 import { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import SettingsPage from './settings-page'
 
-export const metadata: Metadata = {
-  title: 'Paramètres',
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Admin')
+  return {
+    title: t('Settings'),
+  }
 }
 
 const SettingPage = async () => {

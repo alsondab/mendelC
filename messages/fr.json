@@ -647,6 +647,16 @@
       "CorrectFormErrors": "Veuillez corriger les erreurs dans le formulaire"
     },
     "OrdersList": {
+      "Title": "Commandes",
+      "OrdersFound": "{count} commande(s) trouvée(s)",
+      "ID": "ID",
+      "Date": "Date",
+      "Client": "Client",
+      "Total": "Total",
+      "Paid": "Payé",
+      "Delivered": "Livré",
+      "Actions": "Actions",
+      "Details": "Détails",
       "InProgress": "En cours",
       "Paid": "Payé",
       "Delivered": "Livré",
@@ -654,6 +664,14 @@
       "NotPaid": "Non payé"
     },
     "UsersList": {
+      "Title": "Utilisateurs",
+      "UsersFound": "{count} utilisateur(s) trouvé(s)",
+      "ID": "ID",
+      "Name": "Nom",
+      "Email": "Email",
+      "Role": "Rôle",
+      "Actions": "Actions",
+      "Edit": "Modifier",
       "Admin": "Admin",
       "User": "Utilisateur",
       "EditUser": "Modifier",
