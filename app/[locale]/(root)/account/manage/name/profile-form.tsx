@@ -19,10 +19,12 @@ import { Input } from '@/components/ui/input'
 import { useToast } from '@/hooks/use-toast'
 import { updateUserName } from '@/lib/actions/user.actions'
 import { UserNameSchema } from '@/lib/validator'
+import { useTranslations } from 'next-intl'
 
 export const ProfileForm = () => {
   const router = useRouter()
   const { data: session, update } = useSession()
+  const t = useTranslations('Manage')
   const form = useForm<z.infer<typeof UserNameSchema>>({
     resolver: zodResolver(UserNameSchema),
     defaultValues: {
@@ -65,11 +67,11 @@ export const ProfileForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className='text-sm xs:text-base font-semibold'>
-                Nouveau nom
+                {t('New Name')}
               </FormLabel>
               <FormControl>
                 <Input
-                  placeholder='Saisir votre nouveau nom'
+                  placeholder={t('Enter your new name')}
                   {...field}
                   className='text-sm xs:text-base'
                 />
@@ -86,8 +88,8 @@ export const ProfileForm = () => {
             className='w-full xs:w-auto rounded-full text-sm xs:text-base font-medium'
           >
             {form.formState.isSubmitting
-              ? 'Enregistrement...'
-              : 'Enregistrer les modifications'}
+              ? t('Saving')
+              : t('Save Changes')}
           </Button>
           <Button
             type='button'
@@ -95,7 +97,7 @@ export const ProfileForm = () => {
             onClick={() => window.history.back()}
             className='w-full xs:w-auto rounded-full text-sm xs:text-base'
           >
-            Annuler
+            {t('Cancel')}
           </Button>
         </div>
       </form>

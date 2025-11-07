@@ -39,18 +39,12 @@ export default function AddToCart({
       onClick={() => {
         try {
           addItem(item, 1)
-          toast({
+          const toastResult = toast({
             description: t('Product.Added to Cart'),
-            action: (
-              <Button
-                onClick={() => {
-                  router.push('/cart')
-                }}
-              >
-                {t('Product.Go to Cart')}
-              </Button>
-            ),
           })
+          setTimeout(() => {
+            toastResult.dismiss()
+          }, 2000)
         } catch (error: any) {
           // ✅ Gestion élégante de la rupture de stock
           if (error.message === 'Not enough items in stock') {
@@ -100,20 +94,12 @@ export default function AddToCart({
         onClick={async () => {
           try {
             await addItem(item, quantity)
-            toast({
+            const toastResult = toast({
               description: t('Product.Added to Cart'),
-              action: (
-                <Button
-                  variant='outline'
-                  size='sm'
-                  onClick={() => {
-                    router.push('/cart')
-                  }}
-                >
-                  {t('Product.Go to Cart')}
-                </Button>
-              ),
             })
+            setTimeout(() => {
+              toastResult.dismiss()
+            }, 2000)
           } catch (error: any) {
             // ✅ Gestion élégante de la rupture de stock
             if (error.message === 'Not enough items in stock') {

@@ -7,6 +7,7 @@ import { useToast } from '@/hooks/use-toast'
 import { useWishlistStore } from '@/hooks/use-wishlist-store'
 import { cn } from '@/lib/utils'
 import useIsMounted from '@/hooks/use-is-mounted'
+import { useTranslations } from 'next-intl'
 
 interface WishlistButtonProps {
   productId: string
@@ -39,6 +40,7 @@ export default function WishlistButton({
   const { toast } = useToast()
   const isMounted = useIsMounted()
   const { addItem, removeItem, isInWishlist } = useWishlistStore()
+  const t = useTranslations('Wishlist')
 
   // État local pour éviter les problèmes d'hydratation
   const [isInWishlistState, setIsInWishlistState] = useState(false)
@@ -64,10 +66,13 @@ export default function WishlistButton({
         // Supprimer des favoris
         removeItem(productId)
         setIsInWishlistState(false)
-        toast({
-          title: 'Favori supprimé',
-          description: 'Le produit a été retiré de vos favoris',
+        const toastResult = toast({
+          title: t('Removed'),
+          description: t('RemovedDescription'),
         })
+        setTimeout(() => {
+          toastResult.dismiss()
+        }, 2000)
       } else {
         // Ajouter aux favoris
         const wishlistItem = {
@@ -82,17 +87,23 @@ export default function WishlistButton({
         }
         addItem(wishlistItem)
         setIsInWishlistState(true)
-        toast({
-          title: 'Favori ajouté',
-          description: 'Le produit a été ajouté à vos favoris',
+        const toastResult = toast({
+          title: t('Added'),
+          description: t('AddedDescription'),
         })
+        setTimeout(() => {
+          toastResult.dismiss()
+        }, 2000)
       }
     } catch {
-      toast({
-        title: 'Erreur',
-        description: 'Une erreur est survenue',
+      const toastResult = toast({
+        title: t('Error'),
+        description: t('ErrorDescription'),
         variant: 'destructive',
       })
+      setTimeout(() => {
+        toastResult.dismiss()
+      }, 2000)
     } finally {
       setIsLoading(false)
       setTimeout(() => setIsAnimating(false), 300)

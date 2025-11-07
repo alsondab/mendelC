@@ -9,6 +9,7 @@ import {
 import { getFilterUrl } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 import React from 'react'
+import { useTranslations } from 'next-intl'
 
 export default function ProductSortSelector({
   sortOrders,
@@ -27,7 +28,8 @@ export default function ProductSortSelector({
   }
 }) {
   const router = useRouter()
-  const currentSort = sortOrders.find((s) => s.value === sort)?.name || 'Best selling'
+  const t = useTranslations('Search')
+  const currentSort = sortOrders.find((s) => s.value === sort)?.name || t('BestSelling')
   
   return (
     <Select
@@ -38,8 +40,8 @@ export default function ProductSortSelector({
     >
       <SelectTrigger className='w-full sm:w-auto min-w-[140px] sm:min-w-[180px] h-9 sm:h-10 text-xs sm:text-sm'>
         <SelectValue>
-          <span className='hidden sm:inline'>Sort By: </span>
-          <span className='sm:hidden'>Trier: </span>
+          <span className='hidden sm:inline'>{t('SortBy')}: </span>
+          <span className='sm:hidden'>{t('SortBy')}: </span>
           <span className='font-medium'>{currentSort}</span>
         </SelectValue>
       </SelectTrigger>

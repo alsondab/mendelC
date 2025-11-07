@@ -449,15 +449,15 @@ export default function Search({ categories, siteName }: SearchProps) {
             <SearchIcon className='w-4 h-4 sm:w-4 sm:h-4 md:w-5 md:h-5' />
             {/* Très petits écrans (< 375px) : Seulement l'icône */}
             <span className='font-medium text-xs hidden min-[375px]:inline sm:hidden'>
-              Recherche
+              {t('Header.Search')}
             </span>
             {/* Petits écrans (375px - 768px) : Icône + "Recherche" */}
             <span className='font-medium text-xs hidden sm:inline md:hidden'>
-              Recherche
+              {t('Header.Search')}
             </span>
             {/* Écrans moyens (768px+) : Icône + "Rechercher" */}
             <span className='font-medium text-xs hidden md:inline'>
-              Rechercher
+              {t('Search.Search')}
             </span>
           </button>
         )}
@@ -469,7 +469,7 @@ export default function Search({ categories, siteName }: SearchProps) {
               <div className='px-4 py-3 space-y-3'>
                 {/* Header avec bouton fermer */}
                 <div className='flex items-center justify-between'>
-                  <h2 className='text-lg font-semibold'>Rechercher</h2>
+                  <h2 className='text-lg font-semibold'>{t('Search.Search')}</h2>
                   <Button
                     variant='ghost'
                     size='sm'

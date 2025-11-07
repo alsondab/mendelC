@@ -13,13 +13,16 @@ import Rating from '@/components/shared/product/rating'
 import CollapsibleOnMobile from '@/components/shared/collapsible-on-mobile'
 import { getTranslations } from 'next-intl/server'
 
-const sortOrders = [
-  { value: 'price-low-to-high', name: 'Price: Low to high' },
-  { value: 'price-high-to-low', name: 'Price: High to low' },
-  { value: 'newest-arrivals', name: 'Newest arrivals' },
-  { value: 'avg-customer-review', name: 'Avg. customer review' },
-  { value: 'best-selling', name: 'Best selling' },
-]
+const getSortOrders = async () => {
+  const t = await getTranslations('Search')
+  return [
+    { value: 'price-low-to-high', name: t('PriceLowToHigh') },
+    { value: 'price-high-to-low', name: t('PriceHighToLow') },
+    { value: 'newest-arrivals', name: t('NewestArrivals') },
+    { value: 'avg-customer-review', name: t('AvgCustomerReview') },
+    { value: 'best-selling', name: t('BestSelling') },
+  ]
+}
 
 const prices = [
   {
@@ -107,6 +110,7 @@ export default async function SearchPage(props: {
 
   const categories = await getCachedCategoryTree()
   const tags = await getAllTags()
+  const sortOrders = await getSortOrders()
   const data = await getAllProducts({
     category,
     subCategory,
@@ -466,7 +470,7 @@ export default async function SearchPage(props: {
                 {t('Search.No product found')}
               </div>
               <p className='text-xs sm:text-sm text-muted-foreground'>
-                Essayez de modifier vos critères de recherche
+                {t('Search.TryModifySearchCriteria')}
               </p>
             </div>
           ) : (

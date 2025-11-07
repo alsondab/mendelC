@@ -2,12 +2,18 @@ import Link from 'next/link'
 import ProductForm from '../product-form'
 import { Metadata } from 'next'
 import { Package, Plus } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 
-export const metadata: Metadata = {
-  title: 'Créer un Produit',
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Admin.ProductForm')
+  return {
+    title: t('CreateProductTitle'),
+  }
 }
 
-const CreateProductPage = () => {
+export default async function CreateProductPage() {
+  const t = await getTranslations('Admin.ProductForm')
+  
   return (
     <div className='min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800'>
       <div className='max-w-7xl mx-auto p-4 sm:p-6 lg:p-8'>
@@ -20,12 +26,12 @@ const CreateProductPage = () => {
               className='hover:text-foreground transition-colors flex items-center gap-1'
             >
               <Package className='h-4 w-4' />
-              Produits
+              {t('Products')}
             </Link>
             <span className='text-muted-foreground'>›</span>
             <span className='text-foreground font-medium flex items-center gap-1'>
               <Plus className='h-4 w-4' />
-              Créer un produit
+              {t('CreateProductBreadcrumb')}
             </span>
           </nav>
 
@@ -37,7 +43,7 @@ const CreateProductPage = () => {
               </div>
               <div>
                 <h1 className='text-xl xs:text-2xl sm:text-3xl font-bold text-foreground'>
-                  Créer un nouveau produit
+                  {t('CreateProductPageTitle')}
                 </h1>
               </div>
             </div>
@@ -52,5 +58,3 @@ const CreateProductPage = () => {
     </div>
   )
 }
-
-export default CreateProductPage

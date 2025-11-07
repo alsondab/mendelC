@@ -250,9 +250,16 @@
     "& Up": "& Up",
     "Check each product page for other buying options": "Check each product page for other buying options.",
     "No product found": "No product found",
+    "TryModifySearchCriteria": "Try modifying your search criteria",
     "Next": "Next",
     "Previous": "Previous",
-    "Page": "Page"
+    "Page": "Page",
+    "SortBy": "Sort By",
+    "BestSelling": "Best selling",
+    "PriceLowToHigh": "Price: Low to high",
+    "PriceHighToLow": "Price: High to low",
+    "NewestArrivals": "Newest arrivals",
+    "AvgCustomerReview": "Avg. customer review"
   },
   "About": {
     "Our Numbers": "Our Numbers",
@@ -291,6 +298,10 @@
     },
     "Removed": "Item removed",
     "RemovedDescription": "The product has been removed from your wishlist",
+    "Added": "Item added",
+    "AddedDescription": "The product has been added to your wishlist",
+    "Error": "Error",
+    "ErrorDescription": "An error occurred",
     "InStock": "In Stock",
     "OutOfStock": "Out of Stock",
     "View": "View",
@@ -326,6 +337,8 @@
     "New Email": "New Email",
     "Enter new email address": "Enter new email address",
     "Current email": "Current email",
+    "Password": "Password",
+    "Enter your password to confirm": "Enter your password to confirm",
     "Password confirmation description": "Your password is required to confirm this change",
     "Email updated successfully": "Email updated successfully",
     "Failed to update email": "Failed to update email",
@@ -774,7 +787,11 @@
       "ImageUploadedSuccess": "Image uploaded successfully!",
       "CorrectFormErrors": "Please correct errors in the form",
       "ImagesUploaded": "{count} image{plural} uploaded{plural}",
-      "RemoveAll": "Remove all"
+      "RemoveAll": "Remove all",
+      "CreateProductTitle": "Create Product",
+      "CreateProductPageTitle": "Create a new product",
+      "CreateProductBreadcrumb": "Create product",
+      "Products": "Products"
     },
     "ImageUpload": {
       "UploadSuccess": "Image uploaded successfully",
@@ -941,6 +958,14 @@
     "Email": "Email",
     "Manage your email address": "Manage your email address",
     "Password": "Password",
-    "Change your password regularly": "Change your password regularly"
+    "Change your password regularly": "Change your password regularly",
+    "Update Name": "Update Your Name",
+    "Update Name Description": "Change the name associated with your account",
+    "Update Name Instructions": "If you want to change the name associated with your {name} account, you can do so below. Make sure to click the \"Save changes\" button when you're done.",
+    "New Name": "New name",
+    "Enter your new name": "Enter your new name",
+    "Saving": "Saving...",
+    "Save Changes": "Save changes",
+    "Cancel": "Cancel"
   }
 }

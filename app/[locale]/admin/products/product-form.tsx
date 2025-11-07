@@ -122,8 +122,8 @@ const ProductForm = ({
   onSuccess?: () => void
 }) => {
   const router = useRouter()
-  const t = useTranslations('ProductForm')
-  const tProductsList = useTranslations('ProductsList')
+  const t = useTranslations('Admin.ProductForm')
+  const tProductsList = useTranslations('Admin.ProductsList')
   const [categories, setCategories] = useState<ICategory[]>([])
   const [subCategories, setSubCategories] = useState<ICategory[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string>('')
@@ -849,7 +849,7 @@ const ProductForm = ({
           <CardHeader>
             <CardTitle className='flex items-center gap-2 text-lg'>
               <Settings className='h-5 w-5 text-amber-500' />
-              Paramètres de publication
+              {t('PublicationSettings')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -866,10 +866,10 @@ const ProductForm = ({
                   </FormControl>
                   <div className='space-y-1 leading-none'>
                     <FormLabel className='text-sm font-medium'>
-                      Publier le produit
+                      {t('PublishProduct')}
                     </FormLabel>
                     <FormDescription className='text-xs'>
-                      Le produit sera visible sur le site web une fois publié.
+                      {t('PublishProductDescription')}
                     </FormDescription>
                   </div>
                 </FormItem>
@@ -896,8 +896,7 @@ const ProductForm = ({
               } else {
                 toast({
                   variant: 'destructive',
-                  description:
-                    'Veuillez corriger les erreurs dans le formulaire',
+                  description: t('CorrectFormErrors'),
                 })
               }
             }}
@@ -907,15 +906,15 @@ const ProductForm = ({
               <div className='flex items-center gap-2'>
                 <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin' />
                 {type === 'Create'
-                  ? 'Création en cours...'
-                  : 'Mise à jour en cours...'}
+                  ? t('Creating')
+                  : t('Updating')}
               </div>
             ) : (
               <div className='flex items-center gap-2'>
                 <CheckCircle className='h-5 w-5' />
                 {type === 'Create'
-                  ? 'Créer le produit'
-                  : 'Mettre à jour le produit'}
+                  ? t('CreateProduct')
+                  : t('UpdateProduct')}
               </div>
             )}
           </Button>

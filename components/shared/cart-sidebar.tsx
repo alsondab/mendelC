@@ -146,7 +146,7 @@ export default function CartSidebar() {
                   size='sm'
                   className='min-h-[44px]'
                 >
-                  <Link href='/'>{t('Common.Continue Shopping')}</Link>
+                  <Link href='/search'>{t('Common.Continue Shopping')}</Link>
                 </Button>
               </div>
             ) : (
@@ -295,7 +295,7 @@ export default function CartSidebar() {
                       className='w-full h-8 text-xs min-h-[32px] focus:ring-2 focus:ring-primary focus:ring-offset-2'
                       asChild
                     >
-                      <Link href='/'>{t('Common.Continue Shopping')}</Link>
+                      <Link href='/search'>{t('Common.Continue Shopping')}</Link>
                     </Button>
                   </div>
                 </div>

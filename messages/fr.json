@@ -250,9 +250,16 @@
     "& Up": "& Plus",
     "Check each product page for other buying options": "Vérifiez chaque page produit pour d'autres options d'achat.",
     "No product found": "Aucun produit trouvé",
+    "TryModifySearchCriteria": "Essayez de modifier vos critères de recherche",
     "Next": "Suivant",
     "Previous": "Précédent",
-    "Page": "Page"
+    "Page": "Page",
+    "SortBy": "Trier par",
+    "BestSelling": "Meilleures ventes",
+    "PriceLowToHigh": "Prix : du plus bas au plus haut",
+    "PriceHighToLow": "Prix : du plus haut au plus bas",
+    "NewestArrivals": "Nouveautés",
+    "AvgCustomerReview": "Avis clients moyens"
   },
   "About": {
     "Our Numbers": "Nos Chiffres",
@@ -291,6 +298,10 @@
     },
     "Removed": "Favori supprimé",
     "RemovedDescription": "Le produit a été retiré de vos favoris",
+    "Added": "Favori ajouté",
+    "AddedDescription": "Le produit a été ajouté à vos favoris",
+    "Error": "Erreur",
+    "ErrorDescription": "Une erreur est survenue",
     "InStock": "En stock",
     "OutOfStock": "Rupture de stock",
     "View": "Voir",
@@ -326,6 +337,8 @@
     "New Email": "Nouvel email",
     "Enter new email address": "Saisir la nouvelle adresse email",
     "Current email": "Email actuel",
+    "Password": "Mot de passe",
+    "Enter your password to confirm": "Saisir votre mot de passe pour confirmer",
     "Password confirmation description": "Votre mot de passe est requis pour confirmer ce changement",
     "Email updated successfully": "Email mis à jour avec succès",
     "Failed to update email": "Échec de la mise à jour de l'email",
@@ -774,7 +787,11 @@
       "ImageUploadedSuccess": "Image uploadée avec succès !",
       "CorrectFormErrors": "Veuillez corriger les erreurs dans le formulaire",
       "ImagesUploaded": "{count} image{plural} uploadée{plural}",
-      "RemoveAll": "Tout supprimer"
+      "RemoveAll": "Tout supprimer",
+      "CreateProductTitle": "Créer un Produit",
+      "CreateProductPageTitle": "Créer un nouveau produit",
+      "CreateProductBreadcrumb": "Créer un produit",
+      "Products": "Produits"
     },
     "ImageUpload": {
       "UploadSuccess": "Image uploadée avec succès",
@@ -952,6 +969,14 @@
     "Email": "Email",
     "Manage your email address": "Gérez votre adresse email",
     "Password": "Mot de passe",
-    "Change your password regularly": "Changez votre mot de passe régulièrement"
+    "Change your password regularly": "Changez votre mot de passe régulièrement",
+    "Update Name": "Modifier Votre Nom",
+    "Update Name Description": "Modifiez le nom associé à votre compte",
+    "Update Name Instructions": "Si vous souhaitez modifier le nom associé à votre compte {name}, vous pouvez le faire ci-dessous. Assurez-vous de cliquer sur le bouton \"Enregistrer les modifications\" lorsque vous avez terminé.",
+    "New Name": "Nouveau nom",
+    "Enter your new name": "Saisir votre nouveau nom",
+    "Saving": "Enregistrement...",
+    "Save Changes": "Enregistrer les modifications",
+    "Cancel": "Annuler"
   }
 }
