@@ -12,14 +12,14 @@ import { Trash2, X, ShoppingCart, ArrowRight, Plus, Minus } from 'lucide-react'
 import useSettingStore from '@/hooks/use-setting-store'
 import ProductPrice from './product/product-price'
 import { useTranslations } from 'next-intl'
+import { useRouter } from 'next/navigation'
+import { round2 } from '@/lib/utils'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   slideFromRight,
   overlayVariants,
   buttonVariants as btnVariants,
 } from '@/lib/utils/animations'
-import { useRouter } from 'next/navigation'
-import { round2 } from '@/lib/utils'
 
 export default function CartSidebar() {
   const {
@@ -295,7 +295,9 @@ export default function CartSidebar() {
                       className='w-full h-8 text-xs min-h-[32px] focus:ring-2 focus:ring-primary focus:ring-offset-2'
                       asChild
                     >
-                      <Link href='/search'>{t('Common.Continue Shopping')}</Link>
+                      <Link href='/search'>
+                        {t('Common.Continue Shopping')}
+                      </Link>
                     </Button>
                   </div>
                 </div>

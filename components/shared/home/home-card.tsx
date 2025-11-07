@@ -27,35 +27,43 @@ export function HomeCard({ cards }: { cards: CardItem[] }) {
               {card.title}
             </h3>
             <div className='grid grid-cols-2 gap-2 xs:gap-3 sm:gap-4'>
-              {card.items.map((item, index) => (
-                <Link
-                  key={`${item.name}-${index}`}
-                  href={item.href}
-                  className='flex flex-col group'
-                >
-                  <div className='relative overflow-hidden rounded-lg xs:rounded-xl bg-muted/30 p-2 xs:p-3 sm:p-4 mb-2 xs:mb-3 group-hover:bg-muted/50 transition-colors'>
-                    {item.image && item.image.trim() !== '' ? (
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        className='aspect-square object-scale-down max-w-full h-auto mx-auto rounded-md xs:rounded-lg'
-                        height={80}
-                        width={80}
-                        sizes='(max-width: 640px) 80px, (max-width: 768px) 100px, 120px'
-                      />
-                    ) : (
-                      <div className='aspect-square flex items-center justify-center bg-muted rounded-md xs:rounded-lg'>
-                        <span className='text-muted-foreground text-xs'>
-                          Aucune image
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                  <p className='text-center text-xs xs:text-sm whitespace-nowrap overflow-hidden text-ellipsis font-medium'>
-                    {item.name}
-                  </p>
-                </Link>
-              ))}
+              {card.items.map((item, index) => {
+                // ⚡ Optimization: Priority uniquement pour les 4 premières images de la première carte (above-the-fold)
+                const isFirstCard = cards.indexOf(card) === 0
+                const isPriority = isFirstCard && index < 4
+                return (
+                  <Link
+                    key={`${item.name}-${index}`}
+                    href={item.href}
+                    className='flex flex-col group'
+                  >
+                    <div className='relative overflow-hidden rounded-lg xs:rounded-xl bg-muted/30 p-2 xs:p-3 sm:p-4 mb-2 xs:mb-3 group-hover:bg-muted/50 transition-colors'>
+                      {item.image && item.image.trim() !== '' ? (
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          className='aspect-square object-scale-down max-w-full h-auto mx-auto rounded-md xs:rounded-lg'
+                          height={80}
+                          width={80}
+                          sizes='(max-width: 640px) 80px, (max-width: 768px) 100px, 120px'
+                          priority={isPriority}
+                          loading={isPriority ? 'eager' : 'lazy'}
+                          quality={75}
+                        />
+                      ) : (
+                        <div className='aspect-square flex items-center justify-center bg-muted rounded-md xs:rounded-lg'>
+                          <span className='text-muted-foreground text-xs'>
+                            Aucune image
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    <p className='text-center text-xs xs:text-sm whitespace-nowrap overflow-hidden text-ellipsis font-medium'>
+                      {item.name}
+                    </p>
+                  </Link>
+                )
+              })}
             </div>
           </CardContent>
           {card.link && (
