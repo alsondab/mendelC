@@ -348,4 +348,29 @@ body {
     scrollbar-width: thin;
     scrollbar-color: #fbbf24 #fef3c7;
   }
+
+  /* ⚡ Optimization: Ripple effect avec CSS (remplace framer-motion) */
+  .ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    animation: ripple-animation 0.6s ease-out;
+  }
+
+  @keyframes ripple-animation {
+    0% {
+      width: 0;
+      height: 0;
+      opacity: 0.5;
+    }
+    100% {
+      width: 200px;
+      height: 200px;
+      opacity: 0;
+    }
+  }
 }

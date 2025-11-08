@@ -37,8 +37,11 @@ export default function Rating({
         <div className='relative'>
           <Star className={`${starSize} text-primary`} />
           <div
-            className='absolute top-0 left-0 overflow-hidden'
-            style={{ width: `${partialStar * 100}%` }}
+            className='absolute top-0 left-0 overflow-hidden origin-left'
+            style={{
+              transform: `scaleX(${partialStar})`,
+              width: '100%',
+            }}
           >
             <Star className={`${starSize} fill-primary text-primary`} />
           </div>

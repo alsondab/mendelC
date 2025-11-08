@@ -19,7 +19,8 @@ export function AnimatedSkeleton({
   if (count === 1 && !stagger) {
     return (
       <motion.div
-        variants={fadeIn}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        variants={fadeIn as any}
         initial='hidden'
         animate='visible'
         className={className}
@@ -32,13 +33,18 @@ export function AnimatedSkeleton({
   if (stagger) {
     return (
       <motion.div
-        variants={staggerContainer}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        variants={staggerContainer as any}
         initial='hidden'
         animate='visible'
         className={className}
       >
         {Array.from({ length: count }).map((_, i) => (
-          <motion.div key={i} variants={staggerItem}>
+          <motion.div
+            key={i}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            variants={staggerItem as any}
+          >
             <Skeleton {...props} />
           </motion.div>
         ))}
@@ -51,7 +57,8 @@ export function AnimatedSkeleton({
       {Array.from({ length: count }).map((_, i) => (
         <motion.div
           key={i}
-          variants={fadeIn}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          variants={fadeIn as any}
           initial='hidden'
           animate='visible'
           transition={{ delay: i * 0.1 }}

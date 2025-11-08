@@ -71,15 +71,19 @@ export function StockGauge({
         </div>
       )}
       <div className='relative w-full overflow-hidden rounded-full bg-muted'>
-        {/* Barre de progression animée */}
+        {/* Barre de progression animée - Optimisé avec transform pour meilleure performance */}
         <motion.div
-          className={cn('h-full rounded-full transition-colors', color)}
-          initial={{ width: 0 }}
-          animate={{ width: `${stockPercentage}%` }}
+          className={cn(
+            'h-full rounded-full transition-colors origin-left',
+            color
+          )}
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: stockPercentage / 100 }}
           transition={{
             duration: 0.8,
             ease: 'easeOut',
           }}
+          style={{ width: '100%' }}
         />
         {/* Marqueur de seuil minimum */}
         <div
@@ -100,4 +104,3 @@ export function StockGauge({
     </div>
   )
 }
-

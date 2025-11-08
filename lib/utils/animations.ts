@@ -1,12 +1,32 @@
-import { Variants } from 'framer-motion'
-
 /**
  * Variants d'animation réutilisables pour Framer Motion
  * Assure la cohérence des animations dans toute l'application
+ *
+ * ⚡ Optimization: Type générique au lieu d'importer Variants directement
+ * Cela permet le tree-shaking de framer-motion si les animations ne sont pas utilisées
  */
 
+// Type générique compatible avec Framer Motion Variants (sans importer framer-motion)
+// Les valeurs d'animation peuvent être: number, string, array, ou objet de transition
+type AnimationValue =
+  | number
+  | string
+  | number[]
+  | string[]
+  | Record<string, unknown>
+type AnimationVariants = {
+  hidden?: Record<string, AnimationValue>
+  visible?: Record<string, AnimationValue>
+  exit?: Record<string, AnimationValue>
+  rest?: Record<string, AnimationValue>
+  hover?: Record<string, AnimationValue>
+  tap?: Record<string, AnimationValue>
+  // Index signature compatible avec Variants de framer-motion
+  [key: string]: Record<string, AnimationValue> | undefined
+} & Record<string, Record<string, AnimationValue> | undefined>
+
 // Animation fade-in simple
-export const fadeIn: Variants = {
+export const fadeIn: AnimationVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -18,7 +38,7 @@ export const fadeIn: Variants = {
 }
 
 // Animation slide-up avec fade
-export const slideUp: Variants = {
+export const slideUp: AnimationVariants = {
   hidden: {
     opacity: 0,
     y: 20,
@@ -36,7 +56,7 @@ export const slideUp: Variants = {
 }
 
 // Animation slide-down avec fade
-export const slideDown: Variants = {
+export const slideDown: AnimationVariants = {
   hidden: {
     opacity: 0,
     y: -20,
@@ -54,7 +74,7 @@ export const slideDown: Variants = {
 }
 
 // Animation scale avec spring
-export const scale: Variants = {
+export const scale: AnimationVariants = {
   hidden: { scale: 0.95, opacity: 0 },
   visible: {
     scale: 1,
@@ -76,7 +96,7 @@ export const spring = {
 }
 
 // Animation pour les listes avec stagger
-export const staggerContainer: Variants = {
+export const staggerContainer: AnimationVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -88,7 +108,7 @@ export const staggerContainer: Variants = {
 }
 
 // Animation pour les items dans une liste
-export const staggerItem: Variants = {
+export const staggerItem: AnimationVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
@@ -102,7 +122,7 @@ export const staggerItem: Variants = {
 }
 
 // Variants pour les boutons avec ripple
-export const buttonVariants: Variants = {
+export const buttonVariants: AnimationVariants = {
   rest: { scale: 1 },
   hover: {
     scale: 1.02,
@@ -121,7 +141,7 @@ export const buttonVariants: Variants = {
 }
 
 // Animation shake pour les erreurs
-export const shake: Variants = {
+export const shake: AnimationVariants = {
   hidden: { x: 0 },
   visible: {
     x: [0, -10, 10, -10, 10, 0],
@@ -133,7 +153,9 @@ export const shake: Variants = {
 }
 
 // Animation slide selon la direction (pour page transitions)
-export const slideFade = (direction: 'left' | 'right' | 'up' | 'down' = 'left'): Variants => {
+export const slideFade = (
+  direction: 'left' | 'right' | 'up' | 'down' = 'left'
+): AnimationVariants => {
   const offsets = {
     left: { x: -50, y: 0 },
     right: { x: 50, y: 0 },
@@ -169,7 +191,7 @@ export const slideFade = (direction: 'left' | 'right' | 'up' | 'down' = 'left'):
 }
 
 // Animation pour les spinners
-export const spinnerVariants: Variants = {
+export const spinnerVariants: AnimationVariants = {
   hidden: { opacity: 0, scale: 0.8 },
   visible: {
     opacity: 1,
@@ -183,7 +205,7 @@ export const spinnerVariants: Variants = {
 }
 
 // Animation pour les checkmarks (success)
-export const checkmarkVariants: Variants = {
+export const checkmarkVariants: AnimationVariants = {
   hidden: { scale: 0, opacity: 0 },
   visible: {
     scale: 1,
@@ -198,7 +220,7 @@ export const checkmarkVariants: Variants = {
 }
 
 // Animation slide depuis la droite (pour les sliders panier/favoris)
-export const slideFromRight: Variants = {
+export const slideFromRight: AnimationVariants = {
   hidden: {
     x: '100%',
     opacity: 0,
@@ -224,7 +246,7 @@ export const slideFromRight: Variants = {
 }
 
 // Animation pour l'overlay des sliders
-export const overlayVariants: Variants = {
+export const overlayVariants: AnimationVariants = {
   hidden: {
     opacity: 0,
   },
@@ -243,4 +265,3 @@ export const overlayVariants: Variants = {
     },
   },
 }
-

@@ -64,7 +64,8 @@ export default function WishlistSidebar() {
         <>
           {/* Overlay */}
           <motion.div
-            variants={overlayVariants}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            variants={overlayVariants as any}
             initial='hidden'
             animate='visible'
             exit='exit'
@@ -74,7 +75,8 @@ export default function WishlistSidebar() {
 
           {/* Slider */}
           <motion.div
-            variants={slideFromRight}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            variants={slideFromRight as any}
             initial='hidden'
             animate='visible'
             exit='exit'
@@ -98,7 +100,8 @@ export default function WishlistSidebar() {
                 </h2>
               </div>
               <motion.button
-                variants={btnVariants}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                variants={btnVariants as any}
                 initial='rest'
                 whileHover='hover'
                 whileTap='tap'

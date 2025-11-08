@@ -709,7 +709,7 @@ const ProductForm = ({
                                 className='object-cover'
                                 sizes='(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 16vw'
                                 loading='lazy'
-                                quality={75}
+                                quality={60}
                                 decoding='async'
                               />
 

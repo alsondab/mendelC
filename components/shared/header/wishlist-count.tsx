@@ -8,8 +8,6 @@ import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 import { useWishlistSliderStore } from '@/hooks/use-wishlist-slider-store'
-import { motion } from 'framer-motion'
-import { buttonVariants } from '@/lib/utils/animations'
 
 export default function WishlistCount() {
   const { items: wishlistItems } = useWishlistStore()
@@ -27,15 +25,13 @@ export default function WishlistCount() {
   }
 
   return (
-    <motion.button
-      variants={buttonVariants}
-      initial='rest'
-      whileHover='hover'
-      whileTap='tap'
+    <button
       onClick={toggle}
       className={cn(
         'relative flex items-center justify-center transition-all duration-200',
-        'flex-row space-x-2 px-3 py-2 rounded-lg hover:bg-muted/80 cursor-pointer'
+        'flex-row space-x-2 px-3 py-2 rounded-lg hover:bg-muted/80 cursor-pointer',
+        // ⚡ Optimization: CSS transitions au lieu de framer-motion pour réduire le bundle (~53 kB)
+        'transform transition-transform hover:scale-105 active:scale-95'
       )}
       aria-label={t('Header.Wishlist') || 'Favoris'}
     >
@@ -62,6 +58,6 @@ export default function WishlistCount() {
       <span className='hidden md:block font-medium text-sm'>
         {t('Header.Wishlist')}
       </span>
-    </motion.button>
+    </button>
   )
 }

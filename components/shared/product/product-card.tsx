@@ -3,7 +3,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
-import type { Variants } from 'framer-motion'
+// ⚡ Optimization: Ne pas importer Variants directement pour permettre tree-shaking
+// Le type sera inféré depuis les animations importées
 
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { IProduct } from '@/lib/db/models/product.model'
@@ -30,7 +31,8 @@ const ProductCard = React.memo(
     const [motionReady, setMotionReady] = useState(false)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [MotionDiv, setMotionDiv] = useState<any>(null)
-    const [scale, setScale] = useState<Variants | null>(null)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [scale, setScale] = useState<any>(null)
 
     useEffect(() => {
       // Lazy load framer-motion après le premier rendu pour réduire TBT

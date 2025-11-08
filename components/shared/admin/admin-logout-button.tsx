@@ -23,8 +23,8 @@ export default function AdminLogoutButton() {
   const t = useTranslations('Admin')
 
   const handleLogout = async () => {
-    await signOut({ 
-      callbackUrl: '/' 
+    await signOut({
+      callbackUrl: '/',
     })
   }
 
@@ -69,10 +69,12 @@ export default function AdminLogoutButton() {
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogContent className='sm:max-w-md'>
           <motion.div
-            variants={scale}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
+            // ⚡ Optimization: Cast pour compatibilité avec Variants de framer-motion
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            variants={scale as any}
+            initial='hidden'
+            animate='visible'
+            exit='hidden'
           >
             <AlertDialogHeader className='text-center space-y-3'>
               <motion.div
@@ -107,4 +109,3 @@ export default function AdminLogoutButton() {
     </>
   )
 }
-

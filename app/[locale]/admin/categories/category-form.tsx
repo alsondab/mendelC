@@ -362,7 +362,7 @@ export function CategoryForm({
                         className='object-cover'
                         sizes='(max-width: 640px) 100vw, (max-width: 768px) 50vw, 300px'
                         loading='lazy'
-                        quality={75}
+                        quality={60}
                         decoding='async'
                       />
 
