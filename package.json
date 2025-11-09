@@ -12,7 +12,11 @@
     "lint:fix": "next lint --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "analyze": "cross-env ANALYZE=true next build"
+    "analyze": "cross-env ANALYZE=true next build",
+    "clean": "npx --yes rimraf .next node_modules",
+    "clean:build": "npx --yes rimraf .next",
+    "clean:deps": "npx --yes rimraf node_modules",
+    "fresh": "npm run clean && npm install"
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.7.4",
@@ -81,6 +85,7 @@
     "postcss": "^8",
     "prettier": "^3.6.2",
     "react-email": "^3.0.4",
+    "rimraf": "^6.1.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

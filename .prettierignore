@@ -32,3 +32,6 @@ coverage
 # Production
 .vercel
 
+# Editor history (VS Code Local History extension)
+.history
+
