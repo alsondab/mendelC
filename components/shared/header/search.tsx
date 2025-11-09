@@ -13,6 +13,7 @@ import {
 import { useTranslations } from 'next-intl'
 import { ICategory } from '@/types'
 import { useState, useRef, useEffect } from 'react'
+import { getSearchSuggestions } from '@/lib/actions/search.actions'
 
 interface SearchProps {
   categories: (ICategory & { subCategories: ICategory[] })[]
@@ -55,51 +56,42 @@ export default function Search({ categories, siteName }: SearchProps) {
     }
   }, [])
 
-  // Générer des suggestions intelligentes depuis l'API
+  // Générer des suggestions intelligentes via Server Action
   useEffect(() => {
     const fetchSuggestions = async () => {
       if (searchValue.trim().length >= 2) {
         setIsLoadingSuggestions(true)
 
         try {
-          const response = await fetch(
-            `/api/search/suggestions?q=${encodeURIComponent(searchValue.trim())}`
-          )
+          // Appel direct à la Server Action (plus rapide!)
+          const data = await getSearchSuggestions(searchValue.trim())
 
-          if (response.ok) {
-            const data = await response.json()
+          // Combiner avec les recherches récentes
+          const recentSuggestions = recentSearches
+            .filter(
+              (term) =>
+                term.toLowerCase().includes(searchValue.toLowerCase()) &&
+                term.toLowerCase() !== searchValue.toLowerCase()
+            )
+            .map((term) => ({
+              type: 'recent' as const,
+              text: term,
+            }))
 
-            // Combiner avec les recherches récentes
-            const recentSuggestions = recentSearches
-              .filter(
-                (term) =>
-                  term.toLowerCase().includes(searchValue.toLowerCase()) &&
-                  term.toLowerCase() !== searchValue.toLowerCase()
-              )
-              .map((term) => ({
-                type: 'recent' as const,
-                text: term,
-              }))
+          // Combiner toutes les suggestions
+          const allSuggestions = [...recentSuggestions, ...data.suggestions]
 
-            // Combiner toutes les suggestions
-            const allSuggestions = [...recentSuggestions, ...data.suggestions]
+          // Dédupliquer et limiter
+          const uniqueSuggestions = allSuggestions
+            .filter(
+              (suggestion, index, self) =>
+                index === self.findIndex((s) => s.text === suggestion.text)
+            )
+            .slice(0, 8)
 
-            // Dédupliquer et limiter
-            const uniqueSuggestions = allSuggestions
-              .filter(
-                (suggestion, index, self) =>
-                  index === self.findIndex((s) => s.text === suggestion.text)
-              )
-              .slice(0, 8)
-
-            setSuggestions(uniqueSuggestions)
-            setShowSuggestions(uniqueSuggestions.length > 0)
-            setSelectedSuggestionIndex(-1)
-          } else {
-            console.error('Erreur lors de la récupération des suggestions')
-            setSuggestions([])
-            setShowSuggestions(false)
-          }
+          setSuggestions(uniqueSuggestions)
+          setShowSuggestions(uniqueSuggestions.length > 0)
+          setSelectedSuggestionIndex(-1)
         } catch (error) {
           console.error(
             'Erreur lors de la récupération des suggestions:',
@@ -117,7 +109,7 @@ export default function Search({ categories, siteName }: SearchProps) {
       }
     }
 
-    // Debounce pour éviter trop d'appels API
+    // Debounce pour éviter trop d'appels
     const timeoutId = setTimeout(fetchSuggestions, 300)
     return () => clearTimeout(timeoutId)
   }, [searchValue, recentSearches])

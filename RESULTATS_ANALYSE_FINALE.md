@@ -136,3 +136,4 @@ Vérifier la configuration `next.config.ts` pour s'assurer que framer-motion est
 
 **Document créé le:** 2025-01-05  
 **Dernière mise à jour:** 2025-01-05
+

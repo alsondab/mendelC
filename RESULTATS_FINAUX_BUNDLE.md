@@ -144,3 +144,4 @@ Le chunk `vendors-ff30e0d3-44c41cf4bc64ccd6.js` (53 kB) peut être :
 
 **Document créé le:** 2025-01-05  
 **Dernière mise à jour:** 2025-01-05
+

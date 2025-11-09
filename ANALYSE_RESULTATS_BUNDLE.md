@@ -112,3 +112,4 @@ Remplacer les animations framer-motion par CSS :
 
 **Document créé le:** 2025-01-05  
 **Dernière mise à jour:** 2025-01-05
+

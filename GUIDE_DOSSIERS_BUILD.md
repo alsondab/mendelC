@@ -210,3 +210,4 @@ npm run fresh        # Nettoie tout et réinstalle
 ---
 
 **Date de création :** 2025-01-05
+

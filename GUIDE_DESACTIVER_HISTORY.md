@@ -96,3 +96,4 @@ Si vous avez plusieurs extensions similaires, désactivez-les toutes.
 
 **Date de création :** 2025-01-05
 
+

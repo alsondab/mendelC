@@ -1404,3 +1404,4 @@ Composants UI de base (design system) basés sur Radix UI et shadcn/ui.
 
 **Document créé le:** 2025-01-05  
 **Dernière mise à jour:** 2025-01-05
+
