@@ -9,6 +9,7 @@ import {
 import { getCachedCategoryTree } from '@/lib/cache/category-cache'
 import { getSetting } from '@/lib/actions/setting.actions'
 import { getTranslations } from 'next-intl/server'
+import { Metadata } from 'next'
 
 // ⚡ Optimization: Lazy load HomeCarousel (contient Embla Carousel) pour réduire le bundle initial
 const HomeCarousel = dynamic(
@@ -39,6 +40,42 @@ const ProductSlider = dynamic(
     ),
   }
 )
+
+export async function generateMetadata(): Promise<Metadata> {
+  const setting = await getSetting()
+  const baseUrl = setting.site.url
+  const logoUrl = setting.site.logo.startsWith('http')
+    ? setting.site.logo
+    : `${baseUrl}${setting.site.logo}`
+
+  return {
+    title: setting.site.name,
+    description: setting.site.description,
+    keywords: setting.site.keywords?.split(',').map((k) => k.trim()) || [],
+    openGraph: {
+      title: `${setting.site.name}. ${setting.site.slogan}`,
+      description: setting.site.description,
+      url: baseUrl,
+      siteName: setting.site.name,
+      images: [
+        {
+          url: logoUrl,
+          width: 1200,
+          height: 630,
+          alt: setting.site.name,
+        },
+      ],
+      type: 'website',
+      locale: 'fr_FR',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${setting.site.name}. ${setting.site.slogan}`,
+      description: setting.site.description,
+      images: [logoUrl],
+    },
+  }
+}
 
 export default async function HomePage() {
   const t = await getTranslations('Home')

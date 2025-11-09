@@ -200,7 +200,20 @@
     "Error in fetching reviews": "Error fetching reviews",
     "You must purchase this product before leaving a review": "You must purchase this product before leaving a review",
     "Review updated successfully": "Review updated successfully",
-    "Review created successfully": "Review created successfully"
+    "Review created successfully": "Review created successfully",
+    "Shared successfully": "Shared successfully",
+    "Product shared successfully": "Product shared successfully",
+    "Share product": "Share product",
+    "Share": "Share",
+    "Email": "Email",
+    "Copy link": "Copy link",
+    "Opening share dialog": "Opening share dialog",
+    "Share dialog opened": "Share dialog opened",
+    "Link copied": "Link copied",
+    "Product link copied to clipboard": "Product link copied to clipboard",
+    "Error": "Error",
+    "Failed to copy link": "Failed to copy link",
+    "Failed to share product": "Failed to share product"
   },
   "Cart": {
     "Shopping Cart": "Shopping Cart",

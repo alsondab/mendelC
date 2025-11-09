@@ -200,7 +200,20 @@
     "Error in fetching reviews": "Erreur lors de la récupération des avis",
     "You must purchase this product before leaving a review": "Vous devez acheter ce produit avant de laisser un avis",
     "Review updated successfully": "Avis mis à jour avec succès",
-    "Review created successfully": "Avis créé avec succès"
+    "Review created successfully": "Avis créé avec succès",
+    "Shared successfully": "Partagé avec succès",
+    "Product shared successfully": "Produit partagé avec succès",
+    "Share product": "Partager le produit",
+    "Share": "Partager",
+    "Email": "Email",
+    "Copy link": "Copier le lien",
+    "Opening share dialog": "Ouverture du dialogue de partage",
+    "Share dialog opened": "Dialogue de partage ouvert",
+    "Link copied": "Lien copié",
+    "Product link copied to clipboard": "Lien du produit copié dans le presse-papiers",
+    "Error": "Erreur",
+    "Failed to copy link": "Échec de la copie du lien",
+    "Failed to share product": "Échec du partage du produit"
   },
   "Cart": {
     "Shopping Cart": "Panier d'achat",

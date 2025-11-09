@@ -13,12 +13,20 @@ import ProductGallery from '@/components/shared/product/product-gallery'
 import RatingSummary from '@/components/shared/product/rating-summary'
 import ProductSlider from '@/components/shared/product/product-slider'
 import { getTranslations } from 'next-intl/server'
+import { Metadata } from 'next'
+import { getSetting } from '@/lib/actions/setting.actions'
+import ShareButton from '@/components/shared/product/share-button'
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>
-}) {
+}): Promise<Metadata> {
   const t = await getTranslations('Product')
   const params = await props.params
+  const setting = await getSetting()
+  // Éviter le double slash dans l'URL
+  const baseUrl = setting.site.url.endsWith('/')
+    ? setting.site.url.slice(0, -1)
+    : setting.site.url
 
   const { product, isPublished, exists } =
     await getCachedProductBySlugWithStatus(params.slug)
@@ -37,9 +45,57 @@ export async function generateMetadata(props: {
     }
   }
 
+  const productUrl = `${baseUrl}/product/${params.slug}`
+  // Utiliser la première image du produit, ou une image par défaut
+  // Éviter les doubles slashes dans l'URL de l'image
+  const productImage =
+    product!.images && product!.images.length > 0
+      ? product!.images[0].startsWith('http')
+        ? product!.images[0]
+        : product!.images[0].startsWith('/')
+          ? `${baseUrl}${product!.images[0]}`
+          : `${baseUrl}/${product!.images[0]}`
+      : `${baseUrl}/icons/logo.png`
+
+  // Description optimisée pour les réseaux sociaux (max 160 caractères)
+  const socialDescription =
+    product!.description.length > 160
+      ? product!.description.substring(0, 157) + '...'
+      : product!.description
+
+  // Construire les keywords en filtrant les valeurs undefined
+  const keywords: string[] = []
+  if (product!.name) keywords.push(product!.name)
+  if (product!.brand) keywords.push(product!.brand)
+  if (product!.category) keywords.push(product!.category)
+  if (product!.subCategory) keywords.push(product!.subCategory)
+
   return {
     title: product!.name,
     description: product!.description,
+    keywords: keywords.length > 0 ? keywords : undefined,
+    openGraph: {
+      title: product!.name,
+      description: socialDescription,
+      url: productUrl,
+      siteName: setting.site.name,
+      images: [
+        {
+          url: productImage,
+          width: 1200,
+          height: 630,
+          alt: product!.name,
+        },
+      ],
+      type: 'website',
+      locale: 'fr_FR',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: product!.name,
+      description: socialDescription,
+      images: [productImage],
+    },
   }
 }
 
@@ -87,6 +143,13 @@ export default async function ProductDetails(props: {
     // If related products can't be loaded, continue without them
     relatedProducts = { data: [], totalPages: 0 }
   }
+
+  // Récupérer l'URL du site pour le partage (éviter le double slash)
+  const setting = await getSetting()
+  const baseUrl = setting.site.url.endsWith('/')
+    ? setting.site.url.slice(0, -1)
+    : setting.site.url
+  const shareUrl = `${baseUrl}/product/${slug}`
 
   const t = await getTranslations()
 
@@ -195,6 +258,20 @@ export default async function ProductDetails(props: {
                     asPopover
                     ratingDistribution={product.ratingDistribution}
                   />
+                </div>
+
+                {/* ✅ Bouton de partage - Responsive et bien positionné */}
+                <div className="w-full overflow-hidden">
+                  <div className="flex items-center justify-start gap-2">
+                    <ShareButton
+                      url={shareUrl}
+                      title={product.name}
+                      description={product.description}
+                      size="md"
+                      showText={true}
+                      className="sm:flex"
+                    />
+                  </div>
                 </div>
 
                 {/* ✅ Prix principal */}

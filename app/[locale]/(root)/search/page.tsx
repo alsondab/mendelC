@@ -39,6 +39,9 @@ const prices = [
   },
 ]
 
+import { Metadata } from 'next'
+import { getSetting } from '@/lib/actions/setting.actions'
+
 export async function generateMetadata(props: {
   searchParams: Promise<{
     q: string
@@ -49,9 +52,15 @@ export async function generateMetadata(props: {
     sort: string
     page: string
   }>
-}) {
+}): Promise<Metadata> {
   const searchParams = await props.searchParams
   const t = await getTranslations()
+  const setting = await getSetting()
+  const baseUrl = setting.site.url
+  const logoUrl = setting.site.logo.startsWith('http')
+    ? setting.site.logo
+    : `${baseUrl}${setting.site.logo}`
+
   const {
     q = 'all',
     category = 'all',
@@ -60,6 +69,19 @@ export async function generateMetadata(props: {
     rating = 'all',
   } = searchParams
 
+  // Construire l'URL de recherche
+  const searchParamsString = new URLSearchParams()
+  if (q !== 'all' && q !== '') searchParamsString.set('q', q)
+  if (category !== 'all') searchParamsString.set('category', category)
+  if (tag !== 'all') searchParamsString.set('tag', tag)
+  if (price !== 'all') searchParamsString.set('price', price)
+  if (rating !== 'all') searchParamsString.set('rating', rating)
+  const searchUrl = `${baseUrl}/search${searchParamsString.toString() ? `?${searchParamsString.toString()}` : ''}`
+
+  // Construire le titre et la description
+  let title = t('Search.Search Products')
+  let description = setting.site.description
+
   if (
     (q !== 'all' && q !== '') ||
     category !== 'all' ||
@@ -67,17 +89,39 @@ export async function generateMetadata(props: {
     rating !== 'all' ||
     price !== 'all'
   ) {
-    return {
-      title: `${t('Search.Search')} ${q !== 'all' ? q : ''}
+    title = `${t('Search.Search')} ${q !== 'all' ? q : ''}
           ${category !== 'all' ? ` : ${t('Search.Category')} ${category}` : ''}
           ${tag !== 'all' ? ` : ${t('Search.Tag')} ${tag}` : ''}
           ${price !== 'all' ? ` : ${t('Search.Price')} ${price}` : ''}
-          ${rating !== 'all' ? ` : ${t('Search.Rating')} ${rating}` : ''}`,
-    }
-  } else {
-    return {
-      title: t('Search.Search Products'),
-    }
+          ${rating !== 'all' ? ` : ${t('Search.Rating')} ${rating}` : ''}`
+    description = `Recherche de produits: ${title} sur ${setting.site.name}`
+  }
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: searchUrl,
+      siteName: setting.site.name,
+      images: [
+        {
+          url: logoUrl,
+          width: 1200,
+          height: 630,
+          alt: setting.site.name,
+        },
+      ],
+      type: 'website',
+      locale: 'fr_FR',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [logoUrl],
+    },
   }
 }
 

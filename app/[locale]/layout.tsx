@@ -27,10 +27,15 @@ const geistMono = Geist_Mono({
   display: 'swap',
 })
 
-export async function generateMetadata() {
+import { Metadata } from 'next'
+
+export async function generateMetadata(): Promise<Metadata> {
   const {
     site: { slogan, name, description, url, logo },
   } = await getSetting()
+
+  const logoUrl = logo.startsWith('http') ? logo : `${url}${logo}`
+
   return {
     title: {
       template: `%s | ${name}`,
@@ -42,6 +47,28 @@ export async function generateMetadata() {
       icon: logo,
       shortcut: logo,
       apple: logo,
+    },
+    openGraph: {
+      title: `${name}. ${slogan}`,
+      description: description,
+      url: url,
+      siteName: name,
+      images: [
+        {
+          url: logoUrl,
+          width: 1200,
+          height: 630,
+          alt: name,
+        },
+      ],
+      type: 'website',
+      locale: 'fr_FR',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${name}. ${slogan}`,
+      description: description,
+      images: [logoUrl],
     },
   }
 }
