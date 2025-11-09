@@ -56,7 +56,9 @@ export const ProductInputSchema = z.object({
   isLowStock: z.boolean().default(false),
   isOutOfStock: z.boolean().default(false),
   lastStockUpdate: z.date().default(() => new Date()),
-  stockStatus: z.enum(['in_stock', 'low_stock', 'out_of_stock', 'discontinued']).default('in_stock'),
+  stockStatus: z
+    .enum(['in_stock', 'low_stock', 'out_of_stock', 'discontinued'])
+    .default('in_stock'),
   tags: z.array(z.string()).default([]),
   colors: z.array(z.string()).default([]),
   specifications: z.array(z.string()).default([]),

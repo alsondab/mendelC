@@ -8,36 +8,36 @@ export const metadata: Metadata = {
 
 export default function ConditionsUtilisationPage() {
   return (
-    <div className='container mx-auto px-4 py-8'>
-      <div className='max-w-4xl mx-auto'>
-        <h1 className='text-3xl font-bold text-foreground mb-8'>
+    <div className="container mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-3xl font-bold text-foreground mb-8">
           Conditions d&apos;Utilisation
         </h1>
 
-        <div className='space-y-8'>
-          <section className='bg-muted/50 p-6 rounded-lg'>
-            <h2 className='text-2xl font-semibold text-foreground mb-4'>
+        <div className="space-y-8">
+          <section className="bg-muted/50 p-6 rounded-lg">
+            <h2 className="text-2xl font-semibold text-foreground mb-4">
               Acceptation des Conditions
             </h2>
-            <p className='text-muted-foreground mb-4'>
+            <p className="text-muted-foreground mb-4">
               En accédant et en utilisant notre site web, vous acceptez
               d&apos;être lié par ces conditions d&apos;utilisation. Si vous
               n&apos;acceptez pas ces conditions, veuillez ne pas utiliser notre
               site.
             </p>
-            <p className='text-muted-foreground'>
+            <p className="text-muted-foreground">
               Ces conditions s&apos;appliquent à tous les visiteurs,
               utilisateurs et autres personnes qui accèdent ou utilisent le
               service.
             </p>
           </section>
 
-          <section className='space-y-6'>
-            <div className='bg-background border border-border rounded-lg p-6'>
-              <h3 className='text-xl font-semibold text-foreground mb-4'>
+          <section className="space-y-6">
+            <div className="bg-background border border-border rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
                 1. Utilisation du Site
               </h3>
-              <div className='space-y-3 text-sm text-muted-foreground'>
+              <div className="space-y-3 text-sm text-muted-foreground">
                 <p>
                   • Vous devez être âgé d&apos;au moins 18 ans pour utiliser ce
                   site
@@ -57,11 +57,11 @@ export default function ConditionsUtilisationPage() {
               </div>
             </div>
 
-            <div className='bg-background border border-border rounded-lg p-6'>
-              <h3 className='text-xl font-semibold text-foreground mb-4'>
+            <div className="bg-background border border-border rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
                 2. Commandes et Paiements
               </h3>
-              <div className='space-y-3 text-sm text-muted-foreground'>
+              <div className="space-y-3 text-sm text-muted-foreground">
                 <p>
                   • Toutes les commandes sont soumises à acceptation de notre
                   part
@@ -74,11 +74,11 @@ export default function ConditionsUtilisationPage() {
               </div>
             </div>
 
-            <div className='bg-background border border-border rounded-lg p-6'>
-              <h3 className='text-xl font-semibold text-foreground mb-4'>
+            <div className="bg-background border border-border rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
                 3. Propriété Intellectuelle
               </h3>
-              <div className='space-y-3 text-sm text-muted-foreground'>
+              <div className="space-y-3 text-sm text-muted-foreground">
                 <p>
                   • Le contenu du site est protégé par les droits d&apos;auteur
                 </p>
@@ -96,11 +96,11 @@ export default function ConditionsUtilisationPage() {
               </div>
             </div>
 
-            <div className='bg-background border border-border rounded-lg p-6'>
-              <h3 className='text-xl font-semibold text-foreground mb-4'>
+            <div className="bg-background border border-border rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
                 4. Limitation de Responsabilité
               </h3>
-              <div className='space-y-3 text-sm text-muted-foreground'>
+              <div className="space-y-3 text-sm text-muted-foreground">
                 <p>• Nous ne sommes pas responsables des dommages indirects</p>
                 <p>
                   • Notre responsabilité est limitée au montant payé pour le
@@ -116,11 +116,11 @@ export default function ConditionsUtilisationPage() {
               </div>
             </div>
 
-            <div className='bg-background border border-border rounded-lg p-6'>
-              <h3 className='text-xl font-semibold text-foreground mb-4'>
+            <div className="bg-background border border-border rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
                 5. Modifications des Conditions
               </h3>
-              <div className='space-y-3 text-sm text-muted-foreground'>
+              <div className="space-y-3 text-sm text-muted-foreground">
                 <p>
                   • Nous nous réservons le droit de modifier ces conditions à
                   tout moment
@@ -139,11 +139,11 @@ export default function ConditionsUtilisationPage() {
               </div>
             </div>
 
-            <div className='bg-background border border-border rounded-lg p-6'>
-              <h3 className='text-xl font-semibold text-foreground mb-4'>
+            <div className="bg-background border border-border rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-foreground mb-4">
                 6. Droit Applicable
               </h3>
-              <div className='space-y-3 text-sm text-muted-foreground'>
+              <div className="space-y-3 text-sm text-muted-foreground">
                 <p>• Ces conditions sont régies par le droit français</p>
                 <p>
                   • Tout litige sera soumis à la juridiction des tribunaux
@@ -158,15 +158,15 @@ export default function ConditionsUtilisationPage() {
             </div>
           </section>
 
-          <section className='bg-muted/50 p-6 rounded-lg'>
-            <h3 className='text-xl font-semibold text-foreground mb-4'>
+          <section className="bg-muted/50 p-6 rounded-lg">
+            <h3 className="text-xl font-semibold text-foreground mb-4">
               Contact
             </h3>
-            <p className='text-muted-foreground mb-4'>
+            <p className="text-muted-foreground mb-4">
               Si vous avez des questions concernant ces conditions
               d&apos;utilisation, n&apos;hésitez pas à nous contacter.
             </p>
-            <div className='space-y-2 text-sm'>
+            <div className="space-y-2 text-sm">
               <p>
                 <strong>Email:</strong> legal@mendelcorp.com
               </p>

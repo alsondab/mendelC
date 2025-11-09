@@ -34,56 +34,56 @@ export default function Footer() {
   const locale = useLocale()
   const t = useTranslations()
   return (
-    <footer className='bg-gradient-to-b from-gray-900 to-black text-white'>
-      <div className='w-full'>
+    <footer className="bg-gradient-to-b from-gray-900 to-black text-white">
+      <div className="w-full">
         {/* Back to Top Button */}
         <Button
-          variant='ghost'
-          className='bg-gray-800/50 hover:bg-gray-700/50 w-full rounded-none border-b border-gray-700/50'
+          variant="ghost"
+          className="bg-gray-800/50 hover:bg-gray-700/50 w-full rounded-none border-b border-gray-700/50"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
-          <ChevronUp className='mr-2 h-4 w-4' />
-          <span className='text-sm xs:text-base'>
+          <ChevronUp className="mr-2 h-4 w-4" />
+          <span className="text-sm xs:text-base">
             {t('Footer.Back to top')}
           </span>
         </Button>
 
         {/* Main Footer Content */}
-        <div className='p-3 xs:p-4 sm:p-6 max-w-7xl mx-auto'>
-          <div className='flex justify-center'>
+        <div className="p-3 xs:p-4 sm:p-6 max-w-7xl mx-auto">
+          <div className="flex justify-center">
             {/* Laissez-nous vous aider */}
-            <div className='space-y-4 text-center'>
-              <div className='flex items-center justify-center gap-2 mb-4'>
-                <HelpCircle className='w-5 h-5 text-orange-400' />
-                <h3 className='font-bold text-base xs:text-lg text-white'>
+            <div className="space-y-4 text-center">
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <HelpCircle className="w-5 h-5 text-orange-400" />
+                <h3 className="font-bold text-base xs:text-lg text-white">
                   Laissez-nous vous aider
                 </h3>
               </div>
-              <ul className='space-y-3'>
+              <ul className="space-y-3">
                 <li>
                   <Link
-                    href='/page/shipping'
-                    className='flex items-center justify-center gap-2 text-gray-300 hover:text-white transition-colors text-sm xs:text-base group'
+                    href="/page/shipping"
+                    className="flex items-center justify-center gap-2 text-gray-300 hover:text-white transition-colors text-sm xs:text-base group"
                   >
-                    <Truck className='w-4 h-4 group-hover:text-orange-400 transition-colors' />
+                    <Truck className="w-4 h-4 group-hover:text-orange-400 transition-colors" />
                     Tarifs et politiques d&apos;expédition
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href='/page/returns-policy'
-                    className='flex items-center justify-center gap-2 text-gray-300 hover:text-white transition-colors text-sm xs:text-base group'
+                    href="/page/returns-policy"
+                    className="flex items-center justify-center gap-2 text-gray-300 hover:text-white transition-colors text-sm xs:text-base group"
                   >
-                    <RotateCcw className='w-4 h-4 group-hover:text-orange-400 transition-colors' />
+                    <RotateCcw className="w-4 h-4 group-hover:text-orange-400 transition-colors" />
                     Retours et remplacements
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href='/page/help'
-                    className='flex items-center justify-center gap-2 text-gray-300 hover:text-white transition-colors text-sm xs:text-base group'
+                    href="/page/help"
+                    className="flex items-center justify-center gap-2 text-gray-300 hover:text-white transition-colors text-sm xs:text-base group"
                   >
-                    <Help className='w-4 h-4 group-hover:text-orange-400 transition-colors' />
+                    <Help className="w-4 h-4 group-hover:text-orange-400 transition-colors" />
                     Aide
                   </Link>
                 </li>
@@ -92,48 +92,48 @@ export default function Footer() {
           </div>
         </div>
         {/* Language & Currency Section */}
-        <div className='border-t border-gray-700/50 bg-gray-800/30'>
-          <div className='max-w-7xl mx-auto py-4 xs:py-6 sm:py-8 px-3 xs:px-4'>
-            <div className='flex flex-col xs:flex-row items-center justify-center gap-3 xs:gap-4 sm:gap-6'>
+        <div className="border-t border-gray-700/50 bg-gray-800/30">
+          <div className="max-w-7xl mx-auto py-4 xs:py-6 sm:py-8 px-3 xs:px-4">
+            <div className="flex flex-col xs:flex-row items-center justify-center gap-3 xs:gap-4 sm:gap-6">
               {site.logo && site.logo.trim() !== '' ? (
                 <Image
                   src={site.logo}
                   alt={`${site.name} logo`}
                   width={40}
                   height={40}
-                  className='w-10 xs:w-12 sm:w-14'
+                  className="w-10 xs:w-12 sm:w-14"
                   style={{
                     maxWidth: '100%',
                     height: 'auto',
                   }}
                 />
               ) : (
-                <div className='w-10 xs:w-12 sm:w-14 h-10 xs:h-12 sm:h-14 bg-primary rounded-lg flex items-center justify-center'>
-                  <span className='text-white font-bold text-lg xs:text-xl sm:text-2xl'>
+                <div className="w-10 xs:w-12 sm:w-14 h-10 xs:h-12 sm:h-14 bg-primary rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-lg xs:text-xl sm:text-2xl">
                     {site.name.charAt(0)}
                   </span>
                 </div>
               )}
 
-              <div className='flex flex-col xs:flex-row items-center gap-2 xs:gap-4'>
+              <div className="flex flex-col xs:flex-row items-center gap-2 xs:gap-4">
                 <Select
                   value={locale}
                   onValueChange={(value) => {
                     router.push(pathname, { locale: value })
                   }}
                 >
-                  <SelectTrigger className='w-full xs:w-auto min-w-[140px] bg-gray-700/50 border-gray-600 text-white'>
+                  <SelectTrigger className="w-full xs:w-auto min-w-[140px] bg-gray-700/50 border-gray-600 text-white">
                     <SelectValue placeholder={t('Footer.Select a language')} />
                   </SelectTrigger>
                   <SelectContent>
                     {locales.map((lang, index) => (
                       <SelectItem key={index} value={lang.code}>
                         <Link
-                          className='w-full flex items-center gap-2'
+                          className="w-full flex items-center gap-2"
                           href={`/${lang.code}${pathname}`}
                         >
-                          <span className='text-lg'>{lang.icon}</span>
-                          <span className='text-sm'>{lang.name}</span>
+                          <span className="text-lg">{lang.icon}</span>
+                          <span className="text-sm">{lang.name}</span>
                         </Link>
                       </SelectItem>
                     ))}
@@ -147,7 +147,7 @@ export default function Footer() {
                     window.scrollTo(0, 0)
                   }}
                 >
-                  <SelectTrigger className='w-full xs:w-auto min-w-[140px] bg-gray-700/50 border-gray-600 text-white'>
+                  <SelectTrigger className="w-full xs:w-auto min-w-[140px] bg-gray-700/50 border-gray-600 text-white">
                     <SelectValue placeholder={t('Footer.Select a currency')} />
                   </SelectTrigger>
                   <SelectContent>
@@ -155,7 +155,7 @@ export default function Footer() {
                       .filter((x) => x.code)
                       .map((currency, index) => (
                         <SelectItem key={index} value={currency.code}>
-                          <span className='text-sm'>
+                          <span className="text-sm">
                             {currency.name} ({currency.code})
                           </span>
                         </SelectItem>
@@ -169,42 +169,42 @@ export default function Footer() {
       </div>
 
       {/* Bottom Footer */}
-      <div className='bg-black/50 border-t border-gray-700/50'>
-        <div className='p-3 xs:p-4 max-w-7xl mx-auto'>
+      <div className="bg-black/50 border-t border-gray-700/50">
+        <div className="p-3 xs:p-4 max-w-7xl mx-auto">
           {/* Legal Links */}
-          <div className='flex flex-wrap justify-center gap-2 xs:gap-3 text-xs xs:text-sm mb-3 xs:mb-4'>
+          <div className="flex flex-wrap justify-center gap-2 xs:gap-3 text-xs xs:text-sm mb-3 xs:mb-4">
             <Link
-              href='/page/conditions-of-use'
-              className='text-gray-400 hover:text-white transition-colors'
+              href="/page/conditions-of-use"
+              className="text-gray-400 hover:text-white transition-colors"
             >
               Conditions d&apos;utilisation
             </Link>
-            <span className='text-gray-600 hidden xs:inline'>•</span>
+            <span className="text-gray-600 hidden xs:inline">•</span>
             <Link
-              href='/page/privacy-policy'
-              className='text-gray-400 hover:text-white transition-colors'
+              href="/page/privacy-policy"
+              className="text-gray-400 hover:text-white transition-colors"
             >
               Avis de confidentialité
             </Link>
-            <span className='text-gray-600 hidden xs:inline'>•</span>
+            <span className="text-gray-600 hidden xs:inline">•</span>
             <Link
-              href='/page/help'
-              className='text-gray-400 hover:text-white transition-colors'
+              href="/page/help"
+              className="text-gray-400 hover:text-white transition-colors"
             >
               Aide
             </Link>
           </div>
 
           {/* Copyright */}
-          <div className='flex justify-center text-xs xs:text-sm text-gray-400 mb-2 xs:mb-3'>
+          <div className="flex justify-center text-xs xs:text-sm text-gray-400 mb-2 xs:mb-3">
             <p>© {site.copyright}</p>
           </div>
 
           {/* Contact Info */}
-          <div className='flex flex-col xs:flex-row justify-center items-center gap-1 xs:gap-2 text-xs xs:text-sm text-gray-500'>
-            <span className='text-center xs:text-left'>{site.address}</span>
-            <span className='hidden xs:inline text-gray-600'>|</span>
-            <span className='text-center xs:text-left'>{site.phone}</span>
+          <div className="flex flex-col xs:flex-row justify-center items-center gap-1 xs:gap-2 text-xs xs:text-sm text-gray-500">
+            <span className="text-center xs:text-left">{site.address}</span>
+            <span className="hidden xs:inline text-gray-600">|</span>
+            <span className="text-center xs:text-left">{site.phone}</span>
           </div>
         </div>
       </div>

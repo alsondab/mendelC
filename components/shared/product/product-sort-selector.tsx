@@ -29,8 +29,9 @@ export default function ProductSortSelector({
 }) {
   const router = useRouter()
   const t = useTranslations('Search')
-  const currentSort = sortOrders.find((s) => s.value === sort)?.name || t('BestSelling')
-  
+  const currentSort =
+    sortOrders.find((s) => s.value === sort)?.name || t('BestSelling')
+
   return (
     <Select
       onValueChange={(v) => {
@@ -38,17 +39,21 @@ export default function ProductSortSelector({
       }}
       value={sort}
     >
-      <SelectTrigger className='w-full sm:w-auto min-w-[140px] sm:min-w-[180px] h-9 sm:h-10 text-xs sm:text-sm'>
+      <SelectTrigger className="w-full sm:w-auto min-w-[140px] sm:min-w-[180px] h-9 sm:h-10 text-xs sm:text-sm">
         <SelectValue>
-          <span className='hidden sm:inline'>{t('SortBy')}: </span>
-          <span className='sm:hidden'>{t('SortBy')}: </span>
-          <span className='font-medium'>{currentSort}</span>
+          <span className="hidden sm:inline">{t('SortBy')}: </span>
+          <span className="sm:hidden">{t('SortBy')}: </span>
+          <span className="font-medium">{currentSort}</span>
         </SelectValue>
       </SelectTrigger>
 
-      <SelectContent className='w-full sm:w-auto min-w-[200px]'>
+      <SelectContent className="w-full sm:w-auto min-w-[200px]">
         {sortOrders.map((s) => (
-          <SelectItem key={s.value} value={s.value} className='text-xs sm:text-sm'>
+          <SelectItem
+            key={s.value}
+            value={s.value}
+            className="text-xs sm:text-sm"
+          >
             {s.name}
           </SelectItem>
         ))}

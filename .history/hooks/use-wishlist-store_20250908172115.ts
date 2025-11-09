@@ -55,8 +55,10 @@ export const useWishlistStore = create<WishlistState>()(
 
       syncWithDatabase: async () => {
         const state = get()
-        const localItems = state.items.filter(item => item._id.startsWith('local_'))
-        
+        const localItems = state.items.filter((item) =>
+          item._id.startsWith('local_')
+        )
+
         if (localItems.length === 0) return
 
         try {
@@ -70,19 +72,19 @@ export const useWishlistStore = create<WishlistState>()(
                 },
                 body: JSON.stringify({ productId: item.product._id }),
               })
-              
+
               if (response.ok) {
                 // Marquer l'item comme synchronisé
                 const updatedItem = {
                   ...item,
                   _id: `api_${item.product._id}_${Date.now()}`,
                 }
-                
+
                 // Remplacer l'item local par l'item synchronisé
                 set((state) => ({
-                  items: state.items.map(i => 
+                  items: state.items.map((i) =>
                     i._id === item._id ? updatedItem : i
-                  )
+                  ),
                 }))
               }
             } catch (error) {
@@ -96,7 +98,7 @@ export const useWishlistStore = create<WishlistState>()(
 
       clearLocalItems: () => {
         set((state) => ({
-          items: state.items.filter(item => !item._id.startsWith('local_'))
+          items: state.items.filter((item) => !item._id.startsWith('local_')),
         }))
       },
     }),
@@ -106,8 +108,3 @@ export const useWishlistStore = create<WishlistState>()(
     }
   )
 )
-
-
-
-
-

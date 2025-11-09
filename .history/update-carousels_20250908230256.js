@@ -1,12 +1,12 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient } = require('mongodb')
 
 async function updateCarousels() {
-  const client = new MongoClient(process.env.MONGODB_URI);
-  
+  const client = new MongoClient(process.env.MONGODB_URI)
+
   try {
-    await client.connect();
-    const db = client.db();
-    
+    await client.connect()
+    const db = client.db()
+
     // Nouvelles configurations des carousels
     const newCarousels = [
       {
@@ -30,22 +30,19 @@ async function updateCarousels() {
         url: '/search?category=Équipement informatique',
         isPublished: true,
       },
-    ];
-    
+    ]
+
     // Mettre à jour les carousels dans les settings
-    const result = await db.collection('settings').updateOne(
-      {},
-      { $set: { carousels: newCarousels } },
-      { upsert: true }
-    );
-    
-    console.log('Carousels mis à jour avec succès:', result);
-    
+    const result = await db
+      .collection('settings')
+      .updateOne({}, { $set: { carousels: newCarousels } }, { upsert: true })
+
+    console.log('Carousels mis à jour avec succès:', result)
   } catch (error) {
-    console.error('Erreur lors de la mise à jour:', error);
+    console.error('Erreur lors de la mise à jour:', error)
   } finally {
-    await client.close();
+    await client.close()
   }
 }
 
-updateCarousels();
+updateCarousels()

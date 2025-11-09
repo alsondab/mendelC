@@ -153,5 +153,3 @@ export async function invalidateSearchSuggestionsForQuery(_query: string) {
   void _query // Marquer comme utilisé pour éviter l'erreur ESLint
   await invalidateSearchSuggestionsCache()
 }
-
-

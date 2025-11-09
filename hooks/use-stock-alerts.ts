@@ -38,10 +38,10 @@ export function useStockAlerts(refreshInterval: number = 30000) {
     try {
       // Ne pas mettre isLoading à true si on a déjà des alertes pour éviter les disparitions
       // Garder les alertes précédentes pendant la mise à jour
-      setState((prev) => ({ 
-        ...prev, 
+      setState((prev) => ({
+        ...prev,
         isLoading: prev.alerts.length === 0, // Seulement true si pas encore d'alertes
-        error: null 
+        error: null,
       }))
 
       // Utiliser Promise.allSettled pour ne pas bloquer si une requête échoue
@@ -58,7 +58,11 @@ export function useStockAlerts(refreshInterval: number = 30000) {
             'success' in lowStockSettled.value
             ? lowStockSettled.value
             : { success: false, products: [], message: 'Résultat invalide' }
-          : { success: false, products: [], message: 'Erreur lors du chargement' }
+          : {
+              success: false,
+              products: [],
+              message: 'Erreur lors du chargement',
+            }
 
       const outOfStockResult =
         outOfStockSettled.status === 'fulfilled'
@@ -67,7 +71,11 @@ export function useStockAlerts(refreshInterval: number = 30000) {
             'success' in outOfStockSettled.value
             ? outOfStockSettled.value
             : { success: false, products: [], message: 'Résultat invalide' }
-          : { success: false, products: [], message: 'Erreur lors du chargement' }
+          : {
+              success: false,
+              products: [],
+              message: 'Erreur lors du chargement',
+            }
 
       // Vérifier que les résultats existent et ont la structure attendue
       const lowStockAlerts =

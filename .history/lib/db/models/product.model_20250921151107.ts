@@ -125,7 +125,7 @@ const productSchema = new Schema<IProduct>(
 )
 
 // 🚀 MÉTHODES POUR LA GESTION DES STOCKS
-productSchema.methods.updateStockStatus = function() {
+productSchema.methods.updateStockStatus = function () {
   if (this.countInStock <= 0) {
     this.stockStatus = 'out_of_stock'
     this.isOutOfStock = true
@@ -143,7 +143,7 @@ productSchema.methods.updateStockStatus = function() {
   return this
 }
 
-productSchema.methods.getStockStatusText = function() {
+productSchema.methods.getStockStatusText = function () {
   switch (this.stockStatus) {
     case 'out_of_stock':
       return 'Rupture de stock'
@@ -158,7 +158,7 @@ productSchema.methods.getStockStatusText = function() {
   }
 }
 
-productSchema.methods.getStockStatusColor = function() {
+productSchema.methods.getStockStatusColor = function () {
   switch (this.stockStatus) {
     case 'out_of_stock':
       return 'red'
@@ -174,7 +174,7 @@ productSchema.methods.getStockStatusColor = function() {
 }
 
 // 🚀 MIDDLEWARE POUR METTRE À JOUR LE STATUT AVANT SAUVEGARDE
-productSchema.pre('save', function(next) {
+productSchema.pre('save', function (next) {
   if (this.countInStock <= 0) {
     this.stockStatus = 'out_of_stock'
     this.isOutOfStock = true

@@ -171,7 +171,7 @@ export default function AddressDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className='sm:max-w-[600px]'>
+      <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>
             {mode === 'create' ? t('Add Address') : t('Edit Address')}
@@ -182,10 +182,10 @@ export default function AddressDialog({
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name='fullName'
+              name="fullName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t('Full Name')}</FormLabel>
@@ -199,7 +199,7 @@ export default function AddressDialog({
 
             <FormField
               control={form.control}
-              name='street'
+              name="street"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t('Street Address')}</FormLabel>
@@ -211,10 +211,10 @@ export default function AddressDialog({
               )}
             />
 
-            <div className='grid grid-cols-2 gap-4'>
+            <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name='city'
+                name="city"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t('City')}</FormLabel>
@@ -228,7 +228,7 @@ export default function AddressDialog({
 
               <FormField
                 control={form.control}
-                name='province'
+                name="province"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t('Province')}</FormLabel>
@@ -241,10 +241,10 @@ export default function AddressDialog({
               />
             </div>
 
-            <div className='grid grid-cols-2 gap-4'>
+            <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name='postalCode'
+                name="postalCode"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t('Postal Code')}</FormLabel>
@@ -258,7 +258,7 @@ export default function AddressDialog({
 
               <FormField
                 control={form.control}
-                name='country'
+                name="country"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t('Country')}</FormLabel>
@@ -273,7 +273,7 @@ export default function AddressDialog({
 
             <FormField
               control={form.control}
-              name='phone'
+              name="phone"
               render={({ field }) => {
                 // Normaliser la valeur : enlever +225 si présent au début
                 const currentValue = field.value || ''
@@ -299,10 +299,10 @@ export default function AddressDialog({
                             .trim()
                           field.onChange(formatted)
                         }}
-                        placeholder='07 10 14 58 64'
+                        placeholder="07 10 14 58 64"
                       />
                     </FormControl>
-                    <p className='text-xs text-muted-foreground mt-1'>
+                    <p className="text-xs text-muted-foreground mt-1">
                       {t('Enter phone number without +225')} (ex: 07 10 14 58
                       64)
                     </p>
@@ -314,18 +314,18 @@ export default function AddressDialog({
 
             <FormField
               control={form.control}
-              name='isDefault'
+              name="isDefault"
               render={({ field }) => (
-                <FormItem className='flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4'>
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                   <FormControl>
                     <Checkbox
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
-                  <div className='space-y-1 leading-none'>
+                  <div className="space-y-1 leading-none">
                     <FormLabel>{t('Set as default address')}</FormLabel>
-                    <p className='text-sm text-muted-foreground'>
+                    <p className="text-sm text-muted-foreground">
                       {t('Default address description')}
                     </p>
                   </div>
@@ -335,13 +335,13 @@ export default function AddressDialog({
 
             <DialogFooter>
               <Button
-                type='button'
-                variant='outline'
+                type="button"
+                variant="outline"
                 onClick={() => onOpenChange(false)}
               >
                 {t('Cancel')}
               </Button>
-              <Button type='submit'>
+              <Button type="submit">
                 {mode === 'create' ? t('Add') : t('Update')}
               </Button>
             </DialogFooter>

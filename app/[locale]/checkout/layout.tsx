@@ -12,13 +12,13 @@ export default async function CheckoutLayout({
   const t = await getTranslations('Checkout')
 
   return (
-    <div className='p-4'>
-      <header className='bg-card mb-4 border-b'>
-        <div className='max-w-6xl mx-auto flex justify-between items-center'>
-          <Link href='/'>
+    <div className="p-4">
+      <header className="bg-card mb-4 border-b">
+        <div className="max-w-6xl mx-auto flex justify-between items-center">
+          <Link href="/">
             <Image
-              src='/icons/logo.png'
-              alt='logo'
+              src="/icons/logo.png"
+              alt="logo"
               width={70}
               height={70}
               priority
@@ -29,11 +29,11 @@ export default async function CheckoutLayout({
             />
           </Link>
           <div>
-            <h1 className='text-3xl'>{t('Checkout')}</h1>
+            <h1 className="text-3xl">{t('Checkout')}</h1>
           </div>
           <div>
-            <Link href='/page/help'>
-              <HelpCircle className='w-6 h-6' />
+            <Link href="/page/help">
+              <HelpCircle className="w-6 h-6" />
             </Link>
           </div>
         </div>

@@ -12,6 +12,7 @@
 **Impact:** -106 kB sur First Load JS
 
 **Fichiers Optimisés:**
+
 1. ✅ `components/shared/header/cart-button.tsx`
    - **Avant:** `import { motion } from 'framer-motion'`
    - **Après:** CSS `transition-transform hover:scale-105 active:scale-95`
@@ -31,9 +32,10 @@
 **Impact:** -53 kB sur First Load JS (si framer-motion n'est plus utilisé ailleurs)
 
 **Fichier Optimisé:**
+
 - ✅ `app/[locale]/loading.tsx`
   - **Avant:** Import direct `framer-motion` + `AnimatedSkeleton` (qui utilise framer-motion)
-  - **Après:** 
+  - **Après:**
     - CSS keyframes pour progress bar
     - Tailwind `animate-in` pour fade-in animations
     - `Skeleton` directement (sans animations framer-motion)
@@ -48,6 +50,7 @@
 **Impact:** Meilleure fluidité 60fps, -50ms TBT
 
 **Fichiers Optimisés:**
+
 1. ✅ `components/shared/notifications/stock-gauge.tsx`
    - **Avant:** `animate={{ width: '${stockPercentage}%' }}`
    - **Après:** `animate={{ scaleX: stockPercentage / 100 }}` avec `transform-origin: left`
@@ -88,12 +91,14 @@ First Load JS shared by all: ~430 kB (estimé)
 ## ✅ Vérifications Effectuées
 
 ### Recharts (Admin) ✅
+
 - ✅ `sales-area-chart.tsx` : Lazy-loaded avec `useEffect` + dynamic import
 - ✅ `sales-category-pie-chart.tsx` : Lazy-loaded avec `useEffect` + dynamic import
 - ✅ `overview-report.tsx` : Utilise `dynamic()` pour lazy load les composants Recharts
 - **Statut:** Déjà optimisé ✅
 
 ### Framer Motion (Autres Usages) ✅
+
 - ✅ `cart-sidebar.tsx` : Déjà lazy-loaded dans `client-providers.tsx` ✅
 - ✅ `wishlist-sidebar.tsx` : Déjà lazy-loaded dans `client-providers.tsx` ✅
 - ✅ `product-card.tsx` : Lazy-load framer-motion avec `useEffect` ✅
@@ -106,12 +111,14 @@ First Load JS shared by all: ~430 kB (estimé)
 ### 1. Gros Chunk (99.9 kB) - À Analyser
 
 **Action Requise:**
+
 1. Ouvrir `.next/analyze/client.html`
 2. Cliquer sur `vendors-0e320194-d10f71c8094b96b1.js`
 3. Identifier les packages qui le composent
 4. Proposer optimisations spécifiques
 
 **Packages Suspects:**
+
 - `next-intl` (~15 kB)
 - `zod` (~12 kB)
 - `react-hook-form` (~10 kB)
@@ -142,13 +149,13 @@ First Load JS shared by all: ~430 kB (estimé)
 
 ## 🎯 Gains Totaux Estimés
 
-| Optimisation | Gain | Statut |
-|-------------|------|--------|
-| CSS dans header (2 composants) | -106 kB | ✅ |
-| CSS dans loading.tsx | -53 kB | ✅ |
-| Animations composited | 60fps, -50ms TBT | ✅ |
-| Images admin optimisées | -15 kB | ✅ |
-| **Total** | **-174 kB + 60fps + -50ms TBT** | ✅ |
+| Optimisation                   | Gain                            | Statut |
+| ------------------------------ | ------------------------------- | ------ |
+| CSS dans header (2 composants) | -106 kB                         | ✅     |
+| CSS dans loading.tsx           | -53 kB                          | ✅     |
+| Animations composited          | 60fps, -50ms TBT                | ✅     |
+| Images admin optimisées        | -15 kB                          | ✅     |
+| **Total**                      | **-174 kB + 60fps + -50ms TBT** | ✅     |
 
 ---
 
@@ -172,6 +179,7 @@ First Load JS shared by all: ~430 kB (estimé)
 ## 🚀 Prochaines Étapes
 
 1. **Rebuild et Vérification**
+
    ```bash
    npm run analyze
    # Vérifier la réduction du bundle
@@ -191,4 +199,3 @@ First Load JS shared by all: ~430 kB (estimé)
 
 **Document créé le:** 2025-01-05  
 **Dernière mise à jour:** 2025-01-05
-

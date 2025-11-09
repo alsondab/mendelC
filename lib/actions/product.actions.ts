@@ -18,13 +18,21 @@ export async function createProduct(data: IProductInput) {
     await Product.create(product)
     // Invalider tous les caches
     revalidateTag('stock')
-    const { invalidateAllProductsCache } = await import('../cache/product-cache')
+    const { invalidateAllProductsCache } = await import(
+      '../cache/product-cache'
+    )
     invalidateAllProductsCache()
-    const { invalidateCategoriesCache } = await import('../cache/category-cache')
+    const { invalidateCategoriesCache } = await import(
+      '../cache/category-cache'
+    )
     invalidateCategoriesCache()
-    const { invalidateAdminProductsCache } = await import('../cache/admin-cache')
+    const { invalidateAdminProductsCache } = await import(
+      '../cache/admin-cache'
+    )
     invalidateAdminProductsCache()
-    const { invalidateSearchSuggestionsCache } = await import('../cache/search-cache')
+    const { invalidateSearchSuggestionsCache } = await import(
+      '../cache/search-cache'
+    )
     invalidateSearchSuggestionsCache()
     revalidatePath('/admin/products')
     return {
@@ -85,7 +93,7 @@ export async function updateProduct(data: z.infer<typeof ProductUpdateSchema>) {
           newStock: quantityAfter.toString(),
         },
       }).catch((error) => {
-        console.error('Erreur lors de l\'enregistrement de l\'historique:', error)
+        console.error("Erreur lors de l'enregistrement de l'historique:", error)
       })
     }
 
@@ -128,9 +136,13 @@ export async function updateProduct(data: z.infer<typeof ProductUpdateSchema>) {
       revalidateTag(`product-slug-${currentProduct.slug}`)
       revalidateTag(`product-slug-status-${currentProduct.slug}`)
     }
-    const { invalidateAdminProductsCache } = await import('../cache/admin-cache')
+    const { invalidateAdminProductsCache } = await import(
+      '../cache/admin-cache'
+    )
     invalidateAdminProductsCache()
-    const { invalidateSearchSuggestionsCache } = await import('../cache/search-cache')
+    const { invalidateSearchSuggestionsCache } = await import(
+      '../cache/search-cache'
+    )
     invalidateSearchSuggestionsCache()
     revalidatePath('/admin/products')
     revalidatePath(`/admin/products/${product._id}`)
@@ -160,11 +172,17 @@ export async function deleteProduct(id: string) {
     if (res.slug) {
       invalidateProductCache(`slug-${res.slug}`)
     }
-    const { invalidateAdminProductsCache } = await import('../cache/admin-cache')
+    const { invalidateAdminProductsCache } = await import(
+      '../cache/admin-cache'
+    )
     invalidateAdminProductsCache()
-    const { invalidateCategoriesCache } = await import('../cache/category-cache')
+    const { invalidateCategoriesCache } = await import(
+      '../cache/category-cache'
+    )
     invalidateCategoriesCache()
-    const { invalidateSearchSuggestionsCache } = await import('../cache/search-cache')
+    const { invalidateSearchSuggestionsCache } = await import(
+      '../cache/search-cache'
+    )
     invalidateSearchSuggestionsCache()
     revalidatePath('/admin/products')
     revalidatePath('/admin/stock')

@@ -25,11 +25,17 @@ export async function createCategory(data: ICategoryInput) {
 
     await Category.create(cleanData)
     // Invalider tous les caches liés aux catégories
-    const { invalidateCategoriesCache } = await import('../cache/category-cache')
+    const { invalidateCategoriesCache } = await import(
+      '../cache/category-cache'
+    )
     invalidateCategoriesCache()
-    const { invalidateAdminCategoriesCache } = await import('../cache/admin-cache')
+    const { invalidateAdminCategoriesCache } = await import(
+      '../cache/admin-cache'
+    )
     invalidateAdminCategoriesCache()
-    const { invalidateSearchSuggestionsCache } = await import('../cache/search-cache')
+    const { invalidateSearchSuggestionsCache } = await import(
+      '../cache/search-cache'
+    )
     invalidateSearchSuggestionsCache()
     revalidatePath('/admin/categories')
     return {
@@ -65,11 +71,17 @@ export async function updateCategory(
     )
     invalidateCategoriesCache()
     invalidateCategoryCache(category.name)
-    const { invalidateAdminCategoriesCache } = await import('../cache/admin-cache')
+    const { invalidateAdminCategoriesCache } = await import(
+      '../cache/admin-cache'
+    )
     invalidateAdminCategoriesCache()
-    const { invalidateAllProductsCache } = await import('../cache/product-cache')
+    const { invalidateAllProductsCache } = await import(
+      '../cache/product-cache'
+    )
     invalidateAllProductsCache() // Les produits peuvent être affectés par le changement de catégorie
-    const { invalidateSearchSuggestionsCache } = await import('../cache/search-cache')
+    const { invalidateSearchSuggestionsCache } = await import(
+      '../cache/search-cache'
+    )
     invalidateSearchSuggestionsCache()
     revalidatePath('/admin/categories')
     return {
@@ -95,11 +107,17 @@ export async function deleteCategory(id: string) {
     if (res.name) {
       invalidateCategoryCache(res.name)
     }
-    const { invalidateAdminCategoriesCache } = await import('../cache/admin-cache')
+    const { invalidateAdminCategoriesCache } = await import(
+      '../cache/admin-cache'
+    )
     invalidateAdminCategoriesCache()
-    const { invalidateAllProductsCache } = await import('../cache/product-cache')
+    const { invalidateAllProductsCache } = await import(
+      '../cache/product-cache'
+    )
     invalidateAllProductsCache() // Les produits peuvent être affectés
-    const { invalidateSearchSuggestionsCache } = await import('../cache/search-cache')
+    const { invalidateSearchSuggestionsCache } = await import(
+      '../cache/search-cache'
+    )
     invalidateSearchSuggestionsCache()
     revalidatePath('/admin/categories')
     return {

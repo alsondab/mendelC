@@ -13,7 +13,7 @@ const options = {
     deprecationErrors: true,
   },
   connectTimeoutMS: 60000, // 60 secondes
-  socketTimeoutMS: 60000,  // 60 secondes
+  socketTimeoutMS: 60000, // 60 secondes
   maxPoolSize: 10, // Maintenir jusqu'à 10 connexions socket
   serverSelectionTimeoutMS: 5000, // Garder les connexions vivantes pendant 5 secondes
   bufferMaxEntries: 0, // Désactiver le buffering mongoose

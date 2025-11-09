@@ -14,18 +14,20 @@ export const connectToDatabase = async (
   if (!MONGODB_URI) throw new Error('MONGODB_URI is missing')
 
   console.log('🔄 Connecting to MongoDB...')
-  
+
   try {
-    cached.promise = cached.promise || mongoose.connect(MONGODB_URI, {
-      maxPoolSize: 10,
-      minPoolSize: 5,
-      maxIdleTimeMS: 30000,
-      serverSelectionTimeoutMS: 60000,
-      socketTimeoutMS: 60000,
-      connectTimeoutMS: 60000,
-      retryWrites: true,
-      retryReads: true,
-    })
+    cached.promise =
+      cached.promise ||
+      mongoose.connect(MONGODB_URI, {
+        maxPoolSize: 10,
+        minPoolSize: 5,
+        maxIdleTimeMS: 30000,
+        serverSelectionTimeoutMS: 60000,
+        socketTimeoutMS: 60000,
+        connectTimeoutMS: 60000,
+        retryWrites: true,
+        retryReads: true,
+      })
 
     cached.conn = await cached.promise
     console.log('✅ MongoDB connected successfully')

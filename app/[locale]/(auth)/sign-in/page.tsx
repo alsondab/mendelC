@@ -29,24 +29,27 @@ export default async function SignInPage(props: {
   const session = await auth()
   if (session) {
     // Rediriger vers /admin/overview pour les admins (car /admin n'a pas de page.tsx)
-    const redirectUrl = session.user.role === 'Admin' ? '/admin/overview' : callbackUrl
+    const redirectUrl =
+      session.user.role === 'Admin' ? '/admin/overview' : callbackUrl
     // Construire l'URL avec la locale pour préserver l'internationalisation
-    const cleanUrl = redirectUrl.startsWith('/') ? redirectUrl : `/${redirectUrl}`
+    const cleanUrl = redirectUrl.startsWith('/')
+      ? redirectUrl
+      : `/${redirectUrl}`
     const localizedUrl = `/${locale}${cleanUrl}`
     nextRedirect(localizedUrl)
   }
 
   return (
-    <div className='w-full'>
+    <div className="w-full">
       <Card>
         <CardHeader>
-          <CardTitle className='text-2xl'>{t('Sign In')}</CardTitle>
+          <CardTitle className="text-2xl">{t('Sign In')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div>
             <CredentialsSignInForm />
             <SeparatorWithOr />
-            <div className='mt-4'>
+            <div className="mt-4">
               <GoogleSignInForm />
             </div>
           </div>
@@ -57,7 +60,7 @@ export default async function SignInPage(props: {
       </SeparatorWithOr>
 
       <Link href={`/sign-up?callbackUrl=${encodeURIComponent(callbackUrl)}`}>
-        <Button className='w-full' variant='outline'>
+        <Button className="w-full" variant="outline">
           {t('Create your')} {site.name} {t('account')}
         </Button>
       </Link>

@@ -11,7 +11,7 @@ export async function getCachedAllProductsForAdmin(params: {
   limit?: number
 }) {
   const cacheKey = `admin-products-${params.query || 'all'}-${params.page || 1}-${params.sort || 'latest'}`
-  
+
   return unstable_cache(
     async () => {
       const { getAllProductsForAdmin } = await import(
@@ -36,7 +36,7 @@ export async function getCachedAllOrders(params: {
   page: number
 }) {
   const cacheKey = `admin-orders-${params.page || 1}-${params.limit || 20}`
-  
+
   return unstable_cache(
     async () => {
       const { getAllOrders } = await import('../actions/order.actions')
@@ -60,7 +60,7 @@ export async function getCachedAllCategoriesForAdmin(params: {
   query?: string
 }) {
   const cacheKey = `admin-categories-${params.query || 'all'}-${params.page || 1}`
-  
+
   return unstable_cache(
     async () => {
       const { getAllCategoriesForAdmin } = await import(
@@ -105,7 +105,7 @@ export async function getCachedAllUsers(params: {
   page: number
 }) {
   const cacheKey = `admin-users-${params.page || 1}-${params.limit || 20}`
-  
+
   return unstable_cache(
     async () => {
       const { getAllUsers } = await import('../actions/user.actions')
@@ -134,5 +134,3 @@ export async function invalidateAdminUsersCache() {
   const { revalidateTag } = await import('next/cache')
   revalidateTag('admin-users')
 }
-
-

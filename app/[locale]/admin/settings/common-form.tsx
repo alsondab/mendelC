@@ -35,37 +35,37 @@ export default function CommonForm({
       <CardHeader>
         <CardTitle>Paramètres généraux</CardTitle>
       </CardHeader>
-      <CardContent className='space-y-4'>
-        <div className='flex flex-col gap-5 md:flex-row'>
+      <CardContent className="space-y-4">
+        <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={control}
-            name='common.pageSize'
+            name="common.pageSize"
             render={({ field }) => (
-              <FormItem className='w-full'>
+              <FormItem className="w-full">
                 <FormLabel>Taille de page</FormLabel>
                 <FormControl>
                   <Input
-                    type='number'
-                    placeholder='Entrez la taille de page'
+                    type="number"
+                    placeholder="Entrez la taille de page"
                     {...field}
                     onChange={(e) => field.onChange(Number(e.target.value))}
                   />
                 </FormControl>
                 <FormDescription>
-                  Nombre de produits affichés par page dans les listes (ex: liste
-                  produits, résultats de recherche)
+                  Nombre de produits affichés par page dans les listes (ex:
+                  liste produits, résultats de recherche)
                 </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
-        <div className='flex flex-col gap-5 md:flex-row'>
+        <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={control}
-            name='common.defaultColor'
+            name="common.defaultColor"
             render={({ field }) => (
-              <FormItem className='w-full'>
+              <FormItem className="w-full">
                 <FormLabel>Couleur par défaut</FormLabel>
                 <FormControl>
                   <Select
@@ -74,7 +74,7 @@ export default function CommonForm({
                     disabled
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder='Select a color' />
+                      <SelectValue placeholder="Select a color" />
                     </SelectTrigger>
                     <SelectContent>
                       {COLORS.map((color, index) => (
@@ -94,9 +94,9 @@ export default function CommonForm({
           />
           <FormField
             control={control}
-            name='common.defaultTheme'
+            name="common.defaultTheme"
             render={({ field }) => (
-              <FormItem className='w-full'>
+              <FormItem className="w-full">
                 <FormLabel>Thème par défaut</FormLabel>
                 <FormControl>
                   <Select
@@ -105,7 +105,7 @@ export default function CommonForm({
                     disabled
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder='Select a theme' />
+                      <SelectValue placeholder="Select a theme" />
                     </SelectTrigger>
                     <SelectContent>
                       {THEMES.map((theme, index) => (
@@ -127,9 +127,9 @@ export default function CommonForm({
         <div>
           <FormField
             control={control}
-            name='common.isMaintenanceMode'
+            name="common.isMaintenanceMode"
             render={({ field }) => (
-              <FormItem className='space-x-2 items-center'>
+              <FormItem className="space-x-2 items-center">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
@@ -137,7 +137,7 @@ export default function CommonForm({
                     disabled
                   />
                 </FormControl>
-                <div className='space-y-1'>
+                <div className="space-y-1">
                   <FormLabel>Mode maintenance</FormLabel>
                   <FormDescription>
                     À implémenter dans une version ultérieure

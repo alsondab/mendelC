@@ -57,7 +57,7 @@ async function triggerAutoNotification(productId: string) {
             sendStockNotificationEmail(productNotifications, adminEmail).catch(
               (error) => {
                 console.error(
-                  'Erreur lors de l\'envoi automatique de notification:',
+                  "Erreur lors de l'envoi automatique de notification:",
                   error
                 )
               }
@@ -121,10 +121,10 @@ export async function updateProductStock({
     const { recordStockMovement } = await import('./stock-history.actions')
     const { auth } = await import('@/auth')
     const session = await auth()
-    
+
     // Déterminer la raison selon l'opération (tous les ajustements manuels utilisent 'adjustment')
     let reason = 'Ajustement manuel'
-    
+
     if (operation === 'add') {
       reason = 'Ajout de stock'
     } else if (operation === 'set') {
@@ -146,7 +146,7 @@ export async function updateProductStock({
         quantity: quantity.toString(),
       },
     }).catch((error) => {
-      console.error('Erreur lors de l\'enregistrement de l\'historique:', error)
+      console.error("Erreur lors de l'enregistrement de l'historique:", error)
     })
 
     // Déclencher automatiquement une notification si nécessaire
@@ -310,7 +310,13 @@ export async function getStockStatistics() {
     await connectToDatabase()
 
     // Utiliser Promise.all pour exécuter les requêtes en parallèle
-    const [totalProducts, inStockProducts, lowStockProducts, outOfStockProducts, stockValueResult] = await Promise.all([
+    const [
+      totalProducts,
+      inStockProducts,
+      lowStockProducts,
+      outOfStockProducts,
+      stockValueResult,
+    ] = await Promise.all([
       Product.countDocuments({ isPublished: true }),
       Product.countDocuments({
         stockStatus: 'in_stock',
@@ -328,28 +334,29 @@ export async function getStockStatistics() {
       // Cela évite de charger tous les produits en mémoire
       Product.aggregate([
         {
-          $match: { isPublished: true }
+          $match: { isPublished: true },
         },
         {
           $project: {
             stockValue: {
-              $multiply: ['$countInStock', '$price']
-            }
-          }
+              $multiply: ['$countInStock', '$price'],
+            },
+          },
         },
         {
           $group: {
             _id: null,
-            totalStockValue: { $sum: '$stockValue' }
-          }
-        }
-      ])
+            totalStockValue: { $sum: '$stockValue' },
+          },
+        },
+      ]),
     ])
 
     // Extraire la valeur totale du résultat de l'agrégation
-    const totalStockValue = stockValueResult.length > 0 && stockValueResult[0].totalStockValue 
-      ? Math.round(stockValueResult[0].totalStockValue * 100) / 100 
-      : 0
+    const totalStockValue =
+      stockValueResult.length > 0 && stockValueResult[0].totalStockValue
+        ? Math.round(stockValueResult[0].totalStockValue * 100) / 100
+        : 0
 
     return {
       success: true,
@@ -442,12 +449,11 @@ export async function applyGlobalThresholdsToAllProducts({
 
     if (!thresholdsResult.success || !thresholdsResult.thresholds) {
       throw new Error(
-        'Impossible de récupérer les seuils globaux. Veuillez d\'abord les définir dans les paramètres.'
+        "Impossible de récupérer les seuils globaux. Veuillez d'abord les définir dans les paramètres."
       )
     }
 
-    const { globalLowStockThreshold } =
-      thresholdsResult.thresholds
+    const { globalLowStockThreshold } = thresholdsResult.thresholds
 
     // Trouver tous les produits publiés
     const products = await Product.find({ isPublished: true })

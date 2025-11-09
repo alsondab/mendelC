@@ -23,22 +23,22 @@ export async function GET(request: NextRequest) {
     }
 
     const wishlistItem = await Wishlist.findOne({
-      $or: [
-        { user: session?.user?.id },
-        { sessionId: sessionId }
-      ],
+      $or: [{ user: session?.user?.id }, { sessionId: sessionId }],
       product: productId,
     })
 
-    const response = NextResponse.json({ success: true, isInWishlist: !!wishlistItem })
-    
+    const response = NextResponse.json({
+      success: true,
+      isInWishlist: !!wishlistItem,
+    })
+
     // Définir le cookie pour les utilisateurs non connectés
     if (!session?.user?.id) {
       response.cookies.set('wishlist-session-id', sessionId, {
         maxAge: 60 * 60 * 24 * 30, // 30 jours
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax'
+        sameSite: 'lax',
       })
     }
 

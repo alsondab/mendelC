@@ -10,7 +10,7 @@ const users: IUserInput[] = [
     password: bcrypt.hashSync('Admin@2024!', 5),
     role: 'Admin',
     address: {
-        fullName: 'John Doe',
+      fullName: 'John Doe',
       street: '111 Main St',
       city: 'New York',
       province: 'NY',

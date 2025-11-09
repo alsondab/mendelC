@@ -280,46 +280,46 @@ export default function Search({ categories, siteName }: SearchProps) {
   }
 
   return (
-    <div className='search-container relative'>
+    <div className="search-container relative">
       {/* Desktop Search */}
-      <div className='hidden lg:block'>
-        <div className='relative'>
-          <form onSubmit={handleSearchSubmit} className='space-y-4'>
-          <div className='relative'>
-            <div className='flex items-stretch h-14 rounded-2xl overflow-hidden bg-background/60 backdrop-blur-sm border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 ring-1 ring-white/10'>
-              <Select name='category'>
-                <SelectTrigger className='w-auto h-full bg-gradient-to-br from-muted/40 to-muted/20 border-0 rounded-none border-r border-white/20 focus:ring-0 backdrop-blur-sm'>
-                  <SelectValue placeholder={t('Header.All')} />
-                </SelectTrigger>
-                <SelectContent
-                  position='popper'
-                  className='border-0 shadow-2xl bg-background/95 backdrop-blur-xl ring-1 ring-white/20'
-                >
-                  <SelectItem value='all'>{t('Header.All')}</SelectItem>
-                  {categories.map((category) => (
-                    <div key={category._id}>
-                      <SelectItem value={category.name}>
-                        {category.name}
-                      </SelectItem>
-                      {category.subCategories &&
-                        category.subCategories.length > 0 && (
-                          <>
-                            {category.subCategories.map((subCategory) => (
-                              <SelectItem
-                                key={subCategory._id}
-                                value={`${category.name}|${subCategory.name}`}
-                                className='ml-4 text-sm'
-                              >
-                                └ {subCategory.name}
-                              </SelectItem>
-                            ))}
-                          </>
-                        )}
-                    </div>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Input
+      <div className="hidden lg:block">
+        <div className="relative">
+          <form onSubmit={handleSearchSubmit} className="space-y-4">
+            <div className="relative">
+              <div className="flex items-stretch h-14 rounded-2xl overflow-hidden bg-background/60 backdrop-blur-sm border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 ring-1 ring-white/10">
+                <Select name="category">
+                  <SelectTrigger className="w-auto h-full bg-gradient-to-br from-muted/40 to-muted/20 border-0 rounded-none border-r border-white/20 focus:ring-0 backdrop-blur-sm">
+                    <SelectValue placeholder={t('Header.All')} />
+                  </SelectTrigger>
+                  <SelectContent
+                    position="popper"
+                    className="border-0 shadow-2xl bg-background/95 backdrop-blur-xl ring-1 ring-white/20"
+                  >
+                    <SelectItem value="all">{t('Header.All')}</SelectItem>
+                    {categories.map((category) => (
+                      <div key={category._id}>
+                        <SelectItem value={category.name}>
+                          {category.name}
+                        </SelectItem>
+                        {category.subCategories &&
+                          category.subCategories.length > 0 && (
+                            <>
+                              {category.subCategories.map((subCategory) => (
+                                <SelectItem
+                                  key={subCategory._id}
+                                  value={`${category.name}|${subCategory.name}`}
+                                  className="ml-4 text-sm"
+                                >
+                                  └ {subCategory.name}
+                                </SelectItem>
+                              ))}
+                            </>
+                          )}
+                      </div>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Input
                   value={searchValue}
                   onChange={(e) => {
                     setSearchValue(e.target.value)
@@ -328,38 +328,38 @@ export default function Search({ categories, siteName }: SearchProps) {
                   onFocus={() =>
                     setShowSuggestions(searchValue.trim().length >= 2)
                   }
-                className='flex-1 border-0 rounded-none bg-transparent text-foreground text-base h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/60'
-                placeholder={t('Header.Search Site', { name: siteName })}
-                type='search'
-                  autoComplete='off'
-              />
-              <button
-                type='submit'
-                className='bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground h-full px-6 py-2 transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl'
-              >
-                <SearchIcon className='w-5 h-5' />
-              </button>
+                  className="flex-1 border-0 rounded-none bg-transparent text-foreground text-base h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/60"
+                  placeholder={t('Header.Search Site', { name: siteName })}
+                  type="search"
+                  autoComplete="off"
+                />
+                <button
+                  type="submit"
+                  className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground h-full px-6 py-2 transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl"
+                >
+                  <SearchIcon className="w-5 h-5" />
+                </button>
+              </div>
+              {/* Glow effect */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/20 via-transparent to-primary/20 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
             </div>
-            {/* Glow effect */}
-            <div className='absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/20 via-transparent to-primary/20 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none'></div>
-          </div>
-        </form>
+          </form>
 
           {/* Suggestions Desktop */}
           {showSuggestions && (
-            <div className='absolute top-full left-0 right-0 mt-2 bg-background/95 backdrop-blur-xl border border-border/50 rounded-xl shadow-2xl z-50 max-h-80 overflow-y-auto'>
-              <div className='p-2'>
-                <div className='flex items-center gap-2 px-2 py-1.5 text-xs text-muted-foreground mb-1 border-b border-border/30'>
-                  <TrendingUp className='w-3.5 h-3.5' />
-                  <span className='font-medium'>Suggestions</span>
+            <div className="absolute top-full left-0 right-0 mt-2 bg-background/95 backdrop-blur-xl border border-border/50 rounded-xl shadow-2xl z-50 max-h-80 overflow-y-auto">
+              <div className="p-2">
+                <div className="flex items-center gap-2 px-2 py-1.5 text-xs text-muted-foreground mb-1 border-b border-border/30">
+                  <TrendingUp className="w-3.5 h-3.5" />
+                  <span className="font-medium">Suggestions</span>
                   {isLoadingSuggestions && (
-                    <span className='ml-auto text-xs opacity-70'>
+                    <span className="ml-auto text-xs opacity-70">
                       Chargement...
                     </span>
                   )}
                 </div>
                 {suggestions.length > 0 ? (
-                  <div className='py-1'>
+                  <div className="py-1">
                     {suggestions.map((suggestion, index) => (
                       <button
                         key={`${suggestion.type}-${suggestion.text}-${index}`}
@@ -396,30 +396,30 @@ export default function Search({ categories, siteName }: SearchProps) {
                             : 'hover:bg-muted/50 text-foreground border border-transparent'
                         }`}
                       >
-                        <SearchIcon className='w-4 h-4 text-muted-foreground flex-shrink-0' />
-                        <div className='flex-1 min-w-0'>
-                          <div className='font-medium truncate'>
+                        <SearchIcon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <div className="font-medium truncate">
                             {suggestion.text}
                           </div>
                           {suggestion.type === 'product' &&
                             suggestion.brand && (
-                              <div className='text-xs text-muted-foreground truncate'>
+                              <div className="text-xs text-muted-foreground truncate">
                                 {suggestion.brand} • {suggestion.category}
                               </div>
                             )}
                           {suggestion.type === 'category' && (
-                            <div className='text-xs text-muted-foreground'>
+                            <div className="text-xs text-muted-foreground">
                               Catégorie
                             </div>
                           )}
                           {suggestion.type === 'subcategory' && (
-                            <div className='text-xs text-muted-foreground truncate'>
+                            <div className="text-xs text-muted-foreground truncate">
                               Sous-catégorie • {suggestion.category}
                             </div>
                           )}
                           {suggestion.type === 'recent' && (
-                            <div className='text-xs text-muted-foreground flex items-center gap-1'>
-                              <Clock className='w-3 h-3' />
+                            <div className="text-xs text-muted-foreground flex items-center gap-1">
+                              <Clock className="w-3 h-3" />
                               Recherche récente
                             </div>
                           )}
@@ -428,7 +428,7 @@ export default function Search({ categories, siteName }: SearchProps) {
                     ))}
                   </div>
                 ) : !isLoadingSuggestions ? (
-                  <div className='px-3 py-4 text-sm text-muted-foreground text-center'>
+                  <div className="px-3 py-4 text-sm text-muted-foreground text-center">
                     Aucune suggestion trouvée
                   </div>
                 ) : null}
@@ -439,24 +439,24 @@ export default function Search({ categories, siteName }: SearchProps) {
       </div>
 
       {/* Mobile Search - Collé au menu */}
-      <div className='lg:hidden'>
+      <div className="lg:hidden">
         {/* Barre de recherche compacte (état par défaut) - Espacée du menu */}
         {!isExpanded && (
           <button
             onClick={handleSearchClick}
-            className='flex items-center justify-center gap-1 h-8 sm:h-9 md:h-10 px-2 sm:px-2 md:px-3 rounded-full sm:rounded-lg bg-background/90 backdrop-blur-sm border border-border/60 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 text-sm text-muted-foreground hover:text-foreground ml-2 sm:ml-3'
+            className="flex items-center justify-center gap-1 h-8 sm:h-9 md:h-10 px-2 sm:px-2 md:px-3 rounded-full sm:rounded-lg bg-background/90 backdrop-blur-sm border border-border/60 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 active:scale-95 text-sm text-muted-foreground hover:text-foreground ml-2 sm:ml-3"
           >
-            <SearchIcon className='w-4 h-4 sm:w-4 sm:h-4 md:w-5 md:h-5' />
+            <SearchIcon className="w-4 h-4 sm:w-4 sm:h-4 md:w-5 md:h-5" />
             {/* Très petits écrans (< 375px) : Seulement l'icône */}
-            <span className='font-medium text-xs hidden min-[375px]:inline sm:hidden'>
+            <span className="font-medium text-xs hidden min-[375px]:inline sm:hidden">
               {t('Header.Search')}
             </span>
             {/* Petits écrans (375px - 768px) : Icône + "Recherche" */}
-            <span className='font-medium text-xs hidden sm:inline md:hidden'>
+            <span className="font-medium text-xs hidden sm:inline md:hidden">
               {t('Header.Search')}
             </span>
             {/* Écrans moyens (768px+) : Icône + "Rechercher" */}
-            <span className='font-medium text-xs hidden md:inline'>
+            <span className="font-medium text-xs hidden md:inline">
               {t('Search.Search')}
             </span>
           </button>
@@ -464,26 +464,28 @@ export default function Search({ categories, siteName }: SearchProps) {
 
         {/* Barre de recherche étendue */}
         {isExpanded && (
-          <div className='fixed inset-0 z-50 bg-black/50 backdrop-blur-sm animate-in fade-in duration-300'>
-            <div className='absolute top-0 left-0 right-0 bg-background/95 backdrop-blur-xl border-b border-border/50 shadow-lg animate-in slide-in-from-top duration-300'>
-              <div className='px-4 py-3 space-y-3'>
+          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm animate-in fade-in duration-300">
+            <div className="absolute top-0 left-0 right-0 bg-background/95 backdrop-blur-xl border-b border-border/50 shadow-lg animate-in slide-in-from-top duration-300">
+              <div className="px-4 py-3 space-y-3">
                 {/* Header avec bouton fermer */}
-                <div className='flex items-center justify-between'>
-                  <h2 className='text-lg font-semibold'>{t('Search.Search')}</h2>
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg font-semibold">
+                    {t('Search.Search')}
+                  </h2>
                   <Button
-                    variant='ghost'
-                    size='sm'
+                    variant="ghost"
+                    size="sm"
                     onClick={clearSearch}
-                    className='h-8 w-8 p-0 hover:bg-muted/50'
+                    className="h-8 w-8 p-0 hover:bg-muted/50"
                   >
-                    <X className='w-4 h-4' />
+                    <X className="w-4 h-4" />
                   </Button>
                 </div>
 
                 {/* Barre de recherche principale */}
-                <form onSubmit={handleSearchSubmit} className='space-y-3'>
-                  <div className='relative'>
-                    <div className='flex items-stretch h-12 rounded-xl overflow-hidden bg-background border border-border shadow-sm'>
+                <form onSubmit={handleSearchSubmit} className="space-y-3">
+                  <div className="relative">
+                    <div className="flex items-stretch h-12 rounded-xl overflow-hidden bg-background border border-border shadow-sm">
                       <Input
                         ref={searchRef}
                         value={searchValue}
@@ -491,27 +493,27 @@ export default function Search({ categories, siteName }: SearchProps) {
                         onFocus={() =>
                           setShowSuggestions(searchValue.trim().length >= 2)
                         }
-                        className='flex-1 border-0 rounded-none bg-transparent text-foreground text-base h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/60 px-4'
+                        className="flex-1 border-0 rounded-none bg-transparent text-foreground text-base h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/60 px-4"
                         placeholder={t('Header.Search Site', {
                           name: siteName,
                         })}
-                        type='search'
-                        autoComplete='off'
+                        type="search"
+                        autoComplete="off"
                       />
                       <button
-                        type='submit'
-                        className='bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground h-full px-4 py-2 transition-all duration-200 flex items-center justify-center'
+                        type="submit"
+                        className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground h-full px-4 py-2 transition-all duration-200 flex items-center justify-center"
                       >
-                        <SearchIcon className='w-5 h-5' />
+                        <SearchIcon className="w-5 h-5" />
                       </button>
                     </div>
 
                     {/* Suggestions intelligentes */}
                     {showSuggestions && (
-                      <div className='absolute top-full left-0 right-0 mt-1 bg-background border border-border rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto'>
-                        <div className='p-2'>
-                          <div className='flex items-center gap-2 px-2 py-1 text-xs text-muted-foreground mb-2'>
-                            <TrendingUp className='w-3 h-3' />
+                      <div className="absolute top-full left-0 right-0 mt-1 bg-background border border-border rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
+                        <div className="p-2">
+                          <div className="flex items-center gap-2 px-2 py-1 text-xs text-muted-foreground mb-2">
+                            <TrendingUp className="w-3 h-3" />
                             Suggestions{' '}
                             {isLoadingSuggestions && '(Chargement...)'}
                           </div>
@@ -553,31 +555,31 @@ export default function Search({ categories, siteName }: SearchProps) {
                                       : 'hover:bg-muted/50 text-foreground'
                                   }`}
                                 >
-                                  <SearchIcon className='w-3 h-3 text-muted-foreground' />
-                                  <div className='flex-1'>
-                                    <div className='font-medium'>
+                                  <SearchIcon className="w-3 h-3 text-muted-foreground" />
+                                  <div className="flex-1">
+                                    <div className="font-medium">
                                       {suggestion.text}
                                     </div>
                                     {suggestion.type === 'product' &&
                                       suggestion.brand && (
-                                        <div className='text-xs text-muted-foreground'>
+                                        <div className="text-xs text-muted-foreground">
                                           {suggestion.brand} •{' '}
                                           {suggestion.category}
                                         </div>
                                       )}
                                     {suggestion.type === 'category' && (
-                                      <div className='text-xs text-muted-foreground'>
+                                      <div className="text-xs text-muted-foreground">
                                         Catégorie
                                       </div>
                                     )}
                                     {suggestion.type === 'subcategory' && (
-                                      <div className='text-xs text-muted-foreground'>
+                                      <div className="text-xs text-muted-foreground">
                                         Sous-catégorie • {suggestion.category}
                                       </div>
                                     )}
                                     {suggestion.type === 'recent' && (
-                                      <div className='text-xs text-muted-foreground flex items-center gap-1'>
-                                        <Clock className='w-3 h-3' />
+                                      <div className="text-xs text-muted-foreground flex items-center gap-1">
+                                        <Clock className="w-3 h-3" />
                                         Recherche récente
                                       </div>
                                     )}
@@ -585,7 +587,7 @@ export default function Search({ categories, siteName }: SearchProps) {
                                 </button>
                               ))
                             : !isLoadingSuggestions && (
-                                <div className='px-3 py-2 text-sm text-muted-foreground'>
+                                <div className="px-3 py-2 text-sm text-muted-foreground">
                                   Aucune suggestion trouvée
                                 </div>
                               )}
@@ -596,32 +598,32 @@ export default function Search({ categories, siteName }: SearchProps) {
 
                   {/* Bouton filtres */}
                   <Button
-                    type='button'
-                    variant='outline'
+                    type="button"
+                    variant="outline"
                     onClick={() => setShowFilters(!showFilters)}
-                    className='w-full h-10 justify-between'
+                    className="w-full h-10 justify-between"
                   >
-                    <span className='flex items-center gap-2'>
-                      <Filter className='w-4 h-4' />
+                    <span className="flex items-center gap-2">
+                      <Filter className="w-4 h-4" />
                       Catégories
                     </span>
-                    <span className='text-xs text-muted-foreground'>
+                    <span className="text-xs text-muted-foreground">
                       {showFilters ? 'Masquer' : 'Afficher'}
                     </span>
                   </Button>
 
                   {/* Filtres de catégories */}
                   {showFilters && (
-                    <div className='animate-in slide-in-from-top duration-200 space-y-2'>
+                    <div className="animate-in slide-in-from-top duration-200 space-y-2">
                       <Select
-                        name='category'
+                        name="category"
                         onValueChange={handleCategoryChange}
                       >
-                        <SelectTrigger className='h-10'>
+                        <SelectTrigger className="h-10">
                           <SelectValue placeholder={t('Header.All')} />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value='all'>{t('Header.All')}</SelectItem>
+                          <SelectItem value="all">{t('Header.All')}</SelectItem>
                           {categories.map((category) => (
                             <div key={category._id}>
                               <SelectItem value={category.name}>
@@ -635,7 +637,7 @@ export default function Search({ categories, siteName }: SearchProps) {
                                         <SelectItem
                                           key={subCategory._id}
                                           value={`${category.name}|${subCategory.name}`}
-                                          className='ml-4 text-sm'
+                                          className="ml-4 text-sm"
                                         >
                                           └ {subCategory.name}
                                         </SelectItem>
@@ -653,30 +655,30 @@ export default function Search({ categories, siteName }: SearchProps) {
 
                 {/* Recherches récentes dynamiques */}
                 {recentSearches.length > 0 && (
-                  <div className='space-y-2'>
-                    <div className='flex items-center justify-between'>
-                      <p className='text-sm text-muted-foreground'>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm text-muted-foreground">
                         Recherches récentes ({recentSearches.length})
                       </p>
                       <button
                         onClick={clearAllRecentSearches}
-                        className='text-xs text-muted-foreground hover:text-foreground transition-colors duration-200'
+                        className="text-xs text-muted-foreground hover:text-foreground transition-colors duration-200"
                       >
                         Tout effacer
                       </button>
                     </div>
-                    <div className='flex flex-wrap gap-2'>
+                    <div className="flex flex-wrap gap-2">
                       {recentSearches.map((term) => (
                         <div
                           key={term}
-                          className='flex items-center gap-1 px-3 py-1 text-xs bg-muted/50 hover:bg-muted rounded-full transition-colors duration-200 group'
+                          className="flex items-center gap-1 px-3 py-1 text-xs bg-muted/50 hover:bg-muted rounded-full transition-colors duration-200 group"
                         >
                           <button
                             onClick={(e) => {
                               e.preventDefault()
                               setSearchValue(term)
                             }}
-                            className='flex-1 text-left'
+                            className="flex-1 text-left"
                           >
                             {term}
                           </button>
@@ -685,9 +687,9 @@ export default function Search({ categories, siteName }: SearchProps) {
                               e.preventDefault()
                               removeRecentSearch(term)
                             }}
-                            className='opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:text-red-500'
+                            className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:text-red-500"
                           >
-                            <X className='w-3 h-3' />
+                            <X className="w-3 h-3" />
                           </button>
                         </div>
                       ))}

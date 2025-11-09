@@ -83,7 +83,6 @@ export type IUserSignIn = z.infer<typeof UserSignInSchema>
 export type IUserSignUp = z.infer<typeof UserSignUpSchema>
 export type IUserName = z.infer<typeof UserNameSchema>
 
-
 // setting
 export type ICarousel = z.infer<typeof CarouselSchema>
 export type ISettingInput = z.infer<typeof SettingInputSchema>

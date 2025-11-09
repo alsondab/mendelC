@@ -326,7 +326,6 @@ export const UserNameSchema = z.object({
   name: UserName,
 })
 
-
 // Setting
 
 export const SiteLanguageSchema = z.object({

@@ -20,7 +20,10 @@ export function useNotificationLevel(): NotificationLevel {
           setLevel(result.settings.uiNotificationLevel)
         }
       } catch (error) {
-        console.error('Erreur lors du chargement du niveau de notification:', error)
+        console.error(
+          'Erreur lors du chargement du niveau de notification:',
+          error
+        )
         // Garder la valeur par défaut 'standard'
       }
     }
@@ -30,4 +33,3 @@ export function useNotificationLevel(): NotificationLevel {
 
   return level
 }
-

@@ -1,10 +1,5 @@
 'use client'
-import {
-  ChevronUp,
-  HelpCircle,
-  Truck,
-  RotateCcw,
-} from 'lucide-react'
+import { ChevronUp, HelpCircle, Truck, RotateCcw } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -144,11 +139,17 @@ export default function Footer() {
         <div className="bg-black/60 border-t border-gray-800">
           <div className="p-4 max-w-7xl mx-auto text-center space-y-3">
             <div className="flex flex-wrap justify-center gap-3 text-xs">
-              <Link href="/page/conditions-of-use" className="hover:text-orange-400">
+              <Link
+                href="/page/conditions-of-use"
+                className="hover:text-orange-400"
+              >
                 Conditions d’utilisation
               </Link>
               <span className="hidden sm:inline text-gray-600">•</span>
-              <Link href="/page/privacy-policy" className="hover:text-orange-400">
+              <Link
+                href="/page/privacy-policy"
+                className="hover:text-orange-400"
+              >
                 Confidentialité
               </Link>
               <span className="hidden sm:inline text-gray-600">•</span>

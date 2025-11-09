@@ -1,34 +1,45 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { 
-  getLowStockProducts, 
-  getOutOfStockProducts, 
+import {
+  getLowStockProducts,
+  getOutOfStockProducts,
   getStockStatistics,
-  updateAllStockStatus 
+  updateAllStockStatus,
 } from '@/lib/actions/stock.actions'
 import { StockStatus } from '@/components/shared/product/stock-status'
-import { 
-  Package, 
-  AlertTriangle, 
-  XCircle, 
-  CheckCircle, 
+import {
+  Package,
+  AlertTriangle,
+  XCircle,
+  CheckCircle,
   RefreshCw,
   TrendingUp,
-  DollarSign
+  DollarSign,
 } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function StockManagementPage() {
-  const [lowStockResult, outOfStockResult, statisticsResult] = await Promise.all([
-    getLowStockProducts(),
-    getOutOfStockProducts(),
-    getStockStatistics()
-  ])
+  const [lowStockResult, outOfStockResult, statisticsResult] =
+    await Promise.all([
+      getLowStockProducts(),
+      getOutOfStockProducts(),
+      getStockStatistics(),
+    ])
 
   const lowStockProducts = lowStockResult.success ? lowStockResult.products : []
-  const outOfStockProducts = outOfStockResult.success ? outOfStockResult.products : []
-  const statistics = statisticsResult.success ? statisticsResult.statistics : null
+  const outOfStockProducts = outOfStockResult.success
+    ? outOfStockResult.products
+    : []
+  const statistics = statisticsResult.success
+    ? statisticsResult.statistics
+    : null
 
   return (
     <div className="space-y-6">
@@ -53,14 +64,16 @@ export default async function StockManagementPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Produits</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Total Produits
+              </CardTitle>
               <Package className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{statistics.totalProducts}</div>
-              <p className="text-xs text-muted-foreground">
-                Produits publiés
-              </p>
+              <div className="text-2xl font-bold">
+                {statistics.totalProducts}
+              </div>
+              <p className="text-xs text-muted-foreground">Produits publiés</p>
             </CardContent>
           </Card>
 
@@ -73,24 +86,22 @@ export default async function StockManagementPage() {
               <div className="text-2xl font-bold text-green-600">
                 {statistics.inStockProducts}
               </div>
-              <p className="text-xs text-muted-foreground">
-                Stock suffisant
-              </p>
+              <p className="text-xs text-muted-foreground">Stock suffisant</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Stock Faible</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Stock Faible
+              </CardTitle>
               <AlertTriangle className="h-4 w-4 text-orange-600" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-orange-600">
                 {statistics.lowStockProducts}
               </div>
-              <p className="text-xs text-muted-foreground">
-                Attention requise
-              </p>
+              <p className="text-xs text-muted-foreground">Attention requise</p>
             </CardContent>
           </Card>
 
@@ -209,7 +220,8 @@ export default async function StockManagementPage() {
                     <div className="flex-1">
                       <h4 className="font-medium">{product.name}</h4>
                       <p className="text-sm text-muted-foreground">
-                        Stock: {product.countInStock} / Seuil: {product.minStockLevel}
+                        Stock: {product.countInStock} / Seuil:{' '}
+                        {product.minStockLevel}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
@@ -237,9 +249,7 @@ export default async function StockManagementPage() {
       <Card>
         <CardHeader>
           <CardTitle>Actions Rapides</CardTitle>
-          <CardDescription>
-            Gestion rapide des stocks
-          </CardDescription>
+          <CardDescription>Gestion rapide des stocks</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-4">

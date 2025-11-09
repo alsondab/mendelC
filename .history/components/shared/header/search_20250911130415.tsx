@@ -26,18 +26,18 @@ export default function Search({ categories, siteName }: SearchProps) {
   const t = useTranslations()
 
   const SearchForm = () => (
-    <form action='/search' method='GET' className='space-y-4'>
-      <div className='relative'>
-        <div className='flex items-stretch h-14 rounded-2xl overflow-hidden bg-background/60 backdrop-blur-sm border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 ring-1 ring-white/10'>
-          <Select name='category'>
-            <SelectTrigger className='w-auto h-full bg-gradient-to-br from-muted/40 to-muted/20 border-0 rounded-none border-r border-white/20 focus:ring-0 backdrop-blur-sm'>
+    <form action="/search" method="GET" className="space-y-4">
+      <div className="relative">
+        <div className="flex items-stretch h-14 rounded-2xl overflow-hidden bg-background/60 backdrop-blur-sm border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 ring-1 ring-white/10">
+          <Select name="category">
+            <SelectTrigger className="w-auto h-full bg-gradient-to-br from-muted/40 to-muted/20 border-0 rounded-none border-r border-white/20 focus:ring-0 backdrop-blur-sm">
               <SelectValue placeholder={t('Header.All')} />
             </SelectTrigger>
             <SelectContent
-              position='popper'
-              className='border-0 shadow-2xl bg-background/95 backdrop-blur-xl ring-1 ring-white/20'
+              position="popper"
+              className="border-0 shadow-2xl bg-background/95 backdrop-blur-xl ring-1 ring-white/20"
             >
-              <SelectItem value='all'>{t('Header.All')}</SelectItem>
+              <SelectItem value="all">{t('Header.All')}</SelectItem>
               {categories.map((category) => (
                 <div key={category._id}>
                   <SelectItem value={category.name}>{category.name}</SelectItem>
@@ -48,7 +48,7 @@ export default function Search({ categories, siteName }: SearchProps) {
                           <SelectItem
                             key={subCategory._id}
                             value={`${category.name}|${subCategory.name}`}
-                            className='ml-4 text-sm'
+                            className="ml-4 text-sm"
                           >
                             └ {subCategory.name}
                           </SelectItem>
@@ -60,20 +60,20 @@ export default function Search({ categories, siteName }: SearchProps) {
             </SelectContent>
           </Select>
           <Input
-            className='flex-1 border-0 rounded-none bg-transparent text-foreground text-base h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/60'
+            className="flex-1 border-0 rounded-none bg-transparent text-foreground text-base h-full focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/60"
             placeholder={t('Header.Search Site', { name: siteName })}
-            name='q'
-            type='search'
+            name="q"
+            type="search"
           />
           <button
-            type='submit'
-            className='bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground h-full px-6 py-2 transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl'
+            type="submit"
+            className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground h-full px-6 py-2 transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl"
           >
-            <SearchIcon className='w-5 h-5' />
+            <SearchIcon className="w-5 h-5" />
           </button>
         </div>
         {/* Glow effect */}
-        <div className='absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/20 via-transparent to-primary/20 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none'></div>
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/20 via-transparent to-primary/20 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
       </div>
     </form>
   )
@@ -81,32 +81,32 @@ export default function Search({ categories, siteName }: SearchProps) {
   return (
     <>
       {/* Desktop Search */}
-      <div className='hidden lg:block'>
+      <div className="hidden lg:block">
         <SearchForm />
       </div>
 
       {/* Mobile Search - Barre de recherche compacte */}
-      <div className='lg:hidden flex-1 max-w-md mx-2'>
+      <div className="lg:hidden flex-1 max-w-md mx-2">
         <Button
-          variant='outline'
+          variant="outline"
           onClick={() => setIsOpen(true)}
-          className='w-full h-10 rounded-lg border border-border/50 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-all duration-200 justify-start text-muted-foreground'
+          className="w-full h-10 rounded-lg border border-border/50 bg-background/80 backdrop-blur-sm hover:bg-background/90 transition-all duration-200 justify-start text-muted-foreground"
         >
-          <SearchIcon className='h-4 w-4 mr-2 flex-shrink-0' />
-          <span className='text-sm truncate'>
+          <SearchIcon className="h-4 w-4 mr-2 flex-shrink-0" />
+          <span className="text-sm truncate">
             {t('Header.Search Site', { name: siteName })}
           </span>
         </Button>
 
         {/* Mobile Search Dialog */}
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogContent className='sm:max-w-lg border-0 shadow-2xl bg-background/95 backdrop-blur-xl'>
+          <DialogContent className="sm:max-w-lg border-0 shadow-2xl bg-background/95 backdrop-blur-xl">
             <VisuallyHidden>
               <DialogTitle>
                 {t('Header.Search Site', { name: siteName })}
               </DialogTitle>
             </VisuallyHidden>
-            <div className='p-4 sm:p-6'>
+            <div className="p-4 sm:p-6">
               <SearchForm />
             </div>
           </DialogContent>

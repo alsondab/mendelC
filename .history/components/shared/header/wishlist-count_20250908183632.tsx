@@ -61,13 +61,13 @@ export default function WishlistCount() {
 
   return (
     <Link
-      href='/wishlist'
-      className='flex items-center space-x-1 text-muted-foreground hover:text-primary transition-colors relative'
+      href="/wishlist"
+      className="flex items-center space-x-1 text-muted-foreground hover:text-primary transition-colors relative"
     >
-      <Heart className='h-4 w-4' />
+      <Heart className="h-4 w-4" />
       <span>Favoris</span>
       {count > 0 && (
-        <span className='absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold'>
+        <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold">
           {count}
         </span>
       )}

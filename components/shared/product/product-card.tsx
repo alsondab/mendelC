@@ -48,18 +48,18 @@ const ProductCard = React.memo(
 
     const ProductImage = () => (
       <Link href={`/product/${product.slug}`}>
-        <div className='relative h-32 xs:h-40 sm:h-48 lg:h-52'>
+        <div className="relative h-32 xs:h-40 sm:h-48 lg:h-52">
           {/* Badge de réduction */}
           {product.listPrice > 0 && product.listPrice > product.price && (
-            <div className='absolute top-1 left-1 sm:top-2 sm:left-2 z-10'>
-              <span className='bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full shadow-lg'>
+            <div className="absolute top-1 left-1 sm:top-2 sm:left-2 z-10">
+              <span className="bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full shadow-lg">
                 -{Math.round(100 - (product.price / product.listPrice) * 100)}%
               </span>
             </div>
           )}
 
           {/* Bouton Wishlist */}
-          <div className='absolute top-1 right-1 sm:top-2 sm:right-2 z-10'>
+          <div className="absolute top-1 right-1 sm:top-2 sm:right-2 z-10">
             <WishlistButton
               productId={product._id}
               product={{
@@ -72,7 +72,7 @@ const ProductCard = React.memo(
                 brand: product.brand || '',
                 category: product.category || '',
               }}
-              size='sm'
+              size="sm"
             />
           </div>
 
@@ -87,23 +87,23 @@ const ProductCard = React.memo(
               alt={product.name}
             />
           ) : product.images[0] && product.images[0].trim() !== '' ? (
-            <div className='relative h-32 xs:h-40 sm:h-48 lg:h-52'>
+            <div className="relative h-32 xs:h-40 sm:h-48 lg:h-52">
               <Image
                 src={product.images[0]}
                 alt={product.name}
                 fill
                 // ⚡ Optimization: Sizes précis pour correspondre aux dimensions réelles (266x280px max)
-                sizes='(max-width: 320px) 160px, (max-width: 480px) 192px, (max-width: 768px) 208px, 280px'
-                className='object-contain'
+                sizes="(max-width: 320px) 160px, (max-width: 480px) 192px, (max-width: 768px) 208px, 280px"
+                className="object-contain"
                 // ⚡ Optimization: Lazy loading pour toutes les images produits (hors écran initial)
-                loading='lazy'
+                loading="lazy"
                 // ⚡ Optimization: Qualité réduite pour réduire la taille (économie ~15.5 KiB)
                 quality={70}
               />
             </div>
           ) : (
-            <div className='relative h-32 xs:h-40 sm:h-48 lg:h-52 bg-muted flex items-center justify-center'>
-              <span className='text-muted-foreground text-xs sm:text-sm'>
+            <div className="relative h-32 xs:h-40 sm:h-48 lg:h-52 bg-muted flex items-center justify-center">
+              <span className="text-muted-foreground text-xs sm:text-sm">
                 Aucune image
               </span>
             </div>
@@ -112,11 +112,11 @@ const ProductCard = React.memo(
       </Link>
     )
     const ProductDetails = () => (
-      <div className='flex-1 space-y-1 sm:space-y-2'>
-        <p className='font-bold text-xs sm:text-sm truncate'>{product.brand}</p>
+      <div className="flex-1 space-y-1 sm:space-y-2">
+        <p className="font-bold text-xs sm:text-sm truncate">{product.brand}</p>
         <Link
           href={`/product/${product.slug}`}
-          className='overflow-hidden text-ellipsis text-xs sm:text-sm line-clamp-2 block'
+          className="overflow-hidden text-ellipsis text-xs sm:text-sm line-clamp-2 block"
           style={{
             display: '-webkit-box',
             WebkitLineClamp: 2,
@@ -125,9 +125,9 @@ const ProductCard = React.memo(
         >
           {product.name}
         </Link>
-        <div className='flex gap-1 sm:gap-2 justify-center items-center'>
-          <Rating rating={product.avgRating} size='xs' />
-          <span className='text-xs'>({formatNumber(product.numReviews)})</span>
+        <div className="flex gap-1 sm:gap-2 justify-center items-center">
+          <Rating rating={product.avgRating} size="xs" />
+          <span className="text-xs">({formatNumber(product.numReviews)})</span>
         </div>
 
         <ProductPrice
@@ -138,7 +138,7 @@ const ProductCard = React.memo(
       </div>
     )
     const AddButton = () => (
-      <div className='w-full text-center'>
+      <div className="w-full text-center">
         <AddToCart
           minimal
           item={{
@@ -173,11 +173,11 @@ const ProductCard = React.memo(
         : {}
 
     return hideBorder ? (
-      <CardWrapper className='flex flex-col group' {...motionProps}>
+      <CardWrapper className="flex flex-col group" {...motionProps}>
         <ProductImage />
         {!hideDetails && (
           <>
-            <div className='p-2 xs:p-3 sm:p-4 flex-1 text-center space-y-2 xs:space-y-3'>
+            <div className="p-2 xs:p-3 sm:p-4 flex-1 text-center space-y-2 xs:space-y-3">
               <ProductDetails />
             </div>
             {!hideAddToCart && <AddButton />}
@@ -186,16 +186,16 @@ const ProductCard = React.memo(
       </CardWrapper>
     ) : (
       <CardWrapper {...motionProps}>
-        <Card className='flex flex-col group hover:shadow-lg transition-shadow duration-200'>
-          <CardHeader className='p-2 xs:p-3 sm:p-4'>
+        <Card className="flex flex-col group hover:shadow-lg transition-shadow duration-200">
+          <CardHeader className="p-2 xs:p-3 sm:p-4">
             <ProductImage />
           </CardHeader>
           {!hideDetails && (
             <>
-              <CardContent className='p-2 xs:p-3 sm:p-4 flex-1 text-center space-y-2 xs:space-y-3'>
+              <CardContent className="p-2 xs:p-3 sm:p-4 flex-1 text-center space-y-2 xs:space-y-3">
                 <ProductDetails />
               </CardContent>
-              <CardFooter className='p-2 xs:p-3 sm:p-4 pt-0'>
+              <CardFooter className="p-2 xs:p-3 sm:p-4 pt-0">
                 {!hideAddToCart && <AddButton />}
               </CardFooter>
             </>

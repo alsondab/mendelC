@@ -97,7 +97,7 @@ export function StockStatus({
       )}
     >
       {showIcon && <Icon className={cn(iconSizes[size], 'shrink-0')} />}
-      <span className='truncate'>{config.text}</span>
+      <span className="truncate">{config.text}</span>
     </div>
   )
 }
@@ -110,14 +110,14 @@ export function ProductStockStatus({
 }: Omit<StockStatusProps, 'showIcon' | 'size' | 'minStockLevel'>) {
   return (
     <div className={cn('flex items-center justify-between', className)}>
-      <span className='text-sm text-muted-foreground'>
+      <span className="text-sm text-muted-foreground">
         Stock: {countInStock}
       </span>
       <StockStatus
         countInStock={countInStock}
         minStockLevel={minStockLevel}
         stockStatus={stockStatus}
-        size='sm'
+        size="sm"
       />
     </div>
   )
@@ -132,12 +132,12 @@ export function AdminStockStatus({
 }: Omit<StockStatusProps, 'showIcon' | 'size'>) {
   return (
     <div className={cn('flex items-center gap-2', className)}>
-      <span className='text-sm font-medium'>{countInStock}</span>
+      <span className="text-sm font-medium">{countInStock}</span>
       <StockStatus
         countInStock={countInStock}
         minStockLevel={minStockLevel}
         stockStatus={stockStatus}
-        size='sm'
+        size="sm"
         showIcon={false}
       />
     </div>

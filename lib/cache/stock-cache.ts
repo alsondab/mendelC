@@ -78,7 +78,7 @@ export async function getCachedStockHistory(params: {
 }) {
   // Créer une clé de cache unique basée sur les paramètres
   const cacheKey = `stock-history-${params.page || 1}-${params.limit || 50}-${params.movementType || 'all'}-${params.productId || 'all'}`
-  
+
   return unstable_cache(
     async () => {
       const { getAllStockHistory } = await import(
@@ -129,4 +129,3 @@ export async function invalidateStockHistoryCache() {
   const { revalidateTag } = await import('next/cache')
   revalidateTag('stock-history')
 }
-

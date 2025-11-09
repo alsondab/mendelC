@@ -14,12 +14,12 @@ export default function SelectVariant({
   return (
     <>
       {product.colors.length > 0 && (
-        <div className='space-x-2 space-y-2'>
+        <div className="space-x-2 space-y-2">
           <div>Color:</div>
           {product.colors.map((x: string) => (
             <Button
               asChild
-              variant='outline'
+              variant="outline"
               className={
                 selectedColor === x ? 'border-2 border-primary' : 'border-2'
               }
@@ -34,7 +34,7 @@ export default function SelectVariant({
               >
                 <div
                   style={{ backgroundColor: x }}
-                  className='h-4 w-4 rounded-full border border-muted-foreground'
+                  className="h-4 w-4 rounded-full border border-muted-foreground"
                 ></div>
                 {x}
               </Link>

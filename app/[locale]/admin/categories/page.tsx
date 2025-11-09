@@ -30,22 +30,20 @@ export default async function CategoriesPage({
   const { query = '', page = '1', sort = 'name' } = await searchParams
 
   return (
-    <div className='space-y-6 p-4 xs:p-6'>
+    <div className="space-y-6 p-4 xs:p-6">
       {/* Header */}
-      <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
-        <div className='space-y-1'>
-          <div className='flex items-center gap-2'>
-            <Grid3X3 className='h-6 w-6 text-primary' />
-            <h1 className='text-2xl font-bold tracking-tight'>{t('Title')}</h1>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <Grid3X3 className="h-6 w-6 text-primary" />
+            <h1 className="text-2xl font-bold tracking-tight">{t('Title')}</h1>
           </div>
-          <p className='text-muted-foreground'>
-            {t('Description')}
-          </p>
+          <p className="text-muted-foreground">{t('Description')}</p>
         </div>
-        <div className='flex gap-2'>
+        <div className="flex gap-2">
           <Button asChild>
-            <Link href='/admin/categories/create'>
-              <Plus className='mr-2 h-4 w-4' />
+            <Link href="/admin/categories/create">
+              <Plus className="mr-2 h-4 w-4" />
               {t('NewCategory')}
             </Link>
           </Button>

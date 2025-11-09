@@ -55,12 +55,12 @@ async function updateSettings() {
     const newLanguages: Language[] = [
       {
         name: 'English',
-        code: 'en-US'
+        code: 'en-US',
       },
       {
         name: 'Français',
-        code: 'fr'
-      }
+        code: 'fr',
+      },
     ]
 
     // Mettre à jour les paramètres
@@ -72,18 +72,23 @@ async function updateSettings() {
           availableCurrencies: newCurrencies,
           availableLanguages: newLanguages,
           defaultCurrency: 'XOF',
-          defaultLanguage: 'en-US'
-        }
+          defaultLanguage: 'en-US',
+        },
       },
       { upsert: true, new: true }
     )
 
     console.log('✅ Paramètres mis à jour avec succès')
-    console.log('📊 Nouvelles devises:', result.availableCurrencies.map(c => `${c.name} (${c.code})`).join(', '))
+    console.log(
+      '📊 Nouvelles devises:',
+      result.availableCurrencies.map((c) => `${c.name} (${c.code})`).join(', ')
+    )
     console.log('💰 Devise par défaut:', result.defaultCurrency)
-    console.log('🌍 Nouvelles langues:', result.availableLanguages.map(l => `${l.name} (${l.code})`).join(', '))
+    console.log(
+      '🌍 Nouvelles langues:',
+      result.availableLanguages.map((l) => `${l.name} (${l.code})`).join(', ')
+    )
     console.log('🔤 Langue par défaut:', result.defaultLanguage)
-
   } catch (error) {
     console.error('❌ Erreur lors de la mise à jour:', error)
   } finally {

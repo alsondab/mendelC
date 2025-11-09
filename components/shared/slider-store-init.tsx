@@ -1,8 +1,13 @@
 'use client'
 
 import { useEffect } from 'react'
-import useCartSliderStore, { setWishlistStoreRef } from '@/hooks/use-cart-slider-store'
-import { useWishlistSliderStore, setCartStoreRef } from '@/hooks/use-wishlist-slider-store'
+import useCartSliderStore, {
+  setWishlistStoreRef,
+} from '@/hooks/use-cart-slider-store'
+import {
+  useWishlistSliderStore,
+  setCartStoreRef,
+} from '@/hooks/use-wishlist-slider-store'
 
 /**
  * Composant qui initialise les références croisées entre les stores
@@ -20,5 +25,3 @@ export default function SliderStoreInit() {
 
   return null
 }
-
-

@@ -105,23 +105,29 @@ export const useWishlistStore = create<WishlistState>()(
       // Nettoyer les favoris orphelins (qui n'existent plus en BD)
       cleanupOrphanedItems: async () => {
         const state = get()
-        const apiItems = state.items.filter(item => item._id.startsWith('api_'))
-        
+        const apiItems = state.items.filter((item) =>
+          item._id.startsWith('api_')
+        )
+
         if (apiItems.length === 0) return
 
         try {
           // Vérifier quels favoris existent encore en BD
           const response = await fetch('/api/wishlist/list')
           const data = await response.json()
-          
+
           if (data.success) {
-            const existingProductIds = new Set(data.wishlist.map((item: any) => item.product._id))
-            
-            // Supprimer les favoris qui n'existent plus en BD
-            const validItems = state.items.filter(item => 
-              item._id.startsWith('local_') || existingProductIds.has(item.product._id)
+            const existingProductIds = new Set(
+              data.wishlist.map((item: any) => item.product._id)
             )
-            
+
+            // Supprimer les favoris qui n'existent plus en BD
+            const validItems = state.items.filter(
+              (item) =>
+                item._id.startsWith('local_') ||
+                existingProductIds.has(item.product._id)
+            )
+
             set({ items: validItems })
           }
         } catch (error) {

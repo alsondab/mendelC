@@ -31,7 +31,7 @@ export default function ClientProviders({
     <SessionProvider>
       <AppInitializer setting={setting}>
         <ThemeProvider
-          attribute='class'
+          attribute="class"
           defaultTheme={setting.common.defaultTheme.toLocaleLowerCase()}
         >
           <SliderStoreInit />

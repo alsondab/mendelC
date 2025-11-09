@@ -74,16 +74,16 @@ export default function EmailForm({ currentEmail }: EmailFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
-          name='newEmail'
+          name="newEmail"
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t('New Email')}</FormLabel>
               <FormControl>
                 <Input
-                  type='email'
+                  type="email"
                   placeholder={t('Enter new email address')}
                   {...field}
                 />
@@ -98,14 +98,14 @@ export default function EmailForm({ currentEmail }: EmailFormProps) {
 
         <FormField
           control={form.control}
-          name='password'
+          name="password"
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t('Password')}</FormLabel>
               <FormControl>
                 <PasswordInput
                   placeholder={t('Enter your password to confirm')}
-                  autoComplete='current-password'
+                  autoComplete="current-password"
                   {...field}
                 />
               </FormControl>
@@ -117,9 +117,8 @@ export default function EmailForm({ currentEmail }: EmailFormProps) {
           )}
         />
 
-        <Button type='submit'>{t('Update Email')}</Button>
+        <Button type="submit">{t('Update Email')}</Button>
       </form>
     </Form>
   )
 }
-

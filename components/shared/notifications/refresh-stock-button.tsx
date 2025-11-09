@@ -24,8 +24,8 @@ export function RefreshStockButton() {
   return (
     <Button
       onClick={handleRefresh}
-      variant='outline'
-      className='gap-2'
+      variant="outline"
+      className="gap-2"
       disabled={isLoading}
     >
       <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />

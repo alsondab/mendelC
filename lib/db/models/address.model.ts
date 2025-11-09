@@ -44,7 +44,7 @@ const addressSchema = new Schema<IAddress>(
 addressSchema.index({ user: 1, isDefault: 1 })
 
 const Address =
-  (models.Address as Model<IAddress>) || model<IAddress>('Address', addressSchema)
+  (models.Address as Model<IAddress>) ||
+  model<IAddress>('Address', addressSchema)
 
 export default Address
-

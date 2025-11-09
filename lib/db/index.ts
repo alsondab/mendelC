@@ -42,28 +42,32 @@ export const connectToDatabase = async (
         cached.conn = await cached.promise
         return cached.conn
       }
-      
+
       // Sinon, créer une nouvelle connexion
       cached.promise = mongoose.connect(MONGODB_URI, options)
       cached.conn = await cached.promise
-      
+
       return cached.conn
     } catch (error: unknown) {
       // Réinitialiser la promesse en cas d'erreur pour permettre un nouveau essai
       cached.promise = null
       cached.conn = null
-      
+
       // Type guard pour vérifier les propriétés de l'erreur
-      const errorObj = error as { code?: string; message?: string; name?: string }
-      
-      const isTimeoutError = 
+      const errorObj = error as {
+        code?: string
+        message?: string
+        name?: string
+      }
+
+      const isTimeoutError =
         errorObj.code === 'ETIMEOUT' ||
         errorObj.code === 'ENOTFOUND' ||
         errorObj.code === 'ECONNREFUSED' ||
         (errorObj.message?.includes('timeout') ?? false) ||
         (errorObj.message?.includes('querySrv') ?? false) ||
         errorObj.name === 'MongooseServerSelectionError'
-      
+
       if (isTimeoutError && attempt < retries) {
         // Attendre avant de réessayer (backoff exponentiel)
         const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000)
@@ -73,7 +77,7 @@ export const connectToDatabase = async (
         await new Promise((resolve) => setTimeout(resolve, delay))
         continue
       }
-      
+
       // Si c'est la dernière tentative ou une erreur non-timeout, lancer l'erreur
       console.error('[MongoDB] Connection error:', error)
       const errorMessage = errorObj.message ?? String(error)

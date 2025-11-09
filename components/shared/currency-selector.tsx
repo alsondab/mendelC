@@ -21,16 +21,16 @@ export default function CurrencySelector() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant='ghost' size='sm' className='gap-2'>
-          <Globe className='h-4 w-4' />
-          <span className='hidden sm:inline'>
+        <Button variant="ghost" size="sm" className="gap-2">
+          <Globe className="h-4 w-4" />
+          <span className="hidden sm:inline">
             {setting.availableCurrencies.find((c) => c.code === currentCurrency)
               ?.symbol || currentCurrency}
           </span>
-          <ChevronDown className='h-4 w-4' />
+          <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='end' className='w-48'>
+      <DropdownMenuContent align="end" className="w-48">
         {setting.availableCurrencies.map((currency) => (
           <DropdownMenuItem
             key={currency.code}
@@ -39,9 +39,9 @@ export default function CurrencySelector() {
               currentCurrency === currency.code ? 'bg-accent' : ''
             }`}
           >
-            <div className='flex items-center justify-between w-full'>
-              <span className='font-medium'>{currency.symbol}</span>
-              <span className='text-sm text-muted-foreground'>
+            <div className="flex items-center justify-between w-full">
+              <span className="font-medium">{currency.symbol}</span>
+              <span className="text-sm text-muted-foreground">
                 {currency.name}
               </span>
             </div>

@@ -24,8 +24,8 @@ export default function SalesCategoryPieChart({ data }: { data: any[] }) {
 
   if (!componentsReady || !RechartsComponents) {
     return (
-      <div className='w-full h-[400px] flex items-center justify-center'>
-        <div className='animate-pulse text-muted-foreground'>Chargement...</div>
+      <div className="w-full h-[400px] flex items-center justify-center">
+        <div className="animate-pulse text-muted-foreground">Chargement...</div>
       </div>
     )
   }
@@ -50,9 +50,9 @@ export default function SalesCategoryPieChart({ data }: { data: any[] }) {
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className='bg-white p-3 border rounded-lg shadow-lg'>
-          <p className='font-medium'>{payload[0].name}</p>
-          <p className='text-sm text-gray-600'>
+        <div className="bg-white p-3 border rounded-lg shadow-lg">
+          <p className="font-medium">{payload[0].name}</p>
+          <p className="text-sm text-gray-600">
             {payload[0].value} unités vendues
           </p>
         </div>
@@ -62,17 +62,17 @@ export default function SalesCategoryPieChart({ data }: { data: any[] }) {
   }
 
   return (
-    <div className='w-full'>
-      <ResponsiveContainer width='100%' height={400}>
+    <div className="w-full">
+      <ResponsiveContainer width="100%" height={400}>
         <PieChart>
           <Pie
             data={data}
-            dataKey='totalSales'
-            nameKey='_id'
-            cx='50%'
-            cy='50%'
+            dataKey="totalSales"
+            nameKey="_id"
+            cx="50%"
+            cy="50%"
             outerRadius={120}
-            fill='#8884d8'
+            fill="#8884d8"
             label={false}
           >
             {data.map((entry, index) => (
@@ -84,10 +84,10 @@ export default function SalesCategoryPieChart({ data }: { data: any[] }) {
           </Pie>
           <Tooltip content={<CustomTooltip />} />
           <Legend
-            verticalAlign='bottom'
+            verticalAlign="bottom"
             height={36}
             formatter={(value: string, entry: any) => (
-              <span className='text-sm'>
+              <span className="text-sm">
                 {value} ({entry.payload.totalSales} unités)
               </span>
             )}

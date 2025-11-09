@@ -30,16 +30,17 @@ const WishlistSchema: Schema = new Schema(
 )
 
 // Index pour éviter les doublons - soit user soit sessionId
-WishlistSchema.index({ user: 1, product: 1 }, { unique: true, partialFilterExpression: { user: { $exists: true } } })
-WishlistSchema.index({ sessionId: 1, product: 1 }, { unique: true, partialFilterExpression: { sessionId: { $exists: true } } })
+WishlistSchema.index(
+  { user: 1, product: 1 },
+  { unique: true, partialFilterExpression: { user: { $exists: true } } }
+)
+WishlistSchema.index(
+  { sessionId: 1, product: 1 },
+  { unique: true, partialFilterExpression: { sessionId: { $exists: true } } }
+)
 
 const Wishlist =
   mongoose.models.Wishlist ||
   mongoose.model<IWishlist>('Wishlist', WishlistSchema)
 
 export default Wishlist
-
-
-
-
-

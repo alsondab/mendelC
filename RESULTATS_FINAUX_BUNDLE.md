@@ -9,14 +9,14 @@
 
 ### First Load JS
 
-| Métrique | Avant Optimisations | Après Optimisations Button | Différence |
-|----------|---------------------|----------------------------|------------|
-| **Total First Load JS** | **536 kB** | **539 kB** | +3 kB ⚠️ |
+| Métrique                | Avant Optimisations | Après Optimisations Button | Différence |
+| ----------------------- | ------------------- | -------------------------- | ---------- |
+| **Total First Load JS** | **536 kB**          | **539 kB**                 | +3 kB ⚠️   |
 
 ### Chunks Principaux
 
-| Chunk | Taille | Statut |
-|-------|--------|--------|
+| Chunk                                  | Taille    | Statut                                |
+| -------------------------------------- | --------- | ------------------------------------- |
 | `vendors-ff30e0d3-44c41cf4bc64ccd6.js` | **53 kB** | 🔴 **Framer Motion toujours présent** |
 
 ---
@@ -28,6 +28,7 @@
 **Cause Probable:** Le fichier `lib/utils/animations.ts` importe directement `Variants` de `framer-motion`, ce qui force Next.js à inclure framer-motion dans le bundle même si les animations ne sont pas utilisées dans le First Load JS.
 
 **Fichiers Suspects:**
+
 - ✅ `lib/utils/animations.ts` : Import direct `Variants` de `framer-motion`
 - ⚠️ `components/shared/notifications/stock-gauge.tsx` : Import direct `motion` de `framer-motion`
 - ⚠️ `components/ui/animated-skeleton.tsx` : Import direct `motion` de `framer-motion`
@@ -40,18 +41,22 @@
 ## ✅ Optimisations Appliquées
 
 ### 1. Header Components ✅
+
 - ✅ `components/shared/header/cart-button.tsx` : CSS au lieu de framer-motion
 - ✅ `components/shared/header/wishlist-count.tsx` : CSS au lieu de framer-motion
 
 ### 2. Loading Page ✅
+
 - ✅ `app/[locale]/loading.tsx` : CSS au lieu de framer-motion
 
 ### 3. Button Component ✅
+
 - ✅ `components/ui/button.tsx` : CSS au lieu de framer-motion
 - ✅ Ripple effect avec CSS keyframes
 - ✅ Hover/Tap animations avec CSS
 
 ### 4. Animations Non-Composited ✅
+
 - ✅ `components/shared/notifications/stock-gauge.tsx` : `width` → `scaleX`
 - ✅ `components/shared/product/rating.tsx` : `width` → `scaleX`
 
@@ -100,6 +105,7 @@ Créer les animations seulement quand framer-motion est chargé.
 ### Solution 2 : Vérifier si le Chunk est Vraiment dans le First Load
 
 Le chunk `vendors-ff30e0d3-44c41cf4bc64ccd6.js` (53 kB) peut être :
+
 - ✅ Dans le First Load JS (problème)
 - ✅ Chargé de manière asynchrone (pas de problème)
 
@@ -126,16 +132,15 @@ Le chunk `vendors-ff30e0d3-44c41cf4bc64ccd6.js` (53 kB) peut être :
 
 ## 📊 Résumé des Optimisations
 
-| Optimisation | Statut | Impact |
-|-------------|--------|--------|
-| Header (cart-button, wishlist-count) | ✅ | CSS au lieu de framer-motion |
-| Loading page | ✅ | CSS au lieu de framer-motion |
-| Button component | ✅ | CSS au lieu de framer-motion |
-| Animations composited | ✅ | `transform` au lieu de `width` |
-| **Framer Motion chunk** | ⚠️ | **Toujours présent (à vérifier si First Load)** |
+| Optimisation                         | Statut | Impact                                          |
+| ------------------------------------ | ------ | ----------------------------------------------- |
+| Header (cart-button, wishlist-count) | ✅     | CSS au lieu de framer-motion                    |
+| Loading page                         | ✅     | CSS au lieu de framer-motion                    |
+| Button component                     | ✅     | CSS au lieu de framer-motion                    |
+| Animations composited                | ✅     | `transform` au lieu de `width`                  |
+| **Framer Motion chunk**              | ⚠️     | **Toujours présent (à vérifier si First Load)** |
 
 ---
 
 **Document créé le:** 2025-01-05  
 **Dernière mise à jour:** 2025-01-05
-

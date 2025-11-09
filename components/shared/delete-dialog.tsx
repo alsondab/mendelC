@@ -29,7 +29,7 @@ export default function DeleteDialog({
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button size='sm' variant='outline'>
+        <Button size="sm" variant="outline">
           Supprimer
         </Button>
       </AlertDialogTrigger>
@@ -44,8 +44,8 @@ export default function DeleteDialog({
           <AlertDialogCancel>Annuler</AlertDialogCancel>
 
           <Button
-            variant='destructive'
-            size='sm'
+            variant="destructive"
+            size="sm"
             disabled={isPending}
             onClick={() =>
               startTransition(async () => {

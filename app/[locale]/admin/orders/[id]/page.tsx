@@ -25,10 +25,10 @@ const AdminOrderDetailsPage = async (props: {
   const session = await auth()
 
   return (
-    <main className='max-w-6xl mx-auto p-4'>
-      <div className='flex mb-4'>
-        <Link href='/admin/orders'>Commandes</Link>{' '}
-        <span className='mx-1'>›</span>
+    <main className="max-w-6xl mx-auto p-4">
+      <div className="flex mb-4">
+        <Link href="/admin/orders">Commandes</Link>{' '}
+        <span className="mx-1">›</span>
         <Link href={`/admin/orders/${order._id}`}>{order._id}</Link>
       </div>
       <OrderDetailsForm

@@ -100,21 +100,21 @@ export function StockThresholdConfig({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
-          variant='outline'
-          size='sm'
-          className='text-xs sm:text-sm'
+          variant="outline"
+          size="sm"
+          className="text-xs sm:text-sm"
           onClick={() => {
             setMinStockLevel(currentMinStockLevel)
             setMaxStockLevel(currentMaxStockLevel)
           }}
         >
-          <Settings className='h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5' />
-          <span className='hidden xs:inline'>Seuils</span>
+          <Settings className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5" />
+          <span className="hidden xs:inline">Seuils</span>
         </Button>
       </DialogTrigger>
       <DialogContent
-        className='sm:max-w-md'
-        aria-describedby='stock-threshold-description'
+        className="sm:max-w-md"
+        aria-describedby="stock-threshold-description"
       >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -122,61 +122,61 @@ export function StockThresholdConfig({
           transition={{ duration: 0.2 }}
         >
           <DialogHeader>
-            <DialogTitle className='text-lg sm:text-xl'>
+            <DialogTitle className="text-lg sm:text-xl">
               Configurer les seuils de stock
             </DialogTitle>
             <DialogDescription
-              id='stock-threshold-description'
-              className='text-sm'
+              id="stock-threshold-description"
+              className="text-sm"
             >
               {productName}
             </DialogDescription>
           </DialogHeader>
-          <div className='space-y-4 py-4'>
-            <div className='space-y-2'>
-              <Label htmlFor='minStockLevel' className='text-sm'>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="minStockLevel" className="text-sm">
                 Seuil minimum (alerte)
               </Label>
               <Input
-                id='minStockLevel'
-                type='number'
-                min='0'
+                id="minStockLevel"
+                type="number"
+                min="0"
                 value={minStockLevel}
                 onChange={(e) =>
                   setMinStockLevel(parseInt(e.target.value) || 0)
                 }
-                className='text-sm'
+                className="text-sm"
               />
-              <p className='text-xs text-muted-foreground'>
+              <p className="text-xs text-muted-foreground">
                 Alerte lorsque le stock ≤ cette valeur
               </p>
             </div>
 
-            <div className='space-y-2'>
-              <Label htmlFor='maxStockLevel' className='text-sm'>
+            <div className="space-y-2">
+              <Label htmlFor="maxStockLevel" className="text-sm">
                 Seuil maximum (stock optimal)
               </Label>
               <Input
-                id='maxStockLevel'
-                type='number'
+                id="maxStockLevel"
+                type="number"
                 min={minStockLevel + 1}
                 value={maxStockLevel}
                 onChange={(e) =>
                   setMaxStockLevel(parseInt(e.target.value) || 0)
                 }
-                className='text-sm'
+                className="text-sm"
               />
-              <p className='text-xs text-muted-foreground'>
+              <p className="text-xs text-muted-foreground">
                 Stock optimal recommandé pour ce produit
               </p>
             </div>
 
-            <div className='rounded-lg bg-muted p-3 space-y-1'>
-              <p className='text-xs font-medium'>Stock actuel</p>
-              <p className='text-sm font-bold'>
+            <div className="rounded-lg bg-muted p-3 space-y-1">
+              <p className="text-xs font-medium">Stock actuel</p>
+              <p className="text-sm font-bold">
                 {currentStock} unité{currentStock > 1 ? 's' : ''}
               </p>
-              <p className='text-xs text-muted-foreground'>
+              <p className="text-xs text-muted-foreground">
                 {currentStock <= currentMinStockLevel
                   ? '⚠️ Stock faible ou rupture'
                   : currentStock >= currentMaxStockLevel
@@ -185,23 +185,23 @@ export function StockThresholdConfig({
               </p>
             </div>
           </div>
-          <DialogFooter className='flex-col sm:flex-row gap-2 sm:gap-0'>
+          <DialogFooter className="flex-col sm:flex-row gap-2 sm:gap-0">
             <Button
-              variant='outline'
+              variant="outline"
               onClick={handleReset}
               disabled={isLoading}
-              className='w-full sm:w-auto'
+              className="w-full sm:w-auto"
             >
               Réinitialiser
             </Button>
             <Button
               onClick={handleSave}
               disabled={isLoading}
-              className='w-full sm:w-auto'
+              className="w-full sm:w-auto"
             >
               {isLoading ? (
                 <>
-                  <Loader2 className='h-4 w-4 mr-2 animate-spin' />
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                   Sauvegarde...
                 </>
               ) : (

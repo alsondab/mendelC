@@ -8,7 +8,8 @@ interface CartSliderStore {
 }
 
 // Import dynamique pour éviter les dépendances circulaires
-let getWishlistStore: (() => { close: () => void; isOpen: boolean }) | null = null
+let getWishlistStore: (() => { close: () => void; isOpen: boolean }) | null =
+  null
 
 const useCartSliderStore = create<CartSliderStore>((set, get) => {
   // Fonction pour fermer le wishlist
@@ -31,21 +32,22 @@ const useCartSliderStore = create<CartSliderStore>((set, get) => {
     toggle: () => {
       const currentState = get().isOpen
       const newState = !currentState
-      
+
       // Si on ouvre le cart, fermer le wishlist
       if (newState) {
         closeWishlistIfOpen()
       }
-      
+
       set({ isOpen: newState })
     },
   }
 })
 
 // Fonction pour enregistrer la référence au store wishlist
-export const setWishlistStoreRef = (ref: () => { close: () => void; isOpen: boolean }) => {
+export const setWishlistStoreRef = (
+  ref: () => { close: () => void; isOpen: boolean }
+) => {
   getWishlistStore = ref
 }
 
 export default useCartSliderStore
-

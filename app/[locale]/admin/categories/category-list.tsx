@@ -60,13 +60,13 @@ export function CategoryList({
   const router = useRouter()
   const searchParams = useSearchParams()
   const [isDeleting, setIsDeleting] = useState<string | null>(null)
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null)
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
+    null
+  )
   const [editDialogOpen, setEditDialogOpen] = useState(false)
 
   const handleDelete = async (id: string, name: string) => {
-    if (
-      !confirm(t('DeleteConfirm', { name }))
-    ) {
+    if (!confirm(t('DeleteConfirm', { name }))) {
       return
     }
 
@@ -142,41 +142,41 @@ export function CategoryList({
   }
 
   return (
-    <div className='space-y-4'>
+    <div className="space-y-4">
       {/* Search and Filters */}
       <Card>
-        <CardHeader className='pb-3'>
-          <CardTitle className='text-lg'>{t('SearchAndFilter')}</CardTitle>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg">{t('SearchAndFilter')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className='flex flex-col gap-4 sm:flex-row sm:items-center'>
-            <div className='relative flex-1'>
-              <Search className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground' />
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder={t('SearchPlaceholder')}
                 defaultValue={searchParams.get('query') || ''}
                 onChange={(e) => handleSearch(e.target.value)}
-                className='pl-9'
+                className="pl-9"
               />
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant='outline' className='flex items-center gap-2'>
-                  <Filter className='h-4 w-4' />
+                <Button variant="outline" className="flex items-center gap-2">
+                  <Filter className="h-4 w-4" />
                   {getCurrentSort()}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align='end'>
+              <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => handleSort('name')}>
-                  <ArrowUpDown className='mr-2 h-4 w-4' />
+                  <ArrowUpDown className="mr-2 h-4 w-4" />
                   {t('SortByName')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleSort('sortOrder')}>
-                  <ArrowUpDown className='mr-2 h-4 w-4' />
+                  <ArrowUpDown className="mr-2 h-4 w-4" />
                   {t('SortByDisplayOrder')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => handleSort('createdAt')}>
-                  <ArrowUpDown className='mr-2 h-4 w-4' />
+                  <ArrowUpDown className="mr-2 h-4 w-4" />
                   {t('SortByCreationDate')}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
@@ -198,37 +198,41 @@ export function CategoryList({
       {/* Categories Table */}
       <Card>
         <CardHeader>
-          <div className='flex items-center justify-between'>
-            <CardTitle className='text-lg'>{t('CategoriesList')}</CardTitle>
-            <div className='text-sm text-muted-foreground'>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-lg">{t('CategoriesList')}</CardTitle>
+            <div className="text-sm text-muted-foreground">
               {t('CategoriesCount', { from, to, total: totalCategories })}
             </div>
           </div>
         </CardHeader>
         <CardContent>
-          <div className='overflow-x-auto'>
+          <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className='w-[50px]'>#</TableHead>
+                  <TableHead className="w-[50px]">#</TableHead>
                   <TableHead>
                     <Button
-                      variant='ghost'
+                      variant="ghost"
                       onClick={() => handleSort('name')}
-                      className='h-auto p-0 font-semibold'
+                      className="h-auto p-0 font-semibold"
                     >
                       {t('Name')}
-                      <ArrowUpDown className='ml-2 h-4 w-4' />
+                      <ArrowUpDown className="ml-2 h-4 w-4" />
                     </Button>
                   </TableHead>
-                  <TableHead className='hidden sm:table-cell'>{t('Slug')}</TableHead>
-                  <TableHead className='hidden md:table-cell'>
+                  <TableHead className="hidden sm:table-cell">
+                    {t('Slug')}
+                  </TableHead>
+                  <TableHead className="hidden md:table-cell">
                     {t('Description')}
                   </TableHead>
-                  <TableHead className='hidden lg:table-cell'>{t('Parent')}</TableHead>
-                  <TableHead className='text-center'>{t('Status')}</TableHead>
-                  <TableHead className='text-center'>{t('Order')}</TableHead>
-                  <TableHead className='w-[100px] text-center'>
+                  <TableHead className="hidden lg:table-cell">
+                    {t('Parent')}
+                  </TableHead>
+                  <TableHead className="text-center">{t('Status')}</TableHead>
+                  <TableHead className="text-center">{t('Order')}</TableHead>
+                  <TableHead className="w-[100px] text-center">
                     {t('Actions')}
                   </TableHead>
                 </TableRow>
@@ -236,35 +240,35 @@ export function CategoryList({
               <TableBody>
                 {categories.map((category, index) => (
                   <TableRow key={category._id}>
-                    <TableCell className='font-medium'>
+                    <TableCell className="font-medium">
                       {(currentPage - 1) * 20 + index + 1}
                     </TableCell>
                     <TableCell>
-                      <div className='space-y-1'>
-                        <div className='font-medium'>{category.name}</div>
-                        <div className='text-xs text-muted-foreground sm:hidden'>
+                      <div className="space-y-1">
+                        <div className="font-medium">{category.name}</div>
+                        <div className="text-xs text-muted-foreground sm:hidden">
                           {category.slug}
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell className='hidden sm:table-cell'>
-                      <code className='rounded bg-muted px-1 py-0.5 text-xs'>
+                    <TableCell className="hidden sm:table-cell">
+                      <code className="rounded bg-muted px-1 py-0.5 text-xs">
                         {category.slug}
                       </code>
                     </TableCell>
-                    <TableCell className='hidden md:table-cell'>
-                      <div className='max-w-[200px] truncate text-sm'>
+                    <TableCell className="hidden md:table-cell">
+                      <div className="max-w-[200px] truncate text-sm">
                         {category.description || t('NoDescription')}
                       </div>
                     </TableCell>
-                    <TableCell className='hidden lg:table-cell'>
+                    <TableCell className="hidden lg:table-cell">
                       {category.parentCategory ? (
-                        <Badge variant='secondary'>{t('SubCategory')}</Badge>
+                        <Badge variant="secondary">{t('SubCategory')}</Badge>
                       ) : (
-                        <Badge variant='default'>{t('MainCategory')}</Badge>
+                        <Badge variant="default">{t('MainCategory')}</Badge>
                       )}
                     </TableCell>
-                    <TableCell className='text-center'>
+                    <TableCell className="text-center">
                       <Badge
                         variant={category.isActive ? 'default' : 'secondary'}
                         className={
@@ -275,49 +279,49 @@ export function CategoryList({
                       >
                         {category.isActive ? (
                           <>
-                            <Eye className='mr-1 h-3 w-3' />
+                            <Eye className="mr-1 h-3 w-3" />
                             {t('Active')}
                           </>
                         ) : (
                           <>
-                            <EyeOff className='mr-1 h-3 w-3' />
+                            <EyeOff className="mr-1 h-3 w-3" />
                             {t('Inactive')}
                           </>
                         )}
                       </Badge>
                     </TableCell>
-                    <TableCell className='text-center'>
-                      <Badge variant='outline'>{category.sortOrder}</Badge>
+                    <TableCell className="text-center">
+                      <Badge variant="outline">{category.sortOrder}</Badge>
                     </TableCell>
                     <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button
-                            variant='ghost'
-                            size='sm'
+                            variant="ghost"
+                            size="sm"
                             disabled={isDeleting === category._id}
                           >
-                            <MoreHorizontal className='h-4 w-4' />
+                            <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align='end'>
+                        <DropdownMenuContent align="end">
                           <DropdownMenuItem
                             onClick={() => {
                               setSelectedCategoryId(category._id)
                               setEditDialogOpen(true)
                             }}
                           >
-                            <Edit className='mr-2 h-4 w-4' />
+                            <Edit className="mr-2 h-4 w-4" />
                             {t('Edit')}
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             onClick={() =>
                               handleDelete(category._id, category.name)
                             }
-                            className='text-destructive'
+                            className="text-destructive"
                             disabled={isDeleting === category._id}
                           >
-                            <Trash2 className='mr-2 h-4 w-4' />
+                            <Trash2 className="mr-2 h-4 w-4" />
                             {isDeleting === category._id
                               ? t('Deleting')
                               : t('Delete')}
@@ -333,28 +337,28 @@ export function CategoryList({
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className='mt-4 flex items-center justify-between'>
-              <div className='text-sm text-muted-foreground'>
+            <div className="mt-4 flex items-center justify-between">
+              <div className="text-sm text-muted-foreground">
                 {t('PageInfo', { current: currentPage, total: totalPages })}
               </div>
-              <div className='flex items-center gap-2'>
+              <div className="flex items-center gap-2">
                 <Button
-                  variant='outline'
-                  size='sm'
+                  variant="outline"
+                  size="sm"
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage <= 1}
                 >
-                  <ChevronLeft className='h-4 w-4' />
+                  <ChevronLeft className="h-4 w-4" />
                   {t('Previous')}
                 </Button>
                 <Button
-                  variant='outline'
-                  size='sm'
+                  variant="outline"
+                  size="sm"
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage >= totalPages}
                 >
                   {t('Next')}
-                  <ChevronRight className='h-4 w-4' />
+                  <ChevronRight className="h-4 w-4" />
                 </Button>
               </div>
             </div>

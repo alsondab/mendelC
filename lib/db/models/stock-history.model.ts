@@ -52,4 +52,3 @@ const StockHistory =
   model<IStockHistory>('StockHistory', stockHistorySchema)
 
 export default StockHistory
-

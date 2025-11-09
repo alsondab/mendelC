@@ -23,12 +23,12 @@ export default function ProductSlider({
 }) {
   const t = useTranslations('Header')
   return (
-    <div className='w-full bg-background'>
-      <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-4'>
-        <h2 className='text-lg sm:text-xl font-semibold text-foreground'>
+    <div className="w-full bg-background">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-4">
+        <h2 className="text-lg sm:text-xl font-semibold text-foreground">
           {title}
         </h2>
-        <span className='text-sm text-muted-foreground'>
+        <span className="text-sm text-muted-foreground">
           {products.length} {t('products')}
         </span>
       </div>
@@ -40,9 +40,9 @@ export default function ProductSlider({
           containScroll: 'trimSnaps',
           slidesToScroll: 1,
         }}
-        className='w-full'
+        className="w-full"
       >
-        <CarouselContent className='-ml-2 md:-ml-4'>
+        <CarouselContent className="-ml-2 md:-ml-4">
           {products.map((product) => (
             <CarouselItem
               key={product.slug}
@@ -63,9 +63,9 @@ export default function ProductSlider({
         </CarouselContent>
 
         {/* Boutons de navigation en bas */}
-        <div className='flex justify-center items-center gap-2 mt-4'>
-          <CarouselPrevious className='relative translate-y-0 left-0 right-auto h-8 w-8 sm:h-10 sm:w-10' />
-          <CarouselNext className='relative translate-y-0 right-0 left-auto h-8 w-8 sm:h-10 sm:w-10' />
+        <div className="flex justify-center items-center gap-2 mt-4">
+          <CarouselPrevious className="relative translate-y-0 left-0 right-auto h-8 w-8 sm:h-10 sm:w-10" />
+          <CarouselNext className="relative translate-y-0 right-0 left-auto h-8 w-8 sm:h-10 sm:w-10" />
         </div>
       </Carousel>
     </div>

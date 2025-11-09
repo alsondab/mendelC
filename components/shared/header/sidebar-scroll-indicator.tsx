@@ -55,10 +55,10 @@ export function SidebarScrollIndicator({
   }, [])
 
   return (
-    <div className='relative h-full flex-1 min-h-0'>
+    <div className="relative h-full flex-1 min-h-0">
       <div
         ref={scrollRef}
-        className='h-full overflow-y-auto overscroll-contain pr-1'
+        className="h-full overflow-y-auto overscroll-contain pr-1"
         style={{
           scrollbarWidth: 'auto',
           WebkitOverflowScrolling: 'touch',
@@ -69,10 +69,10 @@ export function SidebarScrollIndicator({
 
       {/* Scrollbar personnalisée visible toujours - s'affiche même si native est cachée */}
       {showScrollbar && (
-        <div className='absolute right-1 top-2 bottom-2 w-3.5 flex flex-col items-center pointer-events-none z-10'>
-          <div className='flex-1 w-3 bg-muted/50 rounded-full relative overflow-hidden border border-primary/30 shadow-sm'>
+        <div className="absolute right-1 top-2 bottom-2 w-3.5 flex flex-col items-center pointer-events-none z-10">
+          <div className="flex-1 w-3 bg-muted/50 rounded-full relative overflow-hidden border border-primary/30 shadow-sm">
             <div
-              className='absolute left-0 right-0 bg-primary/80 rounded-full transition-all duration-150 shadow-md'
+              className="absolute left-0 right-0 bg-primary/80 rounded-full transition-all duration-150 shadow-md"
               style={{
                 height: `${Math.min(100, thumbHeight)}%`,
                 top: `${scrollPercentage * ((100 - Math.min(100, thumbHeight)) / 100)}%`,

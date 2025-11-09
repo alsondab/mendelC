@@ -61,7 +61,7 @@ export function StockGauge({
   return (
     <div className={cn('space-y-1.5', className)}>
       {showLabel && (
-        <div className='flex items-center justify-between'>
+        <div className="flex items-center justify-between">
           <span className={cn('font-medium', getTextSizeClasses())}>
             {status}
           </span>
@@ -70,7 +70,7 @@ export function StockGauge({
           </span>
         </div>
       )}
-      <div className='relative w-full overflow-hidden rounded-full bg-muted'>
+      <div className="relative w-full overflow-hidden rounded-full bg-muted">
         {/* Barre de progression animée - Optimisé avec transform pour meilleure performance */}
         <motion.div
           className={cn(
@@ -87,7 +87,7 @@ export function StockGauge({
         />
         {/* Marqueur de seuil minimum */}
         <div
-          className='absolute top-0 h-full w-0.5 bg-orange-300 dark:bg-orange-700'
+          className="absolute top-0 h-full w-0.5 bg-orange-300 dark:bg-orange-700"
           style={{
             left: `${(minStockLevel / maxStockLevel) * 100}%`,
           }}
@@ -95,7 +95,7 @@ export function StockGauge({
         />
       </div>
       {size !== 'sm' && (
-        <div className='flex items-center justify-between text-[10px] text-muted-foreground'>
+        <div className="flex items-center justify-between text-[10px] text-muted-foreground">
           <span>Min: {minStockLevel}</span>
           <span>{Math.round(stockPercentage)}%</span>
           <span>Max: {maxStockLevel}</span>

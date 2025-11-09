@@ -24,16 +24,18 @@ export default async function SignUpPage(props: {
   if (session) {
     const redirectUrl = callbackUrl || '/'
     // Construire l'URL avec la locale pour préserver l'internationalisation
-    const cleanUrl = redirectUrl.startsWith('/') ? redirectUrl : `/${redirectUrl}`
+    const cleanUrl = redirectUrl.startsWith('/')
+      ? redirectUrl
+      : `/${redirectUrl}`
     const localizedUrl = `/${locale}${cleanUrl}`
     nextRedirect(localizedUrl)
   }
 
   return (
-    <div className='w-full'>
+    <div className="w-full">
       <Card>
         <CardHeader>
-          <CardTitle className='text-2xl'>{t('Sign Up')}</CardTitle>
+          <CardTitle className="text-2xl">{t('Sign Up')}</CardTitle>
         </CardHeader>
         <CardContent>
           <SignUpForm />

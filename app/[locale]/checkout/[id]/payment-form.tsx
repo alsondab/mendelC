@@ -32,18 +32,18 @@ export default function OrderDetailsForm({ order }: { order: IOrder }) {
 
   const CheckoutSummary = () => (
     <Card>
-      <CardContent className='p-4'>
+      <CardContent className="p-4">
         <div>
-          <div className='text-lg font-bold'>{t('OrderSummary')}</div>
-          <div className='space-y-2'>
-            <div className='flex justify-between'>
+          <div className="text-lg font-bold">{t('OrderSummary')}</div>
+          <div className="space-y-2">
+            <div className="flex justify-between">
               <span>{t('Items')}:</span>
               <span>
                 {' '}
                 <ProductPrice price={itemsPrice} plain />
               </span>
             </div>
-            <div className='flex justify-between'>
+            <div className="flex justify-between">
               <span>{t('ShippingHandling')}:</span>
               <span>
                 {shippingPrice === undefined ? (
@@ -55,8 +55,8 @@ export default function OrderDetailsForm({ order }: { order: IOrder }) {
                 )}
               </span>
             </div>
-            <div className='flex justify-between'></div>
-            <div className='flex justify-between  pt-1 font-bold text-lg'>
+            <div className="flex justify-between"></div>
+            <div className="flex justify-between  pt-1 font-bold text-lg">
               <span> {t('OrderTotal')}:</span>
               <span>
                 {' '}
@@ -65,7 +65,7 @@ export default function OrderDetailsForm({ order }: { order: IOrder }) {
             </div>
 
             <Button
-              className='w-full rounded-full'
+              className="w-full rounded-full"
               onClick={() => router.push(`/account/orders/${order._id}`)}
             >
               {t('ViewOrder')}
@@ -77,17 +77,17 @@ export default function OrderDetailsForm({ order }: { order: IOrder }) {
   )
 
   return (
-    <main className='max-w-6xl mx-auto px-2 sm:px-4'>
-      <div className='grid lg:grid-cols-4 gap-4 sm:gap-6'>
-        <div className='lg:col-span-3'>
+    <main className="max-w-6xl mx-auto px-2 sm:px-4">
+      <div className="grid lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="lg:col-span-3">
           {/* Shipping Address */}
           <div>
-            <div className='grid grid-cols-1 sm:grid-cols-3 my-3 pb-3 gap-2'>
-              <div className='text-base sm:text-lg font-bold'>
+            <div className="grid grid-cols-1 sm:grid-cols-3 my-3 pb-3 gap-2">
+              <div className="text-base sm:text-lg font-bold">
                 <span>{t('ShippingAddress')}</span>
               </div>
-              <div className='sm:col-span-2'>
-                <p className='text-sm sm:text-base'>
+              <div className="sm:col-span-2">
+                <p className="text-sm sm:text-base">
                   {shippingAddress.fullName} <br />
                   {shippingAddress.street} <br />
                   {`${shippingAddress.city}, ${shippingAddress.province}, ${shippingAddress.postalCode}, ${shippingAddress.country}`}
@@ -97,42 +97,42 @@ export default function OrderDetailsForm({ order }: { order: IOrder }) {
           </div>
 
           {/* payment method */}
-          <div className='border-y'>
-            <div className='grid grid-cols-1 sm:grid-cols-3 my-3 pb-3 gap-2'>
-              <div className='text-base sm:text-lg font-bold'>
+          <div className="border-y">
+            <div className="grid grid-cols-1 sm:grid-cols-3 my-3 pb-3 gap-2">
+              <div className="text-base sm:text-lg font-bold">
                 <span>{t('PaymentMethod')}</span>
               </div>
-              <div className='sm:col-span-2'>
-                <p className='text-sm sm:text-base'>{t(paymentMethod)}</p>
+              <div className="sm:col-span-2">
+                <p className="text-sm sm:text-base">{t(paymentMethod)}</p>
               </div>
             </div>
           </div>
 
-          <div className='grid grid-cols-1 sm:grid-cols-3 my-3 pb-3 gap-2'>
-            <div className='flex text-base sm:text-lg font-bold'>
+          <div className="grid grid-cols-1 sm:grid-cols-3 my-3 pb-3 gap-2">
+            <div className="flex text-base sm:text-lg font-bold">
               <span>{t('ItemsAndShipping')}</span>
             </div>
-            <div className='sm:col-span-2'>
-              <p className='text-sm sm:text-base'>
+            <div className="sm:col-span-2">
+              <p className="text-sm sm:text-base">
                 {t('DeliveryDate')}:
                 {formatDateTime(expectedDeliveryDate).dateOnly}
               </p>
-              <ul className='text-sm sm:text-base'>
+              <ul className="text-sm sm:text-base">
                 {items.map((item) => (
-                  <li key={item.slug} className='truncate'>
+                  <li key={item.slug} className="truncate">
                     {item.name} x {item.quantity} = {item.price}
                   </li>
                 ))}
               </ul>
             </div>
           </div>
-          <div className='block lg:hidden'>
+          <div className="block lg:hidden">
             <CheckoutSummary />
           </div>
 
           <CheckoutFooter />
         </div>
-        <div className='hidden lg:block'>
+        <div className="hidden lg:block">
           <CheckoutSummary />
         </div>
       </div>

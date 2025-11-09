@@ -39,7 +39,9 @@ export default function DeleteAccountDialog({
     if (!confirmCheck || confirmText.toUpperCase() !== 'SUPPRIMER') {
       toast({
         title: t('Error'),
-        description: t('Please confirm by checking the box and typing SUPPRIMER'),
+        description: t(
+          'Please confirm by checking the box and typing SUPPRIMER'
+        ),
         variant: 'destructive',
       })
       return
@@ -67,54 +69,58 @@ export default function DeleteAccountDialog({
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className='max-w-md'>
+      <AlertDialogContent className="max-w-md">
         <AlertDialogHeader>
-          <AlertDialogTitle className='text-destructive'>
+          <AlertDialogTitle className="text-destructive">
             {t('Delete Account')}
           </AlertDialogTitle>
-          <AlertDialogDescription className='space-y-4'>
+          <AlertDialogDescription className="space-y-4">
             <p>{t('Delete Account Warning')}</p>
-            <p className='text-sm'>{t('Delete Account RGPD Info')}</p>
+            <p className="text-sm">{t('Delete Account RGPD Info')}</p>
           </AlertDialogDescription>
         </AlertDialogHeader>
 
-        <div className='space-y-4 py-4'>
-          <div className='flex items-start space-x-3'>
+        <div className="space-y-4 py-4">
+          <div className="flex items-start space-x-3">
             <Checkbox
-              id='confirm-delete'
+              id="confirm-delete"
               checked={confirmCheck}
-              onCheckedChange={(checked) =>
-                setConfirmCheck(checked === true)
-              }
+              onCheckedChange={(checked) => setConfirmCheck(checked === true)}
             />
             <Label
-              htmlFor='confirm-delete'
-              className='text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+              htmlFor="confirm-delete"
+              className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
               {t('I understand this action cannot be undone')}
             </Label>
           </div>
 
-          <div className='space-y-2'>
-            <Label htmlFor='confirm-text'>
+          <div className="space-y-2">
+            <Label htmlFor="confirm-text">
               {t('Type SUPPRIMER to confirm')}
             </Label>
             <Input
-              id='confirm-text'
+              id="confirm-text"
               value={confirmText}
               onChange={(e) => setConfirmText(e.target.value)}
-              placeholder='SUPPRIMER'
+              placeholder="SUPPRIMER"
               disabled={isPending}
             />
           </div>
         </div>
 
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isPending}>{t('Cancel')}</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>
+            {t('Cancel')}
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}
-            disabled={isPending || !confirmCheck || confirmText.toUpperCase() !== 'SUPPRIMER'}
-            className='bg-destructive text-destructive-foreground hover:bg-destructive/90'
+            disabled={
+              isPending ||
+              !confirmCheck ||
+              confirmText.toUpperCase() !== 'SUPPRIMER'
+            }
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
             {isPending ? t('Deleting') : t('Delete Account')}
           </AlertDialogAction>
@@ -123,4 +129,3 @@ export default function DeleteAccountDialog({
     </AlertDialog>
   )
 }
-

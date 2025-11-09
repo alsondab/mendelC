@@ -23,7 +23,8 @@ const main = async () => {
   try {
     const { users, products, reviews, settings, categories } = data
     // Utiliser MongoDB local si disponible, sinon MongoDB Atlas
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/MendelCorpDB'
+    const mongoUri =
+      process.env.MONGODB_URI || 'mongodb://localhost:27017/MendelCorpDB'
     console.log('🔄 Using MongoDB URI:', mongoUri)
     await connectToDatabase(mongoUri)
 

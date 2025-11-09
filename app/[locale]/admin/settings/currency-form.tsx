@@ -54,10 +54,10 @@ export default function CurrencyForm({
       <CardHeader>
         <CardTitle>Devises</CardTitle>
       </CardHeader>
-      <CardContent className='space-y-4'>
-        <div className='space-y-4'>
+      <CardContent className="space-y-4">
+        <div className="space-y-4">
           {fields.map((field, index) => (
-            <div key={field.id} className='flex   gap-2'>
+            <div key={field.id} className="flex   gap-2">
               <FormField
                 control={form.control}
                 name={`availableCurrencies.${index}.name`}
@@ -66,7 +66,7 @@ export default function CurrencyForm({
                     {' '}
                     {index == 0 && <FormLabel>Nom</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='Name' />
+                      <Input {...field} placeholder="Name" />
                     </FormControl>
                     <FormMessage>
                       {errors.availableCurrencies?.[index]?.name?.message}
@@ -82,7 +82,7 @@ export default function CurrencyForm({
                   <FormItem>
                     {index == 0 && <FormLabel>Code</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='Code' />
+                      <Input {...field} placeholder="Code" />
                     </FormControl>
                     <FormMessage>
                       {errors.availableCurrencies?.[index]?.code?.message}
@@ -97,7 +97,7 @@ export default function CurrencyForm({
                   <FormItem>
                     {index == 0 && <FormLabel>Symbole</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='Symbol' />
+                      <Input {...field} placeholder="Symbol" />
                     </FormControl>
                     <FormMessage>
                       {errors.availableCurrencies?.[index]?.symbol?.message}
@@ -113,7 +113,7 @@ export default function CurrencyForm({
                   <FormItem>
                     {index == 0 && <FormLabel>Taux de conversion</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='Convert Rate' />
+                      <Input {...field} placeholder="Convert Rate" />
                     </FormControl>
                     <FormMessage>
                       {
@@ -127,39 +127,39 @@ export default function CurrencyForm({
               <div>
                 {index == 0 && <div>Action</div>}
                 <Button
-                  type='button'
+                  type="button"
                   disabled={fields.length === 1}
-                  variant='outline'
+                  variant="outline"
                   className={index == 0 ? 'mt-2' : ''}
                   onClick={() => {
                     remove(index)
                   }}
                 >
-                  <TrashIcon className='w-4 h-4' />
+                  <TrashIcon className="w-4 h-4" />
                 </Button>
               </div>
             </div>
           ))}
 
           <Button
-            type='button'
+            type="button"
             variant={'outline'}
             onClick={() =>
               append({ name: '', code: '', symbol: '', convertRate: 1 })
             }
             disabled
-            className='opacity-50 cursor-not-allowed'
+            className="opacity-50 cursor-not-allowed"
           >
             Ajouter une devise
           </Button>
-          <p className='text-sm text-muted-foreground'>
+          <p className="text-sm text-muted-foreground">
             À implémenter dans une version ultérieure
           </p>
         </div>
 
         <FormField
           control={control}
-          name='defaultCurrency'
+          name="defaultCurrency"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Devise par défaut</FormLabel>
@@ -169,7 +169,7 @@ export default function CurrencyForm({
                   onValueChange={(value) => field.onChange(value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder='Select a currency' />
+                    <SelectValue placeholder="Select a currency" />
                   </SelectTrigger>
                   <SelectContent>
                     {availableCurrencies

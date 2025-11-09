@@ -59,21 +59,21 @@ export const ProfileForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className='space-y-4 xs:space-y-6'
+        className="space-y-4 xs:space-y-6"
       >
         <FormField
           control={form.control}
-          name='name'
+          name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className='text-sm xs:text-base font-semibold'>
+              <FormLabel className="text-sm xs:text-base font-semibold">
                 {t('New Name')}
               </FormLabel>
               <FormControl>
                 <Input
                   placeholder={t('Enter your new name')}
                   {...field}
-                  className='text-sm xs:text-base'
+                  className="text-sm xs:text-base"
                 />
               </FormControl>
               <FormMessage />
@@ -81,21 +81,19 @@ export const ProfileForm = () => {
           )}
         />
 
-        <div className='flex flex-col xs:flex-row gap-3 xs:gap-4 pt-2'>
+        <div className="flex flex-col xs:flex-row gap-3 xs:gap-4 pt-2">
           <Button
-            type='submit'
+            type="submit"
             disabled={form.formState.isSubmitting}
-            className='w-full xs:w-auto rounded-full text-sm xs:text-base font-medium'
+            className="w-full xs:w-auto rounded-full text-sm xs:text-base font-medium"
           >
-            {form.formState.isSubmitting
-              ? t('Saving')
-              : t('Save Changes')}
+            {form.formState.isSubmitting ? t('Saving') : t('Save Changes')}
           </Button>
           <Button
-            type='button'
-            variant='outline'
+            type="button"
+            variant="outline"
             onClick={() => window.history.back()}
-            className='w-full xs:w-auto rounded-full text-sm xs:text-base'
+            className="w-full xs:w-auto rounded-full text-sm xs:text-base"
           >
             {t('Cancel')}
           </Button>

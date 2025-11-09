@@ -41,43 +41,43 @@ const SettingNav = () => {
 
   return (
     <div>
-      <h1 className='font-bold text-lg sm:text-xl mb-4'>Paramètres</h1>
-      <nav className='flex flex-row lg:flex-col gap-2 lg:fixed mt-4 flex-wrap overflow-x-auto pb-2'>
+      <h1 className="font-bold text-lg sm:text-xl mb-4">Paramètres</h1>
+      <nav className="flex flex-row lg:flex-col gap-2 lg:fixed mt-4 flex-wrap overflow-x-auto pb-2">
         {[
           {
             name: 'Informations du site',
             hash: 'setting-site-info',
-            icon: <Info className='h-4 w-4' />,
+            icon: <Info className="h-4 w-4" />,
           },
           {
             name: 'Paramètres généraux',
             hash: 'setting-common',
-            icon: <SettingsIcon className='h-4 w-4' />,
+            icon: <SettingsIcon className="h-4 w-4" />,
           },
           {
             name: 'Carrousels',
             hash: 'setting-carousels',
-            icon: <ImageIcon className='h-4 w-4' />,
+            icon: <ImageIcon className="h-4 w-4" />,
           },
           {
             name: 'Langues',
             hash: 'setting-languages',
-            icon: <Languages className='h-4 w-4' />,
+            icon: <Languages className="h-4 w-4" />,
           },
           {
             name: 'Devises',
             hash: 'setting-currencies',
-            icon: <Currency className='h-4 w-4' />,
+            icon: <Currency className="h-4 w-4" />,
           },
           {
             name: 'Moyens de paiement',
             hash: 'setting-payment-methods',
-            icon: <CreditCard className='h-4 w-4' />,
+            icon: <CreditCard className="h-4 w-4" />,
           },
           {
             name: 'Dates de livraison',
             hash: 'setting-delivery-dates',
-            icon: <Package className='h-4 w-4' />,
+            icon: <Package className="h-4 w-4" />,
           },
         ].map((item) => (
           <Button
@@ -89,8 +89,8 @@ const SettingNav = () => {
             }`}
           >
             {item.icon}
-            <span className='hidden sm:inline ml-2'>{item.name}</span>
-            <span className='sm:hidden ml-1'>{item.name.split(' ')[0]}</span>
+            <span className="hidden sm:inline ml-2">{item.name}</span>
+            <span className="sm:hidden ml-1">{item.name.split(' ')[0]}</span>
           </Button>
         ))}
       </nav>

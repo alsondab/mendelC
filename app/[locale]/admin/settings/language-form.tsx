@@ -54,10 +54,10 @@ export default function LanguageForm({
       <CardHeader>
         <CardTitle>Langues</CardTitle>
       </CardHeader>
-      <CardContent className='space-y-4'>
-        <div className='space-y-4'>
+      <CardContent className="space-y-4">
+        <div className="space-y-4">
           {fields.map((field, index) => (
-            <div key={field.id} className='flex   gap-2'>
+            <div key={field.id} className="flex   gap-2">
               <FormField
                 control={form.control}
                 name={`availableLanguages.${index}.name`}
@@ -65,7 +65,7 @@ export default function LanguageForm({
                   <FormItem>
                     {index == 0 && <FormLabel>Nom</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='Nom' />
+                      <Input {...field} placeholder="Nom" />
                     </FormControl>
                     <FormMessage>
                       {errors.availableLanguages?.[index]?.name?.message}
@@ -81,7 +81,7 @@ export default function LanguageForm({
                   <FormItem>
                     {index == 0 && <FormLabel>Code</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='Code' />
+                      <Input {...field} placeholder="Code" />
                     </FormControl>
                     <FormMessage>
                       {errors.availableLanguages?.[index]?.code?.message}
@@ -92,37 +92,37 @@ export default function LanguageForm({
               <div>
                 {index == 0 && <div>Action</div>}
                 <Button
-                  type='button'
+                  type="button"
                   disabled={fields.length === 1}
-                  variant='outline'
+                  variant="outline"
                   className={index == 0 ? 'mt-2' : ''}
                   onClick={() => {
                     remove(index)
                   }}
                 >
-                  <TrashIcon className='w-4 h-4' />
+                  <TrashIcon className="w-4 h-4" />
                 </Button>
               </div>
             </div>
           ))}
 
           <Button
-            type='button'
+            type="button"
             variant={'outline'}
             onClick={() => append({ name: '', code: '' })}
             disabled
-            className='opacity-50 cursor-not-allowed'
+            className="opacity-50 cursor-not-allowed"
           >
             Ajouter une langue
           </Button>
-          <p className='text-sm text-muted-foreground'>
+          <p className="text-sm text-muted-foreground">
             À implémenter dans une version ultérieure
           </p>
         </div>
 
         <FormField
           control={control}
-          name='defaultLanguage'
+          name="defaultLanguage"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Langue par défaut</FormLabel>
@@ -132,7 +132,7 @@ export default function LanguageForm({
                   onValueChange={(value) => field.onChange(value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder='Select a language' />
+                    <SelectValue placeholder="Select a language" />
                   </SelectTrigger>
                   <SelectContent>
                     {availableLanguages

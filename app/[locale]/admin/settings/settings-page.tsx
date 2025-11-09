@@ -19,14 +19,14 @@ const SettingsPage = () => {
 
   if (!setting) {
     return (
-      <div className='p-2 sm:p-4'>
-        <div className='grid grid-cols-1 lg:grid-cols-5 max-w-6xl mx-auto gap-4'>
-          <div className='lg:col-span-1'>
-            <Skeleton className='h-64 w-full' />
+      <div className="p-2 sm:p-4">
+        <div className="grid grid-cols-1 lg:grid-cols-5 max-w-6xl mx-auto gap-4">
+          <div className="lg:col-span-1">
+            <Skeleton className="h-64 w-full" />
           </div>
-          <main className='lg:col-span-4'>
-            <div className='my-4 sm:my-8'>
-              <Skeleton className='h-96 w-full' />
+          <main className="lg:col-span-4">
+            <div className="my-4 sm:my-8">
+              <Skeleton className="h-96 w-full" />
             </div>
           </main>
         </div>
@@ -35,11 +35,11 @@ const SettingsPage = () => {
   }
 
   return (
-    <div className='p-2 sm:p-4'>
-      <div className='grid grid-cols-1 lg:grid-cols-5 max-w-6xl mx-auto gap-4'>
+    <div className="p-2 sm:p-4">
+      <div className="grid grid-cols-1 lg:grid-cols-5 max-w-6xl mx-auto gap-4">
         <SettingNav />
-        <main className='lg:col-span-4'>
-          <div className='my-4 sm:my-8'>
+        <main className="lg:col-span-4">
+          <div className="my-4 sm:my-8">
             <SettingForm setting={setting} />
           </div>
         </main>

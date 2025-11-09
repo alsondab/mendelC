@@ -26,9 +26,9 @@ export default function CartAddItem({ itemId }: { itemId: string }) {
   if (!item) return notFound()
   return (
     <div>
-      <div className='grid grid-cols-1 md:grid-cols-2 md:gap-4'>
-        <Card className='w-full rounded-none'>
-          <CardContent className='flex h-full items-center justify-center  gap-3 py-4'>
+      <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+        <Card className="w-full rounded-none">
+          <CardContent className="flex h-full items-center justify-center  gap-3 py-4">
             <Link href={`/product/${item.slug}`}>
               {item.image && item.image.trim() !== '' ? (
                 <Image
@@ -42,47 +42,47 @@ export default function CartAddItem({ itemId }: { itemId: string }) {
                   }}
                 />
               ) : (
-                <div className='w-20 h-20 bg-muted flex items-center justify-center rounded'>
-                  <span className='text-muted-foreground text-xs'>
+                <div className="w-20 h-20 bg-muted flex items-center justify-center rounded">
+                  <span className="text-muted-foreground text-xs">
                     No image
                   </span>
                 </div>
               )}
             </Link>
             <div>
-              <h3 className='text-xl font-bold flex gap-2 my-2'>
-                <CheckCircle2Icon className='h-6 w-6 text-green-700' />
+              <h3 className="text-xl font-bold flex gap-2 my-2">
+                <CheckCircle2Icon className="h-6 w-6 text-green-700" />
                 {t('Cart.Added to cart')}
               </h3>
-              <p className='text-sm'>
-                <span className='font-bold'> {t('Cart.Color')}: </span>{' '}
+              <p className="text-sm">
+                <span className="font-bold"> {t('Cart.Color')}: </span>{' '}
                 {item.color ?? '-'}
               </p>
-              <p className='text-sm'>
-                <span className='font-bold'> {t('Cart.Size')}: </span>{' '}
+              <p className="text-sm">
+                <span className="font-bold"> {t('Cart.Size')}: </span>{' '}
                 {item.size ?? '-'}
               </p>
             </div>
           </CardContent>
         </Card>
-        <Card className='w-full rounded-none'>
-          <CardContent className='p-4 h-full'>
-            <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
-              <div className='flex justify-center items-center'></div>
-              <div className='lg:border-l lg:border-muted lg:pl-3 flex flex-col items-center gap-3  '>
-                <div className='flex gap-3'>
-                  <span className='text-lg font-bold'>Cart Subtotal:</span>
-                  <ProductPrice className='text-2xl' price={itemsPrice} />
+        <Card className="w-full rounded-none">
+          <CardContent className="p-4 h-full">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="flex justify-center items-center"></div>
+              <div className="lg:border-l lg:border-muted lg:pl-3 flex flex-col items-center gap-3  ">
+                <div className="flex gap-3">
+                  <span className="text-lg font-bold">Cart Subtotal:</span>
+                  <ProductPrice className="text-2xl" price={itemsPrice} />
                 </div>
                 <Link
-                  href='/checkout'
+                  href="/checkout"
                   className={cn(buttonVariants(), 'rounded-full w-full')}
                 >
                   Proceed to checkout (
                   {items.reduce((a, c) => a + c.quantity, 0)} items)
                 </Link>
                 <Link
-                  href='/cart'
+                  href="/cart"
                   className={cn(
                     buttonVariants({ variant: 'outline' }),
                     'rounded-full w-full'

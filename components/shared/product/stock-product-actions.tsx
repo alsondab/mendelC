@@ -18,9 +18,9 @@ export function StockProductActions({
   return (
     <>
       <Button
-        size='sm'
-        variant='outline'
-        className='text-xs sm:text-sm'
+        size="sm"
+        variant="outline"
+        className="text-xs sm:text-sm"
         onClick={() => setEditDialogOpen(true)}
       >
         Modifier
@@ -34,4 +34,3 @@ export function StockProductActions({
     </>
   )
 }
-

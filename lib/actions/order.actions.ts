@@ -227,7 +227,7 @@ const updateProductStock = async (orderId: string) => {
           quantity: change.quantity.toString(),
         },
       }).catch((error) => {
-        console.error('Erreur lors de l\'enregistrement de l\'historique:', error)
+        console.error("Erreur lors de l'enregistrement de l'historique:", error)
       })
     }
 

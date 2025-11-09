@@ -23,9 +23,9 @@ export function HomeCarousel({ items }: { items: ICarousel[] }) {
 
   return (
     <Carousel
-      dir='ltr'
+      dir="ltr"
       plugins={[plugin.current]}
-      className='w-full mx-auto '
+      className="w-full mx-auto "
       onMouseEnter={plugin.current.stop}
       onMouseLeave={plugin.current.reset}
     >
@@ -33,18 +33,18 @@ export function HomeCarousel({ items }: { items: ICarousel[] }) {
         {items.map((item, index) => (
           <CarouselItem key={`${item.title}-${index}`}>
             <Link href={item.url}>
-              <div className='flex aspect-[16/6] items-center justify-center p-6 relative -m-1'>
+              <div className="flex aspect-[16/6] items-center justify-center p-6 relative -m-1">
                 {item.image && item.image.trim() !== '' ? (
                   <Image
                     src={item.image}
                     alt={item.title}
                     fill
-                    className='object-cover'
+                    className="object-cover"
                     priority
                   />
                 ) : (
-                  <div className='w-full h-full bg-muted flex items-center justify-center'>
-                    <span className='text-muted-foreground'>
+                  <div className="w-full h-full bg-muted flex items-center justify-center">
+                    <span className="text-muted-foreground">
                       {t('No image')}
                     </span>
                   </div>

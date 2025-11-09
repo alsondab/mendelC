@@ -32,28 +32,28 @@ export default function CarouselForm({
       <CardHeader>
         <CardTitle>Carrousels</CardTitle>
       </CardHeader>
-      <CardContent className='space-y-4'>
-        <div className='space-y-6'>
+      <CardContent className="space-y-4">
+        <div className="space-y-6">
           {fields.map((field, index) => (
             <div
               key={field.id}
-              className='p-4 border rounded-lg space-y-4 bg-card'
+              className="p-4 border rounded-lg space-y-4 bg-card"
             >
-              <div className='flex items-center justify-between mb-4'>
-                <h3 className='text-sm font-semibold'>Carrousel {index + 1}</h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-semibold">Carrousel {index + 1}</h3>
                 <Button
-                  type='button'
+                  type="button"
                   disabled={fields.length === 1}
-                  variant='outline'
-                  size='sm'
+                  variant="outline"
+                  size="sm"
                   onClick={() => remove(index)}
                 >
-                  <TrashIcon className='w-4 h-4 mr-2' />
+                  <TrashIcon className="w-4 h-4 mr-2" />
                   Supprimer
                 </Button>
               </div>
 
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name={`carousels.${index}.title`}
@@ -61,7 +61,7 @@ export default function CarouselForm({
                     <FormItem>
                       <FormLabel>Titre</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder='Titre du carrousel' />
+                        <Input {...field} placeholder="Titre du carrousel" />
                       </FormControl>
                       <FormMessage>
                         {errors.carousels?.[index]?.title?.message}
@@ -77,7 +77,7 @@ export default function CarouselForm({
                     <FormItem>
                       <FormLabel>URL de destination</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder='https://...' />
+                        <Input {...field} placeholder="https://..." />
                       </FormControl>
                       <FormMessage>
                         {errors.carousels?.[index]?.url?.message}
@@ -91,16 +91,16 @@ export default function CarouselForm({
                   control={form.control}
                   name={`carousels.${index}.image`}
                   render={({ field }) => (
-                    <FormItem className='md:col-span-2'>
+                    <FormItem className="md:col-span-2">
                       <FormLabel>Image du carrousel</FormLabel>
                       <FormControl>
                         <ImageUpload
                           value={field.value}
                           onChange={field.onChange}
-                          endpoint='carouselImageUploader'
-                          maxSize='8MB'
-                          aspectRatio='carousel'
-                          label='Image bannière (ratio 16:6 recommandé)'
+                          endpoint="carouselImageUploader"
+                          maxSize="8MB"
+                          aspectRatio="carousel"
+                          label="Image bannière (ratio 16:6 recommandé)"
                         />
                       </FormControl>
                       <FormMessage />
@@ -112,7 +112,7 @@ export default function CarouselForm({
           ))}
 
           <Button
-            type='button'
+            type="button"
             variant={'outline'}
             onClick={() =>
               append({ url: '', title: '', image: '', buttonCaption: '' })

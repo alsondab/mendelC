@@ -30,7 +30,6 @@ const main = async () => {
     await Setting.deleteMany()
     const createdSetting = await Setting.insertMany(settings)
 
-
     await Category.deleteMany()
 
     // Séparer les catégories principales et les sous-catégories

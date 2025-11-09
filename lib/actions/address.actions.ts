@@ -101,9 +101,7 @@ export async function createAddress(data: IAddressInput) {
 }
 
 // UPDATE - Mettre à jour une adresse
-export async function updateAddress(
-  data: z.infer<typeof AddressUpdateSchema>
-) {
+export async function updateAddress(data: z.infer<typeof AddressUpdateSchema>) {
   try {
     await connectToDatabase()
     const session = await auth()
@@ -174,9 +172,7 @@ export async function deleteAddress(addressId: string) {
     })
 
     if (addressCount <= 1) {
-      throw new Error(
-        'Vous ne pouvez pas supprimer votre dernière adresse'
-      )
+      throw new Error('Vous ne pouvez pas supprimer votre dernière adresse')
     }
 
     // Supprimer l'adresse
@@ -240,4 +236,3 @@ export async function setDefaultAddress(addressId: string) {
     return { success: false, message: formatError(error) }
   }
 }
-

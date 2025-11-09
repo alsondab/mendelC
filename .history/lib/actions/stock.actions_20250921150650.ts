@@ -14,7 +14,7 @@ export async function updateProductStock({
   productId,
   quantity,
   operation = 'set', // 'set', 'add', 'subtract'
-  reason = 'Manual adjustment'
+  reason = 'Manual adjustment',
 }: {
   productId: string
   quantity: number
@@ -23,14 +23,14 @@ export async function updateProductStock({
 }) {
   try {
     await connectToDatabase()
-    
+
     const product = await Product.findById(productId)
     if (!product) {
       throw new Error('Produit non trouvé')
     }
 
     let newQuantity = product.countInStock
-    
+
     switch (operation) {
       case 'set':
         newQuantity = quantity
@@ -45,12 +45,12 @@ export async function updateProductStock({
 
     product.countInStock = newQuantity
     product.updateStockStatus() // Met à jour automatiquement le statut
-    
+
     await product.save()
-    
+
     revalidatePath('/admin/products')
     revalidatePath(`/product/${product.slug}`)
-    
+
     return {
       success: true,
       message: `Stock mis à jour: ${newQuantity} unités`,
@@ -60,8 +60,8 @@ export async function updateProductStock({
         countInStock: product.countInStock,
         stockStatus: product.stockStatus,
         isLowStock: product.isLowStock,
-        isOutOfStock: product.isOutOfStock
-      }
+        isOutOfStock: product.isOutOfStock,
+      },
     }
   } catch (error) {
     return { success: false, message: formatError(error) }
@@ -74,23 +74,25 @@ export async function updateProductStock({
 export async function getLowStockProducts() {
   try {
     await connectToDatabase()
-    
+
     const products = await Product.find({
       isLowStock: true,
-      isPublished: true
-    }).select('name slug countInStock minStockLevel stockStatus lastStockUpdate')
-    
+      isPublished: true,
+    }).select(
+      'name slug countInStock minStockLevel stockStatus lastStockUpdate'
+    )
+
     return {
       success: true,
-      products: products.map(product => ({
+      products: products.map((product) => ({
         id: product._id,
         name: product.name,
         slug: product.slug,
         countInStock: product.countInStock,
         minStockLevel: product.minStockLevel,
         stockStatus: product.stockStatus,
-        lastStockUpdate: product.lastStockUpdate
-      }))
+        lastStockUpdate: product.lastStockUpdate,
+      })),
     }
   } catch (error) {
     return { success: false, message: formatError(error) }
@@ -103,22 +105,22 @@ export async function getLowStockProducts() {
 export async function getOutOfStockProducts() {
   try {
     await connectToDatabase()
-    
+
     const products = await Product.find({
       isOutOfStock: true,
-      isPublished: true
+      isPublished: true,
     }).select('name slug countInStock stockStatus lastStockUpdate')
-    
+
     return {
       success: true,
-      products: products.map(product => ({
+      products: products.map((product) => ({
         id: product._id,
         name: product.name,
         slug: product.slug,
         countInStock: product.countInStock,
         stockStatus: product.stockStatus,
-        lastStockUpdate: product.lastStockUpdate
-      }))
+        lastStockUpdate: product.lastStockUpdate,
+      })),
     }
   } catch (error) {
     return { success: false, message: formatError(error) }
@@ -131,7 +133,7 @@ export async function getOutOfStockProducts() {
 export async function updateStockThresholds({
   productId,
   minStockLevel,
-  maxStockLevel
+  maxStockLevel,
 }: {
   productId: string
   minStockLevel: number
@@ -139,29 +141,29 @@ export async function updateStockThresholds({
 }) {
   try {
     await connectToDatabase()
-    
+
     if (minStockLevel < 0) {
       throw new Error('Le seuil minimum ne peut pas être négatif')
     }
-    
+
     if (maxStockLevel <= minStockLevel) {
       throw new Error('Le seuil maximum doit être supérieur au seuil minimum')
     }
-    
+
     const product = await Product.findById(productId)
     if (!product) {
       throw new Error('Produit non trouvé')
     }
-    
+
     product.minStockLevel = minStockLevel
     product.maxStockLevel = maxStockLevel
     product.updateStockStatus() // Recalcule le statut avec les nouveaux seuils
-    
+
     await product.save()
-    
+
     revalidatePath('/admin/products')
     revalidatePath(`/product/${product.slug}`)
-    
+
     return {
       success: true,
       message: 'Seuils de stock mis à jour avec succès',
@@ -170,8 +172,8 @@ export async function updateStockThresholds({
         name: product.name,
         minStockLevel: product.minStockLevel,
         maxStockLevel: product.maxStockLevel,
-        stockStatus: product.stockStatus
-      }
+        stockStatus: product.stockStatus,
+      },
     }
   } catch (error) {
     return { success: false, message: formatError(error) }
@@ -184,27 +186,27 @@ export async function updateStockThresholds({
 export async function getStockStatistics() {
   try {
     await connectToDatabase()
-    
+
     const totalProducts = await Product.countDocuments({ isPublished: true })
-    const inStockProducts = await Product.countDocuments({ 
+    const inStockProducts = await Product.countDocuments({
       stockStatus: 'in_stock',
-      isPublished: true 
+      isPublished: true,
     })
-    const lowStockProducts = await Product.countDocuments({ 
+    const lowStockProducts = await Product.countDocuments({
       stockStatus: 'low_stock',
-      isPublished: true 
+      isPublished: true,
     })
-    const outOfStockProducts = await Product.countDocuments({ 
+    const outOfStockProducts = await Product.countDocuments({
       stockStatus: 'out_of_stock',
-      isPublished: true 
+      isPublished: true,
     })
-    
+
     // Calculer la valeur totale du stock
     const products = await Product.find({ isPublished: true })
     const totalStockValue = products.reduce((sum, product) => {
-      return sum + (product.countInStock * product.price)
+      return sum + product.countInStock * product.price
     }, 0)
-    
+
     return {
       success: true,
       statistics: {
@@ -212,8 +214,8 @@ export async function getStockStatistics() {
         inStockProducts,
         lowStockProducts,
         outOfStockProducts,
-        totalStockValue: Math.round(totalStockValue * 100) / 100
-      }
+        totalStockValue: Math.round(totalStockValue * 100) / 100,
+      },
     }
   } catch (error) {
     return { success: false, message: formatError(error) }
@@ -226,26 +228,26 @@ export async function getStockStatistics() {
 export async function updateAllStockStatus() {
   try {
     await connectToDatabase()
-    
+
     const products = await Product.find({ isPublished: true })
     let updatedCount = 0
-    
+
     for (const product of products) {
       const oldStatus = product.stockStatus
       product.updateStockStatus()
-      
+
       if (oldStatus !== product.stockStatus) {
         await product.save()
         updatedCount++
       }
     }
-    
+
     revalidatePath('/admin/products')
-    
+
     return {
       success: true,
       message: `${updatedCount} produits mis à jour`,
-      updatedCount
+      updatedCount,
     }
   } catch (error) {
     return { success: false, message: formatError(error) }

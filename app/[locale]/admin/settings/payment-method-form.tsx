@@ -54,10 +54,10 @@ export default function PaymentMethodForm({
       <CardHeader>
         <CardTitle>Méthodes de paiement</CardTitle>
       </CardHeader>
-      <CardContent className='space-y-4'>
-        <div className='space-y-4'>
+      <CardContent className="space-y-4">
+        <div className="space-y-4">
           {fields.map((field, index) => (
-            <div key={field.id} className='flex   gap-2'>
+            <div key={field.id} className="flex   gap-2">
               <FormField
                 control={form.control}
                 name={`availablePaymentMethods.${index}.name`}
@@ -65,7 +65,7 @@ export default function PaymentMethodForm({
                   <FormItem>
                     {index == 0 && <FormLabel>Nom</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='Nom' />
+                      <Input {...field} placeholder="Nom" />
                     </FormControl>
                     <FormMessage>
                       {errors.availablePaymentMethods?.[index]?.name?.message}
@@ -80,7 +80,7 @@ export default function PaymentMethodForm({
                   <FormItem>
                     {index == 0 && <FormLabel>Commission</FormLabel>}
                     <FormControl>
-                      <Input {...field} placeholder='Commission' />
+                      <Input {...field} placeholder="Commission" />
                     </FormControl>
                     <FormMessage>
                       {
@@ -94,37 +94,37 @@ export default function PaymentMethodForm({
               <div>
                 {index == 0 && <div>Action</div>}
                 <Button
-                  type='button'
+                  type="button"
                   disabled={fields.length === 1}
-                  variant='outline'
+                  variant="outline"
                   className={index == 0 ? 'mt-2' : ''}
                   onClick={() => {
                     remove(index)
                   }}
                 >
-                  <TrashIcon className='w-4 h-4' />
+                  <TrashIcon className="w-4 h-4" />
                 </Button>
               </div>
             </div>
           ))}
 
           <Button
-            type='button'
+            type="button"
             variant={'outline'}
             onClick={() => append({ name: '', commission: 0 })}
             disabled
-            className='opacity-50 cursor-not-allowed'
+            className="opacity-50 cursor-not-allowed"
           >
             Ajouter une méthode de paiement
           </Button>
-          <p className='text-sm text-muted-foreground'>
+          <p className="text-sm text-muted-foreground">
             À implémenter dans une version ultérieure
           </p>
         </div>
 
         <FormField
           control={control}
-          name='defaultPaymentMethod'
+          name="defaultPaymentMethod"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Méthode de paiement par défaut</FormLabel>
@@ -134,7 +134,7 @@ export default function PaymentMethodForm({
                   onValueChange={(value) => field.onChange(value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder='Sélectionner une méthode de paiement' />
+                    <SelectValue placeholder="Sélectionner une méthode de paiement" />
                   </SelectTrigger>
                   <SelectContent>
                     {availablePaymentMethods

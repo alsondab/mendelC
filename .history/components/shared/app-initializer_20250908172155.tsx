@@ -18,10 +18,13 @@ export default function AppInitializer({
   useEffect(() => {
     setRendered(true)
   }, [setting])
-  
+
   // Synchroniser les favoris locaux avec la base de données quand l'utilisateur se connecte
   useEffect(() => {
-    if (session?.user?.id && localWishlist.some(item => item._id.startsWith('local_'))) {
+    if (
+      session?.user?.id &&
+      localWishlist.some((item) => item._id.startsWith('local_'))
+    ) {
       syncWithDatabase()
     }
   }, [session?.user?.id, localWishlist, syncWithDatabase])

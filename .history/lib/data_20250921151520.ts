@@ -433,7 +433,17 @@ const categories: ICategoryInput[] = [
 ]
 
 // Helper function to add stock management fields
-const addStockFields = (product: Omit<IProductInput, 'minStockLevel' | 'maxStockLevel' | 'isLowStock' | 'isOutOfStock' | 'lastStockUpdate' | 'stockStatus'>): IProductInput => ({
+const addStockFields = (
+  product: Omit<
+    IProductInput,
+    | 'minStockLevel'
+    | 'maxStockLevel'
+    | 'isLowStock'
+    | 'isOutOfStock'
+    | 'lastStockUpdate'
+    | 'stockStatus'
+  >
+): IProductInput => ({
   ...product,
   minStockLevel: 5,
   maxStockLevel: 100,

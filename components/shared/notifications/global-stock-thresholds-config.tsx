@@ -17,10 +17,14 @@ import {
   getGlobalStockThresholds,
   updateGlobalStockThresholds,
 } from '@/lib/actions/setting.actions'
+import { applyGlobalThresholdsToAllProducts } from '@/lib/actions/stock.actions'
 import {
-  applyGlobalThresholdsToAllProducts,
-} from '@/lib/actions/stock.actions'
-import { AlertTriangle, XCircle, Settings, Loader2, RefreshCw } from 'lucide-react'
+  AlertTriangle,
+  XCircle,
+  Settings,
+  Loader2,
+  RefreshCw,
+} from 'lucide-react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -108,10 +112,7 @@ export function GlobalStockThresholdsConfig() {
     } catch (error) {
       toast({
         title: t('Error'),
-        description:
-          error instanceof Error
-            ? error.message
-            : t('ErrorSaving'),
+        description: error instanceof Error ? error.message : t('ErrorSaving'),
         variant: 'destructive',
       })
     } finally {
@@ -140,9 +141,7 @@ export function GlobalStockThresholdsConfig() {
       toast({
         title: t('Error'),
         description:
-          error instanceof Error
-            ? error.message
-            : t('ErrorApplying'),
+          error instanceof Error ? error.message : t('ErrorApplying'),
         variant: 'destructive',
       })
     } finally {
@@ -153,10 +152,10 @@ export function GlobalStockThresholdsConfig() {
   if (isLoadingSettings) {
     return (
       <Card>
-        <CardContent className='p-6'>
-          <div className='flex items-center justify-center py-8'>
-            <Loader2 className='h-6 w-6 animate-spin text-muted-foreground' />
-            <span className='ml-2 text-sm text-muted-foreground'>
+        <CardContent className="p-6">
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+            <span className="ml-2 text-sm text-muted-foreground">
               {t('Loading')}
             </span>
           </div>
@@ -167,88 +166,93 @@ export function GlobalStockThresholdsConfig() {
 
   return (
     <Card>
-      <CardHeader className='pb-3 sm:pb-6'>
-        <CardTitle className='flex items-center gap-2 text-xl sm:text-2xl'>
-          <Settings className='h-4 w-4 sm:h-5 sm:w-5' />
+      <CardHeader className="pb-3 sm:pb-6">
+        <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
+          <Settings className="h-4 w-4 sm:h-5 sm:w-5" />
           {t('Title')}
         </CardTitle>
-        <CardDescription className='text-xs sm:text-sm'>
+        <CardDescription className="text-xs sm:text-sm">
           {t('Description')}
         </CardDescription>
       </CardHeader>
-      <CardContent className='space-y-4 sm:space-y-6 p-4 sm:p-6'>
+      <CardContent className="space-y-4 sm:space-y-6 p-4 sm:p-6">
         {/* Seuil faible (avertissement) */}
-        <div className='space-y-2'>
-          <Label htmlFor='globalLowStockThreshold' className='text-sm sm:text-base'>
+        <div className="space-y-2">
+          <Label
+            htmlFor="globalLowStockThreshold"
+            className="text-sm sm:text-base"
+          >
             {t('LowStockLabel')}
           </Label>
           <Input
-            id='globalLowStockThreshold'
-            type='number'
-            min='0'
+            id="globalLowStockThreshold"
+            type="number"
+            min="0"
             value={globalLowStockThreshold}
             onChange={(e) =>
               setGlobalLowStockThreshold(parseInt(e.target.value) || 0)
             }
-            className='text-sm sm:text-base'
+            className="text-sm sm:text-base"
             disabled={isLoading}
           />
-          <p className='text-xs text-muted-foreground'>
+          <p className="text-xs text-muted-foreground">
             {t('LowStockDescription')}
           </p>
         </div>
 
         {/* Seuil critique */}
-        <div className='space-y-2'>
+        <div className="space-y-2">
           <Label
-            htmlFor='globalCriticalStockThreshold'
-            className='text-sm sm:text-base'
+            htmlFor="globalCriticalStockThreshold"
+            className="text-sm sm:text-base"
           >
             {t('CriticalStockLabel')}
           </Label>
           <Input
-            id='globalCriticalStockThreshold'
-            type='number'
-            min='0'
+            id="globalCriticalStockThreshold"
+            type="number"
+            min="0"
             value={globalCriticalStockThreshold}
             onChange={(e) =>
               setGlobalCriticalStockThreshold(parseInt(e.target.value) || 0)
             }
-            className='text-sm sm:text-base'
+            className="text-sm sm:text-base"
             disabled={isLoading}
           />
-          <p className='text-xs text-muted-foreground'>
+          <p className="text-xs text-muted-foreground">
             {t('CriticalStockDescription')}
           </p>
         </div>
 
         {/* Indicateurs visuels */}
-        <div className='rounded-lg bg-muted p-3 sm:p-4 space-y-2'>
-          <p className='text-xs sm:text-sm font-medium'>{t('AlertScale')}</p>
-          <div className='flex items-center gap-2 text-xs sm:text-sm'>
-            <div className='flex items-center gap-1.5'>
-              <div className='h-3 w-3 rounded-full bg-green-500' />
-              <span className='text-muted-foreground'>
+        <div className="rounded-lg bg-muted p-3 sm:p-4 space-y-2">
+          <p className="text-xs sm:text-sm font-medium">{t('AlertScale')}</p>
+          <div className="flex items-center gap-2 text-xs sm:text-sm">
+            <div className="flex items-center gap-1.5">
+              <div className="h-3 w-3 rounded-full bg-green-500" />
+              <span className="text-muted-foreground">
                 {t('NormalStock', { threshold: globalLowStockThreshold })}
               </span>
             </div>
           </div>
-          <div className='flex items-center gap-2 text-xs sm:text-sm'>
-            <div className='flex items-center gap-1.5'>
-              <AlertTriangle className='h-3 w-3 text-orange-500' />
-              <span className='text-muted-foreground'>
-                {t('LowStockRange', { 
-                  min: globalCriticalStockThreshold + 1, 
-                  max: globalLowStockThreshold 
+          <div className="flex items-center gap-2 text-xs sm:text-sm">
+            <div className="flex items-center gap-1.5">
+              <AlertTriangle className="h-3 w-3 text-orange-500" />
+              <span className="text-muted-foreground">
+                {t('LowStockRange', {
+                  min: globalCriticalStockThreshold + 1,
+                  max: globalLowStockThreshold,
                 })}
               </span>
             </div>
           </div>
-          <div className='flex items-center gap-2 text-xs sm:text-sm'>
-            <div className='flex items-center gap-1.5'>
-              <XCircle className='h-3 w-3 text-red-500' />
-              <span className='text-muted-foreground'>
-                {t('CriticalStock', { threshold: globalCriticalStockThreshold })}
+          <div className="flex items-center gap-2 text-xs sm:text-sm">
+            <div className="flex items-center gap-1.5">
+              <XCircle className="h-3 w-3 text-red-500" />
+              <span className="text-muted-foreground">
+                {t('CriticalStock', {
+                  threshold: globalCriticalStockThreshold,
+                })}
               </span>
             </div>
           </div>
@@ -257,15 +261,15 @@ export function GlobalStockThresholdsConfig() {
         <Separator />
 
         {/* Actions */}
-        <div className='flex flex-col sm:flex-row gap-3 sm:gap-4'>
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <Button
             onClick={handleSave}
             disabled={isLoading || isApplying}
-            className='w-full sm:w-auto'
+            className="w-full sm:w-auto"
           >
             {isLoading ? (
               <>
-                <Loader2 className='h-4 w-4 mr-2 animate-spin' />
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                 {t('Saving')}
               </>
             ) : (
@@ -277,11 +281,11 @@ export function GlobalStockThresholdsConfig() {
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button
-                variant='outline'
+                variant="outline"
                 disabled={isLoading || isApplying}
-                className='w-full sm:w-auto'
+                className="w-full sm:w-auto"
               >
-                <RefreshCw className='h-4 w-4 mr-2' />
+                <RefreshCw className="h-4 w-4 mr-2" />
                 {t('ApplyToProducts')}
               </Button>
             </AlertDialogTrigger>
@@ -297,16 +301,16 @@ export function GlobalStockThresholdsConfig() {
                   <strong>{t('Option2')}</strong> {t('Option2Text')}
                 </AlertDialogDescription>
               </AlertDialogHeader>
-              <AlertDialogFooter className='flex-col sm:flex-row gap-2'>
+              <AlertDialogFooter className="flex-col sm:flex-row gap-2">
                 <AlertDialogCancel>{t('Cancel')}</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={() => handleApplyToAllProducts(false)}
                   disabled={isApplying}
-                  className='w-full sm:w-auto'
+                  className="w-full sm:w-auto"
                 >
                   {isApplying ? (
                     <>
-                      <Loader2 className='h-4 w-4 mr-2 animate-spin' />
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                       {t('Applying')}
                     </>
                   ) : (
@@ -316,11 +320,11 @@ export function GlobalStockThresholdsConfig() {
                 <AlertDialogAction
                   onClick={() => handleApplyToAllProducts(true)}
                   disabled={isApplying}
-                  className='w-full sm:w-auto bg-destructive text-destructive-foreground hover:bg-destructive/90'
+                  className="w-full sm:w-auto bg-destructive text-destructive-foreground hover:bg-destructive/90"
                 >
                   {isApplying ? (
                     <>
-                      <Loader2 className='h-4 w-4 mr-2 animate-spin' />
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                       {t('Applying')}
                     </>
                   ) : (
@@ -335,4 +339,3 @@ export function GlobalStockThresholdsConfig() {
     </Card>
   )
 }
-

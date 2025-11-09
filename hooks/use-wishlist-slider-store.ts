@@ -31,21 +31,22 @@ const useWishlistSliderStore = create<WishlistSliderStore>((set, get) => {
     toggle: () => {
       const currentState = get().isOpen
       const newState = !currentState
-      
+
       // Si on ouvre le wishlist, fermer le cart
       if (newState) {
         closeCartIfOpen()
       }
-      
+
       set({ isOpen: newState })
     },
   }
 })
 
 // Fonction pour enregistrer la référence au store cart
-export const setCartStoreRef = (ref: () => { close: () => void; isOpen: boolean }) => {
+export const setCartStoreRef = (
+  ref: () => { close: () => void; isOpen: boolean }
+) => {
   getCartStore = ref
 }
 
 export { useWishlistSliderStore }
-

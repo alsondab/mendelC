@@ -80,14 +80,11 @@ export default function WishlistButton({
     try {
       if (isInWishlist) {
         // Supprimer des favoris
-        const response = await fetch(
-          `/api/wishlist?productId=${productId}`,
-          {
-            method: 'DELETE',
-          }
-        )
+        const response = await fetch(`/api/wishlist?productId=${productId}`, {
+          method: 'DELETE',
+        })
         const result = await response.json()
-        
+
         if (result.success) {
           setIsInWishlist(false)
           toast({
@@ -112,7 +109,7 @@ export default function WishlistButton({
           body: JSON.stringify({ productId }),
         })
         const result = await response.json()
-        
+
         if (result.success) {
           setIsInWishlist(true)
           toast({
@@ -155,8 +152,8 @@ export default function WishlistButton({
 
   return (
     <Button
-      variant='ghost'
-      size='sm'
+      variant="ghost"
+      size="sm"
       onClick={handleToggleWishlist}
       disabled={isLoading}
       className={cn(
@@ -178,21 +175,21 @@ export default function WishlistButton({
 
       {/* Effet de particules */}
       {isAnimating && (
-        <div className='absolute inset-0 pointer-events-none'>
-          <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
-            <div className='w-2 h-2 bg-orange-500 rounded-full animate-ping opacity-75'></div>
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="w-2 h-2 bg-orange-500 rounded-full animate-ping opacity-75"></div>
           </div>
         </div>
       )}
 
       {showText && (
-        <span className='ml-2 text-sm'>
+        <span className="ml-2 text-sm">
           {isInWishlist ? 'Retirer' : 'Ajouter'}
         </span>
       )}
 
       {showCount && isInWishlist && (
-        <span className='absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold'>
+        <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold">
           1
         </span>
       )}

@@ -83,6 +83,3 @@ export async function invalidateCategoryCache(category: string) {
   const { revalidateTag } = await import('next/cache')
   revalidateTag(`category-${category}`)
 }
-
-
-

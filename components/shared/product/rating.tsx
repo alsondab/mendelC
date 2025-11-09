@@ -24,7 +24,7 @@ export default function Rating({
 
   return (
     <div
-      className='flex items-center gap-0.5'
+      className="flex items-center gap-0.5"
       aria-label={`Rating: ${rating} out of 5 stars`}
     >
       {[...Array(fullStars)].map((_, i) => (
@@ -34,10 +34,10 @@ export default function Rating({
         />
       ))}
       {partialStar > 0 && (
-        <div className='relative'>
+        <div className="relative">
           <Star className={`${starSize} text-primary`} />
           <div
-            className='absolute top-0 left-0 overflow-hidden origin-left'
+            className="absolute top-0 left-0 overflow-hidden origin-left"
             style={{
               transform: `scaleX(${partialStar})`,
               width: '100%',

@@ -32,7 +32,7 @@ export function StockFloatingAlert() {
   if (isLoading || alerts.length === 0 || !isVisible) return null
 
   return (
-    <div className='fixed bottom-4 right-4 z-50 max-w-sm animate-in slide-in-from-bottom-2 duration-300'>
+    <div className="fixed bottom-4 right-4 z-50 max-w-sm animate-in slide-in-from-bottom-2 duration-300">
       <Card
         className={`border-2 shadow-lg ${
           criticalCount > 0
@@ -40,23 +40,23 @@ export function StockFloatingAlert() {
             : 'border-orange-200 bg-orange-50'
         }`}
       >
-        <CardContent className='p-4'>
-          <div className='flex items-start gap-3'>
+        <CardContent className="p-4">
+          <div className="flex items-start gap-3">
             <div
               className={`p-2 rounded-full ${
                 criticalCount > 0 ? 'bg-red-100' : 'bg-orange-100'
               }`}
             >
               {criticalCount > 0 ? (
-                <XCircle className='h-5 w-5 text-red-600' />
+                <XCircle className="h-5 w-5 text-red-600" />
               ) : (
-                <AlertTriangle className='h-5 w-5 text-orange-600' />
+                <AlertTriangle className="h-5 w-5 text-orange-600" />
               )}
             </div>
 
-            <div className='flex-1 min-w-0'>
-              <div className='flex items-center gap-2 mb-1'>
-                <Bell className='h-4 w-4 animate-pulse' />
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <Bell className="h-4 w-4 animate-pulse" />
                 <span
                   className={`text-sm font-semibold ${
                     criticalCount > 0 ? 'text-red-900' : 'text-orange-900'
@@ -78,23 +78,23 @@ export function StockFloatingAlert() {
                   : t('CheckStockLevels')}
               </p>
 
-              <div className='flex items-center justify-between gap-2'>
+              <div className="flex items-center justify-between gap-2">
                 <Button
-                  size='sm'
+                  size="sm"
                   variant={criticalCount > 0 ? 'destructive' : 'default'}
-                  className='text-xs h-7'
+                  className="text-xs h-7"
                   onClick={() => (window.location.href = '/admin/stock')}
                 >
                   {t('ViewDetails')}
                 </Button>
 
                 <Button
-                  size='sm'
-                  variant='ghost'
-                  className='text-xs h-7 p-1'
+                  size="sm"
+                  variant="ghost"
+                  className="text-xs h-7 p-1"
                   onClick={handleDismiss}
                 >
-                  <X className='h-3 w-3' />
+                  <X className="h-3 w-3" />
                 </Button>
               </div>
             </div>

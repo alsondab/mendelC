@@ -20,14 +20,14 @@ const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
     ref
   ) => {
     return (
-      <div className='relative'>
-        <span className='absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground text-sm pointer-events-none'>
+      <div className="relative">
+        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground text-sm pointer-events-none">
           {countryCode}
         </span>
         <Input
           className={cn('pl-12', className)}
           placeholder={placeholder}
-          type='tel'
+          type="tel"
           ref={ref}
           {...props}
         />
@@ -39,28 +39,3 @@ const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
 PhoneInput.displayName = 'PhoneInput'
 
 export { PhoneInput }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

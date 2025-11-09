@@ -31,14 +31,14 @@
 
 ### First Load JS
 
-| Métrique | Avant | Après | Statut |
-|----------|-------|-------|--------|
+| Métrique                | Avant      | Après      | Statut   |
+| ----------------------- | ---------- | ---------- | -------- |
 | **Total First Load JS** | **536 kB** | **539 kB** | ⚠️ +3 kB |
 
 ### Chunk Framer Motion
 
-| Chunk | Taille | Statut |
-|-------|--------|--------|
+| Chunk                                  | Taille    | Statut                             |
+| -------------------------------------- | --------- | ---------------------------------- |
 | `vendors-ff30e0d3-44c41cf4bc64ccd6.js` | **53 kB** | 🔴 **Toujours dans First Load JS** |
 
 ---
@@ -153,15 +153,16 @@ export async function getFadeIn() {
 
 ## 📊 Résumé des Gains
 
-| Optimisation | Statut | Gain Réel |
-|-------------|--------|-----------|
-| Header (cart-button, wishlist-count) | ✅ | CSS au lieu de framer-motion |
-| Loading page | ✅ | CSS au lieu de framer-motion |
-| Button component | ✅ | CSS au lieu de framer-motion |
-| Animations composited | ✅ | `transform` au lieu de `width` |
-| **Framer Motion chunk** | ⚠️ | **Toujours présent (53 kB)** |
+| Optimisation                         | Statut | Gain Réel                      |
+| ------------------------------------ | ------ | ------------------------------ |
+| Header (cart-button, wishlist-count) | ✅     | CSS au lieu de framer-motion   |
+| Loading page                         | ✅     | CSS au lieu de framer-motion   |
+| Button component                     | ✅     | CSS au lieu de framer-motion   |
+| Animations composited                | ✅     | `transform` au lieu de `width` |
+| **Framer Motion chunk**              | ⚠️     | **Toujours présent (53 kB)**   |
 
 **Note:** Même si le chunk framer-motion est toujours présent, les optimisations appliquées améliorent les performances :
+
 - ✅ Réduction du code JavaScript exécuté au premier rendu
 - ✅ Animations plus performantes (CSS GPU-accelerated)
 - ✅ Meilleure fluidité (60fps constant)
@@ -179,4 +180,3 @@ export async function getFadeIn() {
 
 **Document créé le:** 2025-01-05  
 **Dernière mise à jour:** 2025-01-05
-

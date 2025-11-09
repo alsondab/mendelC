@@ -77,17 +77,17 @@ export default function PasswordForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
-          name='currentPassword'
+          name="currentPassword"
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t('Current Password')}</FormLabel>
               <FormControl>
                 <PasswordInput
                   placeholder={t('Enter current password')}
-                  autoComplete='current-password'
+                  autoComplete="current-password"
                   {...field}
                 />
               </FormControl>
@@ -101,20 +101,18 @@ export default function PasswordForm() {
 
         <FormField
           control={form.control}
-          name='newPassword'
+          name="newPassword"
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t('New Password')}</FormLabel>
               <FormControl>
                 <PasswordInput
                   placeholder={t('Enter new password')}
-                  autoComplete='new-password'
+                  autoComplete="new-password"
                   {...field}
                 />
               </FormControl>
-              <FormDescription>
-                {t('Password must contain')}
-              </FormDescription>
+              <FormDescription>{t('Password must contain')}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -122,14 +120,14 @@ export default function PasswordForm() {
 
         <FormField
           control={form.control}
-          name='confirmPassword'
+          name="confirmPassword"
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t('Confirm Password')}</FormLabel>
               <FormControl>
                 <PasswordInput
                   placeholder={t('Confirm new password')}
-                  autoComplete='new-password'
+                  autoComplete="new-password"
                   {...field}
                 />
               </FormControl>
@@ -138,9 +136,8 @@ export default function PasswordForm() {
           )}
         />
 
-        <Button type='submit'>{t('Update Password')}</Button>
+        <Button type="submit">{t('Update Password')}</Button>
       </form>
     </Form>
   )
 }
-

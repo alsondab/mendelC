@@ -299,32 +299,32 @@ const ProductForm = ({
   return (
     <Form {...form}>
       <form
-        method='post'
+        method="post"
         onSubmit={form.handleSubmit(onSubmit)}
-        className='space-y-8 p-6 sm:p-8'
+        className="space-y-8 p-6 sm:p-8"
       >
         {/* Basic Information Section */}
         <Card>
           <CardHeader>
-            <CardTitle className='flex items-center gap-2 text-lg'>
-              <Tag className='h-5 w-5 text-amber-500' />
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Tag className="h-5 w-5 text-amber-500" />
               {t('BasicInformation')}
             </CardTitle>
           </CardHeader>
-          <CardContent className='space-y-6'>
-            <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+          <CardContent className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
-                name='name'
+                name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className='text-sm font-medium'>
+                    <FormLabel className="text-sm font-medium">
                       {t('ProductName')}
                     </FormLabel>
                     <FormControl>
                       <Input
                         placeholder={t('EnterProductName')}
-                        className='h-11'
+                        className="h-11"
                         {...field}
                       />
                     </FormControl>
@@ -335,32 +335,32 @@ const ProductForm = ({
 
               <FormField
                 control={form.control}
-                name='slug'
+                name="slug"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className='text-sm font-medium'>
+                    <FormLabel className="text-sm font-medium">
                       {t('SlugURL')}
                     </FormLabel>
                     <FormControl>
-                      <div className='relative'>
+                      <div className="relative">
                         <Input
                           placeholder={t('ProductSlugPlaceholder')}
-                          className='h-11 pr-20'
+                          className="h-11 pr-20"
                           {...field}
                         />
                         <Button
-                          type='button'
-                          variant='outline'
-                          size='sm'
+                          type="button"
+                          variant="outline"
+                          size="sm"
                           onClick={() => {
                             form.setValue(
                               'slug',
                               toSlug(form.getValues('name'))
                             )
                           }}
-                          className='absolute right-1 top-1 h-9 px-3 text-xs'
+                          className="absolute right-1 top-1 h-9 px-3 text-xs"
                         >
-                          <Wand2 className='h-3 w-3 mr-1' />
+                          <Wand2 className="h-3 w-3 mr-1" />
                           {t('Generate')}
                         </Button>
                       </div>
@@ -371,13 +371,13 @@ const ProductForm = ({
               />
             </div>
 
-            <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
-                name='category'
+                name="category"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className='text-sm font-medium'>
+                    <FormLabel className="text-sm font-medium">
                       {t('Category')}
                     </FormLabel>
                     <Select
@@ -390,7 +390,7 @@ const ProductForm = ({
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className='h-11'>
+                        <SelectTrigger className="h-11">
                           <SelectValue placeholder={t('SelectCategory')} />
                         </SelectTrigger>
                       </FormControl>
@@ -409,10 +409,10 @@ const ProductForm = ({
 
               <FormField
                 control={form.control}
-                name='subCategory'
+                name="subCategory"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className='text-sm font-medium'>
+                    <FormLabel className="text-sm font-medium">
                       {t('SubCategory')}
                     </FormLabel>
                     <Select
@@ -421,7 +421,7 @@ const ProductForm = ({
                       disabled={!selectedCategory || subCategories.length === 0}
                     >
                       <FormControl>
-                        <SelectTrigger className='h-11'>
+                        <SelectTrigger className="h-11">
                           <SelectValue
                             placeholder={
                               !selectedCategory
@@ -450,19 +450,19 @@ const ProductForm = ({
               />
             </div>
 
-            <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
-                name='brand'
+                name="brand"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className='text-sm font-medium'>
+                    <FormLabel className="text-sm font-medium">
                       {t('Brand')}
                     </FormLabel>
                     <FormControl>
                       <Input
                         placeholder={t('EnterBrand')}
-                        className='h-11'
+                        className="h-11"
                         {...field}
                       />
                     </FormControl>
@@ -476,27 +476,27 @@ const ProductForm = ({
         {/* Pricing & Stock Section */}
         <Card>
           <CardHeader>
-            <CardTitle className='flex items-center gap-2 text-lg'>
-              <DollarSign className='h-5 w-5 text-amber-500' />
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <DollarSign className="h-5 w-5 text-amber-500" />
               {t('PricingStock')}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <FormField
                 control={form.control}
-                name='listPrice'
+                name="listPrice"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className='text-sm font-medium'>
+                    <FormLabel className="text-sm font-medium">
                       {t('ListPrice')}
                     </FormLabel>
                     <FormControl>
                       <Input
-                        type='number'
-                        step='0.01'
+                        type="number"
+                        step="0.01"
                         placeholder={t('PricePlaceholder')}
-                        className='h-11'
+                        className="h-11"
                         {...field}
                       />
                     </FormControl>
@@ -506,18 +506,18 @@ const ProductForm = ({
               />
               <FormField
                 control={form.control}
-                name='price'
+                name="price"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className='text-sm font-medium'>
+                    <FormLabel className="text-sm font-medium">
                       {t('SalePrice')}
                     </FormLabel>
                     <FormControl>
                       <Input
-                        type='number'
-                        step='0.01'
+                        type="number"
+                        step="0.01"
                         placeholder={t('PricePlaceholder')}
-                        className='h-11'
+                        className="h-11"
                         {...field}
                       />
                     </FormControl>
@@ -527,17 +527,17 @@ const ProductForm = ({
               />
               <FormField
                 control={form.control}
-                name='countInStock'
+                name="countInStock"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className='text-sm font-medium'>
+                    <FormLabel className="text-sm font-medium">
                       {t('AvailableStock')}
                     </FormLabel>
                     <FormControl>
                       <Input
-                        type='number'
-                        placeholder='0'
-                        className='h-11'
+                        type="number"
+                        placeholder="0"
+                        className="h-11"
                         {...field}
                       />
                     </FormControl>
@@ -547,24 +547,24 @@ const ProductForm = ({
               />
 
               {/* 🚀 NOUVEAUX CHAMPS POUR LA GESTION DES STOCKS */}
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
-                  name='minStockLevel'
+                  name="minStockLevel"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className='text-sm font-medium'>
+                      <FormLabel className="text-sm font-medium">
                         {t('AlertThreshold')}
                       </FormLabel>
                       <FormControl>
                         <Input
-                          type='number'
-                          placeholder='5'
-                          className='h-11'
+                          type="number"
+                          placeholder="5"
+                          className="h-11"
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription className='text-xs'>
+                      <FormDescription className="text-xs">
                         {t('AlertThresholdDescription')}
                       </FormDescription>
                       <FormMessage />
@@ -574,21 +574,21 @@ const ProductForm = ({
 
                 <FormField
                   control={form.control}
-                  name='maxStockLevel'
+                  name="maxStockLevel"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className='text-sm font-medium'>
+                      <FormLabel className="text-sm font-medium">
                         {t('MaxStockRecommended')}
                       </FormLabel>
                       <FormControl>
                         <Input
-                          type='number'
-                          placeholder='100'
-                          className='h-11'
+                          type="number"
+                          placeholder="100"
+                          className="h-11"
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription className='text-xs'>
+                      <FormDescription className="text-xs">
                         {t('MaxStockDescription')}
                       </FormDescription>
                       <FormMessage />
@@ -602,59 +602,59 @@ const ProductForm = ({
 
         {/* Images Section - Design moderne et structuré */}
         <Card>
-          <CardHeader className='pb-4'>
-            <div className='flex items-center justify-between'>
-              <CardTitle className='flex items-center gap-2 text-lg font-semibold'>
-                <ImageIcon className='h-5 w-5 text-amber-500' />
+          <CardHeader className="pb-4">
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center gap-2 text-lg font-semibold">
+                <ImageIcon className="h-5 w-5 text-amber-500" />
                 {t('ProductImages')}
               </CardTitle>
               {images.length > 0 && (
                 <Button
-                  type='button'
-                  variant='outline'
-                  size='sm'
+                  type="button"
+                  variant="outline"
+                  size="sm"
                   onClick={() => {
                     form.setValue('images', [])
                     toast({
                       description: t('AllImagesRemoved'),
                     })
                   }}
-                  className='text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20 border-red-200 dark:border-red-900'
+                  className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20 border-red-200 dark:border-red-900"
                 >
-                  <Trash2 className='h-4 w-4 mr-1.5' />
+                  <Trash2 className="h-4 w-4 mr-1.5" />
                   {t('RemoveAll')}
                 </Button>
               )}
             </div>
           </CardHeader>
-          <CardContent className='space-y-6'>
+          <CardContent className="space-y-6">
             <FormField
               control={form.control}
-              name='images'
+              name="images"
               render={() => (
                 <FormItem>
                   {/* Zone d'upload drag & drop moderne */}
-                  <div className='border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 sm:p-8 transition-all hover:border-primary/50 hover:bg-muted/30 group'>
-                    <div className='flex flex-col items-center justify-center space-y-4'>
+                  <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 sm:p-8 transition-all hover:border-primary/50 hover:bg-muted/30 group">
+                    <div className="flex flex-col items-center justify-center space-y-4">
                       {/* Icône UploadCloud */}
-                      <div className='rounded-full bg-primary/10 p-3 group-hover:bg-primary/20 transition-colors'>
-                        <UploadCloud className='h-8 w-8 text-amber-500' />
+                      <div className="rounded-full bg-primary/10 p-3 group-hover:bg-primary/20 transition-colors">
+                        <UploadCloud className="h-8 w-8 text-amber-500" />
                       </div>
 
                       {/* Texte et bouton */}
-                      <div className='text-center space-y-2'>
-                        <p className='text-sm font-medium text-foreground'>
+                      <div className="text-center space-y-2">
+                        <p className="text-sm font-medium text-foreground">
                           {t('AddImage')}
                         </p>
-                        <p className='text-xs text-muted-foreground'>
+                        <p className="text-xs text-muted-foreground">
                           {t('MaxSize')}
                         </p>
                       </div>
 
                       {/* Bouton UploadButton stylisé */}
-                      <div className='w-full max-w-[200px]'>
+                      <div className="w-full max-w-[200px]">
                         <UploadButton
-                          endpoint='imageUploader'
+                          endpoint="imageUploader"
                           onClientUploadComplete={(res: { url: string }[]) => {
                             if (res && res[0]?.url) {
                               form.setValue('images', [...images, res[0].url])
@@ -671,13 +671,13 @@ const ProductForm = ({
                           }}
                           content={{
                             button: ({ ready }) => (
-                              <span className='text-sm font-medium'>
+                              <span className="text-sm font-medium">
                                 {ready ? t('ChooseFile') : t('Loading')}
                               </span>
                             ),
                             allowedContent: t('MaxSize'),
                           }}
-                          className='ut-button:bg-primary ut-button:ut-readying:bg-primary/50 ut-button:ut-uploading:bg-primary/50 ut-button:ut-uploading:text-white ut-button:hover:bg-primary/90'
+                          className="ut-button:bg-primary ut-button:ut-readying:bg-primary/50 ut-button:ut-uploading:bg-primary/50 ut-button:ut-uploading:text-white ut-button:hover:bg-primary/90"
                         />
                       </div>
                     </div>
@@ -685,41 +685,41 @@ const ProductForm = ({
 
                   {/* Grille d'aperçu des images - Design moderne */}
                   {images.length > 0 && (
-                    <div className='mt-6 space-y-4'>
-                      <div className='flex items-center justify-between'>
-                        <p className='text-sm font-medium text-muted-foreground'>
+                    <div className="mt-6 space-y-4">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-medium text-muted-foreground">
                           {images.length} image{images.length > 1 ? 's' : ''}{' '}
                           uploadée{images.length > 1 ? 's' : ''}
                         </p>
                       </div>
 
                       {/* Grille responsive avec cartes stylées */}
-                      <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4'>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                         {images
                           .filter((image) => image && image.trim() !== '')
                           .map((image: string, index: number) => (
                             <div
                               key={`${image}-${index}`}
-                              className='relative group aspect-square rounded-lg overflow-hidden border bg-card shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.02]'
+                              className="relative group aspect-square rounded-lg overflow-hidden border bg-card shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.02]"
                             >
                               <Image
                                 src={image}
                                 alt={`Image ${index + 1}`}
                                 fill
-                                className='object-cover'
-                                sizes='(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 16vw'
-                                loading='lazy'
+                                className="object-cover"
+                                sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 16vw"
+                                loading="lazy"
                                 quality={60}
-                                decoding='async'
+                                decoding="async"
                               />
 
                               {/* Overlay avec bouton de suppression au hover */}
-                              <div className='absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-200 flex items-center justify-center'>
+                              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-200 flex items-center justify-center">
                                 <Button
-                                  type='button'
-                                  variant='destructive'
-                                  size='sm'
-                                  className='opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg'
+                                  type="button"
+                                  variant="destructive"
+                                  size="sm"
+                                  className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg"
                                   onClick={() => {
                                     const newImages = images.filter(
                                       (_, i) => i !== index
@@ -731,7 +731,7 @@ const ProductForm = ({
                                   }}
                                   aria-label={`Supprimer l'image ${index + 1}`}
                                 >
-                                  <X className='h-4 w-4 mr-1' />
+                                  <X className="h-4 w-4 mr-1" />
                                   Supprimer
                                 </Button>
                               </div>
@@ -750,24 +750,24 @@ const ProductForm = ({
         {/* Content Section */}
         <Card>
           <CardHeader>
-            <CardTitle className='flex items-center gap-2 text-lg'>
-              <FileText className='h-5 w-5 text-amber-500' />
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <FileText className="h-5 w-5 text-amber-500" />
               {t('ContentDescriptions')}
             </CardTitle>
           </CardHeader>
-          <CardContent className='space-y-6'>
+          <CardContent className="space-y-6">
             <FormField
               control={form.control}
-              name='description'
+              name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className='text-sm font-medium'>
+                  <FormLabel className="text-sm font-medium">
                     {t('ProductDescription')}
                   </FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder={t('DescribeProductDetail')}
-                      className='resize-none min-h-[120px]'
+                      className="resize-none min-h-[120px]"
                       {...field}
                     />
                   </FormControl>
@@ -777,19 +777,19 @@ const ProductForm = ({
               )}
             />
 
-            <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
-                name='specifications'
+                name="specifications"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className='text-sm font-medium'>
+                    <FormLabel className="text-sm font-medium">
                       {t('TechnicalSpecs')}
                     </FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder={t('SpecsPlaceholder')}
-                        className='resize-none min-h-[100px]'
+                        className="resize-none min-h-[100px]"
                         value={
                           Array.isArray(field.value)
                             ? field.value.join('\n')
@@ -811,16 +811,16 @@ const ProductForm = ({
 
               <FormField
                 control={form.control}
-                name='compatibility'
+                name="compatibility"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className='text-sm font-medium'>
+                    <FormLabel className="text-sm font-medium">
                       {t('Compatibility')}
                     </FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder={t('CompatibilityPlaceholder')}
-                        className='resize-none min-h-[100px]'
+                        className="resize-none min-h-[100px]"
                         value={
                           Array.isArray(field.value)
                             ? field.value.join('\n')
@@ -847,28 +847,28 @@ const ProductForm = ({
         {/* Settings Section */}
         <Card>
           <CardHeader>
-            <CardTitle className='flex items-center gap-2 text-lg'>
-              <Settings className='h-5 w-5 text-amber-500' />
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Settings className="h-5 w-5 text-amber-500" />
               {t('PublicationSettings')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <FormField
               control={form.control}
-              name='isPublished'
+              name="isPublished"
               render={({ field }) => (
-                <FormItem className='flex flex-row items-center space-x-3 space-y-0 rounded-md border p-4'>
+                <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md border p-4">
                   <FormControl>
                     <Checkbox
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
-                  <div className='space-y-1 leading-none'>
-                    <FormLabel className='text-sm font-medium'>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel className="text-sm font-medium">
                       {t('PublishProduct')}
                     </FormLabel>
-                    <FormDescription className='text-xs'>
+                    <FormDescription className="text-xs">
                       {t('PublishProductDescription')}
                     </FormDescription>
                   </div>
@@ -879,10 +879,10 @@ const ProductForm = ({
         </Card>
 
         {/* Submit Section */}
-        <div className='flex flex-col sm:flex-row gap-4 pt-6 border-t border-slate-200 dark:border-slate-700'>
+        <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-slate-200 dark:border-slate-700">
           <Button
-            type='submit'
-            size='lg'
+            type="submit"
+            size="lg"
             disabled={form.formState.isSubmitting}
             onClick={async (e) => {
               e.preventDefault()
@@ -900,21 +900,17 @@ const ProductForm = ({
                 })
               }
             }}
-            className='flex-1 h-12 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200'
+            className="flex-1 h-12 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200"
           >
             {form.formState.isSubmitting ? (
-              <div className='flex items-center gap-2'>
-                <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin' />
-                {type === 'Create'
-                  ? t('Creating')
-                  : t('Updating')}
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                {type === 'Create' ? t('Creating') : t('Updating')}
               </div>
             ) : (
-              <div className='flex items-center gap-2'>
-                <CheckCircle className='h-5 w-5' />
-                {type === 'Create'
-                  ? t('CreateProduct')
-                  : t('UpdateProduct')}
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5" />
+                {type === 'Create' ? t('CreateProduct') : t('UpdateProduct')}
               </div>
             )}
           </Button>

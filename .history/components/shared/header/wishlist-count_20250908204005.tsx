@@ -21,7 +21,7 @@ export default function WishlistCount() {
 
   useEffect(() => {
     if (!isMounted) return
-    
+
     const fetchWishlistCount = async () => {
       if (session?.user?.id) {
         // Utilisateur connecté - utiliser l'API
@@ -77,8 +77,8 @@ export default function WishlistCount() {
         'flex-row space-x-2 px-3 py-2 rounded-lg hover:bg-muted/80'
       )}
     >
-      <div className='relative'>
-        <Heart className='h-5 w-5 text-foreground' />
+      <div className="relative">
+        <Heart className="h-5 w-5 text-foreground" />
 
         {/* Wishlist Badge - Toujours afficher si il y a des favoris */}
         {isMounted && count > 0 && (
@@ -97,7 +97,7 @@ export default function WishlistCount() {
       </div>
 
       {/* Wishlist Text - Desktop Only */}
-      <span className='hidden md:block font-medium text-sm'>
+      <span className="hidden md:block font-medium text-sm">
         {t('Header.Wishlist')}
       </span>
     </Link>

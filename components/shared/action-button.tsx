@@ -33,7 +33,7 @@ export default function ActionButton({
 
   return (
     <Button
-      type='button'
+      type="button"
       className={cn('rounded-full', className)}
       variant={variant}
       size={size}

@@ -9,7 +9,7 @@ export async function getCachedProductsByTag(params: {
   limit?: number
 }) {
   const cacheKey = `products-by-tag-${params.tag}-${params.limit || 10}`
-  
+
   return unstable_cache(
     async () => {
       const { getProductsByTag } = await import('../actions/product.actions')
@@ -32,7 +32,7 @@ export async function getCachedProductsForCard(params: {
   limit?: number
 }) {
   const cacheKey = `products-for-card-${params.tag}-${params.limit || 4}`
-  
+
   return unstable_cache(
     async () => {
       const { getProductsForCard } = await import('../actions/product.actions')
@@ -113,7 +113,7 @@ export async function getCachedRelatedProducts(params: {
   page?: number
 }) {
   const cacheKey = `related-products-${params.category}-${params.productId}-${params.limit || 4}`
-  
+
   return unstable_cache(
     async () => {
       const { getRelatedProductsByCategory } = await import(
@@ -157,4 +157,3 @@ export async function invalidateAllProductsCache() {
   const { revalidateTag } = await import('next/cache')
   revalidateTag('products')
 }
-

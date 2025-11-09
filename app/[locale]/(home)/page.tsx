@@ -20,8 +20,8 @@ const HomeCarousel = dynamic(
     // ⚡ Optimization: SSR activé pour meilleur SEO, le composant gère son propre lazy loading client
     ssr: true,
     loading: () => (
-      <div className='w-full aspect-[16/6] bg-muted animate-pulse flex items-center justify-center'>
-        <span className='text-muted-foreground'>Chargement...</span>
+      <div className="w-full aspect-[16/6] bg-muted animate-pulse flex items-center justify-center">
+        <span className="text-muted-foreground">Chargement...</span>
       </div>
     ),
   }
@@ -33,8 +33,8 @@ const ProductSlider = dynamic(
   {
     ssr: true, // ⚡ Optimization: SSR possible pour le contenu statique
     loading: () => (
-      <div className='w-full h-64 bg-muted animate-pulse flex items-center justify-center'>
-        <span className='text-muted-foreground'>Chargement...</span>
+      <div className="w-full h-64 bg-muted animate-pulse flex items-center justify-center">
+        <span className="text-muted-foreground">Chargement...</span>
       </div>
     ),
   }
@@ -104,15 +104,15 @@ export default async function HomePage() {
   return (
     <>
       <HomeCarousel items={carousels} />
-      <div className='md:p-4 md:space-y-4 bg-border'>
+      <div className="md:p-4 md:space-y-4 bg-border">
         <HomeCard cards={cards} />
-        <Card className='w-full'>
-          <CardContent className='p-4 sm:p-6'>
+        <Card className="w-full">
+          <CardContent className="p-4 sm:p-6">
             <ProductSlider title={t("Today's Deals")} products={todaysDeals} />
           </CardContent>
         </Card>
-        <Card className='w-full'>
-          <CardContent className='p-4 sm:p-6'>
+        <Card className="w-full">
+          <CardContent className="p-4 sm:p-6">
             <ProductSlider
               title={t('Best Selling Products')}
               products={bestSellingProducts}

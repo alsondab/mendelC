@@ -85,13 +85,13 @@ export default function CredentialsSignInForm() {
   return (
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input type='hidden' name='callbackUrl' value={callbackUrl} />
-        <div className='space-y-6'>
+        <input type="hidden" name="callbackUrl" value={callbackUrl} />
+        <div className="space-y-6">
           <FormField
             control={control}
-            name='name'
+            name="name"
             render={({ field }) => (
-              <FormItem className='w-full'>
+              <FormItem className="w-full">
                 <FormLabel>{t('Full Name')}</FormLabel>
                 <FormControl>
                   <Input
@@ -107,14 +107,14 @@ export default function CredentialsSignInForm() {
 
           <FormField
             control={control}
-            name='email'
+            name="email"
             render={({ field }) => (
-              <FormItem className='w-full'>
+              <FormItem className="w-full">
                 <FormLabel>{t('Email')}</FormLabel>
                 <FormControl>
                   <Input
                     placeholder={t('Enter your email address')}
-                    type='email'
+                    type="email"
                     {...field}
                   />
                 </FormControl>
@@ -125,19 +125,19 @@ export default function CredentialsSignInForm() {
 
           <FormField
             control={control}
-            name='password'
+            name="password"
             render={({ field }) => (
-              <FormItem className='w-full'>
+              <FormItem className="w-full">
                 <FormLabel>{t('Password')}</FormLabel>
                 <FormControl>
                   <PasswordInput
                     placeholder={t('Enter your password')}
-                    autoComplete='new-password'
+                    autoComplete="new-password"
                     maxLength={128}
                     {...field}
                   />
                 </FormControl>
-                <div className='text-xs text-muted-foreground mt-1'>
+                <div className="text-xs text-muted-foreground mt-1">
                   {t('Password must contain')}
                 </div>
                 <FormMessage />
@@ -146,14 +146,14 @@ export default function CredentialsSignInForm() {
           />
           <FormField
             control={control}
-            name='confirmPassword'
+            name="confirmPassword"
             render={({ field }) => (
-              <FormItem className='w-full'>
+              <FormItem className="w-full">
                 <FormLabel>{t('Confirm password')}</FormLabel>
                 <FormControl>
                   <PasswordInput
                     placeholder={t('Confirm your password')}
-                    autoComplete='new-password'
+                    autoComplete="new-password"
                     maxLength={128}
                     {...field}
                   />
@@ -163,18 +163,18 @@ export default function CredentialsSignInForm() {
             )}
           />
           <div>
-            <Button type='submit'>{t('Sign Up')}</Button>
+            <Button type="submit">{t('Sign Up')}</Button>
           </div>
-          <div className='text-sm'>
+          <div className="text-sm">
             {t('By creating an account')} {site.name}&apos;s{' '}
-            <Link href='/page/conditions-of-use'>{t('Conditions of Use')}</Link>{' '}
+            <Link href="/page/conditions-of-use">{t('Conditions of Use')}</Link>{' '}
             {t('and')}{' '}
-            <Link href='/page/privacy-policy'>{t('Privacy Notice')}.</Link>
+            <Link href="/page/privacy-policy">{t('Privacy Notice')}.</Link>
           </div>
-          <Separator className='mb-4' />
-          <div className='text-sm'>
+          <Separator className="mb-4" />
+          <div className="text-sm">
             {t('Already have an account?')}{' '}
-            <Link className='link' href={`/sign-in?callbackUrl=${callbackUrl}`}>
+            <Link className="link" href={`/sign-in?callbackUrl=${callbackUrl}`}>
               {t('Sign In')}
             </Link>
           </div>

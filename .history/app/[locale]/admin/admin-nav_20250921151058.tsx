@@ -90,7 +90,7 @@ export function AdminNav({
                 : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
             )}
           >
-            <IconComponent className='h-4 w-4' />
+            <IconComponent className="h-4 w-4" />
             <span>{t(item.title)}</span>
           </Link>
         )
@@ -105,25 +105,25 @@ export function AdminMobileMenu() {
   const t = useTranslations('Admin')
 
   return (
-    <div className='md:hidden'>
+    <div className="md:hidden">
       <Sheet>
-        <SheetTrigger className='flex items-center space-x-1 px-2 py-2 rounded-lg hover:bg-white/10 transition-colors text-sm font-medium border border-white/20'>
-          <Grid3X3 className='h-4 w-4' />
-          <span className='text-xs'>Menu</span>
+        <SheetTrigger className="flex items-center space-x-1 px-2 py-2 rounded-lg hover:bg-white/10 transition-colors text-sm font-medium border border-white/20">
+          <Grid3X3 className="h-4 w-4" />
+          <span className="text-xs">Menu</span>
         </SheetTrigger>
-        <SheetContent side='bottom' className='h-[80vh] rounded-t-xl'>
-          <SheetHeader className='space-y-4'>
-            <SheetTitle className='text-left'>
+        <SheetContent side="bottom" className="h-[80vh] rounded-t-xl">
+          <SheetHeader className="space-y-4">
+            <SheetTitle className="text-left">
               Panneau d&apos;administration
             </SheetTitle>
-            <SheetDescription className='text-left'>
+            <SheetDescription className="text-left">
               Navigation et administration
             </SheetDescription>
           </SheetHeader>
 
           {/* Navigation Grid */}
-          <div className='mt-6'>
-            <div className='grid grid-cols-2 gap-4'>
+          <div className="mt-6">
+            <div className="grid grid-cols-2 gap-4">
               {links.map((item) => {
                 const IconComponent = item.icon
                 return (
@@ -137,8 +137,8 @@ export function AdminMobileMenu() {
                           : 'bg-muted/50 hover:bg-muted border-border hover:shadow-sm'
                       )}
                     >
-                      <IconComponent className='h-6 w-6' />
-                      <span className='text-sm font-medium text-center'>
+                      <IconComponent className="h-6 w-6" />
+                      <span className="text-sm font-medium text-center">
                         {t(item.title)}
                       </span>
                     </Link>

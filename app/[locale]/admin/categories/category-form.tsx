@@ -214,89 +214,89 @@ export function CategoryForm({
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
-      <div className='grid gap-6 lg:grid-cols-3'>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <div className="grid gap-6 lg:grid-cols-3">
         {/* Main Form */}
-        <div className='lg:col-span-2 space-y-6'>
+        <div className="lg:col-span-2 space-y-6">
           <Card>
             <CardHeader>
               <CardTitle>{t('BasicInformation')}</CardTitle>
             </CardHeader>
-            <CardContent className='space-y-4'>
-              <div className='space-y-2'>
-                <Label htmlFor='name'>{t('CategoryName')} *</Label>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">{t('CategoryName')} *</Label>
                 <Input
-                  id='name'
+                  id="name"
                   {...register('name')}
                   placeholder={t('CategoryNamePlaceholder')}
                 />
                 {errors.name && (
-                  <p className='text-sm text-destructive'>
+                  <p className="text-sm text-destructive">
                     {errors.name.message}
                   </p>
                 )}
               </div>
 
-              <div className='space-y-2'>
-                <Label htmlFor='slug'>{t('Slug')} *</Label>
+              <div className="space-y-2">
+                <Label htmlFor="slug">{t('Slug')} *</Label>
                 <Input
-                  id='slug'
+                  id="slug"
                   {...register('slug')}
                   placeholder={t('SlugPlaceholder')}
                 />
                 {errors.slug && (
-                  <p className='text-sm text-destructive'>
+                  <p className="text-sm text-destructive">
                     {errors.slug.message}
                   </p>
                 )}
               </div>
 
-              <div className='space-y-2'>
-                <Label htmlFor='description'>{t('Description')}</Label>
+              <div className="space-y-2">
+                <Label htmlFor="description">{t('Description')}</Label>
                 <Textarea
-                  id='description'
+                  id="description"
                   {...register('description')}
                   placeholder={t('DescriptionPlaceholder')}
                   rows={3}
                 />
                 {errors.description && (
-                  <p className='text-sm text-destructive'>
+                  <p className="text-sm text-destructive">
                     {errors.description.message}
                   </p>
                 )}
               </div>
 
               {/* ⚡ Optimization: Section Image de Catégorie - Design moderne identique aux produits */}
-              <div className='space-y-4'>
+              <div className="space-y-4">
                 {/* Header avec titre */}
-                <div className='flex items-center gap-2 mb-2'>
-                  <Label className='text-base font-semibold'>
+                <div className="flex items-center gap-2 mb-2">
+                  <Label className="text-base font-semibold">
                     {t('CategoryImage')}
                   </Label>
                 </div>
 
                 {/* Zone d'upload drag & drop moderne */}
-                <div className='border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 sm:p-8 transition-all hover:border-primary/50 hover:bg-muted/30 group'>
-                  <div className='flex flex-col items-center justify-center space-y-4'>
+                <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 sm:p-8 transition-all hover:border-primary/50 hover:bg-muted/30 group">
+                  <div className="flex flex-col items-center justify-center space-y-4">
                     {/* Icône UploadCloud */}
-                    <div className='rounded-full bg-primary/10 p-3 group-hover:bg-primary/20 transition-colors'>
-                      <UploadCloud className='h-8 w-8 text-amber-500' />
+                    <div className="rounded-full bg-primary/10 p-3 group-hover:bg-primary/20 transition-colors">
+                      <UploadCloud className="h-8 w-8 text-amber-500" />
                     </div>
 
                     {/* Texte et bouton */}
-                    <div className='text-center space-y-2'>
-                      <p className='text-sm font-medium text-foreground'>
+                    <div className="text-center space-y-2">
+                      <p className="text-sm font-medium text-foreground">
                         Ajouter une image
                       </p>
-                      <p className='text-xs text-muted-foreground'>
+                      <p className="text-xs text-muted-foreground">
                         Taille max : 4MB
                       </p>
                     </div>
 
                     {/* Bouton UploadButton stylisé */}
-                    <div className='w-full max-w-[200px]'>
+                    <div className="w-full max-w-[200px]">
                       <UploadButton
-                        endpoint='imageUploader'
+                        endpoint="imageUploader"
                         onClientUploadComplete={(res: { url: string }[]) => {
                           if (res && res[0]?.url) {
                             setUploadedImage(res[0].url)
@@ -316,13 +316,13 @@ export function CategoryForm({
                         }}
                         content={{
                           button: ({ ready }) => (
-                            <span className='text-sm font-medium'>
+                            <span className="text-sm font-medium">
                               {ready ? 'Choisir un fichier' : 'Chargement...'}
                             </span>
                           ),
                           allowedContent: 'Taille max 4MB',
                         }}
-                        className='ut-button:bg-primary ut-button:ut-readying:bg-primary/50 ut-button:ut-uploading:bg-primary/50 ut-button:ut-uploading:text-white ut-button:hover:bg-primary/90'
+                        className="ut-button:bg-primary ut-button:ut-readying:bg-primary/50 ut-button:ut-uploading:bg-primary/50 ut-button:ut-uploading:text-white ut-button:hover:bg-primary/90"
                       />
                     </div>
                   </div>
@@ -330,15 +330,15 @@ export function CategoryForm({
 
                 {/* Aperçu de l'image uploadée - Design moderne */}
                 {(watch('image')?.trim() || uploadedImage?.trim()) && (
-                  <div className='mt-6 space-y-4'>
-                    <div className='flex items-center justify-between'>
-                      <p className='text-sm font-medium text-muted-foreground'>
+                  <div className="mt-6 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-medium text-muted-foreground">
                         Image uploadée
                       </p>
                       <Button
-                        type='button'
-                        variant='outline'
-                        size='sm'
+                        type="button"
+                        variant="outline"
+                        size="sm"
                         onClick={() => {
                           setUploadedImage('')
                           setValue('image', '', { shouldValidate: true })
@@ -346,33 +346,33 @@ export function CategoryForm({
                             description: 'Image supprimée',
                           })
                         }}
-                        className='text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20 border-red-200 dark:border-red-900'
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20 border-red-200 dark:border-red-900"
                       >
-                        <Trash2 className='h-4 w-4 mr-1.5' />
+                        <Trash2 className="h-4 w-4 mr-1.5" />
                         Supprimer
                       </Button>
                     </div>
 
                     {/* Carte stylée pour l'aperçu */}
-                    <div className='relative group aspect-square max-w-[300px] rounded-lg overflow-hidden border bg-card shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.02]'>
+                    <div className="relative group aspect-square max-w-[300px] rounded-lg overflow-hidden border bg-card shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.02]">
                       <Image
                         src={watch('image') || uploadedImage || ''}
-                        alt='Image de catégorie'
+                        alt="Image de catégorie"
                         fill
-                        className='object-cover'
-                        sizes='(max-width: 640px) 100vw, (max-width: 768px) 50vw, 300px'
-                        loading='lazy'
+                        className="object-cover"
+                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 300px"
+                        loading="lazy"
                         quality={60}
-                        decoding='async'
+                        decoding="async"
                       />
 
                       {/* Overlay avec bouton de suppression au hover */}
-                      <div className='absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-200 flex items-center justify-center'>
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-200 flex items-center justify-center">
                         <Button
-                          type='button'
-                          variant='destructive'
-                          size='sm'
-                          className='opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg'
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-lg"
                           onClick={() => {
                             setUploadedImage('')
                             setValue('image', '', { shouldValidate: true })
@@ -382,7 +382,7 @@ export function CategoryForm({
                           }}
                           aria-label="Supprimer l'image"
                         >
-                          <X className='h-4 w-4 mr-1' />
+                          <X className="h-4 w-4 mr-1" />
                           Supprimer
                         </Button>
                       </div>
@@ -391,15 +391,15 @@ export function CategoryForm({
                 )}
 
                 {/* Input URL manuel (optionnel) */}
-                <div className='space-y-2 pt-2 border-t border-muted'>
+                <div className="space-y-2 pt-2 border-t border-muted">
                   <Label
-                    htmlFor='image-url'
-                    className='text-sm text-muted-foreground'
+                    htmlFor="image-url"
+                    className="text-sm text-muted-foreground"
                   >
                     {t('OrEnterImageUrl')} (optionnel)
                   </Label>
                   <Input
-                    id='image-url'
+                    id="image-url"
                     {...register('image')}
                     placeholder={t('ImageUrl')}
                     onChange={(e) => {
@@ -407,10 +407,10 @@ export function CategoryForm({
                       setUploadedImage(url)
                       setValue('image', url)
                     }}
-                    className='text-sm'
+                    className="text-sm"
                   />
                   {errors.image && (
-                    <p className='text-xs text-destructive'>
+                    <p className="text-xs text-destructive">
                       {errors.image.message}
                     </p>
                   )}
@@ -421,14 +421,14 @@ export function CategoryForm({
         </div>
 
         {/* Sidebar */}
-        <div className='space-y-6'>
+        <div className="space-y-6">
           <Card>
             <CardHeader>
               <CardTitle>{t('Configuration')}</CardTitle>
             </CardHeader>
-            <CardContent className='space-y-4'>
-              <div className='space-y-2'>
-                <Label htmlFor='parentCategory'>{t('ParentCategory')}</Label>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="parentCategory">{t('ParentCategory')}</Label>
                 <Select
                   onValueChange={(value) =>
                     setValue(
@@ -442,7 +442,7 @@ export function CategoryForm({
                     <SelectValue placeholder={t('SelectParentCategory')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value='none'>
+                    <SelectItem value="none">
                       {t('NoneMainCategory')}
                     </SelectItem>
                     {parentCategories.map((category) => (
@@ -454,44 +454,44 @@ export function CategoryForm({
                 </Select>
               </div>
 
-              <div className='space-y-2'>
-                <Label htmlFor='sortOrder'>{t('DisplayOrder')}</Label>
+              <div className="space-y-2">
+                <Label htmlFor="sortOrder">{t('DisplayOrder')}</Label>
                 <Input
-                  id='sortOrder'
-                  type='number'
-                  min='0'
+                  id="sortOrder"
+                  type="number"
+                  min="0"
                   {...register('sortOrder', { valueAsNumber: true })}
                 />
                 {errors.sortOrder && (
-                  <p className='text-sm text-destructive'>
+                  <p className="text-sm text-destructive">
                     {errors.sortOrder.message}
                   </p>
                 )}
               </div>
 
-              <div className='flex items-center space-x-2'>
+              <div className="flex items-center space-x-2">
                 <Checkbox
-                  id='isActive'
+                  id="isActive"
                   checked={watch('isActive')}
                   onCheckedChange={(checked: boolean) =>
                     setValue('isActive', checked)
                   }
                 />
-                <Label htmlFor='isActive'>{t('CategoryActive')}</Label>
+                <Label htmlFor="isActive">{t('CategoryActive')}</Label>
               </div>
             </CardContent>
           </Card>
 
-          <div className='flex gap-2'>
+          <div className="flex gap-2">
             <Button
-              type='button'
-              variant='outline'
+              type="button"
+              variant="outline"
               onClick={() => router.push('/admin/categories')}
-              className='flex-1'
+              className="flex-1"
             >
               {t('Cancel')}
             </Button>
-            <Button type='submit' disabled={isLoading} className='flex-1'>
+            <Button type="submit" disabled={isLoading} className="flex-1">
               {isLoading ? t('Saving') : isEditMode ? t('Update') : t('Create')}
             </Button>
           </div>

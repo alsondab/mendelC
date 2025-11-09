@@ -42,18 +42,18 @@ export default async function StockManagementPage() {
     : null
 
   return (
-    <div className='space-y-6'>
+    <div className="space-y-6">
       {/* Header */}
-      <div className='flex items-center justify-between'>
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className='text-3xl font-bold'>Gestion des Stocks</h1>
-          <p className='text-muted-foreground'>
+          <h1 className="text-3xl font-bold">Gestion des Stocks</h1>
+          <p className="text-muted-foreground">
             Surveillez et gérez les niveaux de stock de vos produits
           </p>
         </div>
         <form action={updateAllStockStatus}>
-          <Button type='submit' variant='outline' className='gap-2'>
-            <RefreshCw className='h-4 w-4' />
+          <Button type="submit" variant="outline" className="gap-2">
+            <RefreshCw className="h-4 w-4" />
             Actualiser tous les statuts
           </Button>
         </form>
@@ -61,60 +61,60 @@ export default async function StockManagementPage() {
 
       {/* Statistiques */}
       {statistics && (
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
-            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-              <CardTitle className='text-sm font-medium'>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
                 Total Produits
               </CardTitle>
-              <Package className='h-4 w-4 text-muted-foreground' />
+              <Package className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className='text-2xl font-bold'>
+              <div className="text-2xl font-bold">
                 {statistics.totalProducts}
               </div>
-              <p className='text-xs text-muted-foreground'>Produits publiés</p>
+              <p className="text-xs text-muted-foreground">Produits publiés</p>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-              <CardTitle className='text-sm font-medium'>En Stock</CardTitle>
-              <CheckCircle className='h-4 w-4 text-green-600' />
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">En Stock</CardTitle>
+              <CheckCircle className="h-4 w-4 text-green-600" />
             </CardHeader>
             <CardContent>
-              <div className='text-2xl font-bold text-green-600'>
+              <div className="text-2xl font-bold text-green-600">
                 {statistics.inStockProducts}
               </div>
-              <p className='text-xs text-muted-foreground'>Stock suffisant</p>
+              <p className="text-xs text-muted-foreground">Stock suffisant</p>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-              <CardTitle className='text-sm font-medium'>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
                 Stock Faible
               </CardTitle>
-              <AlertTriangle className='h-4 w-4 text-orange-600' />
+              <AlertTriangle className="h-4 w-4 text-orange-600" />
             </CardHeader>
             <CardContent>
-              <div className='text-2xl font-bold text-orange-600'>
+              <div className="text-2xl font-bold text-orange-600">
                 {statistics.lowStockProducts}
               </div>
-              <p className='text-xs text-muted-foreground'>Attention requise</p>
+              <p className="text-xs text-muted-foreground">Attention requise</p>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-              <CardTitle className='text-sm font-medium'>Rupture</CardTitle>
-              <XCircle className='h-4 w-4 text-red-600' />
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Rupture</CardTitle>
+              <XCircle className="h-4 w-4 text-red-600" />
             </CardHeader>
             <CardContent>
-              <div className='text-2xl font-bold text-red-600'>
+              <div className="text-2xl font-bold text-red-600">
                 {statistics.outOfStockProducts}
               </div>
-              <p className='text-xs text-muted-foreground'>
+              <p className="text-xs text-muted-foreground">
                 Réapprovisionnement urgent
               </p>
             </CardContent>
@@ -126,28 +126,28 @@ export default async function StockManagementPage() {
       {statistics && (
         <Card>
           <CardHeader>
-            <CardTitle className='flex items-center gap-2'>
-              <DollarSign className='h-5 w-5' />
+            <CardTitle className="flex items-center gap-2">
+              <DollarSign className="h-5 w-5" />
               Valeur Totale du Stock
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className='text-3xl font-bold'>
+            <div className="text-3xl font-bold">
               {statistics.totalStockValue.toLocaleString('fr-FR')} €
             </div>
-            <p className='text-sm text-muted-foreground'>
+            <p className="text-sm text-muted-foreground">
               Valeur calculée au prix de vente actuel
             </p>
           </CardContent>
         </Card>
       )}
 
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Produits en rupture de stock */}
         <Card>
           <CardHeader>
-            <CardTitle className='flex items-center gap-2 text-red-600'>
-              <XCircle className='h-5 w-5' />
+            <CardTitle className="flex items-center gap-2 text-red-600">
+              <XCircle className="h-5 w-5" />
               Ruptures de Stock
             </CardTitle>
             <CardDescription>
@@ -156,31 +156,31 @@ export default async function StockManagementPage() {
           </CardHeader>
           <CardContent>
             {outOfStockProducts.length === 0 ? (
-              <div className='text-center py-8 text-muted-foreground'>
-                <CheckCircle className='h-12 w-12 mx-auto mb-4 text-green-600' />
+              <div className="text-center py-8 text-muted-foreground">
+                <CheckCircle className="h-12 w-12 mx-auto mb-4 text-green-600" />
                 <p>Aucune rupture de stock</p>
               </div>
             ) : (
-              <div className='space-y-3'>
+              <div className="space-y-3">
                 {outOfStockProducts.map((product) => (
                   <div
                     key={product.id}
-                    className='flex items-center justify-between p-3 border rounded-lg'
+                    className="flex items-center justify-between p-3 border rounded-lg"
                   >
-                    <div className='flex-1'>
-                      <h4 className='font-medium'>{product.name}</h4>
-                      <p className='text-sm text-muted-foreground'>
+                    <div className="flex-1">
+                      <h4 className="font-medium">{product.name}</h4>
+                      <p className="text-sm text-muted-foreground">
                         Stock: {product.countInStock}
                       </p>
                     </div>
-                    <div className='flex items-center gap-2'>
+                    <div className="flex items-center gap-2">
                       <StockStatus
                         countInStock={product.countInStock}
                         minStockLevel={0}
                         stockStatus={product.stockStatus}
-                        size='sm'
+                        size="sm"
                       />
-                      <Button asChild size='sm' variant='outline'>
+                      <Button asChild size="sm" variant="outline">
                         <Link href={`/admin/products/edit/${product.id}`}>
                           Modifier
                         </Link>
@@ -196,8 +196,8 @@ export default async function StockManagementPage() {
         {/* Produits avec stock faible */}
         <Card>
           <CardHeader>
-            <CardTitle className='flex items-center gap-2 text-orange-600'>
-              <AlertTriangle className='h-5 w-5' />
+            <CardTitle className="flex items-center gap-2 text-orange-600">
+              <AlertTriangle className="h-5 w-5" />
               Stock Faible
             </CardTitle>
             <CardDescription>
@@ -206,32 +206,32 @@ export default async function StockManagementPage() {
           </CardHeader>
           <CardContent>
             {lowStockProducts.length === 0 ? (
-              <div className='text-center py-8 text-muted-foreground'>
-                <CheckCircle className='h-12 w-12 mx-auto mb-4 text-green-600' />
+              <div className="text-center py-8 text-muted-foreground">
+                <CheckCircle className="h-12 w-12 mx-auto mb-4 text-green-600" />
                 <p>Aucun produit en stock faible</p>
               </div>
             ) : (
-              <div className='space-y-3'>
+              <div className="space-y-3">
                 {lowStockProducts.map((product) => (
                   <div
                     key={product.id}
-                    className='flex items-center justify-between p-3 border rounded-lg'
+                    className="flex items-center justify-between p-3 border rounded-lg"
                   >
-                    <div className='flex-1'>
-                      <h4 className='font-medium'>{product.name}</h4>
-                      <p className='text-sm text-muted-foreground'>
+                    <div className="flex-1">
+                      <h4 className="font-medium">{product.name}</h4>
+                      <p className="text-sm text-muted-foreground">
                         Stock: {product.countInStock} / Seuil:{' '}
                         {product.minStockLevel}
                       </p>
                     </div>
-                    <div className='flex items-center gap-2'>
+                    <div className="flex items-center gap-2">
                       <StockStatus
                         countInStock={product.countInStock}
                         minStockLevel={product.minStockLevel}
                         stockStatus={product.stockStatus}
-                        size='sm'
+                        size="sm"
                       />
-                      <Button asChild size='sm' variant='outline'>
+                      <Button asChild size="sm" variant="outline">
                         <Link href={`/admin/products/edit/${product.id}`}>
                           Modifier
                         </Link>
@@ -252,16 +252,16 @@ export default async function StockManagementPage() {
           <CardDescription>Gestion rapide des stocks</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className='flex flex-wrap gap-4'>
+          <div className="flex flex-wrap gap-4">
             <Button asChild>
-              <Link href='/admin/products'>
-                <Package className='h-4 w-4 mr-2' />
+              <Link href="/admin/products">
+                <Package className="h-4 w-4 mr-2" />
                 Gérer tous les produits
               </Link>
             </Button>
-            <Button asChild variant='outline'>
-              <Link href='/admin/products/create'>
-                <TrendingUp className='h-4 w-4 mr-2' />
+            <Button asChild variant="outline">
+              <Link href="/admin/products/create">
+                <TrendingUp className="h-4 w-4 mr-2" />
                 Ajouter un produit
               </Link>
             </Button>

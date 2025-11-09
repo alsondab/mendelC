@@ -111,11 +111,11 @@ export function NotificationSettings() {
 
   if (isLoadingSettings) {
     return (
-      <div className='space-y-4 sm:space-y-6'>
+      <div className="space-y-4 sm:space-y-6">
         <Card>
-          <CardContent className='p-6'>
-            <div className='flex items-center justify-center py-8'>
-              <div className='text-sm text-muted-foreground'>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-center py-8">
+              <div className="text-sm text-muted-foreground">
                 Chargement des paramètres...
               </div>
             </div>
@@ -126,31 +126,31 @@ export function NotificationSettings() {
   }
 
   return (
-    <div className='space-y-4 sm:space-y-6'>
+    <div className="space-y-4 sm:space-y-6">
       <Card>
-        <CardHeader className='pb-3 sm:pb-6'>
-          <CardTitle className='flex items-center gap-2 text-xl sm:text-2xl'>
-            <Bell className='h-4 w-4 sm:h-5 sm:w-5' />
+        <CardHeader className="pb-3 sm:pb-6">
+          <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
+            <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
             Configuration des Notifications
           </CardTitle>
-          <CardDescription className='text-xs sm:text-sm'>
+          <CardDescription className="text-xs sm:text-sm">
             Configurez comment et quand vous souhaitez recevoir des alertes de
             stock
           </CardDescription>
         </CardHeader>
-        <CardContent className='space-y-4 sm:space-y-6 p-4 sm:p-6'>
+        <CardContent className="space-y-4 sm:space-y-6 p-4 sm:p-6">
           {/* Notifications par email */}
-          <div className='space-y-3 sm:space-y-4'>
-            <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4'>
-              <div className='space-y-0.5 flex-1'>
-                <Label className='text-sm sm:text-base'>
+          <div className="space-y-3 sm:space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+              <div className="space-y-0.5 flex-1">
+                <Label className="text-sm sm:text-base">
                   Notifications par email
                 </Label>
-                <p className='text-xs sm:text-sm text-muted-foreground'>
+                <p className="text-xs sm:text-sm text-muted-foreground">
                   Recevez des alertes par email quand le stock est faible
                 </p>
               </div>
-              <div className='flex-shrink-0'>
+              <div className="flex-shrink-0">
                 <Switch
                   checked={settings.emailNotifications}
                   onCheckedChange={(checked) =>
@@ -164,13 +164,13 @@ export function NotificationSettings() {
             </div>
 
             {settings.emailNotifications && (
-              <div className='space-y-2 pt-2'>
-                <Label htmlFor='adminEmail' className='text-sm sm:text-base'>
+              <div className="space-y-2 pt-2">
+                <Label htmlFor="adminEmail" className="text-sm sm:text-base">
                   Email d&apos;administration
                 </Label>
                 <Input
-                  id='adminEmail'
-                  type='email'
+                  id="adminEmail"
+                  type="email"
                   value={settings.adminEmail}
                   onChange={(e) =>
                     setSettings((prev) => ({
@@ -178,8 +178,8 @@ export function NotificationSettings() {
                       adminEmail: e.target.value,
                     }))
                   }
-                  placeholder='admin@example.com'
-                  className='w-full text-sm sm:text-base'
+                  placeholder="admin@example.com"
+                  className="w-full text-sm sm:text-base"
                 />
               </div>
             )}
@@ -188,52 +188,52 @@ export function NotificationSettings() {
           <Separator />
 
           {/* Seuils de notification - Afficher les seuils globaux (lecture seule) */}
-          <div className='space-y-3 sm:space-y-4'>
-            <div className='flex items-center justify-between'>
-              <h3 className='text-base sm:text-lg font-medium'>
+          <div className="space-y-3 sm:space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base sm:text-lg font-medium">
                 Seuils de Notification
               </h3>
-              <Button variant='outline' size='sm' asChild>
-                <Link href='/admin/stock'>Modifier les seuils globaux</Link>
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/admin/stock">Modifier les seuils globaux</Link>
               </Button>
             </div>
-            <p className='text-xs sm:text-sm text-muted-foreground'>
+            <p className="text-xs sm:text-sm text-muted-foreground">
               Les seuils globaux définis dans la page Gestion des Stocks sont
               utilisés pour toutes les notifications. Vous pouvez les modifier
               depuis la page de gestion des stocks.
             </p>
 
-            <div className='grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4'>
-              <div className='space-y-2'>
-                <Label className='text-sm sm:text-base'>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <div className="space-y-2">
+                <Label className="text-sm sm:text-base">
                   Stock faible (avertissement)
                 </Label>
                 <Input
-                  type='number'
+                  type="number"
                   value={
                     globalThresholds?.globalLowStockThreshold ??
                     settings.lowStockThreshold
                   }
                   readOnly
-                  className='text-sm sm:text-base bg-muted/50 cursor-not-allowed'
+                  className="text-sm sm:text-base bg-muted/50 cursor-not-allowed"
                 />
-                <p className='text-xs text-muted-foreground'>
+                <p className="text-xs text-muted-foreground">
                   Avertir quand le stock ≤ cette valeur (seuil global)
                 </p>
               </div>
 
-              <div className='space-y-2'>
-                <Label className='text-sm sm:text-base'>Stock critique</Label>
+              <div className="space-y-2">
+                <Label className="text-sm sm:text-base">Stock critique</Label>
                 <Input
-                  type='number'
+                  type="number"
                   value={
                     globalThresholds?.globalCriticalStockThreshold ??
                     settings.criticalStockThreshold
                   }
                   readOnly
-                  className='text-sm sm:text-base bg-muted/50 cursor-not-allowed'
+                  className="text-sm sm:text-base bg-muted/50 cursor-not-allowed"
                 />
-                <p className='text-xs text-muted-foreground'>
+                <p className="text-xs text-muted-foreground">
                   Alerte critique quand le stock ≤ cette valeur (seuil global)
                 </p>
               </div>
@@ -243,12 +243,12 @@ export function NotificationSettings() {
           <Separator />
 
           {/* Notifications dans l'interface */}
-          <div className='space-y-3 sm:space-y-4'>
+          <div className="space-y-3 sm:space-y-4">
             <div>
-              <h3 className='text-base sm:text-lg font-medium mb-2'>
+              <h3 className="text-base sm:text-lg font-medium mb-2">
                 Notifications dans l&apos;Interface
               </h3>
-              <p className='text-xs sm:text-sm text-muted-foreground mb-4'>
+              <p className="text-xs sm:text-sm text-muted-foreground mb-4">
                 Choisissez le niveau de notification dans l&apos;interface admin
               </p>
             </div>
@@ -261,59 +261,59 @@ export function NotificationSettings() {
                   uiNotificationLevel: value as 'minimal' | 'standard' | 'full',
                 }))
               }
-              className='space-y-3 sm:space-y-4'
+              className="space-y-3 sm:space-y-4"
             >
-              <div className='flex items-start space-x-3 p-3 sm:p-4 border rounded-lg hover:bg-muted/50 transition-colors'>
-                <RadioGroupItem value='minimal' id='minimal' className='mt-1' />
-                <div className='flex-1 space-y-1'>
+              <div className="flex items-start space-x-3 p-3 sm:p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                <RadioGroupItem value="minimal" id="minimal" className="mt-1" />
+                <div className="flex-1 space-y-1">
                   <Label
-                    htmlFor='minimal'
-                    className='text-sm sm:text-base font-medium cursor-pointer'
+                    htmlFor="minimal"
+                    className="text-sm sm:text-base font-medium cursor-pointer"
                   >
                     Minimal
                   </Label>
-                  <p className='text-xs sm:text-sm text-muted-foreground'>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     Badge dans la navbar uniquement. Discret, ne perturbe pas le
                     travail.
                   </p>
                 </div>
               </div>
 
-              <div className='flex items-start space-x-3 p-3 sm:p-4 border rounded-lg hover:bg-muted/50 transition-colors bg-accent/30'>
+              <div className="flex items-start space-x-3 p-3 sm:p-4 border rounded-lg hover:bg-muted/50 transition-colors bg-accent/30">
                 <RadioGroupItem
-                  value='standard'
-                  id='standard'
-                  className='mt-1'
+                  value="standard"
+                  id="standard"
+                  className="mt-1"
                 />
-                <div className='flex-1 space-y-1'>
-                  <div className='flex items-center gap-2'>
+                <div className="flex-1 space-y-1">
+                  <div className="flex items-center gap-2">
                     <Label
-                      htmlFor='standard'
-                      className='text-sm sm:text-base font-medium cursor-pointer'
+                      htmlFor="standard"
+                      className="text-sm sm:text-base font-medium cursor-pointer"
                     >
                       Standard
                     </Label>
-                    <span className='text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 font-medium border border-blue-200 dark:border-blue-800'>
+                    <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 font-medium border border-blue-200 dark:border-blue-800">
                       Recommandé
                     </span>
                   </div>
-                  <p className='text-xs sm:text-sm text-muted-foreground'>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     Badge navbar + notification persistante (bottom-right).
                     Équilibre entre information et discrétion.
                   </p>
                 </div>
               </div>
 
-              <div className='flex items-start space-x-3 p-3 sm:p-4 border rounded-lg hover:bg-muted/50 transition-colors'>
-                <RadioGroupItem value='full' id='full' className='mt-1' />
-                <div className='flex-1 space-y-1'>
+              <div className="flex items-start space-x-3 p-3 sm:p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                <RadioGroupItem value="full" id="full" className="mt-1" />
+                <div className="flex-1 space-y-1">
                   <Label
-                    htmlFor='full'
-                    className='text-sm sm:text-base font-medium cursor-pointer'
+                    htmlFor="full"
+                    className="text-sm sm:text-base font-medium cursor-pointer"
                   >
                     Complet
                   </Label>
-                  <p className='text-xs sm:text-sm text-muted-foreground'>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     Badge navbar + notification persistante + toasts popup.
                     Maximum de visibilité pour réagir rapidement.
                   </p>
@@ -325,21 +325,21 @@ export function NotificationSettings() {
           <Separator />
 
           {/* Actions */}
-          <div className='flex flex-col sm:flex-row gap-4 pt-6 border-t border-border'>
+          <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-border">
             <Button
               onClick={handleSave}
               disabled={isLoading}
-              size='lg'
-              className='flex-1 h-12 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200'
+              size="lg"
+              className="flex-1 h-12 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200"
             >
               {isLoading ? (
-                <div className='flex items-center gap-2'>
-                  <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin' />
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   <span>Sauvegarde en cours...</span>
                 </div>
               ) : (
-                <div className='flex items-center gap-2'>
-                  <Save className='h-5 w-5' />
+                <div className="flex items-center gap-2">
+                  <Save className="h-5 w-5" />
                   <span>Sauvegarder</span>
                 </div>
               )}

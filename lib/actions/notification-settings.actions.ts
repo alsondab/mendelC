@@ -46,16 +46,31 @@ export async function getNotificationSettings(): Promise<{
       }
     }
 
-    const notificationSettings = setting.notificationSettings as Record<string, unknown>
+    const notificationSettings = setting.notificationSettings as Record<
+      string,
+      unknown
+    >
 
     // Migration : convertir les anciens champs enableBanner/enableToast en uiNotificationLevel
     let uiNotificationLevel: 'minimal' | 'standard' | 'full' = 'standard'
-    if (notificationSettings.uiNotificationLevel && typeof notificationSettings.uiNotificationLevel === 'string') {
-      uiNotificationLevel = notificationSettings.uiNotificationLevel as 'minimal' | 'standard' | 'full'
+    if (
+      notificationSettings.uiNotificationLevel &&
+      typeof notificationSettings.uiNotificationLevel === 'string'
+    ) {
+      uiNotificationLevel = notificationSettings.uiNotificationLevel as
+        | 'minimal'
+        | 'standard'
+        | 'full'
     } else {
       // Migration depuis les anciens champs
-      const enableBanner = typeof notificationSettings.enableBanner === 'boolean' ? notificationSettings.enableBanner : true
-      const enableToast = typeof notificationSettings.enableToast === 'boolean' ? notificationSettings.enableToast : true
+      const enableBanner =
+        typeof notificationSettings.enableBanner === 'boolean'
+          ? notificationSettings.enableBanner
+          : true
+      const enableToast =
+        typeof notificationSettings.enableToast === 'boolean'
+          ? notificationSettings.enableToast
+          : true
 
       if (!enableBanner && !enableToast) {
         uiNotificationLevel = 'minimal'
@@ -69,13 +84,41 @@ export async function getNotificationSettings(): Promise<{
     return {
       success: true,
       settings: {
-        emailNotifications: typeof notificationSettings.emailNotifications === 'boolean' ? notificationSettings.emailNotifications : true,
-        adminEmail: typeof notificationSettings.adminEmail === 'string' ? notificationSettings.adminEmail : 'admin@example.com',
-        globalLowStockThreshold: typeof notificationSettings.globalLowStockThreshold === 'number' ? notificationSettings.globalLowStockThreshold : (typeof notificationSettings.lowStockThreshold === 'number' ? notificationSettings.lowStockThreshold : 5),
-        globalCriticalStockThreshold: typeof notificationSettings.globalCriticalStockThreshold === 'number' ? notificationSettings.globalCriticalStockThreshold : (typeof notificationSettings.criticalStockThreshold === 'number' ? notificationSettings.criticalStockThreshold : 2),
-        lowStockThreshold: typeof notificationSettings.lowStockThreshold === 'number' ? notificationSettings.lowStockThreshold : 5,
-        criticalStockThreshold: typeof notificationSettings.criticalStockThreshold === 'number' ? notificationSettings.criticalStockThreshold : 2,
-        notificationFrequency: (typeof notificationSettings.notificationFrequency === 'string' && (notificationSettings.notificationFrequency === 'realtime' || notificationSettings.notificationFrequency === 'hourly' || notificationSettings.notificationFrequency === 'daily')) ? notificationSettings.notificationFrequency : 'hourly',
+        emailNotifications:
+          typeof notificationSettings.emailNotifications === 'boolean'
+            ? notificationSettings.emailNotifications
+            : true,
+        adminEmail:
+          typeof notificationSettings.adminEmail === 'string'
+            ? notificationSettings.adminEmail
+            : 'admin@example.com',
+        globalLowStockThreshold:
+          typeof notificationSettings.globalLowStockThreshold === 'number'
+            ? notificationSettings.globalLowStockThreshold
+            : typeof notificationSettings.lowStockThreshold === 'number'
+              ? notificationSettings.lowStockThreshold
+              : 5,
+        globalCriticalStockThreshold:
+          typeof notificationSettings.globalCriticalStockThreshold === 'number'
+            ? notificationSettings.globalCriticalStockThreshold
+            : typeof notificationSettings.criticalStockThreshold === 'number'
+              ? notificationSettings.criticalStockThreshold
+              : 2,
+        lowStockThreshold:
+          typeof notificationSettings.lowStockThreshold === 'number'
+            ? notificationSettings.lowStockThreshold
+            : 5,
+        criticalStockThreshold:
+          typeof notificationSettings.criticalStockThreshold === 'number'
+            ? notificationSettings.criticalStockThreshold
+            : 2,
+        notificationFrequency:
+          typeof notificationSettings.notificationFrequency === 'string' &&
+          (notificationSettings.notificationFrequency === 'realtime' ||
+            notificationSettings.notificationFrequency === 'hourly' ||
+            notificationSettings.notificationFrequency === 'daily')
+            ? notificationSettings.notificationFrequency
+            : 'hourly',
         uiNotificationLevel,
       },
     }
@@ -105,10 +148,7 @@ export async function saveNotificationSettings(
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (
-      settings.emailNotifications &&
-      !emailRegex.test(settings.adminEmail)
-    ) {
+    if (settings.emailNotifications && !emailRegex.test(settings.adminEmail)) {
       throw new Error('Format email invalide')
     }
 
@@ -148,4 +188,3 @@ export async function saveNotificationSettings(
     }
   }
 }
-

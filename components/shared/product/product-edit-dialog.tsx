@@ -69,45 +69,45 @@ export function ProductEditDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className='max-w-[95vw] sm:max-w-4xl lg:max-w-6xl max-h-[95vh] overflow-y-auto p-0 gap-0 w-full'>
+      <DialogContent className="max-w-[95vw] sm:max-w-4xl lg:max-w-6xl max-h-[95vh] overflow-y-auto p-0 gap-0 w-full">
         {!product || isLoading ? (
           <>
-            <DialogHeader className='p-4 sm:p-6'>
-              <DialogTitle className='sr-only'>
+            <DialogHeader className="p-4 sm:p-6">
+              <DialogTitle className="sr-only">
                 {isLoading ? 'Chargement du produit' : 'Modifier le produit'}
               </DialogTitle>
-              <DialogDescription className='sr-only'>
+              <DialogDescription className="sr-only">
                 {isLoading
                   ? 'Chargement des données du produit'
                   : 'Formulaire de modification de produit'}
               </DialogDescription>
             </DialogHeader>
-            <div className='flex items-center justify-center h-64'>
-              <Loader2 className='h-8 w-8 animate-spin text-primary' />
+            <div className="flex items-center justify-center h-64">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
           </>
         ) : (
-          <AnimatePresence mode='wait'>
+          <AnimatePresence mode="wait">
             <motion.div
               key={product._id}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              className='relative'
+              className="relative"
             >
               {/* Header */}
-              <DialogHeader className='sticky top-0 z-10 bg-background border-b border-border p-4 sm:p-6'>
-                <div className='flex items-start justify-between gap-2 sm:gap-4'>
-                  <div className='flex-1 min-w-0 pr-2'>
-                    <DialogTitle className='text-lg sm:text-xl md:text-2xl font-bold mb-1 sm:mb-2 line-clamp-2'>
+              <DialogHeader className="sticky top-0 z-10 bg-background border-b border-border p-4 sm:p-6">
+                <div className="flex items-start justify-between gap-2 sm:gap-4">
+                  <div className="flex-1 min-w-0 pr-2">
+                    <DialogTitle className="text-lg sm:text-xl md:text-2xl font-bold mb-1 sm:mb-2 line-clamp-2">
                       Modifier le produit
                     </DialogTitle>
-                    <DialogDescription className='sr-only'>
+                    <DialogDescription className="sr-only">
                       Formulaire de modification pour {product.name}
                     </DialogDescription>
-                    <div className='flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-muted-foreground'>
-                      <span className='font-medium truncate'>
+                    <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-muted-foreground">
+                      <span className="font-medium truncate">
                         {product.name}
                       </span>
                     </div>
@@ -116,19 +116,19 @@ export function ProductEditDialog({
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => onOpenChange(false)}
-                    className='flex-shrink-0 p-1.5 sm:p-2 rounded-full hover:bg-muted transition-colors'
-                    aria-label='Fermer'
+                    className="flex-shrink-0 p-1.5 sm:p-2 rounded-full hover:bg-muted transition-colors"
+                    aria-label="Fermer"
                   >
-                    <X className='h-4 w-4 sm:h-5 sm:w-5' />
+                    <X className="h-4 w-4 sm:h-5 sm:w-5" />
                   </motion.button>
                 </div>
               </DialogHeader>
 
               {/* Form Content */}
-              <div className='p-2 sm:p-4 md:p-6'>
+              <div className="p-2 sm:p-4 md:p-6">
                 <ProductForm
                   key={product._id}
-                  type='Update'
+                  type="Update"
                   product={product}
                   productId={product._id}
                   onSuccess={handleSuccess}

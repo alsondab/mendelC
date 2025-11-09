@@ -34,8 +34,8 @@ export default function CartButton() {
       )}
       aria-label={t('Header.Cart') || 'Panier'}
     >
-      <div className='relative'>
-        <ShoppingCartIcon className='h-5 w-5 text-foreground' />
+      <div className="relative">
+        <ShoppingCartIcon className="h-5 w-5 text-foreground" />
 
         {/* Cart Badge */}
         {isMounted && cartItemsCount > 0 && (
@@ -54,7 +54,7 @@ export default function CartButton() {
       </div>
 
       {/* Cart Text - Desktop Only */}
-      <span className='hidden md:block font-medium text-sm'>
+      <span className="hidden md:block font-medium text-sm">
         {t('Header.Cart')}
       </span>
     </button>

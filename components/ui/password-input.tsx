@@ -26,17 +26,19 @@ export default function PasswordInput({
         className={cn('pr-10', className)}
       />
       <button
-        type='button'
+        type="button"
         aria-pressed={isVisible}
         aria-label={isVisible ? t('Hide password') : t('Show password')}
         title={isVisible ? t('Hide password') : t('Show password')}
         onClick={() => setIsVisible((v) => !v)}
-        className='absolute inset-y-0 right-0 px-2 flex items-center text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md'
+        className="absolute inset-y-0 right-0 px-2 flex items-center text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md"
       >
-        {isVisible ? <EyeOff className='h-4 w-4' /> : <Eye className='h-4 w-4' />}
+        {isVisible ? (
+          <EyeOff className="h-4 w-4" />
+        ) : (
+          <Eye className="h-4 w-4" />
+        )}
       </button>
     </div>
   )
 }
-
-

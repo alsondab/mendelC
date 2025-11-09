@@ -55,11 +55,11 @@ const OrdersList = () => {
   useEffect(() => {
     startTransition(async () => {
       try {
-      const orders = await getAllOrders({
-        page: 1,
-      })
+        const orders = await getAllOrders({
+          page: 1,
+        })
         if (orders) {
-      setData(orders)
+          setData(orders)
         } else {
           console.error('getAllOrders returned no data')
         }
@@ -71,32 +71,38 @@ const OrdersList = () => {
 
   if (!data) {
     return (
-      <div className='p-2 sm:p-4'>
-        <div className='space-y-3 sm:space-y-4'>
+      <div className="p-2 sm:p-4">
+        <div className="space-y-3 sm:space-y-4">
           {/* Header Section */}
-          <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3'>
-            <Skeleton className='h-8 w-32' />
-            <Skeleton className='h-5 w-48' />
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <Skeleton className="h-8 w-32" />
+            <Skeleton className="h-5 w-48" />
           </div>
 
           {/* Table Section */}
-          <div className='overflow-x-auto'>
+          <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className='text-xs sm:text-sm'>{t('ID')}</TableHead>
-                  <TableHead className='text-xs sm:text-sm'>{t('Date')}</TableHead>
-                  <TableHead className='text-xs sm:text-sm'>{t('Client')}</TableHead>
-                  <TableHead className='text-right text-xs sm:text-sm'>
+                  <TableHead className="text-xs sm:text-sm">
+                    {t('ID')}
+                  </TableHead>
+                  <TableHead className="text-xs sm:text-sm">
+                    {t('Date')}
+                  </TableHead>
+                  <TableHead className="text-xs sm:text-sm">
+                    {t('Client')}
+                  </TableHead>
+                  <TableHead className="text-right text-xs sm:text-sm">
                     {t('Total')}
                   </TableHead>
-                  <TableHead className='hidden sm:table-cell text-xs sm:text-sm'>
+                  <TableHead className="hidden sm:table-cell text-xs sm:text-sm">
                     {t('Paid')}
                   </TableHead>
-                  <TableHead className='hidden md:table-cell text-xs sm:text-sm'>
+                  <TableHead className="hidden md:table-cell text-xs sm:text-sm">
                     {t('Delivered')}
                   </TableHead>
-                  <TableHead className='w-[120px] sm:w-[140px] text-xs sm:text-sm'>
+                  <TableHead className="w-[120px] sm:w-[140px] text-xs sm:text-sm">
                     {t('Actions')}
                   </TableHead>
                 </TableRow>
@@ -105,25 +111,25 @@ const OrdersList = () => {
                 {[...Array(5)].map((_, index) => (
                   <TableRow key={index}>
                     <TableCell>
-                      <Skeleton className='h-4 w-20' />
+                      <Skeleton className="h-4 w-20" />
                     </TableCell>
                     <TableCell>
-                      <Skeleton className='h-4 w-24' />
+                      <Skeleton className="h-4 w-24" />
                     </TableCell>
                     <TableCell>
-                      <Skeleton className='h-4 w-32' />
+                      <Skeleton className="h-4 w-32" />
                     </TableCell>
                     <TableCell>
-                      <Skeleton className='h-4 w-16' />
+                      <Skeleton className="h-4 w-16" />
                     </TableCell>
-                    <TableCell className='hidden sm:table-cell'>
-                      <Skeleton className='h-4 w-20' />
+                    <TableCell className="hidden sm:table-cell">
+                      <Skeleton className="h-4 w-20" />
                     </TableCell>
-                    <TableCell className='hidden md:table-cell'>
-                      <Skeleton className='h-4 w-20' />
+                    <TableCell className="hidden md:table-cell">
+                      <Skeleton className="h-4 w-20" />
                     </TableCell>
                     <TableCell>
-                      <Skeleton className='h-8 w-20' />
+                      <Skeleton className="h-8 w-20" />
                     </TableCell>
                   </TableRow>
                 ))}
@@ -136,34 +142,38 @@ const OrdersList = () => {
   }
 
   return (
-    <div className='p-2 sm:p-4'>
-      <div className='space-y-3 sm:space-y-4'>
+    <div className="p-2 sm:p-4">
+      <div className="space-y-3 sm:space-y-4">
         {/* Header Section */}
-        <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3'>
-          <h1 className='font-bold text-lg sm:text-xl'>{t('Title')}</h1>
-          <div className='text-sm text-muted-foreground'>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <h1 className="font-bold text-lg sm:text-xl">{t('Title')}</h1>
+          <div className="text-sm text-muted-foreground">
             {t('OrdersFound', { count: data.data.length })}
           </div>
         </div>
 
         {/* Table Section */}
-        <div className='overflow-x-auto'>
+        <div className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className='text-xs sm:text-sm'>{t('ID')}</TableHead>
-                <TableHead className='text-xs sm:text-sm'>{t('Date')}</TableHead>
-                <TableHead className='text-xs sm:text-sm'>{t('Client')}</TableHead>
-                <TableHead className='text-right text-xs sm:text-sm'>
+                <TableHead className="text-xs sm:text-sm">{t('ID')}</TableHead>
+                <TableHead className="text-xs sm:text-sm">
+                  {t('Date')}
+                </TableHead>
+                <TableHead className="text-xs sm:text-sm">
+                  {t('Client')}
+                </TableHead>
+                <TableHead className="text-right text-xs sm:text-sm">
                   {t('Total')}
                 </TableHead>
-                <TableHead className='hidden sm:table-cell text-xs sm:text-sm'>
+                <TableHead className="hidden sm:table-cell text-xs sm:text-sm">
                   {t('Paid')}
                 </TableHead>
-                <TableHead className='hidden md:table-cell text-xs sm:text-sm'>
+                <TableHead className="hidden md:table-cell text-xs sm:text-sm">
                   {t('Delivered')}
                 </TableHead>
-                <TableHead className='w-[120px] sm:w-[140px] text-xs sm:text-sm'>
+                <TableHead className="w-[120px] sm:w-[140px] text-xs sm:text-sm">
                   {t('Actions')}
                 </TableHead>
               </TableRow>
@@ -171,48 +181,48 @@ const OrdersList = () => {
             <TableBody>
               {data.data.map((order: IOrderList) => (
                 <TableRow key={order._id}>
-                  <TableCell className='text-xs sm:text-sm font-mono'>
+                  <TableCell className="text-xs sm:text-sm font-mono">
                     {formatId(order._id)}
                   </TableCell>
-                  <TableCell className='text-xs sm:text-sm'>
-                    <div className='flex flex-col'>
-                      <span className='font-medium'>
+                  <TableCell className="text-xs sm:text-sm">
+                    <div className="flex flex-col">
+                      <span className="font-medium">
                         {formatDateTime(order.createdAt!).dateOnly}
                       </span>
-                      <span className='text-muted-foreground text-xs'>
+                      <span className="text-muted-foreground text-xs">
                         {formatDateTime(order.createdAt!).timeOnly}
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell className='text-xs sm:text-sm'>
-                    <div className='flex flex-col'>
-                      <span className='font-medium'>
+                  <TableCell className="text-xs sm:text-sm">
+                    <div className="flex flex-col">
+                      <span className="font-medium">
                         {order.user ? order.user.name : tAdmin('Deleted User')}
                       </span>
-                      <div className='flex flex-wrap gap-1 mt-1'>
+                      <div className="flex flex-wrap gap-1 mt-1">
                         {order.isCancelled && (
-                          <span className='px-1.5 py-0.5 text-xs bg-red-100 text-red-800 rounded-full'>
+                          <span className="px-1.5 py-0.5 text-xs bg-red-100 text-red-800 rounded-full">
                             {t('Cancelled')}
                           </span>
                         )}
                         {order.isPaid && !order.isCancelled && (
-                          <span className='px-1.5 py-0.5 text-xs bg-green-100 text-green-800 rounded-full'>
+                          <span className="px-1.5 py-0.5 text-xs bg-green-100 text-green-800 rounded-full">
                             {t('Paid')}
                           </span>
                         )}
                         {order.isDelivered && !order.isCancelled && (
-                          <span className='px-1.5 py-0.5 text-xs bg-blue-100 text-blue-800 rounded-full'>
+                          <span className="px-1.5 py-0.5 text-xs bg-blue-100 text-blue-800 rounded-full">
                             {t('Delivered')}
                           </span>
                         )}
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className='text-right text-xs sm:text-sm font-medium'>
+                  <TableCell className="text-right text-xs sm:text-sm font-medium">
                     <ProductPrice price={order.totalPrice} plain />
                   </TableCell>
-                  <TableCell className='hidden sm:table-cell'>
-                    <div className='flex items-center gap-2 text-xs sm:text-sm'>
+                  <TableCell className="hidden sm:table-cell">
+                    <div className="flex items-center gap-2 text-xs sm:text-sm">
                       <div
                         className={`w-2 h-2 rounded-full ${
                           order.isCancelled
@@ -229,8 +239,8 @@ const OrdersList = () => {
                           : t('NotPaid')}
                     </div>
                   </TableCell>
-                  <TableCell className='hidden md:table-cell'>
-                    <div className='flex items-center gap-2 text-xs sm:text-sm'>
+                  <TableCell className="hidden md:table-cell">
+                    <div className="flex items-center gap-2 text-xs sm:text-sm">
                       <div
                         className={`w-2 h-2 rounded-full ${
                           order.isCancelled
@@ -248,11 +258,11 @@ const OrdersList = () => {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className='flex flex-col sm:flex-row gap-1'>
+                    <div className="flex flex-col sm:flex-row gap-1">
                       <Button
-                        variant='outline'
-                        size='sm'
-                        className='text-xs'
+                        variant="outline"
+                        size="sm"
+                        className="text-xs"
                         onClick={() => {
                           setSelectedOrderId(order._id)
                           setDialogOpen(true)
@@ -275,7 +285,7 @@ const OrdersList = () => {
 
         {/* Pagination */}
         {data.totalPages > 1 && (
-          <div className='pt-4'>
+          <div className="pt-4">
             <Pagination
               page={page.toString()}
               totalPages={data.totalPages}

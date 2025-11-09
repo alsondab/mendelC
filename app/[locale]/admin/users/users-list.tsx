@@ -70,26 +70,32 @@ const UsersList = () => {
 
   if (!data) {
     return (
-      <div className='p-2 sm:p-4'>
-        <div className='space-y-3 sm:space-y-4'>
+      <div className="p-2 sm:p-4">
+        <div className="space-y-3 sm:space-y-4">
           {/* Header Section */}
-          <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3'>
-            <Skeleton className='h-8 w-32' />
-            <Skeleton className='h-5 w-48' />
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <Skeleton className="h-8 w-32" />
+            <Skeleton className="h-5 w-48" />
           </div>
 
           {/* Table Section */}
-          <div className='overflow-x-auto'>
+          <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className='text-xs sm:text-sm'>{t('ID')}</TableHead>
-                  <TableHead className='text-xs sm:text-sm'>{t('Name')}</TableHead>
-                  <TableHead className='text-xs sm:text-sm'>{t('Email')}</TableHead>
-                  <TableHead className='hidden sm:table-cell text-xs sm:text-sm'>
+                  <TableHead className="text-xs sm:text-sm">
+                    {t('ID')}
+                  </TableHead>
+                  <TableHead className="text-xs sm:text-sm">
+                    {t('Name')}
+                  </TableHead>
+                  <TableHead className="text-xs sm:text-sm">
+                    {t('Email')}
+                  </TableHead>
+                  <TableHead className="hidden sm:table-cell text-xs sm:text-sm">
                     {t('Role')}
                   </TableHead>
-                  <TableHead className='w-[120px] sm:w-[140px] text-xs sm:text-sm'>
+                  <TableHead className="w-[120px] sm:w-[140px] text-xs sm:text-sm">
                     {t('Actions')}
                   </TableHead>
                 </TableRow>
@@ -98,19 +104,19 @@ const UsersList = () => {
                 {[...Array(5)].map((_, index) => (
                   <TableRow key={index}>
                     <TableCell>
-                      <Skeleton className='h-4 w-20' />
+                      <Skeleton className="h-4 w-20" />
                     </TableCell>
                     <TableCell>
-                      <Skeleton className='h-4 w-32' />
+                      <Skeleton className="h-4 w-32" />
                     </TableCell>
                     <TableCell>
-                      <Skeleton className='h-4 w-40' />
+                      <Skeleton className="h-4 w-40" />
                     </TableCell>
-                    <TableCell className='hidden sm:table-cell'>
-                      <Skeleton className='h-4 w-16' />
+                    <TableCell className="hidden sm:table-cell">
+                      <Skeleton className="h-4 w-16" />
                     </TableCell>
                     <TableCell>
-                      <Skeleton className='h-8 w-20' />
+                      <Skeleton className="h-8 w-20" />
                     </TableCell>
                   </TableRow>
                 ))}
@@ -123,28 +129,32 @@ const UsersList = () => {
   }
 
   return (
-    <div className='p-2 sm:p-4'>
-      <div className='space-y-3 sm:space-y-4'>
+    <div className="p-2 sm:p-4">
+      <div className="space-y-3 sm:space-y-4">
         {/* Header Section */}
-        <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3'>
-          <h1 className='font-bold text-lg sm:text-xl'>{t('Title')}</h1>
-          <div className='text-sm text-muted-foreground'>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <h1 className="font-bold text-lg sm:text-xl">{t('Title')}</h1>
+          <div className="text-sm text-muted-foreground">
             {t('UsersFound', { count: data?.data.length || 0 })}
           </div>
         </div>
 
         {/* Table Section */}
-        <div className='overflow-x-auto'>
+        <div className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className='text-xs sm:text-sm'>{t('ID')}</TableHead>
-                <TableHead className='text-xs sm:text-sm'>{t('Name')}</TableHead>
-                <TableHead className='text-xs sm:text-sm'>{t('Email')}</TableHead>
-                <TableHead className='hidden sm:table-cell text-xs sm:text-sm'>
+                <TableHead className="text-xs sm:text-sm">{t('ID')}</TableHead>
+                <TableHead className="text-xs sm:text-sm">
+                  {t('Name')}
+                </TableHead>
+                <TableHead className="text-xs sm:text-sm">
+                  {t('Email')}
+                </TableHead>
+                <TableHead className="hidden sm:table-cell text-xs sm:text-sm">
                   {t('Role')}
                 </TableHead>
-                <TableHead className='w-[120px] sm:w-[140px] text-xs sm:text-sm'>
+                <TableHead className="w-[120px] sm:w-[140px] text-xs sm:text-sm">
                   {t('Actions')}
                 </TableHead>
               </TableRow>
@@ -152,23 +162,23 @@ const UsersList = () => {
             <TableBody>
               {data?.data.map((user: IUser) => (
                 <TableRow key={user._id}>
-                  <TableCell className='text-xs sm:text-sm font-mono'>
+                  <TableCell className="text-xs sm:text-sm font-mono">
                     {formatId(user._id)}
                   </TableCell>
-                  <TableCell className='text-xs sm:text-sm'>
-                    <div className='flex flex-col'>
-                      <span className='font-medium'>{user.name}</span>
-                      <span className='text-xs text-muted-foreground sm:hidden'>
+                  <TableCell className="text-xs sm:text-sm">
+                    <div className="flex flex-col">
+                      <span className="font-medium">{user.name}</span>
+                      <span className="text-xs text-muted-foreground sm:hidden">
                         {user.role}
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell className='text-xs sm:text-sm'>
-                    <span className='truncate block max-w-[150px] sm:max-w-none'>
+                  <TableCell className="text-xs sm:text-sm">
+                    <span className="truncate block max-w-[150px] sm:max-w-none">
                       {user.email}
                     </span>
                   </TableCell>
-                  <TableCell className='hidden sm:table-cell'>
+                  <TableCell className="hidden sm:table-cell">
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-medium ${
                         user.role === 'Admin'
@@ -186,11 +196,11 @@ const UsersList = () => {
                     </span>
                   </TableCell>
                   <TableCell>
-                    <div className='flex flex-col sm:flex-row gap-1'>
+                    <div className="flex flex-col sm:flex-row gap-1">
                       <Button
-                        variant='outline'
-                        size='sm'
-                        className='text-xs'
+                        variant="outline"
+                        size="sm"
+                        className="text-xs"
                         onClick={() => {
                           setSelectedUser(user)
                           setDialogOpen(true)
@@ -213,7 +223,7 @@ const UsersList = () => {
 
         {/* Pagination */}
         {data?.totalPages > 1 && (
-          <div className='pt-4'>
+          <div className="pt-4">
             <Pagination
               page={page.toString()}
               totalPages={data?.totalPages}

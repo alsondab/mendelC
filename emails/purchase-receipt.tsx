@@ -82,9 +82,9 @@ export default async function PurchaseReceiptEmail({
       </Preview>
       <Tailwind>
         <Head />
-        <Body className='font-sans bg-white'>
-          <Container className='max-w-xl'>
-            <Heading className='text-2xl font-bold text-center mb-6'>
+        <Body className="font-sans bg-white">
+          <Container className="max-w-xl">
+            <Heading className="text-2xl font-bold text-center mb-6">
               {isCashOnDeliveryUnpaid
                 ? '🎉 Commande Confirmée !'
                 : '✅ Paiement Confirmé !'}
@@ -92,11 +92,11 @@ export default async function PurchaseReceiptEmail({
 
             {/* Informations de paiement */}
             {isCashOnDeliveryUnpaid && (
-              <Section className='bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6'>
-                <Text className='text-orange-800 font-semibold text-center m-0 mb-2'>
+              <Section className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
+                <Text className="text-orange-800 font-semibold text-center m-0 mb-2">
                   💳 Paiement à la livraison
                 </Text>
-                <Text className='text-orange-700 text-center text-sm m-0'>
+                <Text className="text-orange-700 text-center text-sm m-0">
                   Please have the exact amount ready when your order arrives.
                   You&apos;ll receive a receipt upon delivery.
                 </Text>
@@ -104,11 +104,11 @@ export default async function PurchaseReceiptEmail({
             )}
 
             {isCashOnDeliveryPaid && (
-              <Section className='bg-green-50 border border-green-200 rounded-lg p-4 mb-6'>
-                <Text className='text-green-800 font-semibold text-center m-0 mb-2'>
+              <Section className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                <Text className="text-green-800 font-semibold text-center m-0 mb-2">
                   ✅ Payment Received
                 </Text>
-                <Text className='text-green-700 text-center text-sm m-0'>
+                <Text className="text-green-700 text-center text-sm m-0">
                   Thank you! Your payment has been received and your order is
                   being processed.
                 </Text>
@@ -117,11 +117,11 @@ export default async function PurchaseReceiptEmail({
 
             {/* Salutation personnalisée */}
             {isCashOnDeliveryUnpaid && (
-              <Section className='text-center mb-6'>
-                <Text className='text-lg text-gray-800 m-0 mb-2'>
+              <Section className="text-center mb-6">
+                <Text className="text-lg text-gray-800 m-0 mb-2">
                   Hi {(order.user as { name: string }).name}! 👋
                 </Text>
-                <Text className='text-gray-600 m-0'>
+                <Text className="text-gray-600 m-0">
                   We&apos;re excited to confirm your order and get it ready for
                   delivery.
                 </Text>
@@ -129,11 +129,11 @@ export default async function PurchaseReceiptEmail({
             )}
 
             {isCashOnDeliveryPaid && (
-              <Section className='text-center mb-6'>
-                <Text className='text-lg text-gray-800 m-0 mb-2'>
+              <Section className="text-center mb-6">
+                <Text className="text-lg text-gray-800 m-0 mb-2">
                   Hi {(order.user as { name: string }).name}! 👋
                 </Text>
-                <Text className='text-gray-600 m-0'>
+                <Text className="text-gray-600 m-0">
                   Great news! Your payment has been confirmed and your order is
                   being prepared.
                 </Text>
@@ -141,29 +141,29 @@ export default async function PurchaseReceiptEmail({
             )}
 
             {/* Détails de la commande */}
-            <Section className='bg-gray-50 rounded-lg p-4 mb-6'>
+            <Section className="bg-gray-50 rounded-lg p-4 mb-6">
               <Row>
                 <Column>
-                  <Text className='mb-0 text-gray-500 text-xs font-medium uppercase tracking-wide m-0 mb-1'>
+                  <Text className="mb-0 text-gray-500 text-xs font-medium uppercase tracking-wide m-0 mb-1">
                     ID de Commande
                   </Text>
-                  <Text className='mt-0 font-mono text-sm m-0'>
+                  <Text className="mt-0 font-mono text-sm m-0">
                     #{order._id.toString().slice(-8)}
                   </Text>
                 </Column>
                 <Column>
-                  <Text className='mb-0 text-gray-500 text-xs font-medium uppercase tracking-wide m-0 mb-1'>
+                  <Text className="mb-0 text-gray-500 text-xs font-medium uppercase tracking-wide m-0 mb-1">
                     Date de Commande
                   </Text>
-                  <Text className='mt-0 text-sm m-0'>
+                  <Text className="mt-0 text-sm m-0">
                     {dateFormatter.format(order.createdAt)}
                   </Text>
                 </Column>
                 <Column>
-                  <Text className='mb-0 text-gray-500 text-xs font-medium uppercase tracking-wide m-0 mb-1'>
+                  <Text className="mb-0 text-gray-500 text-xs font-medium uppercase tracking-wide m-0 mb-1">
                     {isCashOnDeliveryUnpaid ? 'Livraison Prévue' : 'Total Payé'}
                   </Text>
-                  <Text className='mt-0 text-sm m-0'>
+                  <Text className="mt-0 text-sm m-0">
                     {isCashOnDeliveryUnpaid
                       ? dateFormatter.format(order.expectedDeliveryDate)
                       : formatCurrency(order.totalPrice)}
@@ -173,17 +173,17 @@ export default async function PurchaseReceiptEmail({
             </Section>
 
             {/* Produits commandés */}
-            <Section className='border border-solid border-gray-300 rounded-lg p-4 md:p-6 my-4'>
-              <Text className='font-bold text-lg mb-4 text-center'>
+            <Section className="border border-solid border-gray-300 rounded-lg p-4 md:p-6 my-4">
+              <Text className="font-bold text-lg mb-4 text-center">
                 📦 Articles Commandés
               </Text>
               {order.items.map((item) => (
-                <Row key={item.product} className='mt-6 first:mt-0'>
-                  <Column className='w-20'>
+                <Row key={item.product} className="mt-6 first:mt-0">
+                  <Column className="w-20">
                     <Img
-                      width='80'
+                      width="80"
                       alt={item.name}
-                      className='rounded'
+                      className="rounded"
                       src={
                         item.image.startsWith('/')
                           ? `${site.url}${item.image}`
@@ -191,14 +191,14 @@ export default async function PurchaseReceiptEmail({
                       }
                     />
                   </Column>
-                  <Column className='align-top'>
-                    <Text className='mx-2 my-0 font-medium'>{item.name}</Text>
-                    <Text className='mx-2 my-0 text-sm text-gray-600'>
+                  <Column className="align-top">
+                    <Text className="mx-2 my-0 font-medium">{item.name}</Text>
+                    <Text className="mx-2 my-0 text-sm text-gray-600">
                       Quantité: {item.quantity}
                     </Text>
                   </Column>
-                  <Column align='right' className='align-top'>
-                    <Text className='m-0 font-semibold'>
+                  <Column align="right" className="align-top">
+                    <Text className="m-0 font-semibold">
                       {formatCurrency(item.price * item.quantity)}
                     </Text>
                   </Column>
@@ -207,27 +207,27 @@ export default async function PurchaseReceiptEmail({
             </Section>
 
             {/* Résumé financier */}
-            <Section className='bg-blue-50 border border-blue-200 rounded-lg p-4 md:p-6 my-4'>
-              <Text className='font-bold text-lg mb-4 text-center text-blue-800'>
+            <Section className="bg-blue-50 border border-blue-200 rounded-lg p-4 md:p-6 my-4">
+              <Text className="font-bold text-lg mb-4 text-center text-blue-800">
                 💰 Résumé de Commande
               </Text>
               {[
                 { name: 'Sous-total Articles', price: order.itemsPrice },
                 { name: 'Livraison & Manutention', price: order.shippingPrice },
               ].map(({ name, price }) => (
-                <Row key={name} className='py-1'>
+                <Row key={name} className="py-1">
                   <Column>{name}:</Column>
-                  <Column align='right' width={70} className='align-top'>
-                    <Text className='m-0'>{formatCurrency(price)}</Text>
+                  <Column align="right" width={70} className="align-top">
+                    <Text className="m-0">{formatCurrency(price)}</Text>
                   </Column>
                 </Row>
               ))}
-              <Row className='py-2 border-t border-blue-300 mt-2'>
-                <Column className='font-bold text-lg'>
+              <Row className="py-2 border-t border-blue-300 mt-2">
+                <Column className="font-bold text-lg">
                   {isCashOnDeliveryUnpaid ? 'Montant Total Dû' : 'Total Payé'}:
                 </Column>
-                <Column align='right' width={70} className='align-top'>
-                  <Text className='m-0 font-bold text-lg text-blue-600'>
+                <Column align="right" width={70} className="align-top">
+                  <Text className="m-0 font-bold text-lg text-blue-600">
                     {formatCurrency(order.totalPrice)}
                   </Text>
                 </Column>
@@ -236,41 +236,41 @@ export default async function PurchaseReceiptEmail({
 
             {/* Informations de livraison pour Paiement à la livraison non payé */}
             {isCashOnDeliveryUnpaid && (
-              <Section className='bg-yellow-50 border border-yellow-200 rounded-lg p-4 md:p-6 my-4'>
-                <Text className='font-bold text-lg mb-4 text-center text-yellow-800'>
+              <Section className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 md:p-6 my-4">
+                <Text className="font-bold text-lg mb-4 text-center text-yellow-800">
                   🚚 Delivery Information
                 </Text>
                 <Row>
                   <Column>
-                    <Text className='mb-0 text-gray-600 text-sm font-medium m-0 mb-1'>
+                    <Text className="mb-0 text-gray-600 text-sm font-medium m-0 mb-1">
                       Delivery Address
                     </Text>
-                    <Text className='mt-0 text-sm m-0'>
+                    <Text className="mt-0 text-sm m-0">
                       {order.shippingAddress.fullName}
                     </Text>
-                    <Text className='mt-0 text-sm m-0'>
+                    <Text className="mt-0 text-sm m-0">
                       {order.shippingAddress.street}
                     </Text>
-                    <Text className='mt-0 text-sm m-0'>
+                    <Text className="mt-0 text-sm m-0">
                       {order.shippingAddress.city},{' '}
                       {order.shippingAddress.province}{' '}
                       {order.shippingAddress.postalCode}
                     </Text>
-                    <Text className='mt-0 text-sm m-0'>
+                    <Text className="mt-0 text-sm m-0">
                       {order.shippingAddress.country}
                     </Text>
                   </Column>
                   <Column>
-                    <Text className='mb-0 text-gray-600 text-sm font-medium m-0 mb-1'>
+                    <Text className="mb-0 text-gray-600 text-sm font-medium m-0 mb-1">
                       Phone
                     </Text>
-                    <Text className='mt-0 text-sm m-0'>
+                    <Text className="mt-0 text-sm m-0">
                       {order.shippingAddress.phone}
                     </Text>
-                    <Text className='mb-0 text-gray-600 text-sm font-medium m-0 mb-1 mt-4'>
+                    <Text className="mb-0 text-gray-600 text-sm font-medium m-0 mb-1 mt-4">
                       Expected Delivery
                     </Text>
-                    <Text className='mt-0 text-sm m-0'>
+                    <Text className="mt-0 text-sm m-0">
                       {dateFormatter.format(order.expectedDeliveryDate)}
                     </Text>
                   </Column>
@@ -279,16 +279,16 @@ export default async function PurchaseReceiptEmail({
             )}
 
             {/* Actions et support */}
-            <Section className='bg-gray-50 border border-gray-200 rounded-lg p-4 md:p-6 my-4 text-center'>
-              <Text className='text-gray-600 m-0 mb-4'>
+            <Section className="bg-gray-50 border border-gray-200 rounded-lg p-4 md:p-6 my-4 text-center">
+              <Text className="text-gray-600 m-0 mb-4">
                 Besoin d'aide ou avez-vous des questions sur votre commande ?
               </Text>
-              <Row className='justify-center'>
-                <Column className='text-center'>
-                  <Text className='m-0'>
+              <Row className="justify-center">
+                <Column className="text-center">
+                  <Text className="m-0">
                     <a
-                      href='https://mendel-c.vercel.app/fr/page/customer-service'
-                      className='text-blue-600 hover:text-blue-800 underline font-medium'
+                      href="https://mendel-c.vercel.app/fr/page/customer-service"
+                      className="text-blue-600 hover:text-blue-800 underline font-medium"
                     >
                       Contacter le Support
                     </a>
@@ -298,11 +298,11 @@ export default async function PurchaseReceiptEmail({
             </Section>
 
             {/* Footer */}
-            <Section className='text-center py-6'>
-              <Text className='text-gray-500 text-sm m-0 mb-2'>
+            <Section className="text-center py-6">
+              <Text className="text-gray-500 text-sm m-0 mb-2">
                 Merci d'avoir choisi {site.name} !
               </Text>
-              <Text className='text-gray-400 text-xs m-0'>
+              <Text className="text-gray-400 text-xs m-0">
                 © {new Date().getFullYear()} {site.name}. All rights reserved.
               </Text>
             </Section>

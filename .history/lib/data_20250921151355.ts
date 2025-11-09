@@ -440,7 +440,12 @@ const addStockFields = (product: any): IProductInput => ({
   isLowStock: product.countInStock <= 5,
   isOutOfStock: product.countInStock === 0,
   lastStockUpdate: new Date(),
-  stockStatus: product.countInStock === 0 ? 'out_of_stock' : product.countInStock <= 5 ? 'low_stock' : 'in_stock',
+  stockStatus:
+    product.countInStock === 0
+      ? 'out_of_stock'
+      : product.countInStock <= 5
+        ? 'low_stock'
+        : 'in_stock',
 })
 
 const products: IProductInput[] = [

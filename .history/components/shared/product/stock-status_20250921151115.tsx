@@ -18,7 +18,7 @@ export function StockStatus({
   stockStatus,
   showIcon = true,
   size = 'md',
-  className
+  className,
 }: StockStatusProps) {
   const getStatusConfig = () => {
     switch (stockStatus) {
@@ -29,7 +29,7 @@ export function StockStatus({
           icon: XCircle,
           bgColor: 'bg-red-100',
           textColor: 'text-red-800',
-          borderColor: 'border-red-200'
+          borderColor: 'border-red-200',
         }
       case 'low_stock':
         return {
@@ -38,7 +38,7 @@ export function StockStatus({
           icon: AlertTriangle,
           bgColor: 'bg-orange-100',
           textColor: 'text-orange-800',
-          borderColor: 'border-orange-200'
+          borderColor: 'border-orange-200',
         }
       case 'in_stock':
         return {
@@ -47,7 +47,7 @@ export function StockStatus({
           icon: CheckCircle,
           bgColor: 'bg-green-100',
           textColor: 'text-green-800',
-          borderColor: 'border-green-200'
+          borderColor: 'border-green-200',
         }
       case 'discontinued':
         return {
@@ -56,7 +56,7 @@ export function StockStatus({
           icon: Package,
           bgColor: 'bg-gray-100',
           textColor: 'text-gray-800',
-          borderColor: 'border-gray-200'
+          borderColor: 'border-gray-200',
         }
       default:
         return {
@@ -65,7 +65,7 @@ export function StockStatus({
           icon: Package,
           bgColor: 'bg-gray-100',
           textColor: 'text-gray-800',
-          borderColor: 'border-gray-200'
+          borderColor: 'border-gray-200',
         }
     }
   }
@@ -76,13 +76,13 @@ export function StockStatus({
   const sizeClasses = {
     sm: 'text-xs px-2 py-1',
     md: 'text-sm px-3 py-1.5',
-    lg: 'text-base px-4 py-2'
+    lg: 'text-base px-4 py-2',
   }
 
   const iconSizes = {
     sm: 'h-3 w-3',
     md: 'h-4 w-4',
-    lg: 'h-5 w-5'
+    lg: 'h-5 w-5',
   }
 
   return (
@@ -96,9 +96,7 @@ export function StockStatus({
         className
       )}
     >
-      {showIcon && (
-        <Icon className={cn(iconSizes[size], 'shrink-0')} />
-      )}
+      {showIcon && <Icon className={cn(iconSizes[size], 'shrink-0')} />}
       <span className="truncate">{config.text}</span>
     </div>
   )
@@ -108,7 +106,7 @@ export function StockStatus({
 export function ProductStockStatus({
   countInStock,
   stockStatus,
-  className
+  className,
 }: Omit<StockStatusProps, 'showIcon' | 'size' | 'minStockLevel'>) {
   return (
     <div className={cn('flex items-center justify-between', className)}>
@@ -130,7 +128,7 @@ export function AdminStockStatus({
   countInStock,
   minStockLevel,
   stockStatus,
-  className
+  className,
 }: Omit<StockStatusProps, 'showIcon' | 'size'>) {
   return (
     <div className={cn('flex items-center gap-2', className)}>

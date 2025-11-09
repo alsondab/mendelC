@@ -59,9 +59,9 @@ export function AnimatedNotification({
   return (
     <motion.div
       variants={variants}
-      initial='initial'
-      animate='animate'
-      exit='exit'
+      initial="initial"
+      animate="animate"
+      exit="exit"
       transition={{ delay }}
       className={className}
     >
@@ -69,4 +69,3 @@ export function AnimatedNotification({
     </motion.div>
   )
 }
-

@@ -107,7 +107,7 @@ export default function ImageUpload({
       )}
 
       {value && value.trim() !== '' ? (
-        <div className='relative group'>
+        <div className="relative group">
           {/* ⚡ Optimization: Prévisualisation avec Next/Image pour optimisation automatique */}
           <div
             className={cn(
@@ -119,20 +119,20 @@ export default function ImageUpload({
               src={value}
               alt={label || 'Image uploadée'}
               fill
-              className='object-cover'
-              sizes='(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw'
+              className="object-cover"
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
               // ⚡ Optimization: Lazy loading pour les images déjà uploadées
-              loading='lazy'
+              loading="lazy"
               // ⚡ Optimization: Qualité réduite pour meilleures performances (60 pour admin)
               quality={60}
               // ⚡ Optimization: Décodage asynchrone pour améliorer le TBT
-              decoding='async'
+              decoding="async"
             />
 
             {/* ⚡ Optimization: Overlay responsive avec boutons ultra-compacts sur très petits écrans */}
             {isUploading && (
-              <div className='absolute inset-0 bg-black/60 flex items-center justify-center p-1 xs:p-2'>
-                <div className='w-full max-w-[160px] xs:max-w-[180px] sm:max-w-[200px]'>
+              <div className="absolute inset-0 bg-black/60 flex items-center justify-center p-1 xs:p-2">
+                <div className="w-full max-w-[160px] xs:max-w-[180px] sm:max-w-[200px]">
                   <UploadButton
                     endpoint={endpoint}
                     onClientUploadComplete={(res) => {
@@ -144,7 +144,7 @@ export default function ImageUpload({
                     onUploadError={handleUploadError}
                     content={{
                       button: ({ ready }) => (
-                        <span className='text-[10px] xs:text-xs sm:text-sm'>
+                        <span className="text-[10px] xs:text-xs sm:text-sm">
                           {ready ? 'Choisir' : 'Chargement...'}
                         </span>
                       ),
@@ -155,36 +155,36 @@ export default function ImageUpload({
               </div>
             )}
             {!isUploading && (
-              <div className='absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col xs:flex-row items-center justify-center gap-1 xs:gap-1.5 sm:gap-2 p-1 xs:p-1.5 sm:p-2'>
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col xs:flex-row items-center justify-center gap-1 xs:gap-1.5 sm:gap-2 p-1 xs:p-1.5 sm:p-2">
                 <Button
-                  type='button'
-                  variant='secondary'
-                  size='sm'
-                  className='text-[10px] xs:text-xs sm:text-sm h-6 xs:h-7 sm:h-8 px-1.5 xs:px-2 sm:px-3 min-w-[60px] xs:min-w-[70px]'
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  className="text-[10px] xs:text-xs sm:text-sm h-6 xs:h-7 sm:h-8 px-1.5 xs:px-2 sm:px-3 min-w-[60px] xs:min-w-[70px]"
                   onClick={() => setIsUploading(true)}
                   aria-label="Remplacer l'image"
                 >
                   <Upload
-                    className='h-3 w-3 xs:h-3.5 xs:w-3.5 sm:h-4 sm:w-4 mr-0.5 xs:mr-1 sm:mr-2'
-                    aria-hidden='true'
+                    className="h-3 w-3 xs:h-3.5 xs:w-3.5 sm:h-4 sm:w-4 mr-0.5 xs:mr-1 sm:mr-2"
+                    aria-hidden="true"
                   />
-                  <span className='hidden xs:inline'>Remplacer</span>
-                  <span className='xs:hidden'>Rem.</span>
+                  <span className="hidden xs:inline">Remplacer</span>
+                  <span className="xs:hidden">Rem.</span>
                 </Button>
                 <Button
-                  type='button'
-                  variant='destructive'
-                  size='sm'
-                  className='text-[10px] xs:text-xs sm:text-sm h-6 xs:h-7 sm:h-8 px-1.5 xs:px-2 sm:px-3 min-w-[60px] xs:min-w-[70px]'
+                  type="button"
+                  variant="destructive"
+                  size="sm"
+                  className="text-[10px] xs:text-xs sm:text-sm h-6 xs:h-7 sm:h-8 px-1.5 xs:px-2 sm:px-3 min-w-[60px] xs:min-w-[70px]"
                   onClick={handleRemove}
                   aria-label="Supprimer l'image"
                 >
                   <X
-                    className='h-3 w-3 xs:h-3.5 xs:w-3.5 sm:h-4 sm:w-4 mr-0.5 xs:mr-1 sm:mr-2'
-                    aria-hidden='true'
+                    className="h-3 w-3 xs:h-3.5 xs:w-3.5 sm:h-4 sm:w-4 mr-0.5 xs:mr-1 sm:mr-2"
+                    aria-hidden="true"
                   />
-                  <span className='hidden xs:inline'>Supprimer</span>
-                  <span className='xs:hidden'>Sup.</span>
+                  <span className="hidden xs:inline">Supprimer</span>
+                  <span className="xs:hidden">Sup.</span>
                 </Button>
               </div>
             )}
@@ -192,7 +192,7 @@ export default function ImageUpload({
 
           {/* ⚡ Optimization: URL affichée pour référence (masquée sur très petits écrans si compact) */}
           {!compact && (
-            <div className='mt-1.5 xs:mt-2 text-[10px] xs:text-xs text-muted-foreground truncate'>
+            <div className="mt-1.5 xs:mt-2 text-[10px] xs:text-xs text-muted-foreground truncate">
               URL: {value}
             </div>
           )}
@@ -206,7 +206,7 @@ export default function ImageUpload({
               ? 'p-1 xs:p-1.5 sm:p-2' // ⚡ Optimization: Padding ultra-compact pour très petits écrans
               : 'p-2 xs:p-3 sm:p-4 md:p-6'
           )}
-          role='region'
+          role="region"
           aria-label={label || "Zone de téléversement d'image"}
         >
           <div
@@ -225,7 +225,7 @@ export default function ImageUpload({
                   ? 'h-4 w-4 xs:h-5 xs:w-5 sm:h-6 sm:w-6'
                   : 'h-8 w-8 xs:h-10 xs:w-10 sm:h-12 sm:w-12'
               )}
-              aria-hidden='true'
+              aria-hidden="true"
             />
             <div
               className={cn(
@@ -248,7 +248,7 @@ export default function ImageUpload({
               </p>
               {/* ⚡ Optimization: Masquer les formats sur très petits écrans */}
               {!compact && (
-                <p className='hidden xs:block text-[9px] xs:text-[10px] sm:text-xs text-muted-foreground'>
+                <p className="hidden xs:block text-[9px] xs:text-[10px] sm:text-xs text-muted-foreground">
                   Formats: JPG, PNG, WebP, AVIF
                 </p>
               )}
@@ -292,7 +292,7 @@ export default function ImageUpload({
                   ),
                   allowedContent: '',
                 }}
-                className='ut-button:w-full ut-button:text-[10px] xs:ut-button:text-xs sm:ut-button:text-sm ut-button:h-7 xs:ut-button:h-8 sm:ut-button:h-9'
+                className="ut-button:w-full ut-button:text-[10px] xs:ut-button:text-xs sm:ut-button:text-sm ut-button:h-7 xs:ut-button:h-8 sm:ut-button:h-9"
               />
             </div>
           </div>

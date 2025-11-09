@@ -12,10 +12,7 @@ export async function GET(request: NextRequest) {
     const sessionId = request.cookies.get('wishlist-session-id')?.value
 
     const wishlist = await Wishlist.find({
-      $or: [
-        { user: session?.user?.id },
-        { sessionId: sessionId }
-      ]
+      $or: [{ user: session?.user?.id }, { sessionId: sessionId }],
     })
       .populate({
         path: 'product',

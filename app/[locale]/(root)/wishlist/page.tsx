@@ -16,7 +16,9 @@ export default function WishlistPage() {
     <div className="flex items-center justify-center min-h-screen">
       <div className="text-center">
         <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-        <p className="text-sm text-muted-foreground">Chargement des favoris...</p>
+        <p className="text-sm text-muted-foreground">
+          Chargement des favoris...
+        </p>
       </div>
     </div>
   )

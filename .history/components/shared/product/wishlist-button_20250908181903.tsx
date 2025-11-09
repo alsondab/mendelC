@@ -170,29 +170,29 @@ export default function WishlistButton({
             body: JSON.stringify({ productId }),
           })
           const result = await response.json()
-            if (result.success) {
-              // Synchroniser avec le store local
-              if (product) {
-                const wishlistItem = {
-                  _id: `api_${productId}_${Date.now()}`,
-                  product: {
-                    _id: product._id,
-                    name: product.name,
-                    slug: product.slug,
-                    price: product.price,
-                    image: product.image,
-                    countInStock: product.countInStock,
-                  },
-                  createdAt: new Date().toISOString(),
-                }
-                addItem(wishlistItem)
+          if (result.success) {
+            // Synchroniser avec le store local
+            if (product) {
+              const wishlistItem = {
+                _id: `api_${productId}_${Date.now()}`,
+                product: {
+                  _id: product._id,
+                  name: product.name,
+                  slug: product.slug,
+                  price: product.price,
+                  image: product.image,
+                  countInStock: product.countInStock,
+                },
+                createdAt: new Date().toISOString(),
               }
-              setIsInWishlistState(true)
-              toast({
-                title: 'Favori ajouté',
-                description: 'Le produit a été ajouté à vos favoris',
-              })
-              window.dispatchEvent(new CustomEvent('wishlistChanged'))
+              addItem(wishlistItem)
+            }
+            setIsInWishlistState(true)
+            toast({
+              title: 'Favori ajouté',
+              description: 'Le produit a été ajouté à vos favoris',
+            })
+            window.dispatchEvent(new CustomEvent('wishlistChanged'))
           } else {
             toast({
               title: 'Erreur',
@@ -257,8 +257,8 @@ export default function WishlistButton({
 
   return (
     <Button
-      variant='ghost'
-      size='sm'
+      variant="ghost"
+      size="sm"
       onClick={handleToggleWishlist}
       disabled={isLoading}
       className={cn(
@@ -280,21 +280,21 @@ export default function WishlistButton({
 
       {/* Effet de particules */}
       {isAnimating && (
-        <div className='absolute inset-0 pointer-events-none'>
-          <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
-            <div className='w-2 h-2 bg-orange-500 rounded-full animate-ping opacity-75'></div>
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="w-2 h-2 bg-orange-500 rounded-full animate-ping opacity-75"></div>
           </div>
         </div>
       )}
 
       {showText && (
-        <span className='ml-2 text-sm'>
+        <span className="ml-2 text-sm">
           {isInWishlistState ? 'Retirer' : 'Ajouter'}
         </span>
       )}
 
       {showCount && isInWishlistState && (
-        <span className='absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold'>
+        <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold">
           1
         </span>
       )}
