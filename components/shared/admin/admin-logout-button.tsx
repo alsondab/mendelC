@@ -31,17 +31,18 @@ export default function AdminLogoutButton() {
         redirect: false,
       })
 
-      // Attendre un court instant pour s'assurer que la session est bien supprimée côté serveur
-      await new Promise((resolve) => setTimeout(resolve, 200))
+      // Attendre plus longtemps pour s'assurer que la session est bien supprimée côté serveur
+      // et forcer le rechargement du cache de session
+      await new Promise((resolve) => setTimeout(resolve, 500))
 
-      // Forcer la redirection vers sign-in avec le locale
+      // Forcer la redirection vers sign-in avec callbackUrl=/ pour éviter la redirection automatique vers /admin/overview
       // Utiliser window.location.href pour forcer un rechargement complet
       // et s'assurer que la session est bien supprimée côté client
-      window.location.href = `/${locale}/sign-in?logout=true`
+      window.location.href = `/${locale}/sign-in?logout=true&callbackUrl=/`
     } catch (error) {
       console.error('Erreur lors de la déconnexion:', error)
-      // En cas d'erreur, forcer quand même la redirection vers sign-in
-      window.location.href = `/${locale}/sign-in?logout=true`
+      // En cas d'erreur, forcer quand même la redirection vers sign-in avec callbackUrl=/
+      window.location.href = `/${locale}/sign-in?logout=true&callbackUrl=/`
     }
   }
 

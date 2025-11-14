@@ -29,11 +29,15 @@ export default async function SignInPage(props: {
   const isLogout = logout === 'true'
 
   const session = await auth()
-  // Ne pas rediriger automatiquement si l'utilisateur vient de se déconnecter
+  // Ne pas rediriger automatiquement si l'utilisateur vient de se déconnecter (logout=true)
+  // Après déconnexion, l'admin doit rester sur la page de connexion et se reconnecter manuellement
   if (session && !isLogout) {
-    // Rediriger vers /admin/overview pour les admins (car /admin n'a pas de page.tsx)
-    const redirectUrl =
-      session.user.role === 'Admin' ? '/admin/overview' : callbackUrl
+    // Déterminer l'URL de redirection
+    let redirectUrl = callbackUrl
+    // Si c'est un admin, rediriger vers /admin/overview (dashboard)
+    if (session.user.role === 'Admin') {
+      redirectUrl = '/admin/overview'
+    }
     // Construire l'URL avec la locale pour préserver l'internationalisation
     const cleanUrl = redirectUrl.startsWith('/')
       ? redirectUrl

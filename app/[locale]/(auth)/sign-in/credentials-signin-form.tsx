@@ -57,7 +57,16 @@ export default function CredentialsSignInForm() {
   const { control, handleSubmit } = form
 
   // Rediriger si la session est disponible et que l'utilisateur est Admin
+  // MAIS ne pas rediriger si l'utilisateur vient de se déconnecter (logout=true)
   useEffect(() => {
+    const logoutParam = searchParams.get('logout')
+    const isLogout = logoutParam === 'true'
+    
+    // Ne pas rediriger si l'utilisateur vient de se déconnecter
+    if (isLogout) {
+      return
+    }
+
     if (session?.user?.role === 'Admin') {
       // Utiliser window.location pour la redirection admin car le router i18n est strict sur les types
       window.location.href = `/${locale}/admin/overview`
@@ -68,7 +77,7 @@ export default function CredentialsSignInForm() {
         : `/${locale}/${callbackUrl}`
       window.location.href = redirectUrl
     }
-  }, [session, callbackUrl, locale])
+  }, [session, callbackUrl, locale, searchParams])
 
   const onSubmit = async (data: IUserSignIn) => {
     try {
