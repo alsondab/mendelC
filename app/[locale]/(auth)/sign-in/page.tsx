@@ -15,7 +15,8 @@ import { getTranslations } from 'next-intl/server'
 export default async function SignInPage(props: {
   params: Promise<{ locale: string }>
   searchParams: Promise<{
-    callbackUrl: string
+    callbackUrl?: string
+    logout?: string
   }>
 }) {
   const params = await props.params
@@ -24,9 +25,8 @@ export default async function SignInPage(props: {
   const t = await getTranslations('Auth')
   const locale = params.locale || (await getLocale())
 
-  const { callbackUrl = '/' } = searchParams
-  const allSearchParams = await searchParams
-  const isLogout = allSearchParams.logout === 'true'
+  const { callbackUrl = '/', logout } = await searchParams
+  const isLogout = logout === 'true'
 
   const session = await auth()
   // Ne pas rediriger automatiquement si l'utilisateur vient de se déconnecter

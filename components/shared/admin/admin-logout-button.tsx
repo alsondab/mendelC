@@ -27,13 +27,13 @@ export default function AdminLogoutButton() {
   const handleLogout = async () => {
     try {
       // Utiliser redirect: false pour contrôler la redirection manuellement
-      const result = await signOut({
+      await signOut({
         redirect: false,
       })
-      
+
       // Attendre un court instant pour s'assurer que la session est bien supprimée côté serveur
       await new Promise((resolve) => setTimeout(resolve, 200))
-      
+
       // Forcer la redirection vers sign-in avec le locale
       // Utiliser window.location.href pour forcer un rechargement complet
       // et s'assurer que la session est bien supprimée côté client
