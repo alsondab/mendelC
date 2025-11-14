@@ -9,6 +9,7 @@ export interface IAddressInput {
   postalCode: string
   country: string
   phone: string
+  email?: string
   isDefault?: boolean
 }
 
@@ -33,6 +34,7 @@ const addressSchema = new Schema<IAddress>(
     postalCode: { type: String, required: true },
     country: { type: String, required: true },
     phone: { type: String, required: true },
+    email: { type: String, required: false },
     isDefault: { type: Boolean, default: false, index: true },
   },
   {

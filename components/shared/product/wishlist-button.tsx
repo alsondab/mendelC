@@ -17,6 +17,7 @@ interface WishlistButtonProps {
     name: string
     slug: string
     price: number
+    listPrice?: number
     image: string
     countInStock: number
     brand: string
@@ -81,6 +82,7 @@ const WishlistButton = memo(function WishlistButton({
           name: product.name,
           slug: product.slug,
           price: product.price,
+          listPrice: product.listPrice,
           image: product.image,
           countInStock: product.countInStock,
           brand: product.brand,

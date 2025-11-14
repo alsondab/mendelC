@@ -8,6 +8,7 @@ interface WishlistItem {
   name: string
   slug: string
   price: number
+  listPrice?: number
   image: string
   countInStock: number
   brand: string

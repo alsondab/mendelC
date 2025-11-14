@@ -273,17 +273,6 @@ export default async function ProductDetails(props: {
                     />
                   </div>
                 </div>
-
-                {/* ✅ Prix principal */}
-                <div className="flex items-center w-full overflow-hidden">
-                  <div className="min-w-0 flex-1 overflow-hidden">
-                    <ProductPrice
-                      price={product.price}
-                      listPrice={product.listPrice}
-                      isDeal={product.tags.includes('todays-deal')}
-                    />
-                  </div>
-                </div>
               </div>
 
               {/* ✅ Section Variants - Très compact sur mobile */}
@@ -302,7 +291,10 @@ export default async function ProductDetails(props: {
                   {/* ✅ Prix dans le panier */}
                   <div className="text-center w-full overflow-hidden">
                     <div className="inline-block min-w-0 max-w-full overflow-hidden">
-                      <ProductPrice price={product.price} />
+                      <ProductPrice
+                        price={product.price}
+                        listPrice={product.listPrice}
+                      />
                     </div>
                   </div>
 
@@ -354,6 +346,7 @@ export default async function ProductDetails(props: {
                             slug: product.slug,
                             category: product.category,
                             price: round2(product.price),
+                            listPrice: round2(product.listPrice),
                             quantity: 1,
                             image: product.images[0],
                             color: color || product.colors[0],

@@ -67,6 +67,7 @@ const ProductCard = React.memo(
                 name: product.name,
                 slug: product.slug,
                 price: product.price,
+                listPrice: product.listPrice,
                 image: product.images[0] || '',
                 countInStock: product.countInStock,
                 brand: product.brand || '',
@@ -150,6 +151,7 @@ const ProductCard = React.memo(
             slug: product.slug,
             category: product.category,
             price: round2(product.price),
+            listPrice: round2(product.listPrice),
             quantity: 1,
             image: product.images[0],
           }}

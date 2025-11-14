@@ -191,7 +191,10 @@ export default function WishlistSidebar() {
                               </h3>
                             </Link>
                             <div className="mb-0.5">
-                              <ProductPrice price={item.price} />
+                              <ProductPrice
+                                price={item.price}
+                                listPrice={item.listPrice}
+                              />
                             </div>
                             <div className="mb-0.5 text-xs">
                               {item.countInStock > 0 ? (

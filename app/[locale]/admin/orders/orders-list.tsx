@@ -15,9 +15,10 @@ import {
 } from '@/components/ui/table'
 import { Skeleton } from '@/components/ui/skeleton'
 import { deleteOrder, getAllOrders } from '@/lib/actions/order.actions'
-import { formatDateTime, formatId } from '@/lib/utils'
+import { formatDateTime, formatId, round2 } from '@/lib/utils'
 import { IOrderList } from '@/types'
 import ProductPrice from '@/components/shared/product/product-price'
+import useSettingStore from '@/hooks/use-setting-store'
 
 type OrdersListDataProps = {
   data: IOrderList[]
@@ -27,11 +28,21 @@ type OrdersListDataProps = {
 const OrdersList = () => {
   const t = useTranslations('Admin.OrdersList')
   const tAdmin = useTranslations('Admin')
+  const {
+    setting: { availableCurrencies },
+  } = useSettingStore()
   const [page, setPage] = useState<number>(1)
   const [data, setData] = useState<OrdersListDataProps>()
   const [, startTransition] = useTransition()
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
+
+  // Convertir les prix CFA en USD pour ProductPrice (qui attend des prix en USD)
+  const convertCFAToUSD = (priceCFA: number) => {
+    const cfaCurrency = availableCurrencies.find((c) => c.code === 'XOF')
+    if (!cfaCurrency) return priceCFA
+    return round2(priceCFA / cfaCurrency.convertRate)
+  }
 
   const refreshOrders = () => {
     startTransition(async () => {
@@ -219,7 +230,10 @@ const OrdersList = () => {
                     </div>
                   </TableCell>
                   <TableCell className="text-right text-xs sm:text-sm font-medium">
-                    <ProductPrice price={order.totalPrice} plain />
+                    <ProductPrice
+                      price={convertCFAToUSD(order.totalPrice)}
+                      plain
+                    />
                   </TableCell>
                   <TableCell className="hidden sm:table-cell">
                     <div className="flex items-center gap-2 text-xs sm:text-sm">

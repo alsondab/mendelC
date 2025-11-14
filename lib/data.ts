@@ -458,6 +458,14 @@ const addStockFields = (
         : 'in_stock',
 })
 
+// Taux de conversion USD vers CFA (devise par défaut)
+const USD_TO_CFA_RATE = 655.957
+
+// Fonction pour convertir les prix USD en CFA
+const convertUSDToCFA = (usdPrice: number): number => {
+  return Math.round(usdPrice * USD_TO_CFA_RATE)
+}
+
 const productsData = [
   {
     name: 'Hikvision Dome Camera 4MP IP Security Camera',
@@ -467,8 +475,8 @@ const productsData = [
     images: ['/images/p11-1.jpg', '/images/p11-2.jpg'],
     tags: ['new-arrival', 'featured', 'todays-deal'],
     isPublished: true,
-    price: 89.99,
-    listPrice: 129.99,
+    price: convertUSDToCFA(89.99),
+    listPrice: convertUSDToCFA(129.99),
     brand: 'Hikvision',
     avgRating: 4.71,
     numReviews: 7,
@@ -515,8 +523,8 @@ const productsData = [
     ],
     tags: ['featured', 'best-seller'],
     isPublished: true,
-    price: 67.99,
-    listPrice: 89.99,
+    price: convertUSDToCFA(67.99),
+    listPrice: convertUSDToCFA(89.99),
     brand: 'Dahua',
     avgRating: 4.2,
     numReviews: 10,
@@ -554,8 +562,8 @@ const productsData = [
     images: ['/images/p13-1.jpg', '/images/p13-2.jpg'],
     tags: ['best-seller', 'featured'],
     isPublished: true,
-    price: 149.99,
-    listPrice: 199.99,
+    price: convertUSDToCFA(149.99),
+    listPrice: convertUSDToCFA(199.99),
     avgRating: 4,
     numReviews: 12,
     ratingDistribution: [
@@ -599,8 +607,8 @@ const productsData = [
     images: ['/images/p14-1.jpg', '/images/p14-2.jpg'],
     tags: ['new-arrival', 'best-seller', 'todays-deal'],
     isPublished: true,
-    price: 899.99,
-    listPrice: 1199.99,
+    price: convertUSDToCFA(899.99),
+    listPrice: convertUSDToCFA(1199.99),
     avgRating: 4.5,
     numReviews: 8,
     ratingDistribution: [
@@ -642,8 +650,8 @@ const productsData = [
     images: ['/images/p15-1.jpg', '/images/p15-2.jpg'],
     tags: ['featured'],
     isPublished: true,
-    price: 299.99,
-    listPrice: 399.99,
+    price: convertUSDToCFA(299.99),
+    listPrice: convertUSDToCFA(399.99),
     avgRating: 4.3,
     numReviews: 15,
     ratingDistribution: [
@@ -680,8 +688,8 @@ const productsData = [
     images: ['/images/p16-1.jpg', '/images/p16-2.jpg'],
     tags: ['new-arrival', 'featured'],
     isPublished: true,
-    price: 89.99,
-    listPrice: 129.99,
+    price: convertUSDToCFA(89.99),
+    listPrice: convertUSDToCFA(129.99),
     avgRating: 4.6,
     numReviews: 11,
     ratingDistribution: [
@@ -723,8 +731,8 @@ const productsData = [
     images: ['/images/p21-1.jpg', '/images/p21-2.jpg'],
     tags: ['best-seller', 'featured', 'todays-deal'],
     isPublished: true,
-    price: 45.99,
-    listPrice: 59.99,
+    price: convertUSDToCFA(45.99),
+    listPrice: convertUSDToCFA(59.99),
     avgRating: 4.8,
     numReviews: 25,
     ratingDistribution: [
@@ -766,8 +774,8 @@ const productsData = [
     images: ['/images/p22-1.jpg', '/images/p22-2.jpg'],
     tags: ['new-arrival', 'best-seller'],
     isPublished: true,
-    price: 19.99,
-    listPrice: 29.99,
+    price: convertUSDToCFA(19.99),
+    listPrice: convertUSDToCFA(29.99),
     avgRating: 4.4,
     numReviews: 18,
     ratingDistribution: [
@@ -809,8 +817,8 @@ const productsData = [
     images: ['/images/p23-1.jpg', '/images/p23-2.jpg'],
     tags: ['featured', 'premium'],
     isPublished: true,
-    price: 1499.99,
-    listPrice: 1899.99,
+    price: convertUSDToCFA(1499.99),
+    listPrice: convertUSDToCFA(1899.99),
     avgRating: 4.7,
     numReviews: 16,
     ratingDistribution: [
@@ -852,8 +860,8 @@ const productsData = [
     images: ['/images/p24-1.jpg', '/images/p24-2.jpg'],
     tags: ['best-seller'],
     isPublished: true,
-    price: 59.99,
-    listPrice: 79.99,
+    price: convertUSDToCFA(59.99),
+    listPrice: convertUSDToCFA(79.99),
     avgRating: 4.2,
     numReviews: 22,
     ratingDistribution: [

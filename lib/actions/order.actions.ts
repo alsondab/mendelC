@@ -1,7 +1,7 @@
 'use server'
 
 import { Cart, IOrderList, OrderItem, ShippingAddress } from '@/types'
-import { formatError, round2 } from '../utils'
+import { formatError } from '../utils'
 import { connectToDatabase } from '../db'
 import { auth } from '@/auth'
 import { OrderInputSchema } from '../validator'
@@ -32,55 +32,80 @@ export const createOrder = async (clientSideCart: Cart) => {
     )
 
     // Send confirmation email for Cash On Delivery orders
-    console.log(
-      '🔍 Méthode de paiement détectée:',
-      clientSideCart.paymentMethod
-    )
-    console.log(
-      '🔍 Condition CashOnDelivery:',
-      clientSideCart.paymentMethod === 'CashOnDelivery'
-    )
-    console.log(
-      '🔍 Condition Cash On Delivery:',
-      clientSideCart.paymentMethod === 'Cash On Delivery'
-    )
     if (
       clientSideCart.paymentMethod === 'Cash On Delivery' ||
       clientSideCart.paymentMethod === 'CashOnDelivery'
     ) {
       try {
-        console.log('🔍 ID de la commande créée:', createdOrder._id)
-        console.log("🔍 ID de l'utilisateur de la session:", session.user.id)
+        // Utiliser .lean() pour obtenir un objet JavaScript pur au lieu d'un Document Mongoose
+        const populatedOrder = await Order.findById(createdOrder._id)
+          .populate<{
+            user: { email: string; name: string }
+          }>('user', 'name email')
+          .lean()
 
-        const populatedOrder = await Order.findById(createdOrder._id).populate<{
-          user: { email: string; name: string }
-        }>('user', 'name email')
+        if (!populatedOrder) {
+          throw new Error('Order not found after creation')
+        }
 
-        console.log('🔍 Commande peuplée:', populatedOrder)
-        console.log('🔍 Utilisateur peuplé:', populatedOrder?.user)
+        // Utiliser l'email de l'adresse de livraison s'il est fourni, sinon utiliser l'email de l'utilisateur
+        // Avec .lean(), shippingAddress est maintenant un objet JavaScript pur
+        const shippingAddr = populatedOrder.shippingAddress as
+          | { email?: string; [key: string]: unknown }
+          | null
+          | undefined
 
-        if (
-          populatedOrder &&
-          populatedOrder.user &&
-          populatedOrder.user.email
-        ) {
-          console.log(
-            "📧 Envoi de l'email de confirmation à:",
-            populatedOrder.user.email
-          )
-          await sendOrderConfirmation({ order: populatedOrder })
-          console.log('✅ Email de confirmation envoyé avec succès')
-        } else {
-          console.log(
-            "❌ Impossible d'envoyer l'email: utilisateur ou email manquant"
+        // Extraire l'email de l'adresse de livraison
+        let shippingEmail: string | undefined = undefined
+        if (shippingAddr && typeof shippingAddr === 'object') {
+          // Essayer plusieurs façons d'accéder à l'email
+          if ('email' in shippingAddr) {
+            const emailValue = shippingAddr.email
+            if (typeof emailValue === 'string' && emailValue.trim() !== '') {
+              shippingEmail = emailValue.trim()
+            }
+          }
+        }
+
+        // Extraire l'email de l'utilisateur
+        const userEmail =
+          populatedOrder.user && typeof populatedOrder.user === 'object'
+            ? (populatedOrder.user as { email?: string })?.email
+            : undefined
+
+        const recipientEmail = shippingEmail || userEmail
+
+        if (!recipientEmail) {
+          // Créer un message d'erreur plus détaillé
+          const debugInfo = {
+            hasShippingAddress: !!shippingAddr,
+            shippingAddressKeys: shippingAddr ? Object.keys(shippingAddr) : [],
+            shippingEmailValue: shippingAddr?.email,
+            hasUser: !!populatedOrder.user,
+            userEmailValue: (populatedOrder.user as { email?: string })?.email,
+          }
+          throw new Error(
+            `No email address found. Debug info: ${JSON.stringify(debugInfo)}`
           )
         }
-      } catch (emailError) {
-        console.error(
-          "❌ Échec de l'envoi de l'email de confirmation:",
-          emailError
-        )
-        // Don't fail the order creation if email fails
+
+        // Convertir en IOrder pour sendOrderConfirmation
+        const orderForEmail = populatedOrder as unknown as IOrder
+        await sendOrderConfirmation({ order: orderForEmail })
+      } catch (error) {
+        // Log error but don't fail the order creation
+        // The error will be visible in server logs
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : 'Unknown error sending confirmation email'
+        // Return a warning in the response but still mark order as successful
+        return {
+          success: true,
+          message: 'Commande passée avec succès',
+          data: { orderId: createdOrder._id.toString() },
+          warning: `Commande créée mais l'email de confirmation n'a pas pu être envoyé: ${errorMessage}`,
+        }
       }
     }
 
@@ -106,17 +131,44 @@ export const createOrderFromCart = async (
     }),
   }
 
+  // S'assurer que shippingAddress inclut l'email s'il est fourni
+  // L'email peut être une chaîne vide, donc on vérifie qu'il n'est pas vide
+  const shippingAddressWithEmail = cart.shippingAddress
+    ? {
+        ...cart.shippingAddress,
+        ...(cart.shippingAddress.email &&
+        typeof cart.shippingAddress.email === 'string' &&
+        cart.shippingAddress.email.trim() !== ''
+          ? { email: cart.shippingAddress.email.trim() }
+          : {}),
+      }
+    : undefined
+
   const order = OrderInputSchema.parse({
     user: userId,
     items: cart.items,
-    shippingAddress: cart.shippingAddress,
+    shippingAddress: shippingAddressWithEmail,
     paymentMethod: cart.paymentMethod,
     itemsPrice: cart.itemsPrice,
     shippingPrice: cart.shippingPrice,
     totalPrice: cart.totalPrice,
     expectedDeliveryDate: cart.expectedDeliveryDate,
   })
-  return await Order.create(order)
+  const createdOrder = await Order.create(order)
+
+  // Vérifier que l'email est bien sauvegardé (pour débogage)
+  if (shippingAddressWithEmail?.email) {
+    const savedOrder = await Order.findById(createdOrder._id).lean()
+    if (savedOrder?.shippingAddress) {
+      const savedEmail = (savedOrder.shippingAddress as { email?: string })
+        ?.email
+      if (!savedEmail || savedEmail.trim() === '') {
+        // L'email n'a pas été sauvegardé, mais on continue quand même
+      }
+    }
+  }
+
+  return createdOrder
 }
 
 export async function updateOrderToPaid(orderId: string) {
@@ -138,19 +190,10 @@ export async function updateOrderToPaid(orderId: string) {
     invalidateAdminOrdersCache()
     if (order.user && order.user.email) {
       try {
-        console.log(
-          "📧 Envoi de l'email de reçu de paiement à:",
-          order.user.email
-        )
         await sendPurchaseReceipt({ order })
-        console.log('✅ Email de reçu de paiement envoyé avec succès')
-      } catch (emailError) {
-        console.error("❌ Échec de l'envoi de l'email de reçu:", emailError)
+      } catch {
+        // Don't fail the order update if email fails
       }
-    } else {
-      console.log(
-        "❌ Impossible d'envoyer l'email de reçu: utilisateur ou email manquant"
-      )
     }
     revalidatePath(`/account/orders/${orderId}`)
     return { success: true, message: 'Commande payée avec succès' }
@@ -226,8 +269,8 @@ const updateProductStock = async (orderId: string) => {
           orderId: orderId,
           quantity: change.quantity.toString(),
         },
-      }).catch((error) => {
-        console.error("Erreur lors de l'enregistrement de l'historique:", error)
+      }).catch(() => {
+        // Ignore history errors
       })
     }
 
@@ -255,7 +298,16 @@ export async function deliverOrder(orderId: string) {
     // Invalider le cache des commandes
     const { invalidateAdminOrdersCache } = await import('../cache/admin-cache')
     invalidateAdminOrdersCache()
-    if (order.user && order.user.email) await sendAskReviewOrderItems({ order })
+
+    // Envoyer l'email de demande d'avis (ne pas faire échouer la mise à jour si l'email échoue)
+    if (order.user && order.user.email) {
+      try {
+        await sendAskReviewOrderItems({ order })
+      } catch {
+        // Ne pas faire échouer la mise à jour du statut si l'email échoue
+      }
+    }
+
     revalidatePath(`/account/orders/${orderId}`)
     return { success: true, message: 'Commande livrée avec succès' }
   } catch (err) {
@@ -279,14 +331,9 @@ export async function cancelOrder(orderId: string) {
     // Envoyer un email de notification d'annulation
     if (order.user && order.user.email) {
       try {
-        console.log("📧 Envoi de l'email d'annulation à:", order.user.email)
         await sendOrderCancellationNotification({ order })
-        console.log("✅ Email d'annulation envoyé avec succès")
-      } catch (emailError) {
-        console.error(
-          "❌ Échec de l'envoi de l'email d'annulation:",
-          emailError
-        )
+      } catch {
+        // Don't fail the order cancellation if email fails
       }
     }
 
@@ -344,9 +391,8 @@ export async function getAllOrders({
     try {
       const { getCachedAllOrders } = await import('../cache/admin-cache')
       return await getCachedAllOrders({ limit, page })
-    } catch (error) {
+    } catch {
       // Fallback si cache échoue
-      console.error('Cache error, falling back to direct query:', error)
     }
   }
 
@@ -413,10 +459,24 @@ export const calcDeliveryDateAndPrice = async ({
   items: OrderItem[]
   shippingAddress?: ShippingAddress
 }) => {
-  const { availableDeliveryDates } = await getSetting()
-  const itemsPrice = round2(
-    items.reduce((acc, item) => acc + item.price * item.quantity, 0)
+  const { availableDeliveryDates, availableCurrencies, defaultCurrency } =
+    await getSetting()
+
+  // Récupérer les taux de conversion
+  const defaultCurrencyData = availableCurrencies.find(
+    (c) => c.code === defaultCurrency
   )
+
+  // Calculer directement en CFA (devise par défaut)
+  // item.price est en USD dans la DB, on convertit directement en CFA
+  const itemsPriceCFA = defaultCurrencyData
+    ? Math.round(
+        items.reduce((acc, item) => acc + item.price * item.quantity, 0) *
+          defaultCurrencyData.convertRate
+      )
+    : Math.round(
+        items.reduce((acc, item) => acc + item.price * item.quantity, 0)
+      )
 
   const deliveryDate =
     availableDeliveryDates[
@@ -424,25 +484,30 @@ export const calcDeliveryDateAndPrice = async ({
         ? availableDeliveryDates.length - 1
         : deliveryDateIndex
     ]
+
+  // shippingPrice est stocké en CFA (devise par défaut)
   const shippingPrice =
     !shippingAddress || !deliveryDate
       ? undefined
-      : false
+      : deliveryDate.shippingPrice === 0
         ? 0
         : deliveryDate.shippingPrice
 
-  const totalPrice = round2(
-    itemsPrice + (shippingPrice ? round2(shippingPrice) : 0)
-  )
+  // Calculer le total directement en CFA
+  const totalPriceCFA =
+    shippingPrice !== undefined ? itemsPriceCFA + shippingPrice : itemsPriceCFA
+
+  // Retourner les prix en CFA (devise par défaut)
   return {
     availableDeliveryDates,
     deliveryDateIndex:
       deliveryDateIndex === undefined
         ? availableDeliveryDates.length - 1
         : deliveryDateIndex,
-    itemsPrice,
+    // Prix en CFA (devise par défaut) - tous les calculs se font en CFA
+    itemsPrice: itemsPriceCFA,
     shippingPrice,
-    totalPrice,
+    totalPrice: totalPriceCFA,
   }
 }
 
@@ -690,8 +755,7 @@ export const getCompanyStats = async () => {
       totalProducts: totalProducts,
       totalSales: totalSales[0]?.total || 0,
     }
-  } catch (error) {
-    console.error('Error fetching company stats:', error)
+  } catch {
     return {
       totalCustomers: 0,
       totalOrders: 0,

@@ -102,6 +102,7 @@ export const OrderItemSchema = z.object({
     .nonnegative('Quantity must be a non-negative number'),
   image: z.string().min(1, 'Image is required'),
   price: Price('Price'),
+  listPrice: Price('List price').optional(),
   size: z.string().optional(),
   color: z.string().optional(),
 })
@@ -165,6 +166,21 @@ export const ShippingAddressSchema = z.object({
       // Vérifier qu'il y a exactement 10 chiffres après +225
       return digitsOnly.length === 10 && /^\d{10}$/.test(digitsOnly)
     }, 'Le numéro doit commencer par +225 et contenir exactement 10 chiffres (ex: +225 0710145864)'),
+  email: z
+    .string()
+    .email('Email invalide')
+    .optional()
+    .refine(
+      (email) => {
+        if (!email || email.trim() === '') return true // Champ facultatif
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+        return emailRegex.test(email)
+      },
+      {
+        message:
+          'Email invalide. Le domaine doit être valide (ex: example.com)',
+      }
+    ),
   country: z
     .string()
     .min(2, 'Le pays doit contenir au moins 2 caractères')
@@ -237,6 +253,21 @@ export const AddressInputSchema = z.object({
       // Vérifier qu'il y a exactement 10 chiffres
       return cleanNumber.length === 10 && /^\d{10}$/.test(cleanNumber)
     }, 'Le numéro doit contenir exactement 10 chiffres (ex: 07 10 14 58 64)'),
+  email: z
+    .string()
+    .email('Email invalide')
+    .optional()
+    .refine(
+      (email) => {
+        if (!email || email.trim() === '') return true // Champ facultatif
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+        return emailRegex.test(email)
+      },
+      {
+        message:
+          'Email invalide. Le domaine doit être valide (ex: example.com)',
+      }
+    ),
   isDefault: z.boolean().optional().default(false),
 })
 

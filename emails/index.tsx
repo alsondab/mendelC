@@ -14,105 +14,106 @@ const resend = process.env.RESEND_API_KEY
 export const sendPurchaseReceipt = async ({ order }: { order: IOrder }) => {
   try {
     if (!process.env.RESEND_API_KEY || !resend) {
-      console.warn('⚠️ RESEND_API_KEY non configuré. Email non envoyé.')
       return { id: 'mock-id', error: 'RESEND_API_KEY not configured' }
     }
 
-    const recipientEmail = (order.user as { email: string }).email
-    console.log("📧 Tentative d'envoi de l'email de reçu...")
-    console.log('📧 Destinataire:', recipientEmail)
+    // Utiliser l'email de l'adresse de livraison s'il est fourni, sinon utiliser l'email de l'utilisateur
+    const shippingEmail =
+      order.shippingAddress && 'email' in order.shippingAddress
+        ? (order.shippingAddress as { email?: string }).email
+        : undefined
+    const userEmail = (order.user as { email: string }).email
+    const recipientEmail =
+      shippingEmail && shippingEmail.trim() !== '' ? shippingEmail : userEmail
 
     const result = await resend.emails.send({
       from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
       to: recipientEmail,
-      subject: 'Reçu de Paiement - Paiement Confirmé', // ✅ Sujet pour paiement
+      subject: 'Reçu de Paiement - Paiement Confirmé',
       react: <PurchaseReceiptEmail order={order} />,
     })
 
-    // Vérifier les erreurs Resend
     if (result.error) {
-      console.error('❌ Erreur Resend:', JSON.stringify(result.error, null, 2))
       throw new Error(`Resend Error: ${JSON.stringify(result.error)}`)
     }
 
-    console.log('✅ Email de reçu envoyé avec succès. ID:', result.data?.id)
     return result
   } catch (error) {
-    console.error("❌ Erreur lors de l'envoi de l'email de reçu:", error)
     throw error
   }
 }
 
 export const sendOrderConfirmation = async ({ order }: { order: IOrder }) => {
-  try {
-    if (!process.env.RESEND_API_KEY || !resend) {
-      console.warn('⚠️ RESEND_API_KEY non configuré. Email non envoyé.')
-      return { id: 'mock-id', error: 'RESEND_API_KEY not configured' }
-    }
-
-    const recipientEmail = (order.user as { email: string }).email
-    console.log("📧 Tentative d'envoi de l'email de confirmation...")
-    console.log('📧 Destinataire:', recipientEmail)
-
-    const result = await resend.emails.send({
-      from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
-      to: recipientEmail,
-      subject: 'Confirmation de commande - Paiement à la livraison', // ✅ Sujet pour COD
-      react: <PurchaseReceiptEmail order={order} />,
-    })
-
-    if (result.error) {
-      console.error('❌ Erreur Resend:', JSON.stringify(result.error, null, 2))
-      throw new Error(`Resend Error: ${JSON.stringify(result.error)}`)
-    }
-
-    console.log(
-      '✅ Email de confirmation envoyé avec succès. ID:',
-      result.data?.id
-    )
-    return result
-  } catch (error) {
-    console.error(
-      "❌ Erreur lors de l'envoi de l'email de confirmation:",
-      error
-    )
-    throw error
+  if (!process.env.RESEND_API_KEY || !resend) {
+    throw new Error('RESEND_API_KEY not configured')
   }
+
+  // Utiliser l'email de l'adresse de livraison s'il est fourni, sinon utiliser l'email de l'utilisateur
+  const shippingEmail =
+    order.shippingAddress && 'email' in order.shippingAddress
+      ? (order.shippingAddress as { email?: string }).email
+      : undefined
+  const userEmail = (order.user as { email: string })?.email
+
+  if (!userEmail && (!shippingEmail || shippingEmail.trim() === '')) {
+    throw new Error(
+      'No email address found. Please provide an email in the shipping address or ensure your account has an email.'
+    )
+  }
+
+  const recipientEmail =
+    shippingEmail && shippingEmail.trim() !== '' ? shippingEmail : userEmail
+
+  if (!recipientEmail) {
+    throw new Error('No valid email address found')
+  }
+
+  const result = await resend.emails.send({
+    from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
+    to: recipientEmail,
+    subject: 'Confirmation de commande - Paiement à la livraison',
+    react: <PurchaseReceiptEmail order={order} />,
+  })
+
+  if (result.error) {
+    throw new Error(`Resend Error: ${JSON.stringify(result.error)}`)
+  }
+
+  return result
 }
 
 export const sendAskReviewOrderItems = async ({ order }: { order: IOrder }) => {
   try {
     if (!process.env.RESEND_API_KEY || !resend) {
-      console.warn('⚠️ RESEND_API_KEY non configuré. Email non envoyé.')
       return { id: 'mock-id', error: 'RESEND_API_KEY not configured' }
     }
 
     const recipientEmail = (order.user as { email: string }).email
-    console.log("📧 Tentative d'envoi de l'email de demande d'avis...")
-    console.log('📧 Destinataire:', recipientEmail)
 
     const result = await resend.emails.send({
       from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
       to: recipientEmail,
-      subject: 'Évaluez Vos Articles de Commande', // ✅ Sujet pour demande d'avis
+      subject: 'Évaluez Vos Articles de Commande',
       react: <AskReviewOrderItemsEmail order={order} />,
     })
 
     if (result.error) {
-      console.error('❌ Erreur Resend:', JSON.stringify(result.error, null, 2))
+      // Si c'est une erreur de validation Resend (403), ne pas lancer d'erreur
+      // Cela se produit en mode test quand on essaie d'envoyer à une adresse non autorisée
+      if (
+        typeof result.error === 'object' &&
+        result.error !== null &&
+        'statusCode' in result.error &&
+        (result.error as { statusCode?: number }).statusCode === 403
+      ) {
+        return { id: 'mock-id', error: 'Resend test mode restriction' }
+      }
+
       throw new Error(`Resend Error: ${JSON.stringify(result.error)}`)
     }
 
-    console.log(
-      "✅ Email de demande d'avis envoyé avec succès. ID:",
-      result.data?.id
-    )
     return result
   } catch (error) {
-    console.error(
-      "❌ Erreur lors de l'envoi de l'email de demande d'avis:",
-      error
-    )
     throw error
   }
 }
@@ -124,13 +125,10 @@ export const sendOrderCancellationNotification = async ({
 }) => {
   try {
     if (!process.env.RESEND_API_KEY || !resend) {
-      console.warn('⚠️ RESEND_API_KEY non configuré. Email non envoyé.')
       return { id: 'mock-id', error: 'RESEND_API_KEY not configured' }
     }
 
     const recipientEmail = (order.user as { email: string }).email
-    console.log("📧 Tentative d'envoi de l'email d'annulation...")
-    console.log('📧 Destinataire:', recipientEmail)
 
     const result = await resend.emails.send({
       from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
@@ -140,17 +138,11 @@ export const sendOrderCancellationNotification = async ({
     })
 
     if (result.error) {
-      console.error('❌ Erreur Resend:', JSON.stringify(result.error, null, 2))
       throw new Error(`Resend Error: ${JSON.stringify(result.error)}`)
     }
 
-    console.log(
-      "✅ Email d'annulation envoyé avec succès. ID:",
-      result.data?.id
-    )
     return result
   } catch (error) {
-    console.error("❌ Erreur lors de l'envoi de l'email d'annulation:", error)
     throw error
   }
 }
@@ -166,14 +158,8 @@ export const sendVerificationEmail = async ({
 }) => {
   try {
     if (!process.env.RESEND_API_KEY || !resend) {
-      console.warn('⚠️ RESEND_API_KEY non configuré. Email non envoyé.')
-      console.warn('📧 Email qui aurait été envoyé à:', email)
       return { id: 'mock-id', error: 'RESEND_API_KEY not configured' }
     }
-
-    console.log("📧 Tentative d'envoi de l'email de vérification...")
-    console.log('📧 Destinataire:', email)
-    console.log('📧 Expéditeur:', `${SENDER_NAME} <${SENDER_EMAIL}>`)
 
     const result = await resend.emails.send({
       from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
@@ -183,20 +169,11 @@ export const sendVerificationEmail = async ({
     })
 
     if (result.error) {
-      console.error('❌ Erreur Resend:', JSON.stringify(result.error, null, 2))
       throw new Error(`Resend Error: ${JSON.stringify(result.error)}`)
     }
 
-    console.log(
-      '✅ Email de vérification envoyé avec succès. ID:',
-      result.data?.id
-    )
     return result
   } catch (error) {
-    console.error(
-      "❌ Erreur lors de l'envoi de l'email de vérification:",
-      error
-    )
     throw error
   }
 }

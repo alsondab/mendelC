@@ -914,6 +914,7 @@
     "Items": "Articles",
     "Shipping": "Livraison",
     "OrderTotal": "Total de la commande",
+    "Email": "Email",
     "DeliveryDate": "Date de livraison",
     "DeliveryDates": {
       "Tomorrow": "Demain",

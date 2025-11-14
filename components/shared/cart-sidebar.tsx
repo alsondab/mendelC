@@ -32,16 +32,20 @@ export default function CartSidebar() {
   const {
     setting: {
       common: {},
+      availableCurrencies,
     },
   } = useSettingStore()
 
   const t = useTranslations()
 
-  // Calculer le prix localement pour une mise à jour instantanée
-  const calculatedItemsPrice = round2(
-    items.reduce((acc, item) => acc + item.price * item.quantity, 0)
-  )
-  const displayPrice = itemsPrice > 0 ? itemsPrice : calculatedItemsPrice
+  // Les prix sont maintenant stockés directement en CFA dans le panier
+  // itemsPrice est déjà en CFA
+  // ProductPrice attend des prix en USD, donc on convertit CFA → USD
+  const cfaCurrency = availableCurrencies.find((c) => c.code === 'XOF')
+  const displayPrice =
+    itemsPrice > 0 && cfaCurrency
+      ? round2(itemsPrice / cfaCurrency.convertRate)
+      : 0
 
   // Fermer le slider avec Escape
   useEffect(() => {
@@ -204,7 +208,10 @@ export default function CartSidebar() {
                               </h3>
                             </Link>
                             <div className="mt-0.5">
-                              <ProductPrice price={item.price} />
+                              <ProductPrice
+                                price={item.price}
+                                listPrice={item.listPrice}
+                              />
                             </div>
                             <div className="mt-1 flex items-center gap-1.5">
                               <div className="flex items-center border border-border rounded-md overflow-hidden">

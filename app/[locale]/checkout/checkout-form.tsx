@@ -26,6 +26,7 @@ import {
   calculateFutureDate,
   formatDateTime,
   timeUntilMidnight,
+  round2,
 } from '@/lib/utils'
 import { ShippingAddressSchema } from '@/lib/validator'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -41,6 +42,7 @@ import useCartStore from '@/hooks/use-cart-store'
 import useSettingStore from '@/hooks/use-setting-store'
 import { useTranslations } from 'next-intl'
 import ProductPrice from '@/components/shared/product/product-price'
+import { getDefaultAddress } from '@/lib/actions/address.actions'
 
 const shippingAddressDefaultValues =
   process.env.NODE_ENV === 'development'
@@ -52,6 +54,7 @@ const shippingAddressDefaultValues =
         phone: '+225 07 12 34 56 78',
         postalCode: '00225',
         country: "Côte d'Ivoire",
+        email: '',
       }
     : {
         fullName: '',
@@ -61,6 +64,7 @@ const shippingAddressDefaultValues =
         phone: '+225 ',
         postalCode: '',
         country: "Côte d'Ivoire",
+        email: '',
       }
 
 const CheckoutForm = () => {
@@ -88,6 +92,7 @@ const CheckoutForm = () => {
       availablePaymentMethods,
       defaultPaymentMethod,
       availableDeliveryDates,
+      availableCurrencies,
     },
   } = useSettingStore()
 
@@ -110,6 +115,51 @@ const CheckoutForm = () => {
   } = useCartStore()
   const isMounted = useIsMounted()
 
+  // Récupérer la devise choisie
+  const { getCurrency } = useSettingStore()
+  const currency = getCurrency()
+
+  // Les prix sont maintenant stockés directement en CFA dans le panier
+  // itemsPrice, shippingPrice et totalPrice sont déjà en CFA
+  const itemsPriceCFA = itemsPrice
+  const shippingPriceCFA = shippingPrice || 0
+  const totalPriceCFA = totalPrice
+
+  // Fonction pour formater les prix selon la devise choisie
+  const formatPrice = (priceCFA: number) => {
+    // Si la devise choisie est XOF (CFA), afficher directement
+    if (currency.code === 'XOF') {
+      return `${Math.round(priceCFA).toLocaleString('fr-FR')} CFA`
+    }
+
+    // Sinon, convertir depuis CFA vers la devise choisie
+    const cfaCurrency = availableCurrencies.find((c) => c.code === 'XOF')
+    if (!cfaCurrency) {
+      return `${Math.round(priceCFA).toLocaleString('fr-FR')} CFA`
+    }
+
+    // Convertir depuis CFA vers la devise choisie
+    const convertedPrice = round2(
+      (priceCFA / cfaCurrency.convertRate) * currency.convertRate
+    )
+
+    // Formater selon la devise
+    if (currency.code === 'EUR') {
+      return `€${convertedPrice.toLocaleString('fr-FR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`
+    }
+    if (currency.code === 'USD') {
+      return `$${convertedPrice.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`
+    }
+
+    return `${convertedPrice.toLocaleString('fr-FR')} ${currency.symbol}`
+  }
+
   const shippingAddressForm = useForm<ShippingAddress>({
     resolver: zodResolver(ShippingAddressSchema),
     defaultValues: shippingAddress || shippingAddressDefaultValues,
@@ -118,6 +168,39 @@ const CheckoutForm = () => {
     setShippingAddress(values)
     setIsAddressSelected(true)
   }
+
+  // Charger l'adresse par défaut si aucune adresse n'est définie dans le panier
+  useEffect(() => {
+    const loadDefaultAddress = async () => {
+      if (!isMounted || shippingAddress) return
+
+      try {
+        const result = await getDefaultAddress()
+        if (result.success && result.data) {
+          const defaultAddr = result.data
+          // Convertir l'adresse Address en ShippingAddress
+          const shippingAddr: ShippingAddress = {
+            fullName: defaultAddr.fullName,
+            street: defaultAddr.street,
+            city: defaultAddr.city,
+            province: defaultAddr.province,
+            postalCode: defaultAddr.postalCode,
+            country: defaultAddr.country,
+            phone: defaultAddr.phone,
+            email: defaultAddr.email || '',
+          }
+          // Pré-remplir le formulaire
+          shippingAddressForm.reset(shippingAddr)
+          // Définir dans le panier
+          setShippingAddress(shippingAddr)
+        }
+      } catch {
+        // Ignore errors silently
+      }
+    }
+
+    loadDefaultAddress()
+  }, [isMounted, shippingAddress, shippingAddressForm, setShippingAddress])
 
   useEffect(() => {
     if (!isMounted || !shippingAddress) return
@@ -128,6 +211,7 @@ const CheckoutForm = () => {
     shippingAddressForm.setValue('postalCode', shippingAddress.postalCode)
     shippingAddressForm.setValue('province', shippingAddress.province)
     shippingAddressForm.setValue('phone', shippingAddress.phone)
+    shippingAddressForm.setValue('email', shippingAddress.email || '')
   }, [items, isMounted, router, shippingAddress, shippingAddressForm])
 
   const [isAddressSelected, setIsAddressSelected] = useState<boolean>(false)
@@ -161,8 +245,14 @@ const CheckoutForm = () => {
         variant: 'default',
       })
 
-      // Show email confirmation toast for Cash On Delivery
-      if (paymentMethod === 'CashOnDelivery') {
+      // Show warning if email failed to send
+      if ('warning' in res && res.warning) {
+        toast({
+          description: res.warning,
+          variant: 'destructive',
+        })
+      } else if (paymentMethod === 'CashOnDelivery') {
+        // Show email confirmation toast for Cash On Delivery only if no warning
         toast({
           description: t('OrderConfirmationEmail'),
           variant: 'default',
@@ -247,8 +337,8 @@ const CheckoutForm = () => {
             <div className="space-y-2 xs:space-y-3">
               <div className="flex justify-between text-sm xs:text-base">
                 <span>Articles:</span>
-                <span>
-                  <ProductPrice price={itemsPrice} plain />
+                <span className="font-semibold">
+                  {formatPrice(itemsPriceCFA)}
                 </span>
               </div>
               <div className="flex justify-between text-sm xs:text-base">
@@ -259,7 +349,9 @@ const CheckoutForm = () => {
                   ) : shippingPrice === 0 ? (
                     <span className="text-green-600 font-medium">GRATUIT</span>
                   ) : (
-                    formatShippingPrice(shippingPrice)
+                    <span className="font-semibold">
+                      {formatPrice(shippingPriceCFA)}
+                    </span>
                   )}
                 </span>
               </div>
@@ -267,8 +359,8 @@ const CheckoutForm = () => {
               <div className="border-t border-border/50 pt-3 xs:pt-4">
                 <div className="flex justify-between font-bold text-base xs:text-lg">
                   <span>Total de la commande:</span>
-                  <span>
-                    <ProductPrice price={totalPrice} plain />
+                  <span className="font-bold">
+                    {formatPrice(totalPriceCFA)}
                   </span>
                 </div>
               </div>
@@ -521,6 +613,31 @@ const CheckoutForm = () => {
                             </FormItem>
                           )}
                         />
+
+                        <FormField
+                          control={shippingAddressForm.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-sm xs:text-base">
+                                {t('Email')}{' '}
+                                <span className="text-muted-foreground text-xs">
+                                  (optionnel, pour la confirmation de commande)
+                                </span>
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="email"
+                                  placeholder="exemple@email.com"
+                                  className="text-sm xs:text-base"
+                                  maxLength={100}
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
                       </CardContent>
                       <CardFooter className="p-3 xs:p-4">
                         <Button
@@ -713,7 +830,11 @@ const CheckoutForm = () => {
                                 {item.name}, {item.color}, {item.size}
                               </p>
                               <p className="font-bold">
-                                <ProductPrice price={item.price} plain />
+                                <ProductPrice
+                                  price={item.price}
+                                  listPrice={item.listPrice}
+                                  plain
+                                />
                               </p>
 
                               <Select
@@ -812,8 +933,7 @@ const CheckoutForm = () => {
                   </Button>
                   <div className="flex-1 text-center sm:text-right">
                     <p className="font-bold text-base xs:text-lg">
-                      Total de la commande:{' '}
-                      <ProductPrice price={totalPrice} plain />
+                      Total de la commande: {formatPrice(totalPriceCFA)}
                     </p>
                     <p className="text-xs xs:text-sm text-muted-foreground">
                       En passant votre commande, vous acceptez la{' '}

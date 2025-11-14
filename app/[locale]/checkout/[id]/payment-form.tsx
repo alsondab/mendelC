@@ -10,10 +10,18 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import ProductPrice from '@/components/shared/product/product-price'
 import { useTranslations } from 'next-intl'
+import useSettingStore from '@/hooks/use-setting-store'
+import { round2 } from '@/lib/utils'
 
 export default function OrderDetailsForm({ order }: { order: IOrder }) {
   const router = useRouter()
   const t = useTranslations('Checkout')
+  const {
+    setting: { availableCurrencies },
+  } = useSettingStore()
+  const { getCurrency } = useSettingStore()
+  const currency = getCurrency()
+
   const {
     shippingAddress,
     items,
@@ -24,6 +32,42 @@ export default function OrderDetailsForm({ order }: { order: IOrder }) {
     expectedDeliveryDate,
     // isPaid, // Not used in this component
   } = order
+
+  // Fonction pour formater les prix selon la devise choisie
+  // Les prix dans la DB sont en CFA, on les formate directement
+  const formatPrice = (priceCFA: number) => {
+    // Si la devise choisie est XOF (CFA), afficher directement
+    if (currency.code === 'XOF') {
+      return `${Math.round(priceCFA).toLocaleString('fr-FR')} CFA`
+    }
+
+    // Sinon, convertir depuis CFA vers la devise choisie
+    const cfaCurrency = availableCurrencies.find((c) => c.code === 'XOF')
+    if (!cfaCurrency) {
+      return `${Math.round(priceCFA).toLocaleString('fr-FR')} CFA`
+    }
+
+    // Convertir depuis CFA vers la devise choisie
+    const convertedPrice = round2(
+      (priceCFA / cfaCurrency.convertRate) * currency.convertRate
+    )
+
+    // Formater selon la devise
+    if (currency.code === 'EUR') {
+      return `€${convertedPrice.toLocaleString('fr-FR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`
+    }
+    if (currency.code === 'USD') {
+      return `$${convertedPrice.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`
+    }
+
+    return `${convertedPrice.toLocaleString('fr-FR')} ${currency.symbol}`
+  }
 
   // Ne pas rediriger automatiquement, laisser l'utilisateur voir les détails
   // if (isPaid) {
@@ -38,10 +82,7 @@ export default function OrderDetailsForm({ order }: { order: IOrder }) {
           <div className="space-y-2">
             <div className="flex justify-between">
               <span>{t('Items')}:</span>
-              <span>
-                {' '}
-                <ProductPrice price={itemsPrice} plain />
-              </span>
+              <span className="font-semibold">{formatPrice(itemsPrice)}</span>
             </div>
             <div className="flex justify-between">
               <span>{t('ShippingHandling')}:</span>
@@ -51,17 +92,16 @@ export default function OrderDetailsForm({ order }: { order: IOrder }) {
                 ) : shippingPrice === 0 ? (
                   t('FREE')
                 ) : (
-                  <ProductPrice price={shippingPrice} plain />
+                  <span className="font-semibold">
+                    {formatPrice(shippingPrice)}
+                  </span>
                 )}
               </span>
             </div>
             <div className="flex justify-between"></div>
             <div className="flex justify-between  pt-1 font-bold text-lg">
               <span> {t('OrderTotal')}:</span>
-              <span>
-                {' '}
-                <ProductPrice price={totalPrice} plain />
-              </span>
+              <span className="font-bold">{formatPrice(totalPrice)}</span>
             </div>
 
             <Button
@@ -118,11 +158,21 @@ export default function OrderDetailsForm({ order }: { order: IOrder }) {
                 {formatDateTime(expectedDeliveryDate).dateOnly}
               </p>
               <ul className="text-sm sm:text-base">
-                {items.map((item) => (
-                  <li key={item.slug} className="truncate">
-                    {item.name} x {item.quantity} = {item.price}
-                  </li>
-                ))}
+                {items.map((item) => {
+                  // Convertir le prix CFA en USD pour ProductPrice
+                  const cfaCurrency = availableCurrencies.find(
+                    (c) => c.code === 'XOF'
+                  )
+                  const itemPriceUSD = cfaCurrency
+                    ? round2(item.price / cfaCurrency.convertRate)
+                    : item.price
+                  return (
+                    <li key={item.slug} className="truncate">
+                      {item.name} x {item.quantity} ={' '}
+                      <ProductPrice price={itemPriceUSD} plain />
+                    </li>
+                  )
+                })}
               </ul>
             </div>
           </div>

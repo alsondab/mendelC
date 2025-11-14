@@ -41,6 +41,7 @@ const orderSchema = new Schema<IOrder>(
       country: { type: String, required: true },
       province: { type: String, required: true },
       phone: { type: String, required: true },
+      email: { type: String, required: false },
     },
     expectedDeliveryDate: { type: Date, required: true },
     paymentMethod: { type: String, required: true },

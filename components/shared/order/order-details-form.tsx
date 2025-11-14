@@ -32,6 +32,8 @@ import {
   updateOrderToPaid,
   cancelOrder,
 } from '@/lib/actions/order.actions'
+import useSettingStore from '@/hooks/use-setting-store'
+import { round2 } from '@/lib/utils'
 
 export default function OrderDetailsForm({
   order,
@@ -41,6 +43,12 @@ export default function OrderDetailsForm({
   isAdmin: boolean
 }) {
   const t = useTranslations('Checkout')
+  const {
+    setting: { availableCurrencies },
+  } = useSettingStore()
+  const { getCurrency } = useSettingStore()
+  const currency = getCurrency()
+
   const {
     shippingAddress,
     items,
@@ -56,6 +64,49 @@ export default function OrderDetailsForm({
     cancelledAt,
     expectedDeliveryDate,
   } = order
+
+  // Fonction pour formater les prix selon la devise choisie
+  // Les prix dans la DB sont en CFA, on les formate directement
+  const formatPrice = (priceCFA: number) => {
+    // Si la devise choisie est XOF (CFA), afficher directement
+    if (currency.code === 'XOF') {
+      return `${Math.round(priceCFA).toLocaleString('fr-FR')} CFA`
+    }
+
+    // Sinon, convertir depuis CFA vers la devise choisie
+    const cfaCurrency = availableCurrencies.find((c) => c.code === 'XOF')
+    if (!cfaCurrency) {
+      return `${Math.round(priceCFA).toLocaleString('fr-FR')} CFA`
+    }
+
+    // Convertir depuis CFA vers la devise choisie
+    const convertedPrice = round2(
+      (priceCFA / cfaCurrency.convertRate) * currency.convertRate
+    )
+
+    // Formater selon la devise
+    if (currency.code === 'EUR') {
+      return `€${convertedPrice.toLocaleString('fr-FR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`
+    }
+    if (currency.code === 'USD') {
+      return `$${convertedPrice.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`
+    }
+
+    return `${convertedPrice.toLocaleString('fr-FR')} ${currency.symbol}`
+  }
+
+  // Convertir les prix CFA en USD pour ProductPrice (qui attend des prix en USD)
+  const convertCFAToUSD = (priceCFA: number) => {
+    const cfaCurrency = availableCurrencies.find((c) => c.code === 'XOF')
+    if (!cfaCurrency) return priceCFA
+    return round2(priceCFA / cfaCurrency.convertRate)
+  }
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -226,7 +277,10 @@ export default function OrderDetailsForm({
                         {item.quantity}
                       </TableCell>
                       <TableCell className="text-right text-xs sm:text-sm font-medium">
-                        <ProductPrice price={item.price} plain />
+                        <ProductPrice
+                          price={convertCFAToUSD(item.price)}
+                          plain
+                        />
                       </TableCell>
                     </TableRow>
                   ))}
@@ -249,17 +303,21 @@ export default function OrderDetailsForm({
             <div className="space-y-3">
               <div className="flex justify-between items-center text-sm">
                 <span className="text-muted-foreground">Articles</span>
-                <ProductPrice price={itemsPrice} plain />
+                <span className="font-semibold">{formatPrice(itemsPrice)}</span>
               </div>
               <div className="flex justify-between items-center text-sm"></div>
               <div className="flex justify-between items-center text-sm">
                 <span className="text-muted-foreground">Livraison</span>
-                <ProductPrice price={shippingPrice} plain />
+                <span className="font-semibold">
+                  {shippingPrice === undefined || shippingPrice === 0
+                    ? 'GRATUIT'
+                    : formatPrice(shippingPrice)}
+                </span>
               </div>
               <div className="border-t pt-3">
                 <div className="flex justify-between items-center text-base font-semibold">
                   <span>Total</span>
-                  <ProductPrice price={totalPrice} plain />
+                  <span className="font-bold">{formatPrice(totalPrice)}</span>
                 </div>
               </div>
             </div>

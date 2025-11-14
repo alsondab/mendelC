@@ -26,13 +26,13 @@ import {
 } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { formatDateTime, formatId } from '@/lib/utils'
-import ProductPrice from '@/components/shared/product/product-price'
+import { formatDateTime, formatId, round2 } from '@/lib/utils'
 import { getOrderById } from '@/lib/actions/order.actions'
 import { IOrder } from '@/lib/db/models/order.model'
 import { useToast } from '@/hooks/use-toast'
 import ActionButton from '../action-button'
 import { deliverOrder, updateOrderToPaid } from '@/lib/actions/order.actions'
+import useSettingStore from '@/hooks/use-setting-store'
 
 interface OrderDetailsDialogProps {
   orderId: string | null
@@ -49,6 +49,11 @@ export function OrderDetailsDialog({
 }: OrderDetailsDialogProps) {
   const { toast } = useToast()
   const t = useTranslations('Checkout')
+  const {
+    setting: { availableCurrencies },
+  } = useSettingStore()
+  const { getCurrency } = useSettingStore()
+  const currency = getCurrency()
   const [order, setOrder] = useState<IOrder | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -94,6 +99,43 @@ export function OrderDetailsDialog({
     expectedDeliveryDate,
     _id,
   } = order || {}
+
+  // Fonction pour formater les prix selon la devise choisie
+  // Les prix dans la DB sont en CFA, on les formate directement
+  const formatPrice = (priceCFA: number) => {
+    if (!priceCFA) return '0 CFA'
+    // Si la devise choisie est XOF (CFA), afficher directement
+    if (currency.code === 'XOF') {
+      return `${Math.round(priceCFA).toLocaleString('fr-FR')} CFA`
+    }
+
+    // Sinon, convertir depuis CFA vers la devise choisie
+    const cfaCurrency = availableCurrencies.find((c) => c.code === 'XOF')
+    if (!cfaCurrency) {
+      return `${Math.round(priceCFA).toLocaleString('fr-FR')} CFA`
+    }
+
+    // Convertir depuis CFA vers la devise choisie
+    const convertedPrice = round2(
+      (priceCFA / cfaCurrency.convertRate) * currency.convertRate
+    )
+
+    // Formater selon la devise
+    if (currency.code === 'EUR') {
+      return `€${convertedPrice.toLocaleString('fr-FR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`
+    }
+    if (currency.code === 'USD') {
+      return `$${convertedPrice.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`
+    }
+
+    return `${convertedPrice.toLocaleString('fr-FR')} ${currency.symbol}`
+  }
 
   const getStatusConfig = () => {
     if (isCancelled) {
@@ -388,11 +430,9 @@ export function OrderDetailsDialog({
                               <p className="text-xs sm:text-sm font-medium">
                                 {item.quantity}x
                               </p>
-                              <ProductPrice
-                                price={item.price * item.quantity}
-                                plain
-                                className="text-[10px] xs:text-xs"
-                              />
+                              <span className="text-[10px] xs:text-xs font-medium">
+                                {formatPrice(item.price * item.quantity)}
+                              </span>
                             </div>
                           </motion.div>
                         ))}
@@ -418,18 +458,24 @@ export function OrderDetailsDialog({
                         <span className="text-muted-foreground">
                           Sous-total articles
                         </span>
-                        <ProductPrice price={itemsPrice || 0} plain />
+                        <span className="font-semibold">
+                          {formatPrice(itemsPrice || 0)}
+                        </span>
                       </div>
                       <div className="flex justify-between items-center text-[10px] xs:text-xs sm:text-sm">
                         <span className="text-muted-foreground">
                           Frais de livraison
                         </span>
-                        <ProductPrice price={shippingPrice || 0} plain />
+                        <span className="font-semibold">
+                          {formatPrice(shippingPrice || 0)}
+                        </span>
                       </div>
                       <Separator />
                       <div className="flex justify-between items-center text-xs sm:text-sm font-bold">
                         <span>Total</span>
-                        <ProductPrice price={totalPrice || 0} plain />
+                        <span className="font-bold">
+                          {formatPrice(totalPrice || 0)}
+                        </span>
                       </div>
                     </div>
                   </motion.div>

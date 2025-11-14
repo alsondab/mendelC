@@ -20,25 +20,77 @@ const ProductPrice = React.memo(
 
     plain?: boolean
   }) => {
-    const { getCurrency } = useSettingStore()
+    const { getCurrency, setting } = useSettingStore()
     const currency = getCurrency()
     const t = useTranslations()
-    const convertedPrice = round2(currency.convertRate * price)
-    const convertedListPrice = round2(currency.convertRate * listPrice)
+
+    // Les prix dans la DB sont maintenant en CFA (devise par défaut)
+    // Si la devise par défaut est XOF, les prix sont déjà en CFA
+    const defaultCurrency = setting.defaultCurrency || 'XOF'
+    const isPriceInCFA = defaultCurrency === 'XOF'
+
+    // Trouver le taux de conversion CFA
+    const cfaCurrency = setting.availableCurrencies.find(
+      (c) => c.code === 'XOF'
+    )
+    const cfaRate = cfaCurrency?.convertRate || 655.957
+
+    // Convertir les prix selon la devise choisie
+    let convertedPrice: number
+    let convertedListPrice: number
+
+    if (isPriceInCFA) {
+      // Les prix sont en CFA, convertir vers la devise choisie
+      if (currency.code === 'XOF') {
+        // Afficher directement en CFA
+        convertedPrice = price
+        convertedListPrice = listPrice
+      } else {
+        // Convertir CFA → USD/EUR
+        // D'abord convertir CFA → USD (diviser par taux CFA)
+        const priceInUSD = price / cfaRate
+        const listPriceInUSD = listPrice / cfaRate
+        // Puis convertir USD → devise choisie
+        convertedPrice = round2(priceInUSD * currency.convertRate)
+        convertedListPrice = round2(listPriceInUSD * currency.convertRate)
+      }
+    } else {
+      // Ancien comportement : les prix sont en USD
+      convertedPrice = round2(currency.convertRate * price)
+      convertedListPrice = round2(currency.convertRate * listPrice)
+    }
 
     const format = useFormatter()
 
-    // Formatage spécial pour le CFA - arrondir les prix
-    const displayPrice =
-      currency.code === 'XOF' ? Math.round(convertedPrice) : convertedPrice
+    // Calculer le pourcentage de réduction à partir des prix NON arrondis pour éviter les erreurs
+    // Cela garantit que le calcul est précis même après arrondi pour l'affichage
+    const discountPercent =
+      convertedListPrice > 0
+        ? Math.round(100 - (convertedPrice / convertedListPrice) * 100)
+        : 0
+
+    // Formatage spécial pour le CFA - arrondir les prix pour l'affichage
     const displayListPrice =
       currency.code === 'XOF'
         ? Math.round(convertedListPrice)
         : convertedListPrice
 
-    const discountPercent = Math.round(
-      100 - (displayPrice / displayListPrice) * 100
-    )
+    // Pour le CFA, recalculer le prix réduit à partir du prix original arrondi et du pourcentage arrondi
+    // pour garantir la cohérence entre le prix affiché et le pourcentage affiché
+    let displayPrice: number
+    if (
+      currency.code === 'XOF' &&
+      convertedListPrice > 0 &&
+      discountPercent > 0
+    ) {
+      // Recalculer le prix réduit à partir du prix original arrondi et du pourcentage arrondi
+      // Cela garantit que : prix réduit = prix original × (1 - pourcentage / 100)
+      const recalculatedPrice = displayListPrice * (1 - discountPercent / 100)
+      displayPrice = Math.round(recalculatedPrice)
+    } else {
+      displayPrice =
+        currency.code === 'XOF' ? Math.round(convertedPrice) : convertedPrice
+    }
 
     // Formatage spécial pour le Franc CFA
     const formatPrice = (price: number) => {
@@ -58,7 +110,7 @@ const ProductPrice = React.memo(
       : [stringValue, '']
 
     return plain ? (
-      formatPrice(convertedPrice)
+      formatPrice(displayPrice)
     ) : convertedListPrice == 0 ? (
       <div
         className={cn('text-lg xs:text-xl sm:text-2xl lg:text-3xl', className)}

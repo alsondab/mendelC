@@ -13,8 +13,9 @@ import {
 } from '@/components/ui/table'
 import { getMyOrders } from '@/lib/actions/order.actions'
 import { IOrder } from '@/lib/db/models/order.model'
-import { formatDateTime, formatId } from '@/lib/utils'
+import { formatDateTime, formatId, round2 } from '@/lib/utils'
 import ProductPrice from '@/components/shared/product/product-price'
+import { getSetting } from '@/lib/actions/setting.actions'
 
 const PAGE_TITLE = 'Vos Commandes'
 export const metadata: Metadata = {
@@ -28,6 +29,16 @@ export default async function OrdersPage(props: {
   const orders = await getMyOrders({
     page,
   })
+  const setting = await getSetting()
+
+  // Convertir les prix CFA en USD pour ProductPrice (qui attend des prix en USD)
+  const convertCFAToUSD = (priceCFA: number) => {
+    const cfaCurrency = setting.availableCurrencies.find(
+      (c) => c.code === 'XOF'
+    )
+    if (!cfaCurrency) return priceCFA
+    return round2(priceCFA / cfaCurrency.convertRate)
+  }
   return (
     <div className="p-1 xs:p-2 sm:p-4 lg:p-6 max-w-7xl mx-auto">
       <div className="mb-6 xs:mb-8">
@@ -139,7 +150,10 @@ export default async function OrdersPage(props: {
                     )}
                   </TableCell>
                   <TableCell className="text-xs sm:text-sm font-medium">
-                    <ProductPrice price={order.totalPrice} plain />
+                    <ProductPrice
+                      price={convertCFAToUSD(order.totalPrice)}
+                      plain
+                    />
                   </TableCell>
                   <TableCell className="hidden sm:table-cell text-xs sm:text-sm">
                     {order.isCancelled ? (

@@ -100,7 +100,7 @@ export default function WishlistContent() {
             </Link>
 
             <div className="mt-2">
-              <ProductPrice price={item.price} />
+              <ProductPrice price={item.price} listPrice={item.listPrice} />
             </div>
 
             <div className="mt-2 text-xs sm:text-sm text-muted-foreground">
