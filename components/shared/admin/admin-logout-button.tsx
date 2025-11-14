@@ -16,16 +16,28 @@ import {
 } from '@/components/ui/alert-dialog'
 import { signOut } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
+import { useLocale } from 'next-intl'
 import { scale } from '@/lib/utils/animations'
 
 export default function AdminLogoutButton() {
   const [isOpen, setIsOpen] = useState(false)
   const t = useTranslations('Admin')
+  const locale = useLocale()
 
   const handleLogout = async () => {
-    await signOut({
-      callbackUrl: '/',
-    })
+    try {
+      // Utiliser redirect: false pour contrôler la redirection manuellement
+      await signOut({
+        redirect: false,
+      })
+      // Forcer la redirection vers la homepage avec le locale
+      // Utiliser window.location pour s'assurer que la session est bien supprimée
+      window.location.href = `/${locale}/`
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error)
+      // En cas d'erreur, forcer quand même la redirection
+      window.location.href = `/${locale}/`
+    }
   }
 
   return (
