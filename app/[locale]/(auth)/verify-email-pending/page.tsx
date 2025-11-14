@@ -75,31 +75,31 @@ export default function VerifyEmailPendingPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
-      <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-        <div className="text-center mb-6">
-          <Mail className="h-16 w-16 text-blue-500 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4 py-8 sm:py-12">
+      <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-lg sm:shadow-xl p-6 sm:p-8 md:p-10 lg:p-12">
+        <div className="text-center mb-6 sm:mb-8">
+          <Mail className="h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 text-blue-500 mx-auto mb-4 sm:mb-6" />
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3">
             {t('Verify your email')}
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-400">
             {t('Check your inbox for verification email')}
           </p>
         </div>
 
         {/* Message de succès visible quand on vient de l'inscription */}
         {showSuccessMessage && (
-          <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-6">
-            <div className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
-              <div className="flex-1">
-                <p className="text-sm font-semibold text-green-800 dark:text-green-200 mb-1">
+          <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg sm:rounded-xl p-4 sm:p-5 md:p-6 mb-6 sm:mb-8">
+            <div className="flex items-start gap-3 sm:gap-4">
+              <CheckCircle2 className="h-5 w-5 sm:h-6 sm:w-6 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm sm:text-base font-semibold text-green-800 dark:text-green-200 mb-1 sm:mb-2">
                   {t('Account created')}
                 </p>
-                <p className="text-sm text-green-700 dark:text-green-300">
+                <p className="text-sm sm:text-base text-green-700 dark:text-green-300 mb-2 sm:mb-3">
                   {t('VerificationEmailSentCheckInbox')}
                 </p>
-                <p className="text-xs text-green-600 dark:text-green-400 mt-2">
+                <p className="text-xs sm:text-sm text-green-600 dark:text-green-400">
                   {t('ClickVerificationButtonInEmail')}
                 </p>
               </div>
@@ -108,25 +108,33 @@ export default function VerifyEmailPendingPage() {
         )}
 
         {isSuccess ? (
-          <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-6">
-            <div className="flex items-center gap-2 text-green-800 dark:text-green-200">
-              <CheckCircle2 className="h-5 w-5" />
-              <p className="text-sm font-medium">
+          <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg sm:rounded-xl p-4 sm:p-5 md:p-6 mb-6 sm:mb-8">
+            <div className="flex items-center gap-2 sm:gap-3 text-green-800 dark:text-green-200">
+              <CheckCircle2 className="h-5 w-5 sm:h-6 sm:w-6 flex-shrink-0" />
+              <p className="text-sm sm:text-base font-medium">
                 {t('Verification email sent successfully')}
               </p>
             </div>
           </div>
         ) : (
           <>
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-6">
-              <p className="text-sm text-yellow-800 dark:text-yellow-200">
+            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg sm:rounded-xl p-4 sm:p-5 md:p-6 mb-6 sm:mb-8">
+              <p className="text-sm sm:text-base md:text-lg text-yellow-800 dark:text-yellow-200 text-center sm:text-left">
                 {t('Did not receive email? Enter your email below to resend')}
               </p>
             </div>
 
-            <form onSubmit={handleResend} className="space-y-4">
-              <div>
-                <Label htmlFor="email">{t('Email address')}</Label>
+            <form
+              onSubmit={handleResend}
+              className="space-y-4 sm:space-y-5 md:space-y-6"
+            >
+              <div className="space-y-2">
+                <Label
+                  htmlFor="email"
+                  className="text-sm sm:text-base font-medium"
+                >
+                  {t('Email address')}
+                </Label>
                 <Input
                   id="email"
                   type="email"
@@ -135,14 +143,15 @@ export default function VerifyEmailPendingPage() {
                   placeholder={t('Enter your email')}
                   required
                   disabled={isLoading}
+                  className="h-10 sm:h-11 md:h-12 text-sm sm:text-base"
                 />
               </div>
 
               {error && (
-                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
-                  <div className="flex items-center gap-2 text-red-800 dark:text-red-200">
-                    <XCircle className="h-4 w-4" />
-                    <p className="text-sm">{error}</p>
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg sm:rounded-xl p-3 sm:p-4">
+                  <div className="flex items-start gap-2 sm:gap-3 text-red-800 dark:text-red-200">
+                    <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 mt-0.5" />
+                    <p className="text-sm sm:text-base break-words">{error}</p>
                   </div>
                 </div>
               )}
@@ -150,11 +159,11 @@ export default function VerifyEmailPendingPage() {
               <Button
                 type="submit"
                 disabled={isLoading || !email}
-                className="w-full"
+                className="w-full h-10 sm:h-11 md:h-12 text-sm sm:text-base font-semibold"
               >
                 {isLoading ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="mr-2 h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
                     {t('Sending')}
                   </>
                 ) : (
@@ -165,10 +174,10 @@ export default function VerifyEmailPendingPage() {
           </>
         )}
 
-        <div className="mt-6 text-center">
+        <div className="mt-6 sm:mt-8 md:mt-10 text-center">
           <Link
             href="/sign-in"
-            className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+            className="inline-block text-sm sm:text-base md:text-lg text-blue-600 dark:text-blue-400 hover:underline transition-colors"
           >
             {t('Back to sign in')}
           </Link>
