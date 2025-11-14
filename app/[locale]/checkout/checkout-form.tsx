@@ -41,7 +41,6 @@ import Link from 'next/link'
 import useCartStore from '@/hooks/use-cart-store'
 import useSettingStore from '@/hooks/use-setting-store'
 import { useTranslations } from 'next-intl'
-import ProductPrice from '@/components/shared/product/product-price'
 import { getDefaultAddress } from '@/lib/actions/address.actions'
 
 const shippingAddressDefaultValues =

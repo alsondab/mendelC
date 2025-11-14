@@ -459,13 +459,7 @@ export const calcDeliveryDateAndPrice = async ({
   items: OrderItem[]
   shippingAddress?: ShippingAddress
 }) => {
-  const { availableDeliveryDates, availableCurrencies, defaultCurrency } =
-    await getSetting()
-
-  // Récupérer les taux de conversion
-  const defaultCurrencyData = availableCurrencies.find(
-    (c) => c.code === defaultCurrency
-  )
+  const { availableDeliveryDates } = await getSetting()
 
   // Calculer directement en CFA (devise par défaut)
   // item.price est déjà en CFA dans le panier (les prix dans la DB sont en CFA)
