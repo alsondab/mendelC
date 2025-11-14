@@ -70,11 +70,6 @@ export async function generateMetadata(): Promise<Metadata> {
       description: description,
       images: [logoUrl],
     },
-    other: {
-      // ⚡ Optimization: Preconnect to third-party origins for faster resource loading
-      'preconnect-utfs': 'https://utfs.io',
-      'dns-prefetch-utfs': 'https://utfs.io',
-    },
   }
 }
 
