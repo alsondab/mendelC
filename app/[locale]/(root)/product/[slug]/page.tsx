@@ -6,7 +6,7 @@ import { getCachedProductBySlugWithStatus } from '@/lib/cache/product-cache'
 import { getCachedRelatedProducts } from '@/lib/cache/product-cache'
 
 import ReviewList from './review-list'
-import { generateId, round2 } from '@/lib/utils'
+import { generateId } from '@/lib/utils'
 import SelectVariant from '@/components/shared/product/select-variant'
 import ProductPrice from '@/components/shared/product/product-price'
 import ProductGallery from '@/components/shared/product/product-gallery'
@@ -348,16 +348,22 @@ export default async function ProductDetails(props: {
                             price: (() => {
                               // Recalculer le prix réduit de la même manière que ProductPrice
                               // pour garantir la cohérence entre le prix affiché et le prix stocké
-                              const listPriceRounded = Math.round(product.listPrice)
+                              const listPriceRounded = Math.round(
+                                product.listPrice
+                              )
                               const priceRounded = Math.round(product.price)
-                              if (product.listPrice > 0 && product.listPrice > product.price) {
+                              if (
+                                product.listPrice > 0 &&
+                                product.listPrice > product.price
+                              ) {
                                 const discountPercent = Math.round(
                                   100 - (priceRounded / listPriceRounded) * 100
                                 )
                                 if (discountPercent > 0) {
                                   // Recalculer : prix réduit = prix original × (1 - pourcentage / 100)
                                   return Math.round(
-                                    listPriceRounded * (1 - discountPercent / 100)
+                                    listPriceRounded *
+                                      (1 - discountPercent / 100)
                                   )
                                 }
                               }
