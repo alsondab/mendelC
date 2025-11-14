@@ -149,7 +149,27 @@ export async function updateUserName(user: IUserName) {
 }
 
 export async function signInWithCredentials(user: IUserSignIn) {
-  return await signIn('credentials', { ...user, redirect: false })
+  const result = await signIn('credentials', { ...user, redirect: false })
+
+  // Si NextAuth retourne une erreur, vérifier si c'est lié à l'email non vérifié
+  if (result && 'error' in result && result.error) {
+    // Vérifier dans la base de données si l'utilisateur existe et si son email n'est pas vérifié
+    await connectToDatabase()
+    const dbUser = await User.findOne({ email: user.email })
+
+    if (dbUser && !dbUser.emailVerified) {
+      throw new Error('EMAIL_NOT_VERIFIED')
+    }
+
+    // Autre erreur de connexion
+    throw new Error(
+      result.error === 'CredentialsSignin'
+        ? 'Invalid email or password'
+        : result.error
+    )
+  }
+
+  return result
 }
 export const SignInWithGoogle = async () => {
   await signIn('google')

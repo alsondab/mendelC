@@ -9,6 +9,8 @@ const publicPages = [
   '/search',
   '/sign-in',
   '/sign-up',
+  '/verify-email',
+  '/verify-email-pending',
   '/cart',
   '/cart/(.*)',
   '/product/(.*)',
