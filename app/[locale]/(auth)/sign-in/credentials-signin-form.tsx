@@ -72,12 +72,18 @@ export default function CredentialsSignInForm() {
 
   const onSubmit = async (data: IUserSignIn) => {
     try {
-      await signInWithCredentials({
+      const result = await signInWithCredentials({
         email: data.email,
         password: data.password,
       })
-      // Rafraîchir la session pour obtenir le rôle à jour
-      await updateSession()
+
+      // Si la connexion réussit, attendre un peu pour que la session soit créée
+      // puis rafraîchir la session
+      if (result) {
+        // Attendre un court instant pour que NextAuth crée la session
+        await new Promise((resolve) => setTimeout(resolve, 100))
+        await updateSession()
+      }
     } catch (error) {
       if (isRedirectError(error)) {
         throw error

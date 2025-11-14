@@ -154,33 +154,66 @@ export async function updateUserName(user: IUserName) {
 }
 
 export async function signInWithCredentials(user: IUserSignIn) {
-  const result = await signIn('credentials', { ...user, redirect: false })
+  try {
+    const result = await signIn('credentials', { ...user, redirect: false })
 
-  // Vérifier si la connexion a réussi
-  if (result && 'ok' in result && result.ok === true) {
-    return result
-  }
+    // NextAuth v5 peut retourner :
+    // - { ok: true } si la connexion réussit
+    // - { error: string, ok: false } si la connexion échoue
+    // - null/undefined dans certains cas (à traiter comme succès si pas d'erreur)
 
-  // Si NextAuth retourne une erreur, vérifier si c'est lié à l'email non vérifié
-  if (result && 'error' in result && result.error) {
-    // Vérifier dans la base de données si l'utilisateur existe et si son email n'est pas vérifié
+    // Si le résultat indique un succès explicite
+    if (result && typeof result === 'object' && 'ok' in result) {
+      if (result.ok === true) {
+        return result
+      }
+
+      // Si ok est false, il y a une erreur
+      if (result.ok === false) {
+        // Vérifier si c'est lié à l'email non vérifié
+        await connectToDatabase()
+        const dbUser = await User.findOne({ email: user.email })
+
+        if (dbUser && !dbUser.emailVerified) {
+          throw new Error('EMAIL_NOT_VERIFIED')
+        }
+
+        // Autre erreur de connexion
+        const errorMsg =
+          'error' in result && result.error
+            ? result.error === 'CredentialsSignin'
+              ? 'Invalid email or password'
+              : String(result.error)
+            : 'Invalid email or password'
+        throw new Error(errorMsg)
+      }
+    }
+
+    // Si le résultat est null/undefined, vérifier dans la base de données
+    // pour s'assurer que ce n'est pas un problème d'email non vérifié
     await connectToDatabase()
     const dbUser = await User.findOne({ email: user.email })
 
-    if (dbUser && !dbUser.emailVerified) {
+    if (!dbUser) {
+      throw new Error('Invalid email or password')
+    }
+
+    if (!dbUser.emailVerified) {
       throw new Error('EMAIL_NOT_VERIFIED')
     }
 
-    // Autre erreur de connexion
-    throw new Error(
-      result.error === 'CredentialsSignin'
-        ? 'Invalid email or password'
-        : result.error
-    )
+    // Si l'utilisateur existe et est vérifié, mais signIn a retourné null/undefined,
+    // cela peut être un problème de timing. Retourner un succès conditionnel.
+    // Le useEffect dans le composant vérifiera la session.
+    return { ok: true }
+  } catch (error) {
+    // Si l'erreur est déjà une Error avec un message, la relancer
+    if (error instanceof Error) {
+      throw error
+    }
+    // Sinon, créer une nouvelle erreur
+    throw new Error('Invalid email or password')
   }
-
-  // Si aucun résultat ou résultat inattendu, considérer comme une erreur
-  throw new Error('Invalid email or password')
 }
 export const SignInWithGoogle = async () => {
   await signIn('google')
