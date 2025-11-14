@@ -150,8 +150,25 @@ const ProductCard = React.memo(
             name: product.name,
             slug: product.slug,
             category: product.category,
-            price: round2(product.price),
-            listPrice: round2(product.listPrice),
+            price: (() => {
+              // Recalculer le prix réduit de la même manière que ProductPrice
+              // pour garantir la cohérence entre le prix affiché et le prix stocké
+              const listPriceRounded = Math.round(product.listPrice)
+              const priceRounded = Math.round(product.price)
+              if (product.listPrice > 0 && product.listPrice > product.price) {
+                const discountPercent = Math.round(
+                  100 - (priceRounded / listPriceRounded) * 100
+                )
+                if (discountPercent > 0) {
+                  // Recalculer : prix réduit = prix original × (1 - pourcentage / 100)
+                  return Math.round(
+                    listPriceRounded * (1 - discountPercent / 100)
+                  )
+                }
+              }
+              return priceRounded
+            })(),
+            listPrice: Math.round(product.listPrice),
             quantity: 1,
             image: product.images[0],
           }}
