@@ -5,6 +5,10 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import { connectToDatabase } from './lib/db'
 import client from './lib/db/client'
 import User from './lib/db/models/user.model'
+import {
+  verifySessionToken,
+  consumeSessionToken,
+} from './lib/actions/verification.actions'
 
 import NextAuth, { type DefaultSession } from 'next-auth'
 import authConfig from './auth.config'
@@ -46,7 +50,36 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         const user = await User.findOne({ email: credentials.email })
 
-        if (user && user.password) {
+        if (!user) return null
+
+        // Vérifier si c'est un token de session temporaire (pour connexion après vérification email)
+        const passwordValue =
+          typeof credentials.password === 'string'
+            ? credentials.password
+            : String(credentials.password || '')
+        if (passwordValue.startsWith('verify_token_')) {
+          const sessionToken = passwordValue.replace('verify_token_', '')
+          const sessionData = await verifySessionToken(sessionToken)
+
+          if (
+            sessionData.valid &&
+            sessionData.email === credentials.email &&
+            user.emailVerified
+          ) {
+            // Consommer le token (usage unique)
+            await consumeSessionToken(sessionToken)
+            return {
+              id: user._id,
+              name: user.name,
+              email: user.email,
+              role: user.role,
+            }
+          }
+          return null
+        }
+
+        // Connexion normale avec mot de passe
+        if (user.password) {
           const isMatch = await bcrypt.compare(
             credentials.password as string,
             user.password

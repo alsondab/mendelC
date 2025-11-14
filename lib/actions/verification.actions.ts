@@ -6,6 +6,12 @@ import { formatError } from '../utils'
 import { sendVerificationEmail } from '@/emails'
 import crypto from 'crypto'
 
+// Stocker les tokens de session temporaires (en mémoire, expire après 5 minutes)
+const tempSessionTokens = new Map<
+  string,
+  { userId: string; email: string; expiresAt: number }
+>()
+
 /**
  * Vérifie le token d'email et active le compte
  */
@@ -32,14 +38,67 @@ export async function verifyEmail(token: string) {
     user.verificationTokenExpiry = undefined
     await user.save()
 
+    // Générer un token de session temporaire pour la connexion automatique
+    const sessionToken = crypto.randomBytes(32).toString('hex')
+    const expiresAt = Date.now() + 5 * 60 * 1000 // 5 minutes
+
+    tempSessionTokens.set(sessionToken, {
+      userId: user._id.toString(),
+      email: user.email,
+      expiresAt,
+    })
+
+    // Nettoyer les tokens expirés
+    for (const [key, value] of tempSessionTokens.entries()) {
+      if (value.expiresAt < Date.now()) {
+        tempSessionTokens.delete(key)
+      }
+    }
+
     return {
       success: true,
       message:
-        'Email vérifié avec succès ! Vous pouvez maintenant vous connecter.',
+        'Email vérifié avec succès ! Vous allez être connecté automatiquement.',
+      userEmail: user.email,
+      userId: user._id.toString(),
+      sessionToken,
     }
   } catch (error) {
     return { success: false, error: formatError(error) }
   }
+}
+
+/**
+ * Vérifie un token de session temporaire et retourne les infos utilisateur
+ */
+export async function verifySessionToken(sessionToken: string): Promise<{
+  valid: boolean
+  userId?: string
+  email?: string
+}> {
+  const sessionData = tempSessionTokens.get(sessionToken)
+
+  if (!sessionData) {
+    return { valid: false }
+  }
+
+  if (sessionData.expiresAt < Date.now()) {
+    tempSessionTokens.delete(sessionToken)
+    return { valid: false }
+  }
+
+  return {
+    valid: true,
+    userId: sessionData.userId,
+    email: sessionData.email,
+  }
+}
+
+/**
+ * Supprime un token de session temporaire après utilisation
+ */
+export async function consumeSessionToken(sessionToken: string): Promise<void> {
+  tempSessionTokens.delete(sessionToken)
 }
 
 /**
