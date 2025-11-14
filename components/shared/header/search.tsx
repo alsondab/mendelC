@@ -66,32 +66,32 @@ export default function Search({ categories, siteName }: SearchProps) {
           // Appel direct à la Server Action (plus rapide!)
           const data = await getSearchSuggestions(searchValue.trim())
 
-            // Combiner avec les recherches récentes
-            const recentSuggestions = recentSearches
-              .filter(
-                (term) =>
-                  term.toLowerCase().includes(searchValue.toLowerCase()) &&
-                  term.toLowerCase() !== searchValue.toLowerCase()
-              )
-              .map((term) => ({
-                type: 'recent' as const,
-                text: term,
-              }))
+          // Combiner avec les recherches récentes
+          const recentSuggestions = recentSearches
+            .filter(
+              (term) =>
+                term.toLowerCase().includes(searchValue.toLowerCase()) &&
+                term.toLowerCase() !== searchValue.toLowerCase()
+            )
+            .map((term) => ({
+              type: 'recent' as const,
+              text: term,
+            }))
 
-            // Combiner toutes les suggestions
-            const allSuggestions = [...recentSuggestions, ...data.suggestions]
+          // Combiner toutes les suggestions
+          const allSuggestions = [...recentSuggestions, ...data.suggestions]
 
-            // Dédupliquer et limiter
-            const uniqueSuggestions = allSuggestions
-              .filter(
-                (suggestion, index, self) =>
-                  index === self.findIndex((s) => s.text === suggestion.text)
-              )
-              .slice(0, 8)
+          // Dédupliquer et limiter
+          const uniqueSuggestions = allSuggestions
+            .filter(
+              (suggestion, index, self) =>
+                index === self.findIndex((s) => s.text === suggestion.text)
+            )
+            .slice(0, 8)
 
-            setSuggestions(uniqueSuggestions)
-            setShowSuggestions(uniqueSuggestions.length > 0)
-            setSelectedSuggestionIndex(-1)
+          setSuggestions(uniqueSuggestions)
+          setShowSuggestions(uniqueSuggestions.length > 0)
+          setSelectedSuggestionIndex(-1)
         } catch (error) {
           console.error(
             'Erreur lors de la récupération des suggestions:',
