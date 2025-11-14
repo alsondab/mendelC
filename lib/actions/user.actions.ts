@@ -156,6 +156,11 @@ export async function updateUserName(user: IUserName) {
 export async function signInWithCredentials(user: IUserSignIn) {
   const result = await signIn('credentials', { ...user, redirect: false })
 
+  // Vérifier si la connexion a réussi
+  if (result && 'ok' in result && result.ok === true) {
+    return result
+  }
+
   // Si NextAuth retourne une erreur, vérifier si c'est lié à l'email non vérifié
   if (result && 'error' in result && result.error) {
     // Vérifier dans la base de données si l'utilisateur existe et si son email n'est pas vérifié
@@ -174,7 +179,8 @@ export async function signInWithCredentials(user: IUserSignIn) {
     )
   }
 
-  return result
+  // Si aucun résultat ou résultat inattendu, considérer comme une erreur
+  throw new Error('Invalid email or password')
 }
 export const SignInWithGoogle = async () => {
   await signIn('google')

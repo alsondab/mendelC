@@ -2,8 +2,7 @@
 import { useSearchParams } from 'next/navigation'
 import { useLocale } from 'next-intl'
 import { useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useEffect } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -49,7 +48,6 @@ export default function CredentialsSignInForm() {
   const t = useTranslations('Auth')
   const locale = useLocale()
   const { data: session, update: updateSession } = useSession()
-  const [showLoadingOverlay, setShowLoadingOverlay] = useState(false)
 
   const form = useForm<IUserSignIn>({
     resolver: zodResolver(UserSignInSchema),
@@ -57,18 +55,6 @@ export default function CredentialsSignInForm() {
   })
 
   const { control, handleSubmit } = form
-
-  // Afficher l'overlay après 500ms de chargement
-  useEffect(() => {
-    if (form.formState.isSubmitting) {
-      const timer = setTimeout(() => {
-        setShowLoadingOverlay(true)
-      }, 500)
-      return () => clearTimeout(timer)
-    } else {
-      setShowLoadingOverlay(false)
-    }
-  }, [form.formState.isSubmitting])
 
   // Rediriger si la session est disponible et que l'utilisateur est Admin
   useEffect(() => {
@@ -125,41 +111,7 @@ export default function CredentialsSignInForm() {
   }
 
   return (
-    <div className="relative">
-      <AnimatePresence>
-        {showLoadingOverlay && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="absolute inset-0 bg-background/80 backdrop-blur-sm z-50 rounded-lg"
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center gap-3 w-full max-w-xs"
-            >
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-              >
-                <Loader2 className="h-6 w-6 text-primary" />
-              </motion.div>
-              <div className="text-center space-y-1">
-                <p className="text-sm font-medium text-foreground">
-                  {t('Signing in title')}
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  {t('Please wait')}...
-                </p>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+    <div>
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <input type="hidden" name="callbackUrl" value={callbackUrl} />
