@@ -10,6 +10,7 @@ import { getCachedCategoryTree } from '@/lib/cache/category-cache'
 import { getSetting } from '@/lib/actions/setting.actions'
 import { getTranslations } from 'next-intl/server'
 import { Metadata } from 'next'
+import { LCPImagePreload } from '@/components/shared/lcp-image-preload'
 
 // ⚡ Optimization: Lazy load HomeCarousel (contient Embla Carousel) pour réduire le bundle initial
 const HomeCarousel = dynamic(
@@ -21,8 +22,9 @@ const HomeCarousel = dynamic(
     // ⚡ Optimization: SSR activé pour meilleur SEO, le composant gère son propre lazy loading client
     ssr: true,
     loading: () => (
+      // ⚡ Optimization: Skeleton avec dimensions fixes pour éviter CLS
       <div className="w-full aspect-[16/6] bg-muted animate-pulse flex items-center justify-center">
-        <span className="text-muted-foreground">Chargement...</span>
+        <span className="text-muted-foreground text-sm">Chargement...</span>
       </div>
     ),
   }
@@ -34,8 +36,9 @@ const ProductSlider = dynamic(
   {
     ssr: true, // ⚡ Optimization: SSR possible pour le contenu statique
     loading: () => (
+      // ⚡ Optimization: Skeleton avec dimensions fixes pour éviter CLS
       <div className="w-full h-64 bg-muted animate-pulse flex items-center justify-center">
-        <span className="text-muted-foreground">Chargement...</span>
+        <span className="text-muted-foreground text-sm">Chargement...</span>
       </div>
     ),
   }
@@ -47,6 +50,17 @@ export async function generateMetadata(): Promise<Metadata> {
   const logoUrl = setting.site.logo.startsWith('http')
     ? setting.site.logo
     : `${baseUrl}${setting.site.logo}`
+
+  // ⚡ Optimization: Preload LCP image (première image du carousel) pour améliorer LCP
+  // L'image LCP est généralement la première image du carousel sur la page d'accueil
+  const firstCarouselImage =
+    setting.carousels &&
+    setting.carousels.length > 0 &&
+    setting.carousels[0].image
+      ? setting.carousels[0].image.startsWith('http')
+        ? setting.carousels[0].image
+        : `${baseUrl}${setting.carousels[0].image}`
+      : null
 
   return {
     title: setting.site.name,
@@ -74,6 +88,12 @@ export async function generateMetadata(): Promise<Metadata> {
       description: setting.site.description,
       images: [logoUrl],
     },
+    // ⚡ Optimization: Preload LCP image pour améliorer Largest Contentful Paint
+    ...(firstCarouselImage && {
+      other: {
+        'preload-lcp-image': firstCarouselImage,
+      },
+    }),
   }
 }
 
@@ -138,8 +158,19 @@ export default async function HomePage() {
     },
   ]
 
+  // ⚡ Optimization: Preload LCP image (première image du carousel)
+  const setting = await getSetting()
+  const firstCarouselImage =
+    carousels && carousels.length > 0 && carousels[0].image
+      ? carousels[0].image.startsWith('http')
+        ? carousels[0].image
+        : `${setting.site.url}${carousels[0].image}`
+      : null
+
   return (
     <>
+      {/* ⚡ Optimization: Preload LCP image pour améliorer Largest Contentful Paint */}
+      <LCPImagePreload imageUrl={firstCarouselImage} />
       <HomeCarousel items={carousels} />
       <div className="md:p-4 md:space-y-4 bg-border">
         <HomeCard cards={cards} />

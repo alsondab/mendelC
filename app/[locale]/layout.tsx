@@ -70,6 +70,11 @@ export async function generateMetadata(): Promise<Metadata> {
       description: description,
       images: [logoUrl],
     },
+    other: {
+      // ⚡ Optimization: Preconnect to third-party origins for faster resource loading
+      'preconnect-utfs': 'https://utfs.io',
+      'dns-prefetch-utfs': 'https://utfs.io',
+    },
   }
 }
 
@@ -100,6 +105,11 @@ export default async function AppLayout({
       dir={getDirection(locale) === 'rtl' ? 'rtl' : 'ltr'}
       suppressHydrationWarning
     >
+      <head>
+        {/* ⚡ Optimization: Preconnect to third-party origins for faster resource loading */}
+        <link rel="preconnect" href="https://utfs.io" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://utfs.io" />
+      </head>
       <body
         className={`min-h-screen ${geistSans.variable} ${geistMono.variable} antialiased pb-16 md:pb-0`}
       >

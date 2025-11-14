@@ -1,0 +1,34 @@
+@startuml
+title Processus d'inscription avec vérification par email
+
+start
+
+:Utilisateur remplit le formulaire d'inscription;
+
+if (Données valides ?) then (Oui)
+    :Générer token de vérification;
+    :Hacher le mot de passe (bcrypt);
+    :Créer utilisateur (emailVerified = false);
+    :Envoyer email de vérification;
+    :Rediriger vers page d'attente;
+    
+    :Utilisateur clique sur le lien dans l'email;
+    
+    if (Token valide ?) then (Oui)
+        :Activer le compte (emailVerified = true);
+        :Générer sessionToken temporaire;
+        :Connecter automatiquement l'utilisateur;
+        stop
+    else (Non)
+        :Afficher erreur "Token invalide ou expiré";
+        :Proposer renvoi d'email;
+        stop
+    endif
+    
+else (Non)
+    :Afficher erreurs de validation;
+    stop
+endif
+
+@enduml
+

@@ -3,14 +3,12 @@
 import useCartStore from '@/hooks/use-cart-store'
 import useCartSliderStore from '@/hooks/use-cart-slider-store'
 import Link from 'next/link'
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { Button } from '../ui/button'
 import { Separator } from '../ui/separator'
 import { ScrollArea } from '../ui/scroll-area'
-import Image from 'next/image'
-import { Trash2, X, ShoppingCart, ArrowRight, Plus, Minus } from 'lucide-react'
+import { X, ShoppingCart, ArrowRight } from 'lucide-react'
 import useSettingStore from '@/hooks/use-setting-store'
-import ProductPrice from './product/product-price'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { round2 } from '@/lib/utils'
@@ -20,6 +18,7 @@ import {
   overlayVariants,
   buttonVariants as btnVariants,
 } from '@/lib/utils/animations'
+import CartItem from './cart/cart-item'
 
 export default function CartSidebar() {
   const {
@@ -39,6 +38,22 @@ export default function CartSidebar() {
   const t = useTranslations()
   const { getCurrency } = useSettingStore()
   const currency = getCurrency()
+
+  // ⚡ Optimization: useCallback pour éviter la recréation des fonctions à chaque render
+  // Réduit le TBT (Total Blocking Time) en évitant les re-renders inutiles
+  const handleUpdateItem = useCallback(
+    (item: Parameters<typeof updateItem>[0], quantity: number) => {
+      updateItem(item, quantity)
+    },
+    [updateItem]
+  )
+
+  const handleRemoveItem = useCallback(
+    (item: Parameters<typeof removeItem>[0]) => {
+      removeItem(item)
+    },
+    [removeItem]
+  )
 
   // Les prix sont maintenant stockés directement en CFA dans le panier
   // itemsPrice est déjà en CFA
@@ -192,116 +207,13 @@ export default function CartSidebar() {
                 <ScrollArea className="flex-1 px-3 sm:p-4 sidebar-scroll">
                   <div className="py-2 space-y-2">
                     {items.map((item) => (
-                      <div
+                      <CartItem
                         key={item.clientId}
-                        className="space-y-1.5 pb-2 border-b last:border-0"
-                      >
-                        <div className="flex gap-2">
-                          {/* Image */}
-                          <Link
-                            href={`/product/${item.slug}`}
-                            onClick={close}
-                            className="flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
-                            aria-label={`${item.name} - ${t('Common.View')}`}
-                          >
-                            <div className="relative w-12 h-12 sm:w-14 sm:h-14 bg-muted rounded-lg overflow-hidden">
-                              {item.image && item.image.trim() !== '' ? (
-                                <Image
-                                  src={item.image}
-                                  alt={item.name}
-                                  fill
-                                  sizes="(max-width: 640px) 48px, 56px"
-                                  className="object-contain p-1"
-                                  loading="lazy"
-                                  decoding="async"
-                                />
-                              ) : (
-                                <div
-                                  className="w-full h-full bg-muted flex items-center justify-center"
-                                  aria-hidden="true"
-                                >
-                                  <ShoppingCart className="h-4 w-4 text-muted-foreground" />
-                                </div>
-                              )}
-                            </div>
-                          </Link>
-
-                          {/* Détails */}
-                          <div className="flex-1 min-w-0">
-                            <Link
-                              href={`/product/${item.slug}`}
-                              onClick={close}
-                              className="block focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded"
-                            >
-                              <h3 className="font-semibold text-xs text-foreground line-clamp-2 hover:text-primary transition-colors mb-0.5">
-                                {item.name}
-                              </h3>
-                            </Link>
-                            <div className="mt-0.5">
-                              <ProductPrice
-                                price={item.price}
-                                listPrice={item.listPrice}
-                              />
-                            </div>
-                            <div className="mt-1 flex items-center gap-1.5">
-                              <div className="flex items-center border border-border rounded-md overflow-hidden">
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => {
-                                    if (item.quantity > 1) {
-                                      updateItem(item, item.quantity - 1)
-                                    }
-                                  }}
-                                  disabled={item.quantity <= 1}
-                                  className="h-7 w-7 p-0 min-h-[32px] min-w-[32px] rounded-none hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
-                                  aria-label={t('Cart.Decrease quantity')}
-                                  type="button"
-                                >
-                                  <Minus
-                                    className="h-3.5 w-3.5"
-                                    aria-hidden="true"
-                                  />
-                                </Button>
-                                <span className="min-w-[32px] text-xs font-medium text-center px-2 py-1.5">
-                                  {item.quantity}
-                                </span>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => {
-                                    if (item.quantity < item.countInStock) {
-                                      updateItem(item, item.quantity + 1)
-                                    }
-                                  }}
-                                  disabled={item.quantity >= item.countInStock}
-                                  className="h-7 w-7 p-0 min-h-[32px] min-w-[32px] rounded-none hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
-                                  aria-label={t('Cart.Increase quantity')}
-                                  type="button"
-                                >
-                                  <Plus
-                                    className="h-3.5 w-3.5"
-                                    aria-hidden="true"
-                                  />
-                                </Button>
-                              </div>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => removeItem(item)}
-                                className="h-7 w-7 p-0 min-h-[32px] min-w-[32px] hover:bg-destructive/10 hover:text-destructive focus:ring-2 focus:ring-destructive"
-                                aria-label={`${t('Cart.Delete')} ${item.name}`}
-                                type="button"
-                              >
-                                <Trash2
-                                  className="h-3.5 w-3.5"
-                                  aria-hidden="true"
-                                />
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                        item={item}
+                        onUpdateQuantity={handleUpdateItem}
+                        onRemove={handleRemoveItem}
+                        onClose={close}
+                      />
                     ))}
                   </div>
                 </ScrollArea>

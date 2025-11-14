@@ -1,0 +1,89 @@
+@startuml
+title Processus de vérification de l'email
+
+start
+
+:Utilisateur reçoit email de vérification;
+
+:Utilisateur clique sur le lien de vérification;
+
+:Redirection vers /verify-email?token=xxx;
+
+:Extraire le token depuis l'URL;
+
+if (Token présent dans l'URL ?) then (Oui)
+    
+    :Appeler verifyEmail(token);
+    
+    :Se connecter à MongoDB;
+    
+    :Rechercher utilisateur avec verificationToken;
+    
+    if (Utilisateur trouvé ?) then (Oui)
+        
+        :Vérifier expiration du token\n(verificationTokenExpiry > maintenant);
+        
+        if (Token non expiré ?) then (Oui)
+            
+            :Mettre emailVerified = true;
+            
+            :Supprimer verificationToken;
+            
+            :Supprimer verificationTokenExpiry;
+            
+            :Générer sessionToken temporaire\n(crypto.randomBytes, 5 minutes);
+            
+            :Sauvegarder sessionToken et sessionTokenExpiry;
+            
+            :Nettoyer tokens de session expirés;
+            
+            :Rediriger vers /api/auth/verify-and-signin;
+            
+            :Vérifier sessionToken dans la base;
+            
+            if (SessionToken valide ?) then (Oui)
+                
+                :Créer session JWT via NextAuth;
+                
+                :Supprimer sessionToken (consommé);
+                
+                :Rediriger vers page d'accueil;
+                
+                :Afficher message "Email vérifié !\nVous êtes connecté";
+                
+                stop
+                
+            else (Non)
+                :Afficher erreur "Session invalide";
+                
+                :Rediriger vers page de connexion;
+                
+                stop
+            endif
+            
+        else (Non - Token expiré)
+            :Afficher message "Token expiré";
+            
+            :Proposer de renvoyer l'email;
+            
+            stop
+        endif
+        
+    else (Non - Utilisateur non trouvé)
+        :Afficher message "Token invalide";
+        
+        :Proposer de renvoyer l'email;
+        
+        stop
+    endif
+    
+else (Non - Token absent)
+    :Afficher erreur "Lien invalide";
+    
+    :Rediriger vers page d'inscription;
+    
+    stop
+endif
+
+@enduml
+
