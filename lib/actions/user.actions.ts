@@ -35,12 +35,17 @@ export async function registerUser(userSignUp: IUserSignUp) {
     const verificationToken = crypto.randomBytes(32).toString('hex')
     const verificationTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 heures
 
+    // Hasher le mot de passe AVANT de créer l'utilisateur
+    const hashedPassword = await bcrypt.hash(user.password, 5)
+
     const newUser = await User.create({
-      ...user,
-      password: await bcrypt.hash(user.password, 5),
+      name: user.name,
+      email: user.email,
+      password: hashedPassword, // Utiliser le mot de passe hashé explicitement
       emailVerified: false, // ❌ CHANGÉ : false par défaut, nécessite vérification
       verificationToken,
       verificationTokenExpiry,
+      role: 'User', // Rôle par défaut
     })
 
     // Envoyer l'email de confirmation

@@ -48,9 +48,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         await connectToDatabase()
         if (credentials == null) return null
 
+        // Récupérer l'utilisateur
         const user = await User.findOne({ email: credentials.email })
 
         if (!user) return null
+
+        // Vérifier que l'utilisateur a un mot de passe (pas un compte OAuth uniquement)
+        if (!user.password) {
+          return null
+        }
 
         // Vérifier si c'est un token de session temporaire (pour connexion après vérification email)
         const passwordValue =
@@ -80,10 +86,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         // Connexion normale avec mot de passe
         if (user.password) {
-          const isMatch = await bcrypt.compare(
-            credentials.password as string,
-            user.password
-          )
+          const passwordToCompare =
+            typeof credentials.password === 'string'
+              ? credentials.password
+              : String(credentials.password || '')
+
+          const isMatch = await bcrypt.compare(passwordToCompare, user.password)
+
           if (isMatch) {
             // Vérifier si l'email est vérifié
             if (!user.emailVerified) {
@@ -96,6 +105,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
               role: user.role,
             }
           }
+          // Si le mot de passe ne correspond pas, retourner null (NextAuth affichera "Invalid credentials")
         }
         return null
       },
