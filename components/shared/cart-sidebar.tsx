@@ -12,13 +12,20 @@ import useSettingStore from '@/hooks/use-setting-store'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { round2 } from '@/lib/utils'
-import { motion, AnimatePresence } from 'framer-motion'
 import {
   slideFromRight,
   overlayVariants,
   buttonVariants as btnVariants,
 } from '@/lib/utils/animations'
 import CartItem from './cart/cart-item'
+// ⚡ Optimization: Lazy load framer-motion pour réduire le First Load JS de ~37 KiB
+// Les composants d'animation utilisent dynamic() pour lazy-load framer-motion
+import {
+  AnimatedOverlay,
+  AnimatedSlider,
+  AnimatedButton,
+  AnimatedPresenceWrapper,
+} from './cart/cart-sidebar-animations'
 
 export default function CartSidebar() {
   const {
@@ -121,30 +128,22 @@ export default function CartSidebar() {
   }
 
   return (
-    <AnimatePresence>
+    <AnimatedPresenceWrapper>
       {isOpen && (
         <>
           {/* Overlay */}
-          <motion.div
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            variants={overlayVariants as any}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
+          <AnimatedOverlay
+            variants={overlayVariants}
             onClick={close}
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[55]"
           />
 
           {/* Slider */}
-          <motion.div
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            variants={slideFromRight as any}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
+          <AnimatedSlider
+            variants={slideFromRight}
             className="fixed right-0 top-0 bottom-16 md:bottom-0 z-[55] w-[280px] sm:w-[320px] md:w-[400px] bg-background border-l border-border shadow-2xl flex flex-col"
             role="dialog"
-            aria-modal="true"
+            aria-modal={true}
             aria-labelledby="cart-title"
           >
             {/* Header avec bouton de fermeture */}
@@ -161,12 +160,8 @@ export default function CartSidebar() {
                   {t('Cart.Shopping Cart')}
                 </h2>
               </div>
-              <motion.button
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                variants={btnVariants as any}
-                initial="rest"
-                whileHover="hover"
-                whileTap="tap"
+              <AnimatedButton
+                variants={btnVariants}
                 onClick={close}
                 className="p-1.5 sm:p-2 rounded-full hover:bg-muted transition-colors flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-w-[44px] min-h-[44px]"
                 aria-label={t('Common.Close')}
@@ -176,7 +171,7 @@ export default function CartSidebar() {
                   className="h-4 w-4 sm:h-5 sm:w-5 text-foreground"
                   aria-hidden="true"
                 />
-              </motion.button>
+              </AnimatedButton>
             </div>
 
             {/* Contenu */}
@@ -255,9 +250,9 @@ export default function CartSidebar() {
                 </div>
               </>
             )}
-          </motion.div>
+          </AnimatedSlider>
         </>
       )}
-    </AnimatePresence>
+    </AnimatedPresenceWrapper>
   )
 }

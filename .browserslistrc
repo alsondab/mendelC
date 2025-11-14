@@ -1,16 +1,20 @@
-# Cibler uniquement les navigateurs modernes pour éviter les polyfills inutiles
+# ⚡ Optimization: Cibler uniquement les navigateurs modernes pour éviter les polyfills inutiles
 # Cela réduit le Legacy JavaScript de ~15 KiB
 
-# Navigateurs modernes avec support ES2020+
+# Navigateurs modernes avec support ES2020+ (sans polyfills)
+# Exclure explicitement les navigateurs qui nécessitent des polyfills
 > 0.5%
 last 2 versions
 Firefox ESR
 not dead
 not IE 11
+not op_mini all
 
-# Support ES2020+ (Array.at, Object.hasOwn, etc.)
+# Support ES2020+ (Array.at, Object.hasOwn, String.trimStart, etc.)
+# Ces fonctionnalités sont natives dans ces versions, pas besoin de polyfills
 Chrome >= 92
 Firefox >= 90
-Safari >= 15
+Safari >= 15.4
 Edge >= 92
+iOS >= 15.4
 

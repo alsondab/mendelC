@@ -8,7 +8,6 @@ import { Button } from '../ui/button'
 import { ScrollArea } from '../ui/scroll-area'
 import { Heart, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { motion, AnimatePresence } from 'framer-motion'
 import {
   slideFromRight,
   overlayVariants,
@@ -17,6 +16,13 @@ import {
 import { useToast } from '@/hooks/use-toast'
 import useIsMounted from '@/hooks/use-is-mounted'
 import WishlistItem from './wishlist/wishlist-item'
+// ⚡ Optimization: Lazy load framer-motion pour réduire le First Load JS de ~37 KiB
+import {
+  AnimatedOverlay,
+  AnimatedSlider,
+  AnimatedButton,
+  AnimatedPresenceWrapper,
+} from './wishlist/wishlist-sidebar-animations'
 
 export default function WishlistSidebar() {
   const { items: wishlist, removeItem } = useWishlistStore()
@@ -62,30 +68,22 @@ export default function WishlistSidebar() {
   )
 
   return (
-    <AnimatePresence>
+    <AnimatedPresenceWrapper>
       {isOpen && (
         <>
           {/* Overlay */}
-          <motion.div
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            variants={overlayVariants as any}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
+          <AnimatedOverlay
+            variants={overlayVariants}
             onClick={close}
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[55]"
           />
 
           {/* Slider */}
-          <motion.div
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            variants={slideFromRight as any}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
+          <AnimatedSlider
+            variants={slideFromRight}
             className="fixed right-0 top-0 bottom-16 md:bottom-0 z-[55] w-[280px] sm:w-[320px] md:w-[400px] bg-background border-l border-border shadow-2xl flex flex-col"
             role="dialog"
-            aria-modal="true"
+            aria-modal={true}
             aria-labelledby="wishlist-title"
           >
             {/* Header avec bouton de fermeture */}
@@ -102,12 +100,8 @@ export default function WishlistSidebar() {
                   {t('Wishlist.Title')}
                 </h2>
               </div>
-              <motion.button
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                variants={btnVariants as any}
-                initial="rest"
-                whileHover="hover"
-                whileTap="tap"
+              <AnimatedButton
+                variants={btnVariants}
                 onClick={close}
                 className="p-1.5 sm:p-2 rounded-full hover:bg-muted transition-colors flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 min-w-[44px] min-h-[44px]"
                 aria-label={t('Common.Close')}
@@ -117,7 +111,7 @@ export default function WishlistSidebar() {
                   className="h-4 w-4 sm:h-5 sm:w-5 text-foreground"
                   aria-hidden="true"
                 />
-              </motion.button>
+              </AnimatedButton>
             </div>
 
             {/* Contenu */}
@@ -177,9 +171,9 @@ export default function WishlistSidebar() {
                 </div>
               </>
             )}
-          </motion.div>
+          </AnimatedSlider>
         </>
       )}
-    </AnimatePresence>
+    </AnimatedPresenceWrapper>
   )
 }
