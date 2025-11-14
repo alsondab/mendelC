@@ -311,6 +311,41 @@ export const Email = z
   .string()
   .min(1, 'Email is required')
   .email('Email is invalid')
+  .refine(
+    (email) => {
+      // Vérifier le format de base
+      if (!email.includes('@')) return false
+
+      const parts = email.split('@')
+      if (parts.length !== 2) return false
+
+      const [localPart, domain] = parts
+
+      // Vérifier la partie locale (avant @)
+      if (!localPart || localPart.length < 1) return false
+
+      // Vérifier le domaine
+      if (!domain || !domain.includes('.')) return false
+
+      const domainParts = domain.split('.')
+      const tld = domainParts[domainParts.length - 1]
+
+      // TLD doit avoir au moins 2 caractères (ex: .com, .fr, .org)
+      if (!tld || tld.length < 2) return false
+
+      // Le domaine (avant le TLD) doit avoir au moins 2 caractères
+      // Ex: "example.com" ✅ mais "a.com" ❌ ou "it.com" (où "it" est le TLD) ❌
+      const domainName = domainParts.slice(0, -1).join('.')
+      if (!domainName || domainName.length < 2) return false
+
+      // Vérifier qu'il n'y a pas de caractères interdits
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+      return emailRegex.test(email)
+    },
+    {
+      message: 'Email invalide. Le domaine doit être valide (ex: example.com)',
+    }
+  )
 export const Password = z
   .string()
   .min(8, 'Le mot de passe doit contenir au moins 8 caractères')

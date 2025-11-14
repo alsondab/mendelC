@@ -96,6 +96,26 @@ export default function CredentialsSignInForm() {
       if (isRedirectError(error)) {
         throw error
       }
+
+      // Gérer l'erreur EMAIL_NOT_VERIFIED
+      const errorMessage =
+        error instanceof Error ? error.message : String(error)
+      if (errorMessage.includes('EMAIL_NOT_VERIFIED')) {
+        toast({
+          title: t('Email not verified'),
+          description: t('Please verify your email before signing in'),
+          variant: 'destructive',
+          action: (
+            <Link href="/verify-email-pending">
+              <Button variant="outline" size="sm">
+                {t('Resend verification email')}
+              </Button>
+            </Link>
+          ),
+        })
+        return
+      }
+
       toast({
         title: t('Error'),
         description: t('Invalid email or password'),
@@ -116,11 +136,11 @@ export default function CredentialsSignInForm() {
             className="absolute inset-0 bg-background/80 backdrop-blur-sm z-50 rounded-lg"
           >
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="absolute top-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 w-full max-w-xs"
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center gap-3 w-full max-w-xs"
             >
               <motion.div
                 animate={{ rotate: 360 }}
@@ -188,7 +208,7 @@ export default function CredentialsSignInForm() {
                 className="w-full"
               >
                 {form.formState.isSubmitting ? (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-center gap-2">
                     <Loader2 className="h-4 w-4 animate-spin" />
                     <span>{t('Signing in')}</span>
                   </div>

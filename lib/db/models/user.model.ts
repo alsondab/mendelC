@@ -5,6 +5,8 @@ export interface IUser extends Document, IUserInput {
   _id: string
   createdAt: Date
   updatedAt: Date
+  verificationToken?: string
+  verificationTokenExpiry?: Date
 }
 
 const userSchema = new Schema<IUser>(
@@ -15,6 +17,8 @@ const userSchema = new Schema<IUser>(
     password: { type: String },
     image: { type: String },
     emailVerified: { type: Boolean, default: false },
+    verificationToken: { type: String },
+    verificationTokenExpiry: { type: Date },
   },
   {
     timestamps: true,

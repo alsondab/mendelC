@@ -16,6 +16,8 @@ import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { getSetting } from './setting.actions'
+import { sendVerificationEmail } from '@/emails'
+import crypto from 'crypto'
 
 // CREATE
 export async function registerUser(userSignUp: IUserSignUp) {
@@ -28,12 +30,41 @@ export async function registerUser(userSignUp: IUserSignUp) {
     })
 
     await connectToDatabase()
-    await User.create({
+
+    // Créer un token de vérification unique
+    const verificationToken = crypto.randomBytes(32).toString('hex')
+    const verificationTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 heures
+
+    const newUser = await User.create({
       ...user,
       password: await bcrypt.hash(user.password, 5),
-      emailVerified: true, // ✅ Considérer tous les emails comme vérifiés (cohérence avec Google OAuth)
+      emailVerified: false, // ❌ CHANGÉ : false par défaut, nécessite vérification
+      verificationToken,
+      verificationTokenExpiry,
     })
-    return { success: true, message: 'Utilisateur créé avec succès' }
+
+    // Envoyer l'email de confirmation
+    try {
+      await sendVerificationEmail({
+        email: newUser.email,
+        name: newUser.name,
+        token: verificationToken,
+      })
+    } catch (emailError) {
+      console.error(
+        "Erreur lors de l'envoi de l'email de vérification:",
+        emailError
+      )
+      // Ne pas faire échouer la création du compte si l'email échoue
+      // L'utilisateur pourra demander un nouvel email plus tard
+    }
+
+    return {
+      success: true,
+      message:
+        'Compte créé. Veuillez vérifier votre email pour activer votre compte.',
+      requiresVerification: true,
+    }
   } catch (error) {
     return { success: false, error: formatError(error) }
   }

@@ -1,5 +1,5 @@
 'use client'
-import { redirect, useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -23,6 +23,7 @@ import { UserSignUpSchema } from '@/lib/validator'
 import { Separator } from '@/components/ui/separator'
 import { isRedirectError } from 'next/dist/client/components/redirect-error'
 import { useTranslations } from 'next-intl'
+import { Loader2 } from 'lucide-react'
 
 const signUpDefaultValues =
   process.env.NODE_ENV === 'development'
@@ -44,6 +45,7 @@ export default function CredentialsSignInForm() {
     setting: { site },
   } = useSettingStore()
   const searchParams = useSearchParams()
+  const router = useRouter()
   const callbackUrl = searchParams.get('callbackUrl') || '/'
   const t = useTranslations('Auth')
 
@@ -65,11 +67,30 @@ export default function CredentialsSignInForm() {
         })
         return
       }
+
+      // Si l'email nécessite une vérification, afficher le toast puis rediriger
+      if (res.requiresVerification) {
+        // Afficher le toast immédiatement
+        toast({
+          title: t('Account created'),
+          description: t('VerificationEmailSentCheckInbox'),
+        })
+
+        // Attendre un peu pour que le toast soit visible, puis rediriger
+        setTimeout(() => {
+          router.push(
+            `/verify-email-pending?fromSignup=true&email=${encodeURIComponent(data.email)}`
+          )
+        }, 1000) // 1 seconde pour que le toast soit visible
+        return
+      }
+
+      // Sinon, connecter l'utilisateur directement
       await signInWithCredentials({
         email: data.email,
         password: data.password,
       })
-      redirect(callbackUrl)
+      router.push(callbackUrl)
     } catch (error) {
       if (isRedirectError(error)) {
         throw error
@@ -97,6 +118,7 @@ export default function CredentialsSignInForm() {
                   <Input
                     placeholder={t('Enter your full name')}
                     maxLength={50}
+                    disabled={form.formState.isSubmitting}
                     {...field}
                   />
                 </FormControl>
@@ -115,6 +137,7 @@ export default function CredentialsSignInForm() {
                   <Input
                     placeholder={t('Enter your email address')}
                     type="email"
+                    disabled={form.formState.isSubmitting}
                     {...field}
                   />
                 </FormControl>
@@ -134,6 +157,7 @@ export default function CredentialsSignInForm() {
                     placeholder={t('Enter your password')}
                     autoComplete="new-password"
                     maxLength={128}
+                    disabled={form.formState.isSubmitting}
                     {...field}
                   />
                 </FormControl>
@@ -155,6 +179,7 @@ export default function CredentialsSignInForm() {
                     placeholder={t('Confirm your password')}
                     autoComplete="new-password"
                     maxLength={128}
+                    disabled={form.formState.isSubmitting}
                     {...field}
                   />
                 </FormControl>
@@ -163,7 +188,20 @@ export default function CredentialsSignInForm() {
             )}
           />
           <div>
-            <Button type="submit">{t('Sign Up')}</Button>
+            <Button
+              type="submit"
+              disabled={form.formState.isSubmitting}
+              className="w-full"
+            >
+              {form.formState.isSubmitting ? (
+                <div className="flex items-center justify-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span>{t('Creating account')}</span>
+                </div>
+              ) : (
+                t('Sign Up')
+              )}
+            </Button>
           </div>
           <div className="text-sm">
             {t('By creating an account')} {site.name}&apos;s{' '}

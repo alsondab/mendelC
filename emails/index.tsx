@@ -3,6 +3,7 @@ import PurchaseReceiptEmail from './purchase-receipt'
 import { IOrder } from '@/lib/db/models/order.model'
 import AskReviewOrderItemsEmail from './ask-review-order-items'
 import OrderCancellationEmail from './order-cancellation'
+import VerificationEmail from './verification-email'
 import { SENDER_EMAIL, SENDER_NAME } from '@/lib/constants'
 
 const resend = new Resend(process.env.RESEND_API_KEY as string)
@@ -147,6 +148,50 @@ export const sendOrderCancellationNotification = async ({
     return result
   } catch (error) {
     console.error("❌ Erreur lors de l'envoi de l'email d'annulation:", error)
+    throw error
+  }
+}
+
+export const sendVerificationEmail = async ({
+  email,
+  name,
+  token,
+}: {
+  email: string
+  name: string
+  token: string
+}) => {
+  try {
+    if (!process.env.RESEND_API_KEY) {
+      console.warn('⚠️ RESEND_API_KEY non configuré. Email non envoyé.')
+      return { id: 'mock-id', error: 'RESEND_API_KEY not configured' }
+    }
+
+    console.log("📧 Tentative d'envoi de l'email de vérification...")
+    console.log('📧 Destinataire:', email)
+
+    const result = await resend.emails.send({
+      from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
+      to: email,
+      subject: 'Vérifiez votre adresse email - MendelCorp',
+      react: <VerificationEmail name={name} token={token} />,
+    })
+
+    if (result.error) {
+      console.error('❌ Erreur Resend:', JSON.stringify(result.error, null, 2))
+      throw new Error(`Resend Error: ${JSON.stringify(result.error)}`)
+    }
+
+    console.log(
+      '✅ Email de vérification envoyé avec succès. ID:',
+      result.data?.id
+    )
+    return result
+  } catch (error) {
+    console.error(
+      "❌ Erreur lors de l'envoi de l'email de vérification:",
+      error
+    )
     throw error
   }
 }

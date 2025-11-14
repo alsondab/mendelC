@@ -52,6 +52,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             user.password
           )
           if (isMatch) {
+            // Vérifier si l'email est vérifié
+            if (!user.emailVerified) {
+              throw new Error('EMAIL_NOT_VERIFIED')
+            }
             return {
               id: user._id,
               name: user.name,
