@@ -6,11 +6,14 @@ import OrderCancellationEmail from './order-cancellation'
 import VerificationEmail from './verification-email'
 import { SENDER_EMAIL, SENDER_NAME } from '@/lib/constants'
 
-const resend = new Resend(process.env.RESEND_API_KEY as string)
+// Initialiser Resend seulement si la clé API est disponible
+const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null
 
 export const sendPurchaseReceipt = async ({ order }: { order: IOrder }) => {
   try {
-    if (!process.env.RESEND_API_KEY) {
+    if (!process.env.RESEND_API_KEY || !resend) {
       console.warn('⚠️ RESEND_API_KEY non configuré. Email non envoyé.')
       return { id: 'mock-id', error: 'RESEND_API_KEY not configured' }
     }
@@ -42,7 +45,7 @@ export const sendPurchaseReceipt = async ({ order }: { order: IOrder }) => {
 
 export const sendOrderConfirmation = async ({ order }: { order: IOrder }) => {
   try {
-    if (!process.env.RESEND_API_KEY) {
+    if (!process.env.RESEND_API_KEY || !resend) {
       console.warn('⚠️ RESEND_API_KEY non configuré. Email non envoyé.')
       return { id: 'mock-id', error: 'RESEND_API_KEY not configured' }
     }
@@ -79,7 +82,7 @@ export const sendOrderConfirmation = async ({ order }: { order: IOrder }) => {
 
 export const sendAskReviewOrderItems = async ({ order }: { order: IOrder }) => {
   try {
-    if (!process.env.RESEND_API_KEY) {
+    if (!process.env.RESEND_API_KEY || !resend) {
       console.warn('⚠️ RESEND_API_KEY non configuré. Email non envoyé.')
       return { id: 'mock-id', error: 'RESEND_API_KEY not configured' }
     }
@@ -120,7 +123,7 @@ export const sendOrderCancellationNotification = async ({
   order: IOrder
 }) => {
   try {
-    if (!process.env.RESEND_API_KEY) {
+    if (!process.env.RESEND_API_KEY || !resend) {
       console.warn('⚠️ RESEND_API_KEY non configuré. Email non envoyé.')
       return { id: 'mock-id', error: 'RESEND_API_KEY not configured' }
     }
@@ -162,13 +165,15 @@ export const sendVerificationEmail = async ({
   token: string
 }) => {
   try {
-    if (!process.env.RESEND_API_KEY) {
+    if (!process.env.RESEND_API_KEY || !resend) {
       console.warn('⚠️ RESEND_API_KEY non configuré. Email non envoyé.')
+      console.warn('📧 Email qui aurait été envoyé à:', email)
       return { id: 'mock-id', error: 'RESEND_API_KEY not configured' }
     }
 
     console.log("📧 Tentative d'envoi de l'email de vérification...")
     console.log('📧 Destinataire:', email)
+    console.log('📧 Expéditeur:', `${SENDER_NAME} <${SENDER_EMAIL}>`)
 
     const result = await resend.emails.send({
       from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
