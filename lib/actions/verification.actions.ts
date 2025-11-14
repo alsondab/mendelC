@@ -6,12 +6,6 @@ import { formatError } from '../utils'
 import { sendVerificationEmail } from '@/emails'
 import crypto from 'crypto'
 
-// Stocker les tokens de session temporaires (en mémoire, expire après 5 minutes)
-const tempSessionTokens = new Map<
-  string,
-  { userId: string; email: string; expiresAt: number }
->()
-
 /**
  * Vérifie le token d'email et active le compte
  */
@@ -36,24 +30,21 @@ export async function verifyEmail(token: string) {
     user.emailVerified = true
     user.verificationToken = undefined
     user.verificationTokenExpiry = undefined
-    await user.save()
 
     // Générer un token de session temporaire pour la connexion automatique
     const sessionToken = crypto.randomBytes(32).toString('hex')
-    const expiresAt = Date.now() + 5 * 60 * 1000 // 5 minutes
+    const sessionTokenExpiry = new Date(Date.now() + 5 * 60 * 1000) // 5 minutes
 
-    tempSessionTokens.set(sessionToken, {
-      userId: user._id.toString(),
-      email: user.email,
-      expiresAt,
-    })
+    // Stocker le token dans la base de données (au lieu de la mémoire)
+    user.sessionToken = sessionToken
+    user.sessionTokenExpiry = sessionTokenExpiry
+    await user.save()
 
-    // Nettoyer les tokens expirés
-    for (const [key, value] of tempSessionTokens.entries()) {
-      if (value.expiresAt < Date.now()) {
-        tempSessionTokens.delete(key)
-      }
-    }
+    // Nettoyer les tokens de session expirés pour tous les utilisateurs
+    await User.updateMany(
+      { sessionTokenExpiry: { $lt: new Date() } },
+      { $unset: { sessionToken: 1, sessionTokenExpiry: 1 } }
+    )
 
     return {
       success: true,
@@ -76,21 +67,26 @@ export async function verifySessionToken(sessionToken: string): Promise<{
   userId?: string
   email?: string
 }> {
-  const sessionData = tempSessionTokens.get(sessionToken)
+  try {
+    await connectToDatabase()
 
-  if (!sessionData) {
+    const user = await User.findOne({
+      sessionToken,
+      sessionTokenExpiry: { $gt: new Date() }, // Token non expiré
+    })
+
+    if (!user) {
+      return { valid: false }
+    }
+
+    return {
+      valid: true,
+      userId: user._id.toString(),
+      email: user.email,
+    }
+  } catch (error) {
+    console.error('Erreur lors de la vérification du token de session:', error)
     return { valid: false }
-  }
-
-  if (sessionData.expiresAt < Date.now()) {
-    tempSessionTokens.delete(sessionToken)
-    return { valid: false }
-  }
-
-  return {
-    valid: true,
-    userId: sessionData.userId,
-    email: sessionData.email,
   }
 }
 
@@ -98,7 +94,15 @@ export async function verifySessionToken(sessionToken: string): Promise<{
  * Supprime un token de session temporaire après utilisation
  */
 export async function consumeSessionToken(sessionToken: string): Promise<void> {
-  tempSessionTokens.delete(sessionToken)
+  try {
+    await connectToDatabase()
+    await User.updateOne(
+      { sessionToken },
+      { $unset: { sessionToken: 1, sessionTokenExpiry: 1 } }
+    )
+  } catch (error) {
+    console.error('Erreur lors de la suppression du token de session:', error)
+  }
 }
 
 /**
