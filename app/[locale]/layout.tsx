@@ -13,7 +13,6 @@ import {
   FloatingCartButton,
   MobileBottomNav,
 } from '@/components/shared/layout-components'
-import { NetworkOptimizations } from '@/components/shared/network-optimizations'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -70,11 +69,6 @@ export async function generateMetadata(): Promise<Metadata> {
       description: description,
       images: [logoUrl],
     },
-    other: {
-      // ⚡ Optimization: Preconnect to third-party origins for faster resource loading
-      'preconnect-utfs': 'https://utfs.io',
-      'dns-prefetch-utfs': 'https://utfs.io',
-    },
   }
 }
 
@@ -113,7 +107,6 @@ export default async function AppLayout({
       <body
         className={`min-h-screen ${geistSans.variable} ${geistMono.variable} antialiased pb-16 md:pb-0`}
       >
-        <NetworkOptimizations />
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ClientProviders setting={{ ...setting, currency }}>
             {children}
