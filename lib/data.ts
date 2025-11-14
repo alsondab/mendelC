@@ -19,7 +19,7 @@ const users: IUserInput[] = [
       phone: '123-456-7890',
     },
     paymentMethod: 'Stripe',
-    emailVerified: false,
+    emailVerified: true, // ✅ Admin par défaut : email vérifié (compte système)
   },
   {
     name: 'Jane',

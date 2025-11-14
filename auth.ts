@@ -95,7 +95,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
           if (isMatch) {
             // Vérifier si l'email est vérifié
-            if (!user.emailVerified) {
+            // Exception : les admins peuvent se connecter même si l'email n'est pas vérifié
+            if (!user.emailVerified && user.role !== 'Admin') {
               throw new Error('EMAIL_NOT_VERIFIED')
             }
             return {
