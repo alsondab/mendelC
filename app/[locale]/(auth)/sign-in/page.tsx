@@ -25,9 +25,12 @@ export default async function SignInPage(props: {
   const locale = params.locale || (await getLocale())
 
   const { callbackUrl = '/' } = searchParams
+  const allSearchParams = await searchParams
+  const isLogout = allSearchParams.logout === 'true'
 
   const session = await auth()
-  if (session) {
+  // Ne pas rediriger automatiquement si l'utilisateur vient de se déconnecter
+  if (session && !isLogout) {
     // Rediriger vers /admin/overview pour les admins (car /admin n'a pas de page.tsx)
     const redirectUrl =
       session.user.role === 'Admin' ? '/admin/overview' : callbackUrl

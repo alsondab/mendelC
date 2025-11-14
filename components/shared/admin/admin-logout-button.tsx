@@ -27,16 +27,21 @@ export default function AdminLogoutButton() {
   const handleLogout = async () => {
     try {
       // Utiliser redirect: false pour contrôler la redirection manuellement
-      await signOut({
+      const result = await signOut({
         redirect: false,
       })
-      // Forcer la redirection vers sign-in (pas la homepage)
-      // Utiliser window.location pour s'assurer que la session est bien supprimée
-      window.location.href = `/${locale}/sign-in`
+      
+      // Attendre un court instant pour s'assurer que la session est bien supprimée côté serveur
+      await new Promise((resolve) => setTimeout(resolve, 200))
+      
+      // Forcer la redirection vers sign-in avec le locale
+      // Utiliser window.location.href pour forcer un rechargement complet
+      // et s'assurer que la session est bien supprimée côté client
+      window.location.href = `/${locale}/sign-in?logout=true`
     } catch (error) {
       console.error('Erreur lors de la déconnexion:', error)
       // En cas d'erreur, forcer quand même la redirection vers sign-in
-      window.location.href = `/${locale}/sign-in`
+      window.location.href = `/${locale}/sign-in?logout=true`
     }
   }
 

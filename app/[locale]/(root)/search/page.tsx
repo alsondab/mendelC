@@ -95,9 +95,9 @@ export async function generateMetadata(props: {
           ${price !== 'all' ? ` : ${t('Search.Price')} ${price}` : ''}
           ${rating !== 'all' ? ` : ${t('Search.Rating')} ${rating}` : ''}`
     description = `Recherche de produits: ${title} sur ${setting.site.name}`
-  }
+    }
 
-  return {
+    return {
     title,
     description,
     openGraph: {
