@@ -11,6 +11,7 @@ import {
   Button,
 } from '@react-email/components'
 import { getSetting } from '@/lib/actions/setting.actions'
+import { routing } from '@/i18n/routing'
 
 type VerificationEmailProps = {
   name: string
@@ -28,9 +29,10 @@ export default async function VerificationEmail({
 }: VerificationEmailProps) {
   const { site } = await getSetting()
 
-  // Construire l'URL de vérification
+  // Construire l'URL de vérification avec le locale par défaut
   const baseUrl = site.url.endsWith('/') ? site.url.slice(0, -1) : site.url
-  const verificationUrl = `${baseUrl}/verify-email?token=${token}`
+  const defaultLocale = routing.defaultLocale
+  const verificationUrl = `${baseUrl}/${defaultLocale}/verify-email?token=${token}`
 
   return (
     <Html>
