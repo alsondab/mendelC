@@ -37,15 +37,45 @@ export default function CartSidebar() {
   } = useSettingStore()
 
   const t = useTranslations()
+  const { getCurrency } = useSettingStore()
+  const currency = getCurrency()
 
   // Les prix sont maintenant stockés directement en CFA dans le panier
   // itemsPrice est déjà en CFA
-  // ProductPrice attend des prix en USD, donc on convertit CFA → USD
-  const cfaCurrency = availableCurrencies.find((c) => c.code === 'XOF')
-  const displayPrice =
-    itemsPrice > 0 && cfaCurrency
-      ? round2(itemsPrice / cfaCurrency.convertRate)
-      : 0
+  // Fonction pour formater les prix selon la devise choisie
+  const formatPrice = (priceCFA: number) => {
+    // Si la devise choisie est XOF (CFA), afficher directement
+    if (currency.code === 'XOF') {
+      return `${Math.round(priceCFA).toLocaleString('fr-FR')} CFA`
+    }
+
+    // Sinon, convertir depuis CFA vers la devise choisie
+    const cfaCurrency = availableCurrencies.find((c) => c.code === 'XOF')
+    if (!cfaCurrency) {
+      return `${Math.round(priceCFA).toLocaleString('fr-FR')} CFA`
+    }
+
+    // Convertir depuis CFA vers la devise choisie
+    const convertedPrice = round2(
+      (priceCFA / cfaCurrency.convertRate) * currency.convertRate
+    )
+
+    // Formater selon la devise
+    if (currency.code === 'EUR') {
+      return `€${convertedPrice.toLocaleString('fr-FR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`
+    }
+    if (currency.code === 'USD') {
+      return `$${convertedPrice.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`
+    }
+
+    return `${convertedPrice.toLocaleString('fr-FR')} ${currency.symbol}`
+  }
 
   // Fermer le slider avec Escape
   useEffect(() => {
@@ -283,7 +313,7 @@ export default function CartSidebar() {
                       {t('Cart.Subtotal')}
                     </span>
                     <span className="text-base sm:text-lg font-bold text-primary">
-                      <ProductPrice price={displayPrice} plain />
+                      {formatPrice(itemsPrice)}
                     </span>
                   </div>
                   <Separator />

@@ -228,7 +228,8 @@ export default async function StockManagementPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl sm:text-3xl font-bold">
-              {statistics.totalStockValue.toLocaleString('fr-FR')} €
+              {Math.round(statistics.totalStockValue).toLocaleString('fr-FR')}{' '}
+              CFA
             </div>
             <p className="text-xs sm:text-sm text-muted-foreground mt-1">
               {t('ValueCalculatedAtCurrentPrice')}
