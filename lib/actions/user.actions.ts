@@ -44,19 +44,42 @@ export async function registerUser(userSignUp: IUserSignUp) {
     })
 
     // Envoyer l'email de confirmation
+    let emailSent = false
     try {
-      await sendVerificationEmail({
+      const emailResult = await sendVerificationEmail({
         email: newUser.email,
         name: newUser.name,
         token: verificationToken,
       })
+
+      // Vérifier si l'email a vraiment été envoyé
+      if ('error' in emailResult && emailResult.error) {
+        console.error(
+          "❌ Échec de l'envoi de l'email de vérification:",
+          emailResult.error
+        )
+        emailSent = false
+      } else if ('data' in emailResult && emailResult.data?.id) {
+        console.log(
+          '✅ Email de vérification envoyé avec succès. ID:',
+          emailResult.data.id
+        )
+        emailSent = true
+      }
     } catch (emailError) {
       console.error(
-        "Erreur lors de l'envoi de l'email de vérification:",
+        "❌ Erreur lors de l'envoi de l'email de vérification:",
         emailError
       )
+      emailSent = false
       // Ne pas faire échouer la création du compte si l'email échoue
       // L'utilisateur pourra demander un nouvel email plus tard
+    }
+
+    if (!emailSent) {
+      console.warn(
+        "⚠️ Compte créé mais email de vérification non envoyé. L'utilisateur devra demander un renvoi."
+      )
     }
 
     return {
