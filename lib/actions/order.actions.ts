@@ -468,15 +468,11 @@ export const calcDeliveryDateAndPrice = async ({
   )
 
   // Calculer directement en CFA (devise par défaut)
-  // item.price est en USD dans la DB, on convertit directement en CFA
-  const itemsPriceCFA = defaultCurrencyData
-    ? Math.round(
-        items.reduce((acc, item) => acc + item.price * item.quantity, 0) *
-          defaultCurrencyData.convertRate
-      )
-    : Math.round(
-        items.reduce((acc, item) => acc + item.price * item.quantity, 0)
-      )
+  // item.price est déjà en CFA dans le panier (les prix dans la DB sont en CFA)
+  // Donc on additionne directement sans conversion
+  const itemsPriceCFA = Math.round(
+    items.reduce((acc, item) => acc + item.price * item.quantity, 0)
+  )
 
   const deliveryDate =
     availableDeliveryDates[

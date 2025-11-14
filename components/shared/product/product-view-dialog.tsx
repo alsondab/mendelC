@@ -172,11 +172,14 @@ export function ProductViewDialog({
                     </div>
                     <div className="space-y-1">
                       <p className="text-xl sm:text-2xl font-bold">
-                        {product.price}€
+                        {Math.round(product.price).toLocaleString('fr-FR')} CFA
                       </p>
                       {product.listPrice > product.price && (
                         <p className="text-sm text-muted-foreground line-through">
-                          {product.listPrice}€
+                          {Math.round(product.listPrice).toLocaleString(
+                            'fr-FR'
+                          )}{' '}
+                          CFA
                         </p>
                       )}
                     </div>

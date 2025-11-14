@@ -2,7 +2,7 @@
 'use client'
 import Link from 'next/link'
 import React, { useEffect, useState, useTransition } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 
 import DeleteDialog from '@/components/shared/delete-dialog'
 import { ProductViewDialog } from '@/components/shared/product/product-view-dialog'
@@ -35,6 +35,7 @@ type ProductListDataProps = {
 }
 const ProductList = () => {
   const t = useTranslations('Admin.ProductsList')
+  const locale = useLocale()
   const [page, setPage] = useState<number>(1)
   const [inputValue, setInputValue] = useState<string>('')
   const [data, setData] = useState<ProductListDataProps>()
@@ -256,7 +257,7 @@ const ProductList = () => {
                   <TableCell className="text-xs sm:text-sm">
                     <div className="flex flex-col gap-1">
                       <Link
-                        href={`/admin/products/${product._id}`}
+                        href={`/${locale}/admin/products/${product._id}`}
                         className="font-medium hover:underline truncate max-w-[150px] sm:max-w-none"
                       >
                         {product.name}
@@ -274,7 +275,7 @@ const ProductList = () => {
                     </div>
                   </TableCell>
                   <TableCell className="text-right text-xs sm:text-sm font-medium">
-                    ${product.price}
+                    {Math.round(product.price).toLocaleString('fr-FR')} CFA
                   </TableCell>
                   <TableCell className="hidden sm:table-cell text-xs sm:text-sm">
                     {product.category}

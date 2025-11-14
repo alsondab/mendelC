@@ -24,7 +24,7 @@ import {
 } from '@/components/ui/sheet'
 
 import { cn } from '@/lib/utils'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import AdminLogoutButton from '@/components/shared/admin/admin-logout-button'
 
 const links = [
@@ -74,6 +74,7 @@ export function AdminNav({
   ...props
 }: React.HTMLAttributes<HTMLElement>) {
   const pathname = usePathname()
+  const locale = useLocale()
   const t = useTranslations('Admin')
 
   return (
@@ -86,13 +87,15 @@ export function AdminNav({
     >
       {links.map((item) => {
         const IconComponent = item.icon
+        const pathnameStr = String(pathname)
+        const href = `/${locale}${item.href}`
         return (
           <Link
             key={item.href}
-            href={item.href}
+            href={href}
             className={cn(
               'flex items-center space-x-1.5 px-2 py-1.5 md:px-2.5 md:py-2 rounded-md transition-colors text-xs sm:text-sm flex-shrink-0',
-              pathname.includes(item.href)
+              pathnameStr.includes(item.href)
                 ? 'bg-primary/10 text-primary font-medium'
                 : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
             )}
@@ -109,6 +112,7 @@ export function AdminNav({
 // Composant séparé pour le menu grille mobile
 export function AdminMobileMenu() {
   const pathname = usePathname()
+  const locale = useLocale()
   const t = useTranslations('Admin')
   const tHeader = useTranslations('Header')
 
@@ -138,13 +142,15 @@ export function AdminMobileMenu() {
               <div className="grid grid-cols-2 gap-4">
                 {links.map((item) => {
                   const IconComponent = item.icon
+                  const pathnameStr = String(pathname)
+                  const href = `/${locale}${item.href}`
                   return (
                     <SheetClose asChild key={item.href}>
                       <Link
-                        href={item.href}
+                        href={href}
                         className={cn(
                           'flex flex-col items-center space-y-2 p-4 rounded-lg border transition-all duration-200',
-                          pathname.includes(item.href)
+                          pathnameStr.includes(item.href)
                             ? 'bg-primary text-primary-foreground border-primary shadow-md'
                             : 'bg-muted/50 hover:bg-muted border-border hover:shadow-sm'
                         )}

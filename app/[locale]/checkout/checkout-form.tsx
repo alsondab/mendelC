@@ -758,7 +758,8 @@ const CheckoutForm = () => {
                   <ul>
                     {items.map((item, index) => (
                       <li key={`item-${index}`}>
-                        {item.name} x {item.quantity} = {item.price}
+                        {item.name} x {item.quantity} ={' '}
+                        {formatPrice(item.price * item.quantity)}
                       </li>
                     ))}
                   </ul>
@@ -830,11 +831,7 @@ const CheckoutForm = () => {
                                 {item.name}, {item.color}, {item.size}
                               </p>
                               <p className="font-bold">
-                                <ProductPrice
-                                  price={item.price}
-                                  listPrice={item.listPrice}
-                                  plain
-                                />
+                                {formatPrice(item.price)}
                               </p>
 
                               <Select
